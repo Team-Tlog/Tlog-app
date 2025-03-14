@@ -56,4 +56,20 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+    // Tlog
+
+    // Jetpack Compose
+    implementation("androidx.activity:activity-compose:1.7.2")
+    implementation("androidx.compose.ui:ui:1.5.3")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+
+    // Material3
+    implementation("androidx.compose.material3:material3:1.1.2")
+
+    // Navigation (화면 전환)
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
 }
