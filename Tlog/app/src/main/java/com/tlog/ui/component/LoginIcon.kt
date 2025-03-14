@@ -23,7 +23,7 @@ fun LoginIcon(
         painter = painterResource(iconResId), // 추후 아이콘 변경 필요
         contentDescription = "소셜로그인 $loginName",
         modifier = Modifier
-            .size(50.dp)
+            .size(55.dp)
             .clip(CircleShape)
             .clickable { onClick() }
     )
