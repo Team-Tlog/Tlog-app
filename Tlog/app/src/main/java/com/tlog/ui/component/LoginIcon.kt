@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tlog.R
 
@@ -16,6 +17,7 @@ import com.tlog.R
 fun LoginIcon(
     @DrawableRes iconResId: Int,
     loginName : String,
+    iconSize : Dp = 55.dp,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -23,7 +25,7 @@ fun LoginIcon(
         painter = painterResource(iconResId),
         contentDescription = "소셜로그인 $loginName",
         modifier = Modifier
-            .size(55.dp)
+            .size(iconSize)
             .clip(CircleShape)
             .clickable { onClick() }
     )
