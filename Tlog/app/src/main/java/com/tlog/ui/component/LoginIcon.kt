@@ -20,7 +20,7 @@ fun LoginIcon(
     onClick: () -> Unit = {}
 ) {
     Image(
-        painter = painterResource(iconResId), // 추후 아이콘 변경 필요
+        painter = painterResource(iconResId),
         contentDescription = "소셜로그인 $loginName",
         modifier = Modifier
             .size(55.dp)
