@@ -1,8 +1,11 @@
 package com.tlog.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,11 +27,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.TbtiCodeInputField
-import kotlinx.coroutines.delay
+import com.tlog.ui.theme.FontBlue
 
 @Composable
 fun TbtiCodeInputScreen() {
@@ -46,6 +49,10 @@ fun TbtiCodeInputScreen() {
             val topPadding = maxHeight * 0.2f
             val midPadding = maxHeight * 0.06f
             val buttonTopPadding = maxHeight * 0.04f
+            val reTestTopPadding = maxHeight * 0.03f
+            val sidePadding = maxWidth * 0.07f
+            val textSpace = maxWidth * 0.03f
+
 
             Column(
                 modifier = Modifier
@@ -102,9 +109,31 @@ fun TbtiCodeInputScreen() {
                     onClick = {
                         Log.d("resultButton", "my click!!")
                     },
-                    modifier = Modifier.padding(horizontal = 15.dp)
+                    modifier = Modifier.
+                        padding(horizontal = sidePadding)
 
                 )
+
+                Spacer(modifier = Modifier.height(reTestTopPadding))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(textSpace),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = "결과를 잊어버렸어요!",
+                        fontSize = 14.sp
+                    )
+
+                    Text(
+                        text = "테스트 다시하기",
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline,
+                        color = FontBlue,
+                        modifier = Modifier
+                            .clickable { Log.d("reTest", "my click!!") }
+                    )
+                }
             }
         }
     }
@@ -172,7 +201,7 @@ val requesterList = listOf(
     FocusRequester()
 )
 
-fun isValidTbtiCode(code: String): Boolean { // 우리 TBTI 코드 유형이 맞는지 체크
+fun isValidTbtiCode(code: String): Boolean { // 우리 TBTI 코드 유형이 맞는지 체크 (2자리씩 끊어서 01~99 사이인지 체크)
     if (code.length != 8 || !code.all { it.isDigit() }) return false
 
     val split = code.chunked(2) // 2글자씩 나눠서 검증
