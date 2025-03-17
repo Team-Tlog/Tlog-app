@@ -1,20 +1,13 @@
 package com.tlog.ui.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +15,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,49 +32,76 @@ fun TbtiCodeInputField(
     requesterList: List<FocusRequester>,
     onComplete: (String) -> Unit
 ) {
-    Surface (
+    val focusManager = LocalFocusManager.current
+    val currentFocusIndex = remember { mutableStateOf(0) } // 포커스 1개로만 관리하기 위해서 만든 변수
+
+    Surface(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
             Row(
-               modifier = Modifier
-                   .padding(horizontal = 16.dp)
-                   .padding(top = 50.dp)
-                   .align(Alignment.TopCenter)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 50.dp)
+                    .align(Alignment.TopCenter)
             ) {
-                for (i in textList.indices) { // 입력 칸 개수만큼 입력 칸 생성
+                for (i in textList.indices) {
+                    val requester = requesterList[i]
+
+                    // 현재 포커스 인덱스에 해당하는 필드에만 포커스 요청하도록
+                    LaunchedEffect(currentFocusIndex.value) {
+                        if (currentFocusIndex.value == i)
+                            requester.requestFocus()
+                    }
+
+
                     InputFeild(
                         value = textList[i].value,
                         onValueChange = { newValue ->
-                            val oldText = textList[i].value.text
                             val input = newValue.text.filter { it.isDigit() }
+                            val oldText = textList[i].value.text
 
+                            // 값이 있다가 사라질 경우 (지워질 경우) 포커스 이동
                             if (oldText.isNotEmpty() && input.isEmpty()) {
-                                if(i != 0)
-                                    requesterList[i - 1].requestFocus()
                                 textList[i].value = TextFieldValue("", TextRange(0))
+                                if (i > 0)
+                                    currentFocusIndex.value = i - 1
                                 return@InputFeild
                             }
 
+                            // 붙여넣기 할 경우 갈라서 넣어주고 포커스 옮겨주기
                             if (input.isNotEmpty()) {
-                                for ((offset, char) in input.withIndex()) {
+                                val maxLength = textList.size - i // 최대 몇 글자까지 입력 가능한지 -> 붙여넣기 시 필드 초과하는 것 방지
+                                val subInput = input.take(maxLength) // 남은 길이만큼 자름 -> List 사이즈 = 8 / 1번필드 + "123456789" = "12345678" (9 잘림)
+
+                                for ((offset, char) in subInput.withIndex()) {
                                     val targetIndex = i + offset
-                                    if (targetIndex < textList.size)
-                                        textList[targetIndex].value = TextFieldValue(char.toString(), TextRange(1))
+                                    if (targetIndex < textList.size) {
+                                        textList[targetIndex].value = TextFieldValue(
+                                            char.toString(),
+                                            TextRange(1)
+                                        )
+                                    }
                                 }
 
-                                val nextIndex = i + input.length
-                                if (nextIndex < requesterList.size)
-                                    requesterList[nextIndex].requestFocus()
-
                                 val code = textList.joinToString("") { it.value.text }
-                                if (code.length == textList.size)
+                                val isComplete = code.length == textList.size
+
+                                if (isComplete) {
+                                    focusManager.clearFocus()
                                     onComplete(code)
+                                } else {
+                                    val nextIndex = i + subInput.length
+                                    if (nextIndex < requesterList.size)
+                                        currentFocusIndex.value = nextIndex
+                                    else
+                                        focusManager.clearFocus()
+                                }
                             }
                         },
-                        focusRequester = requesterList[i]
+                        focusRequester = requester
                     )
                 }
             }
@@ -91,11 +112,10 @@ fun TbtiCodeInputField(
 @Composable
 fun InputFeild(
     value: TextFieldValue,
-    onValueChange: (value: TextFieldValue) -> Unit,
+    onValueChange: (TextFieldValue) -> Unit,
     focusRequester: FocusRequester
 ) {
     BasicTextField(
-        readOnly = false,
         value = value,
         onValueChange = onValueChange,
         modifier = Modifier
@@ -105,16 +125,6 @@ fun InputFeild(
             .wrapContentSize()
             .focusRequester(focusRequester),
         maxLines = 1,
-        decorationBox = { innerTextField ->
-            Box(
-                modifier = Modifier
-                    .width(35.dp)
-                    .height(50.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                innerTextField()
-            }
-        },
         cursorBrush = SolidColor(Color.White),
         textStyle = TextStyle(
             color = Color.Black,
@@ -128,6 +138,16 @@ fun InputFeild(
         ),
         keyboardActions = KeyboardActions(
             onDone = null
-        )
+        ),
+        decorationBox = { innerTextField ->
+            Box(
+                modifier = Modifier
+                    .width(35.dp)
+                    .height(50.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                innerTextField()
+            }
+        }
     )
 }
