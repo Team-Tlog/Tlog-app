@@ -74,9 +74,9 @@ fun TbtiIntroScreen() {
                 Spacer(modifier = Modifier.weight(1f))
 
                 MainButton(
-                    "테스트 시작",
-                    {Log.d("TbtiTestStartButton", "my click!!")},
-                    Modifier
+                    text = "테스트 시작",
+                    onClick = {Log.d("TbtiTestStartButton", "my click!!")},
+                    modifier = Modifier
                         .padding(horizontal = sidePadding)
                         .fillMaxWidth()
                         .height(65.dp)

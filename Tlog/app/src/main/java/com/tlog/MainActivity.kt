@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tlog.ui.screen.LoginScreen
+import com.tlog.ui.screen.TbtiCodeInputScreen
 import com.tlog.ui.screen.TbtiIntroScreen
 import com.tlog.ui.theme.TlogTheme
 
@@ -20,8 +21,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LoginScreen()
+            //LoginScreen()
             //TbtiIntroScreen()
+            TbtiCodeInputScreen()
         }
     }
 }
