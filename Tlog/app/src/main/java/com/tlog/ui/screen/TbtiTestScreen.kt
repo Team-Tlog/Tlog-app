@@ -23,11 +23,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
 
-
+@Preview
 @Composable
 fun TbtiTestScreen(
     current: Int = 1, // 질문 번호
@@ -63,7 +64,7 @@ fun TbtiTestScreen(
                 Spacer(modifier = Modifier.height(topPadding))
 
                 LinearProgressIndicator( // 상단 진행률 표시해주는 바
-                    progress = progress,
+                    progress = {progress},
                     color = MainColor,
                     trackColor = Color(0xFFF0F0F0),
                     modifier = Modifier
