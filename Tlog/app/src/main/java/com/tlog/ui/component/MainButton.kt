@@ -17,6 +17,8 @@ import com.tlog.ui.theme.MainColor
 @Composable
 fun MainButton(
     text : String,
+    enabled: Boolean = true,
+    buttonColor: Color = MainColor,
     onClick : () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -25,10 +27,16 @@ fun MainButton(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
+        enabled = enabled,
         shape = RoundedCornerShape(50), // 좌우를 둥글게
         colors = ButtonDefaults.buttonColors(
+            // 활성화 시 컬러
             containerColor = MainColor,
-            contentColor = Color.White
+            contentColor = Color.White,
+
+            // 비활성화 시 컬러
+            disabledContainerColor = Color(0xFFAAAAAA),
+            disabledContentColor = Color(0xFF7E7E7E)
         )
     ) {
         Text(
