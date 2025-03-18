@@ -30,11 +30,11 @@ import com.tlog.ui.theme.MainColor
 
 @Composable
 fun TbtiTestScreen(
-    current: Int = 1,
-    total: Int = 10,
-    question: String = "여행을 가기 전날 밤\n내 가방의 상태는?",
-    chooseText1: String = "이미 갈 준비 완료!\n편하게 자볼까?",
-    chooseText2: String = "벌써 내일이야?\n빨리 짐싸자!!"
+    current: Int = 1, // 질문 번호
+    total: Int = 10, // 총 질문 개수
+    question: String = "여행을 가기 전날 밤\n내 가방의 상태는?", // 질문
+    chooseText1: String = "이미 갈 준비 완료!\n편하게 자볼까?", // 선택지 1
+    chooseText2: String = "벌써 내일이야?\n빨리 짐싸자!!" // 선택지 2
 ) {
     val progress = current.toFloat() / total.toFloat()
 
@@ -62,7 +62,7 @@ fun TbtiTestScreen(
 
                 Spacer(modifier = Modifier.height(topPadding))
 
-                LinearProgressIndicator(
+                LinearProgressIndicator( // 상단 진행률 표시해주는 바
                     progress = progress,
                     color = MainColor,
                     trackColor = Color(0xFFF0F0F0),
