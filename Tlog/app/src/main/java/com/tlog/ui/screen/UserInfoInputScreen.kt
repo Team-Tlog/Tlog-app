@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,6 +40,8 @@ import com.tlog.viewmodel.UserInfoViewModel
 @Preview
 @Composable
 fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
+    val scrollState = rememberScrollState()
+
     var expanded by remember { mutableStateOf(false) }
 
     val genderOptions = listOf("남성", "여성")
@@ -46,7 +50,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
     val carOption = listOf("있음", "없음")
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         color = Color.White
     ) {
         BoxWithConstraints (
@@ -59,7 +64,9 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
             val genderLeftPadding = maxWidth * 0.67f
 
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
             ) {
                 Text(
                     text = "추가 정보를 입력해주세요",
@@ -77,7 +84,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     text = "닉네임",
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 17.sp,
+                    fontSize = 15.sp,
                     modifier = Modifier.padding(start = 30.dp)
                 )
 
@@ -89,13 +96,19 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                         viewModel.updateNickname(it)
                         Log.d("nickname", it)
                     },
-                    placeholder = { Text("입력해주세요") }, // hint
+                    placeholder = { Text(
+                        text = "입력해주세요",
+                        fontSize = 13.sp,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Thin
+                    ) }, // hint
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 30.dp)
-                        .shadow(3.dp, shape = RoundedCornerShape(24.dp))
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White)
+                        .height(56.dp)
+                        .shadow(3.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
+                        .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
+                        .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
@@ -104,7 +117,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     text = "성별",
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 17.sp,
+                    fontSize = 15.sp,
                     modifier = Modifier.padding(start = 30.dp)
                 )
 
@@ -179,8 +192,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     text = "Tlog 시작하기",
                     onClick = { Log.d("startButton", "my click!!")},
                     modifier = Modifier
-                        .padding(start = 15.dp, end = 15.dp, bottom = 40.dp)
-                        .height(65.dp)
+                        .padding(start = 30.dp, end = 30.dp, bottom = 50.dp)
                 )
             }
         }

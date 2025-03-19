@@ -27,7 +27,7 @@ fun MainButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(55.dp),
         enabled = enabled,
         shape = RoundedCornerShape(50), // 좌우를 둥글게
         colors = ButtonDefaults.buttonColors(
@@ -42,7 +42,7 @@ fun MainButton(
     ) {
         Text(
             text = text,
-            fontSize = 17.sp,
+            fontSize = 15.sp,
             fontFamily = MainFont,
             fontWeight = FontWeight.ExtraBold
         )

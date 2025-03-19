@@ -42,7 +42,6 @@ fun TbtiIntroScreen() {
             val topPadding = maxHeight * 0.18f
             val midPadding = maxHeight * 0.015f
             val bottomPadding = maxHeight * 0.08f
-            val sidePadding = maxWidth * 0.07f
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
@@ -87,9 +86,9 @@ fun TbtiIntroScreen() {
                     text = "테스트 시작",
                     onClick = {Log.d("TbtiTestStartButton", "my click!!")},
                     modifier = Modifier
-                        .padding(horizontal = sidePadding)
+                        .padding(horizontal = 30.dp)
                         .fillMaxWidth()
-                        .height(65.dp)
+                        .height(55.dp)
                 )
 
                 Spacer(modifier = Modifier.height(midPadding))

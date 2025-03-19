@@ -105,7 +105,7 @@ fun TbtiTestScreen(
 
                 Text(
                     text = question,
-                    fontSize = 27.sp,
+                    fontSize = 25.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center

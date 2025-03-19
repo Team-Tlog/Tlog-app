@@ -68,7 +68,7 @@ fun TbtiCodeInputScreen() {
             ) {
                 Text(
                     text = "TBTI 코드 입력",
-                    fontSize = 35.sp,
+                    fontSize = 30.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.ExtraBold,
                     color = Color.Black
@@ -117,9 +117,8 @@ fun TbtiCodeInputScreen() {
                     onClick = {
                         Log.d("resultButton", "my click!!")
                     },
-                    modifier = Modifier.
-                        padding(horizontal = sidePadding)
-
+                    modifier = Modifier
+                        .padding(horizontal = sidePadding)
                 )
 
                 Spacer(modifier = Modifier.height(reTestTopPadding))

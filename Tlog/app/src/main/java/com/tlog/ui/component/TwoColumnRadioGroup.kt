@@ -29,7 +29,7 @@ fun TwoColumnRadioGroup(
         text = title,
         fontFamily = MainFont,
         fontWeight = FontWeight.Medium,
-        fontSize = 17.sp,
+        fontSize = 15.sp,
         modifier = Modifier.padding(start = 30.dp)
     )
 

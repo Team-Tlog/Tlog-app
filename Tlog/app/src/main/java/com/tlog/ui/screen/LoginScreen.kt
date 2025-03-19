@@ -43,7 +43,7 @@ fun LoginScreen() {
            val midPadding = maxHeight * 0.35f
            val iconTopPadding = maxHeight * 0.04f
            val bottomPadding = maxHeight * 0.1f
-           val iconSpace = maxWidth * 0.1f
+           val iconSpace = maxWidth * 0.08f
            val iconSize = maxWidth * 0.14f
 
            Column(
@@ -59,7 +59,7 @@ fun LoginScreen() {
                    Text(
                        modifier = Modifier.padding(start = startPadding),
                        text = "여행을",
-                       fontSize = 45.sp,
+                       fontSize = 40.sp,
                        fontFamily = MainFont,
                        fontWeight = FontWeight.ExtraBold,
                        color = Color.White
@@ -68,7 +68,7 @@ fun LoginScreen() {
                    Text(
                        modifier = Modifier.padding(start = startPadding),
                        text = "담다",
-                       fontSize = 45.sp,
+                       fontSize = 40.sp,
                        fontFamily = MainFont,
                        fontWeight = FontWeight.ExtraBold,
                        color = Color.White
@@ -81,7 +81,7 @@ fun LoginScreen() {
                    text = "TBTI 기반으로 AI에게 여행지 추천을 받아보세요.",
                    fontFamily = MainFont,
                    fontWeight = FontWeight.Medium,
-                   fontSize = 14.sp,
+                   fontSize = 12.sp,
                    color = Color.White
                )
 
@@ -122,7 +122,7 @@ fun LoginScreen() {
                    color = Color.White,
                    fontFamily = MainFont,
                    fontWeight = FontWeight.Medium,
-                   fontSize = 12.sp,
+                   fontSize = 11.sp,
                    textDecoration = TextDecoration.Underline
                )
            }
