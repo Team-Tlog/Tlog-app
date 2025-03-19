@@ -6,8 +6,9 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,7 +34,7 @@ fun DropDownBox(
         onExpandedChange = onExpandedChange,
         modifier = modifier
     ) {
-        OutlinedTextField(
+        TextField(
             value = value,
             onValueChange = {},
             readOnly = true,
@@ -43,13 +44,12 @@ fun DropDownBox(
                     contentDescription = null
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
-                containerColor = Color.White, // 드롭다운 전 색깔
-                focusedIndicatorColor = MainColor,
-                unfocusedLabelColor = Color(0xFFA9A9A9),
-                focusedTextColor = Color.Black,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
+                cursorColor = MainColor
             ),
-            shape = RoundedCornerShape(24.dp),
+            // shape = RoundedCornerShape(24.dp),
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()

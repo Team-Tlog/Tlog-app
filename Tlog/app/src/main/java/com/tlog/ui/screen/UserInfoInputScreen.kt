@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -92,6 +93,9 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 30.dp)
+                        .shadow(3.dp, shape = RoundedCornerShape(24.dp))
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(Color.White)
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
@@ -118,7 +122,9 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     modifier = Modifier
                         .background(Color.White)
                         .padding(start = 30.dp, end = genderLeftPadding)
+                        .shadow(3.dp, shape = RoundedCornerShape(24.dp))
                         .clip(RoundedCornerShape(24.dp))
+                        .background(Color.White)
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))

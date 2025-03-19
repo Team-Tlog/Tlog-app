@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 class UserInfoViewModel: ViewModel() {
 
     var nickname by mutableStateOf("")
-    var gender by mutableStateOf("없음")
+    var gender by mutableStateOf("성별")
     var hasPet by mutableStateOf(false)
     var travelType by mutableStateOf("가족여행")
     var hasCar by mutableStateOf(false)
