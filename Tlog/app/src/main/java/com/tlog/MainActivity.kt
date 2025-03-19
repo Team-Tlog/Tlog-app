@@ -15,6 +15,7 @@ import com.tlog.ui.screen.LoginScreen
 import com.tlog.ui.screen.TbtiCodeInputScreen
 import com.tlog.ui.screen.TbtiIntroScreen
 import com.tlog.ui.screen.TbtiTestScreen
+import com.tlog.ui.screen.UserInfoInputScreen
 import com.tlog.ui.theme.TlogTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +26,8 @@ class MainActivity : ComponentActivity() {
             //TbtiTestScreen(1, 10)
             //LoginScreen()
             //TbtiIntroScreen()
-            TbtiCodeInputScreen()
+            //TbtiCodeInputScreen()
+            UserInfoInputScreen()
         }
     }
 }
