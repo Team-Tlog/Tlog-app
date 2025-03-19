@@ -28,12 +28,16 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.TbtiCodeInputField
 import com.tlog.ui.theme.FontBlue
+import com.tlog.ui.theme.MainFont
 
+
+@Preview
 @Composable
 fun TbtiCodeInputScreen() {
     val focusManager = LocalFocusManager.current
@@ -64,8 +68,9 @@ fun TbtiCodeInputScreen() {
             ) {
                 Text(
                     text = "TBTI 코드 입력",
-                    fontSize = 35.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 30.sp,
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.ExtraBold,
                     color = Color.Black
                 )
 
@@ -97,6 +102,8 @@ fun TbtiCodeInputScreen() {
                     LaunchedEffect(key1 = codeError.value) {}
                     Text(
                         text = "올바른 코드를 입력해주세요.",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.SemiBold,
                         fontSize = 14.sp,
                         color = Color.Red
                     )
@@ -110,9 +117,8 @@ fun TbtiCodeInputScreen() {
                     onClick = {
                         Log.d("resultButton", "my click!!")
                     },
-                    modifier = Modifier.
-                        padding(horizontal = sidePadding)
-
+                    modifier = Modifier
+                        .padding(horizontal = sidePadding)
                 )
 
                 Spacer(modifier = Modifier.height(reTestTopPadding))
@@ -123,11 +129,15 @@ fun TbtiCodeInputScreen() {
                 ) {
                     Text(
                         text = "결과를 잊어버렸어요!",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 14.sp
                     )
 
                     Text(
                         text = "테스트 다시하기",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 14.sp,
                         textDecoration = TextDecoration.Underline,
                         color = FontBlue,
