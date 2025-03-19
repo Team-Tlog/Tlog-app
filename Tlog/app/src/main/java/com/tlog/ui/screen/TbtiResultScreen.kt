@@ -38,16 +38,18 @@ import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.ui.component.MainButton
 
+
+// 상단 네비바 추가 필요 피그마 -> 아이콘클릭 -> 우측하단 export -> svg로 다운로드 -> drawable에서 우클릭 후 vector 추가 해서 사용
 @Preview
 @Composable
 fun TbtiResultScreen(
-    leftLabels: List<String> = listOf("S", "L", "E", "A"),
+    leftLabels: List<String> = listOf("S", "L", "E", "A"), // 이건 지역변수로 사용해도 됨 (고정이라 의미없음)
     rightLabels: List<String> = listOf("R", "O", "N", "I"),
-    leftProgress: List<Float> = listOf(0.5f, 0.7f, 0.6f, 0.4f),
+    leftProgress: List<Float> = listOf(0.5f, 0.7f, 0.6f, 0.4f), // 이것도 좌측 비율만 가져와서 연산해서 바꾸면 됨
     rightProgress: List<Float> = listOf(0.6f, 0.3f, 0.8f, 0.9f)
 
 ) {
-    val scrollState = rememberScrollState()
+    val scrollState = rememberScrollState() // 이건 스크롤 가능하게 하는건가?
 
     Column(
         modifier = Modifier
@@ -60,7 +62,7 @@ fun TbtiResultScreen(
         // 상단 대표 이미지
         Image(
             painter = painterResource(id = R.drawable.test_image), // 직접 넣은 이미지 사용
-            contentDescription = "TBTI 대표 이미지",
+            contentDescription = "TBTI 대표 이미지", // 설명 TBTI 캐릭터 이미지로 수정하면 좋을 듯
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
@@ -77,8 +79,8 @@ fun TbtiResultScreen(
 
         //각각 성향의 퍼센트를 나타내는 부분
         for (i in 0 until 4) {
-            val maxProgress = maxOf(leftProgress[i], rightProgress[i])
-            val animatedProgress by animateFloatAsState(
+            val maxProgress = maxOf(leftProgress[i], rightProgress[i]) // 더 큰 값을 저장
+            val animatedProgress by animateFloatAsState( // 이 스크린이 열릴 때도 애니메이션이 적용되는지? -> 있으면 유지, 없으면 제거
                 targetValue = maxProgress,
                 animationSpec = tween(800),
                 label = "animated-bar-$i"
@@ -87,7 +89,7 @@ fun TbtiResultScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 6.dp),
+                    .padding(vertical = 6.dp), // 여백 더 주자 너무 좁음 + 좌우 여백도 들어가면 좋을 듯 ? 너무 빽빽하다 피그마 참고 !
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(leftLabels[i]) // 왼쪽 라벨
@@ -157,7 +159,7 @@ fun TbtiResultScreen(
             }
 
             // 안 맞는 TBTI 카드
-            Column(
+            Column( // 영역을 잘 정했으나 백그라운드 컬러를 피그마랑 맞출 것
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp)
@@ -187,7 +189,7 @@ fun TbtiResultScreen(
         // 시작 버튼
         MainButton(
             text = "Tlog 시작하기",
-            onClick = { /* 메인화면으로 넘어가도록 */ }
+            onClick = { /* 메인화면으로 넘어가도록 */ } // 높이 65 / 좌우 여백도 15씩 modifier로 주면 됨
         )
         Spacer(modifier = Modifier.height(5.dp))
     }
