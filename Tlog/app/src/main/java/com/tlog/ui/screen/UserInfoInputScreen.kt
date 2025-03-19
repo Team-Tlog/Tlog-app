@@ -53,7 +53,6 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 .fillMaxSize()
         ) {
             val topPadding = maxHeight * 0.08f
-            val sidePadding = maxWidth * 0.08f
             val textTopPadding = maxHeight * 0.03f
             val standardPadding = maxHeight * 0.025f
             val genderLeftPadding = maxWidth * 0.67f
@@ -92,7 +91,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     placeholder = { Text("입력해주세요") }, // hint
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = sidePadding)
+                        .padding(horizontal = 30.dp)
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
@@ -102,7 +101,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
-                    modifier = Modifier.padding(start = sidePadding)
+                    modifier = Modifier.padding(start = 30.dp)
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
@@ -118,23 +117,14 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     },
                     modifier = Modifier
                         .background(Color.White)
-                        .padding(start = sidePadding, end = genderLeftPadding)
+                        .padding(start = 30.dp, end = genderLeftPadding)
                         .clip(RoundedCornerShape(24.dp))
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
 
-                Text(
-                    text = "반려견 여부",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 17.sp,
-                    modifier = Modifier.padding(start = sidePadding)
-                )
-
-                Spacer(modifier = Modifier.height(standardPadding))
-
                 TwoColumnRadioGroup(
+                    title = "반려견 여부",
                     options = petOption,
                     selectedOption = if (viewModel.hasPet) petOption[0] else petOption[1],
                     onOptionSelected = {
@@ -143,17 +133,9 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     }
                 )
 
-                Text(
-                    text = "즐겨하는 여행 타입",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 17.sp,
-                    modifier = Modifier.padding(start = 30.dp)
-                )
-
-                Spacer(modifier = Modifier.height(standardPadding))
 
                 TwoColumnRadioGroup(
+                    title = "즐겨하는 여행 타입",
                     options = travelOption,
                     selectedOption = viewModel.travelType,
                     onOptionSelected = {
@@ -163,17 +145,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 )
 
 
-                Text(
-                    text = "자차유무",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 17.sp,
-                    modifier = Modifier.padding(start = 30.dp)
-                )
-
-                Spacer(modifier = Modifier.height(standardPadding))
-
                 TwoColumnRadioGroup(
+                    title = "자차유무",
                     options = carOption,
                     selectedOption = if (viewModel.hasCar) carOption[0] else carOption[1],
                     onOptionSelected = {
@@ -203,10 +176,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                         .padding(start = 15.dp, end = 15.dp, bottom = 40.dp)
                         .height(65.dp)
                 )
-
             }
-
-
         }
     }
 }

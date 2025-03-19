@@ -16,16 +16,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TwoColumnRadioGroup(
+    title: String,
     options: List<String>,
     selectedOption: String,
     onOptionSelected: (String) -> Unit,
 ) {
+    Text(
+        text = title,
+        fontFamily = MainFont,
+        fontWeight = FontWeight.Medium,
+        fontSize = 17.sp,
+        modifier = Modifier.padding(start = 30.dp)
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
