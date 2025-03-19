@@ -17,13 +17,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.theme.FontBlue
+import com.tlog.ui.theme.MainFont
 
+
+@Preview
 @Composable
 fun TbtiIntroScreen() {
     Surface(
@@ -53,6 +58,7 @@ fun TbtiIntroScreen() {
                         text = "TBTI란?",
                         color = Color.Black,
                         fontSize = 34.sp,
+                        fontFamily = MainFont,
                         fontWeight = FontWeight.ExtraBold
                     )
 
@@ -61,12 +67,16 @@ fun TbtiIntroScreen() {
                     Text(
                         text = "여행 성향을 분석해 나만의 여행 유형을",
                         color = Color.Black,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 15.sp,
                     )
 
                     Text(
                         text = "찾아주는 맞춤형 여행 성향 테스트",
                         color = Color.Black,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 15.sp,
                     )
                 }
@@ -91,6 +101,8 @@ fun TbtiIntroScreen() {
                 ) {
                     Text(
                         text = "이미 테스트를 진행하셨나요?",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
                         fontSize = 14.sp
                     )
 
@@ -98,6 +110,8 @@ fun TbtiIntroScreen() {
                         text = "건너뛰기",
                         fontSize = 14.sp,
                         color = FontBlue,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier.clickable{ Log.d("TbtiSkipText", "my click!!") }
                     )

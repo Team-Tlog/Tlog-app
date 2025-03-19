@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 @Composable
 fun MainButton(
@@ -42,6 +43,7 @@ fun MainButton(
         Text(
             text = text,
             fontSize = 17.sp,
+            fontFamily = MainFont,
             fontWeight = FontWeight.ExtraBold
         )
     }

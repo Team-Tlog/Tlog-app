@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TwoColumnRadioGroup(
@@ -58,6 +59,7 @@ fun TwoColumnRadioGroup(
 
                         Text(
                             text = text,
+                            fontFamily = MainFont,
                             modifier = Modifier.padding(start = 10.dp)
                         )
                     }

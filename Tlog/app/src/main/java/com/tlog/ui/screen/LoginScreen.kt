@@ -19,13 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.ui.component.LoginIcon
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 
+@Preview
 @Composable
 fun LoginScreen() {
     Surface (
@@ -57,6 +60,7 @@ fun LoginScreen() {
                        modifier = Modifier.padding(start = startPadding),
                        text = "여행을",
                        fontSize = 45.sp,
+                       fontFamily = MainFont,
                        fontWeight = FontWeight.ExtraBold,
                        color = Color.White
                    )
@@ -65,6 +69,7 @@ fun LoginScreen() {
                        modifier = Modifier.padding(start = startPadding),
                        text = "담다",
                        fontSize = 45.sp,
+                       fontFamily = MainFont,
                        fontWeight = FontWeight.ExtraBold,
                        color = Color.White
                    )
@@ -74,6 +79,8 @@ fun LoginScreen() {
 
                Text(
                    text = "TBTI 기반으로 AI에게 여행지 추천을 받아보세요.",
+                   fontFamily = MainFont,
+                   fontWeight = FontWeight.Medium,
                    fontSize = 14.sp,
                    color = Color.White
                )
@@ -113,6 +120,8 @@ fun LoginScreen() {
                        .clickable { Log.d("GuestStart", "my click!!") },
                    text = "게스트로 시작하기",
                    color = Color.White,
+                   fontFamily = MainFont,
+                   fontWeight = FontWeight.Medium,
                    fontSize = 12.sp,
                    textDecoration = TextDecoration.Underline
                )

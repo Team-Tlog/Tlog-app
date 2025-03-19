@@ -30,6 +30,7 @@ import com.tlog.ui.component.DropDownBox
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.MainInputField
 import com.tlog.ui.component.TwoColumnRadioGroup
+import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.UserInfoViewModel
 
 
@@ -63,6 +64,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 Text(
                     text = "추가 정보를 입력해주세요",
                     fontWeight = FontWeight.ExtraBold,
+                    fontFamily = MainFont,
                     fontSize = 24.sp,
                     modifier = Modifier
                         .padding(top = topPadding)
@@ -73,6 +75,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "닉네임",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
                     modifier = Modifier.padding(start = 30.dp)
                 )
@@ -95,6 +99,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "성별",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
                     modifier = Modifier.padding(start = sidePadding)
                 )
@@ -120,6 +126,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "반려견 여부",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
                     modifier = Modifier.padding(start = sidePadding)
                 )
@@ -137,6 +145,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "즐겨하는 여행 타입",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
                     modifier = Modifier.padding(start = 30.dp)
                 )
@@ -155,6 +165,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "자차유무",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     fontSize = 17.sp,
                     modifier = Modifier.padding(start = 30.dp)
                 )
@@ -175,6 +187,8 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Text(
                     text = "추후 변경이 가능합니다.",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
                     color = Color(0xFFA8A8A8),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()

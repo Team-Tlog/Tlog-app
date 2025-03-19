@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,7 +61,10 @@ fun DropDownBox(
         ) {
             options.forEach { selectOption ->
                 DropdownMenuItem(
-                    text = { Text(selectOption) },
+                    text = { Text(
+                        text = selectOption,
+                        fontFamily = MainFont,
+                    ) },
                     onClick = {
                         onOptionSelected(selectOption)
                         onExpandedChange(false)

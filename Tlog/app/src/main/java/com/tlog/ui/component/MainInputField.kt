@@ -6,7 +6,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 
 @Composable
@@ -27,6 +30,10 @@ fun MainInputField (
             focusedBorderColor = MainColor,     // 포커스됐을 때 아웃라인 색
             unfocusedBorderColor = Color(0xFFA9A9A9),  // 포커스 없을 때 아웃라인 색
             cursorColor = MainColor
+        ),
+        textStyle = TextStyle(
+            fontFamily = MainFont,
+            fontWeight = FontWeight.Thin
         ),
         modifier = modifier
     )
