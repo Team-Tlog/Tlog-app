@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 @Preview
 @Composable
@@ -95,6 +96,7 @@ fun TbtiTestScreen(
                     text = "Q.",
                     color = MainColor,
                     fontSize = 47.sp,
+                    fontFamily = MainFont,
                     fontWeight = FontWeight.ExtraBold
                 )
 
@@ -102,8 +104,9 @@ fun TbtiTestScreen(
 
                 Text(
                     text = question,
-                    fontSize = 27.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp,
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.ExtraBold,
                     textAlign = TextAlign.Center
                 )
 
@@ -122,6 +125,8 @@ fun TbtiTestScreen(
                 ) {
                     Text(
                         text = chooseText1,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
@@ -133,6 +138,7 @@ fun TbtiTestScreen(
                     text = "VS",
                     fontSize = 30.sp,
                     color = MainColor,
+                    fontFamily = MainFont,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(vertical = vsVerPadding)
@@ -151,6 +157,8 @@ fun TbtiTestScreen(
                 ) {
                     Text(
                         text = chooseText2,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
                         textAlign = TextAlign.Center,
                         modifier = Modifier
