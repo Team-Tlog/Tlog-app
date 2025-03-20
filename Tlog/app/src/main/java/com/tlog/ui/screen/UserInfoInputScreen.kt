@@ -59,7 +59,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 .fillMaxSize()
         ) {
             val topPadding = maxHeight * 0.08f
-            val textTopPadding = maxHeight * 0.03f
+            val textPadding = maxHeight * 0.03f
             val standardPadding = maxHeight * 0.025f
             val genderLeftPadding = maxWidth * 0.67f
 
@@ -78,37 +78,16 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                         .padding(start = 30.dp)
                 )
 
-                Spacer(modifier = Modifier.height(textTopPadding))
-
-                Text(
-                    text = "닉네임",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(start = 30.dp)
-                )
-
-                Spacer(modifier = Modifier.height(standardPadding))
-
+                Spacer(modifier = Modifier.height(textPadding))
+                
                 MainInputField(
+                    text = "닉네임",
                     value = viewModel.nickname,
                     onValueChange = {
                         viewModel.updateNickname(it)
                         Log.d("nickname", it)
                     },
-                    placeholder = { Text(
-                        text = "입력해주세요",
-                        fontSize = 13.sp,
-                        fontFamily = MainFont,
-                        fontWeight = FontWeight.Thin
-                    ) }, // hint
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 30.dp)
-                        .height(56.dp)
-                        .shadow(3.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
-                        .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
-                        .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
+                    placeholderText = "입력해주세요" // hint
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
