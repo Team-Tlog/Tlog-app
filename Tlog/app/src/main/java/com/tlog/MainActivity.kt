@@ -18,6 +18,7 @@ import com.tlog.ui.screen.TbtiIntroScreen
 import com.tlog.ui.screen.TbtiTestScreen
 import com.tlog.ui.screen.UserInfoInputScreen
 import com.tlog.ui.theme.TlogTheme
+import com.tlog.ui.screen.TbtiResultScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +30,10 @@ class MainActivity : ComponentActivity() {
             //TbtiIntroScreen()
             //TbtiCodeInputScreen()
             //UserInfoInputScreen()
+            //TbtiResultScreen()
             AddTravelDestinationScreen()
+
+
         }
     }
 }

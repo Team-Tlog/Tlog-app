@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
-
 @Preview
 @Composable
 fun TbtiTestScreen(
@@ -66,7 +65,7 @@ fun TbtiTestScreen(
                 Spacer(modifier = Modifier.height(topPadding))
 
                 LinearProgressIndicator( // 상단 진행률 표시해주는 바
-                    progress = progress,
+                    progress = {progress},
                     color = MainColor,
                     trackColor = Color(0xFFF0F0F0),
                     modifier = Modifier
