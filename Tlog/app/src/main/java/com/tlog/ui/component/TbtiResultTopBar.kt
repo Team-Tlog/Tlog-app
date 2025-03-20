@@ -12,7 +12,6 @@ import com.tlog.R
 
 @Composable
 fun TbtiResultTopBar(
-    onBackClick: () -> Unit = {},
     onDownloadClick: () -> Unit = {},
     onShareClick: () -> Unit = {}
 ) {
@@ -20,33 +19,23 @@ fun TbtiResultTopBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 4.dp, vertical = 45.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_left_arrow),
-            contentDescription = "뒤로가기",
+            painter = painterResource(id = R.drawable.ic_download),
+            contentDescription = "저장",
             modifier = Modifier
                 .size(42.dp)
-                .clickable(onClick = onBackClick)
+                .padding(end = 12.dp)
+                .clickable(onClick = onDownloadClick)
         )
-
-        Row {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_download),
-                contentDescription = "저장",
-                modifier = Modifier
-                    .size(42.dp)
-                    .padding(end = 12.dp)
-                    .clickable(onClick = onDownloadClick)
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_share),
-                contentDescription = "공유",
-                modifier = Modifier
-                    .size(42.dp)
-                    .clickable(onClick = onShareClick)
-            )
-        }
+        Icon(
+            painter = painterResource(id = R.drawable.ic_share),
+            contentDescription = "공유",
+            modifier = Modifier
+                .size(42.dp)
+                .clickable(onClick = onShareClick)
+        )
     }
 }

@@ -23,42 +23,35 @@ import com.tlog.R
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.component.TbtiResultTopBar
+import com.tlog.ui.theme.MainFont
 
-
-// 코드 → 알파벳 점수 맵핑
 fun parseTbtiCode(code: String): Map<String, Float> {
-    val labels = listOf("S", "R", "E", "O", "L", "N", "A", "I")
+    val labelPairs = listOf("S" to "R", "E" to "O", "L" to "N", "A" to "I")
     if (code.length != 8 || !code.all { it.isDigit() }) {
         throw IllegalArgumentException("8자리 숫자여야 합니다.")
     }
-    return labels.mapIndexed { index, label ->
-        label to (code[index].digitToInt() / 10f)
-    }.toMap()
+    val map = mutableMapOf<String, Float>()
+    for ((index, pair) in labelPairs.withIndex()) {
+        val left = pair.first
+        val right = pair.second
+        val valueStr = code.substring(index * 2, index * 2 + 2)
+        val value = valueStr.toInt().coerceIn(0, 100)
+        map[left] = value / 100f
+        map[right] = (100 - value) / 100f
+    }
+    return map
 }
 
-// 상위 4개 알파벳 추출
 fun getOrderedTopLetters(code: String): String {
-    val labelPairs = listOf(
-        Pair("S", "R"),
-        Pair("E", "O"),
-        Pair("L", "N"),
-        Pair("A", "I")
-    )
-
-    val labelOrder = listOf("S", "R", "E", "O", "L", "N", "A", "I")
-    val scoreMap = code.mapIndexed { index, c ->
-        labelOrder[index] to (c.digitToInt() / 10f)
-    }.toMap()
-
+    val labelPairs = listOf("S" to "R", "E" to "O", "L" to "N", "A" to "I")
+    val tbtiMap = parseTbtiCode(code)
     return labelPairs.joinToString("") { (first, second) ->
-        val firstScore = scoreMap[first] ?: 0f
-        val secondScore = scoreMap[second] ?: 0f
+        val firstScore = tbtiMap[first] ?: 0f
+        val secondScore = tbtiMap[second] ?: 0f
         if (firstScore >= secondScore) first else second
     }
 }
 
-
-// tbti에 따른 설명 반환
 fun getDescriptionFromTopLetters(top: String): String {
     return when (top) {
         "RENA" -> "안정적인 자연 탐험가"
@@ -71,17 +64,16 @@ fun getDescriptionFromTopLetters(top: String): String {
 
 @Preview(showBackground = true)
 @Composable
-fun TbtiResultScreen() {
+fun TbtiResultScreen(
+    code: String = "12733967"
+) {
     val scrollState = rememberScrollState()
-    val code = "28731964" //tbti 계산 코드
-
     val tbtiMap = parseTbtiCode(code)
     val topLetters = getOrderedTopLetters(code)
     val description = getDescriptionFromTopLetters(topLetters)
-
     val leftLabels = listOf("S", "E", "L", "A")
     val rightLabels = listOf("R", "O", "N", "I")
-    val Progress = leftLabels.map { tbtiMap[it] ?: 0f }
+    val progress = leftLabels.map { tbtiMap[it] ?: 0f }
 
     Column(
         modifier = Modifier
@@ -91,9 +83,7 @@ fun TbtiResultScreen() {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // 상단 네비게이션 바
         TbtiResultTopBar(
-            onBackClick = { /*뒤로가기*/ },
             onDownloadClick = { /*다운로드하기*/ },
             onShareClick = { /*공유하기*/ }
         )
@@ -111,23 +101,22 @@ fun TbtiResultScreen() {
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 결과tbti 및 설명 출력
         Text(
             text = topLetters,
             fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold
+            fontWeight = FontWeight.ExtraBold,
+            fontFamily = MainFont
         )
         Text(
             text = description,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            fontFamily = MainFont
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // 프로그레스 바 (S, E, L, A만 사용)
         for (i in leftLabels.indices) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -139,10 +128,11 @@ fun TbtiResultScreen() {
                     text = leftLabels[i],
                     modifier = Modifier.padding(end = 6.dp),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = MainFont
                 )
                 LinearProgressIndicator(
-                    progress = { Progress[i] },
+                    progress = { progress[i] },
                     modifier = Modifier
                         .width(236.dp)
                         .height(12.dp)
@@ -154,7 +144,8 @@ fun TbtiResultScreen() {
                     text = rightLabels[i],
                     modifier = Modifier.padding(start = 6.dp),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    fontFamily = MainFont
                 )
             }
         }
@@ -165,12 +156,12 @@ fun TbtiResultScreen() {
             text = "${topLetters}는 여행에서도 효율성과 여유를 동시에 추구하는 타입입니다.",
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
-            lineHeight = 20.sp
+            lineHeight = 20.sp,
+            fontFamily = MainFont
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 잘 맞는 / 안 맞는 카드
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -186,7 +177,7 @@ fun TbtiResultScreen() {
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("잘 맞는 TBTI")
+                Text("잘 맞는 TBTI", fontFamily = MainFont)
                 Spacer(modifier = Modifier.height(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.test_image),
@@ -197,7 +188,7 @@ fun TbtiResultScreen() {
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("RENA")
+                Text("RENA", fontFamily = MainFont)
             }
 
             Column(
@@ -209,7 +200,7 @@ fun TbtiResultScreen() {
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("안 맞는 TBTI")
+                Text("안 맞는 TBTI", fontFamily = MainFont)
                 Spacer(modifier = Modifier.height(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.test_image),
@@ -220,7 +211,7 @@ fun TbtiResultScreen() {
                     contentScale = ContentScale.Crop
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("SALI")
+                Text("SALI", fontFamily = MainFont)
             }
         }
 
