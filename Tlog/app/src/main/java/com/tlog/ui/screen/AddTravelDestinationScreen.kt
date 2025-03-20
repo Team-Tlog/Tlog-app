@@ -47,7 +47,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         MainInputField(
             text = "여행지명",
             value = viewModel.travelName,
-            onValueChange = { viewModel.updateTravelName(it) },
+            onValueChange = {
+                viewModel.updateTravelName(it)
+                Log.d("travelName", viewModel.travelName)
+            },
             placeholderText = "입력해주세요"
         )
 
@@ -56,7 +59,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         MainInputField(
             text = "주소",
             value = viewModel.travelAddress,
-            onValueChange = { viewModel.updateTravelAddress(it) },
+            onValueChange = {
+                viewModel.updateTravelAddress(it)
+                Log.d("addressValue", viewModel.travelAddress)
+            },
             placeholderText = "지도로 검색하기",
             trailingIcon = {
                 Icon(
@@ -89,7 +95,7 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
             selectedOption = if (viewModel.isPetFriendly) "가능" else "불가능",
             onOptionSelected = {
                 viewModel.updateIsPetFriendly(it == "가능")
-                Log.d("travelOption", viewModel.isPetFriendly.toString())
+                Log.d("petFriendOption", viewModel.isPetFriendly.toString())
             }
         )
 
@@ -115,7 +121,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         MainInputField(
             text = "설명글",
             value = viewModel.travelDescription,
-            onValueChange = { viewModel.updateTravelDescription(it) },
+            onValueChange = {
+                viewModel.updateTravelDescription(it) // 추후 글자수 제한?
+                Log.d("travelDescription", viewModel.travelDescription)
+            },
             placeholderText = "입력해주세요",
             singleLine = false,
             modifier = Modifier.height(130.dp)
