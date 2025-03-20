@@ -34,7 +34,7 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun HashtagInputSection(
+fun HashtagInputGroup(
     text: String = "해시태그",
     value: String, // hashTag
     singleLine: Boolean = true,

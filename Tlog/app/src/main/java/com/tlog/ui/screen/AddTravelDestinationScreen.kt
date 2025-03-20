@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
-import com.tlog.ui.component.HashtagInputSection
+import com.tlog.ui.component.HashtagInputGroup
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.MainInputField
 import com.tlog.ui.component.PhotoUploadBox
@@ -100,7 +100,7 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
             }
         )
 
-        HashtagInputSection(
+        HashtagInputGroup(
             value = viewModel.hashTag,
             placeholderText = "입력해주세요",
             hashTags = viewModel.hashTags,
