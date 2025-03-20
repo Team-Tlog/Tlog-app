@@ -36,6 +36,7 @@ import com.tlog.viewmodel.AddTravelViewModel
 fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
     val scrollState = rememberScrollState()
 
+    // 준우가 만든 상단바 추가 필요
 
     Column(
         modifier = Modifier
