@@ -74,7 +74,7 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            MainInputField(
+            MainInputField( // 안내 메시지 추가 필요
                 text = "리뷰작성",
                 value = viewModel.review,
                 onValueChange = { viewModel.updateReview(it) },
