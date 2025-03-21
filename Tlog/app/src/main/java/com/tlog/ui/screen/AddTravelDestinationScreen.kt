@@ -26,6 +26,7 @@ import com.tlog.ui.component.HashtagInputGroup
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.MainInputField
 import com.tlog.ui.component.PhotoUploadBox
+import com.tlog.ui.component.TopBar
 import com.tlog.ui.component.TwoColumnRadioGroup
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.AddTravelViewModel
@@ -43,8 +44,13 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(scrollState)
-            .padding(top = 30.dp)
     ) {
+        TopBar(
+            text = "여행지 등록"
+        )
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         MainInputField(
             text = "여행지명",
             value = viewModel.travelName,
