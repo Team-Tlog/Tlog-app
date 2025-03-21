@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
 import com.tlog.ui.component.SearchBar
-import com.tlog.ui.component.TopFieldBar
+import com.tlog.ui.component.TopBar
 import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.viewmodel.SearchViewModel
 
@@ -38,7 +38,7 @@ fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
-            TopFieldBar(
+            TopBar(
                 text = "리뷰작성"
             )
 
