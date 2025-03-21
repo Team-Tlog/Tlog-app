@@ -66,3 +66,4 @@ val MainFont = FontFamily(
 val SubFont = FontFamily(
     Font(R.font.sub_font, FontWeight.Normal)
 )
+
