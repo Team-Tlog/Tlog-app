@@ -10,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 
 @Composable
 fun MainButton(
@@ -26,7 +28,7 @@ fun MainButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp),
+            .height(55.dp),
         enabled = enabled,
         shape = RoundedCornerShape(50), // 좌우를 둥글게
         colors = ButtonDefaults.buttonColors(
@@ -41,7 +43,8 @@ fun MainButton(
     ) {
         Text(
             text = text,
-            fontSize = 17.sp,
+            fontSize = 15.sp,
+            fontFamily = MainFont,
             fontWeight = FontWeight.ExtraBold
         )
     }

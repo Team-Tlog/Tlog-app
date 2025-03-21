@@ -17,7 +17,7 @@ import com.tlog.R
 fun LoginIcon(
     @DrawableRes iconResId: Int,
     loginName : String,
-    iconSize : Dp = 55.dp,
+    iconSize : Dp = 50.dp,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {

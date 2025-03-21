@@ -50,3 +50,20 @@ fun TlogTheme(
         content = content
     )
 }
+
+val MainFont = FontFamily(
+    Font(R.font.main_font_medium, FontWeight.Medium),
+    Font(R.font.main_font_bold, FontWeight.Bold),
+    Font(R.font.main_font_extra_bold, FontWeight.ExtraBold),
+    Font(R.font.main_font_semi_bold, FontWeight.SemiBold),
+    Font(R.font.main_font_extra_light, FontWeight.ExtraLight),
+    Font(R.font.main_font_thin, FontWeight.Thin),
+    Font(R.font.main_font_regular, FontWeight.Normal),
+    Font(R.font.main_font_light, FontWeight.Light),
+    Font(R.font.main_font_black, FontWeight.Black)
+)
+
+val SubFont = FontFamily(
+    Font(R.font.sub_font, FontWeight.Normal)
+)
+

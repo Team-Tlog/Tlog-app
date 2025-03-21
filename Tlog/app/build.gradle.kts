@@ -65,11 +65,14 @@ dependencies {
     implementation("androidx.compose.ui:ui:1.5.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     // Material3
     implementation("androidx.compose.material3:material3:1.1.2")
 
     // Navigation (화면 전환)
     implementation("androidx.navigation:navigation-compose:2.7.7")
+
+
 
 }
