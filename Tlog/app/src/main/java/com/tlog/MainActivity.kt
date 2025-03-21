@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.LoginScreen
 import com.tlog.ui.screen.TbtiCodeInputScreen
 import com.tlog.ui.screen.TbtiIntroScreen
@@ -28,8 +29,9 @@ class MainActivity : ComponentActivity() {
             //LoginScreen()
             //TbtiIntroScreen()
             //TbtiCodeInputScreen()
-            TbtiResultScreen()
+            //TbtiResultScreen()
             //UserInfoInputScreen()
+            ChooseMyTypeDestinationScreen()
         }
     }
 }
