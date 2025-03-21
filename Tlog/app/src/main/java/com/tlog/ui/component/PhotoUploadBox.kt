@@ -43,7 +43,7 @@ fun PhotoUploadBox(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp)
-            .padding(horizontal = 30.dp),
+            .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -61,7 +61,7 @@ fun PhotoUploadBox(
     }
 
     LazyRow (
-        contentPadding = PaddingValues(horizontal = 30.dp),
+        contentPadding = PaddingValues(horizontal = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(images) { imageUri ->
