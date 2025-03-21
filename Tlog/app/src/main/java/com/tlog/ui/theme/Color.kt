@@ -14,3 +14,4 @@ val Pink40 = Color(0xFF7D5260)
 // Tlog Color
 val MainColor = Color(0xFF3B3BFB)
 val FontBlue = Color(0xFF3F79FF)
+val FontGray = Color(0xFF818181)
