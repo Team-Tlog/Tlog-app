@@ -123,7 +123,6 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(68.dp))
 
-
         }
     }
 }
