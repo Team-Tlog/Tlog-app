@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -29,7 +30,7 @@ fun HashTagsGroup(
     hashTags: List<String>
 ) {
     LazyRow(
-        //contentPadding = PaddingValues(horizontal = 24.dp),
+        //contentPadding = PaddingValues(horizontal = 24.dp), // 여행지 등록, 리뷰 쓰기에 사용 가능 추후 변경할 것
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(hashTags) { tag ->
@@ -39,7 +40,8 @@ fun HashTagsGroup(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .shadow(3.dp, RoundedCornerShape(50))
+                    .padding(bottom = 1.dp)
+                    .shadow(2.dp, RoundedCornerShape(50))
                     .background(Color.White)
             ) {
 
