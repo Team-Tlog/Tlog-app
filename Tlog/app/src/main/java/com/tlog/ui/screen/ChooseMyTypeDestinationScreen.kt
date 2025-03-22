@@ -26,8 +26,8 @@ fun ChooseMyTypeDestinationScreen(
     viewModel: ChooseDestinationViewModel = viewModel()
 ) {
     val maxSelection = 3
-    val destinations = listOf("서울", "경기", "인천", "강원", "대전", "광주", "대구", "부산", "충남", "충북", "전남", "전북", "경북", "경남", "울산", "제주")
-    val images = List(destinations.size) { R.drawable.test_image }
+    val destinations = listOf("놀이공원", "공원", "호수", "바다", "대전", "광주", "대구", "부산", "충남", "충북", "전남", "전북", "경북", "경남", "울산", "제주")
+    val images = List(destinations.size) { R.drawable.destination_img }
 
     val selected = viewModel.selected.value
 
@@ -40,7 +40,7 @@ fun ChooseMyTypeDestinationScreen(
                 .padding(horizontal = 24.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(95.dp))
+            Spacer(modifier = Modifier.height(137.dp))
 
             Text(
                 text = "마음에 드는\n여행지 선택",
@@ -56,7 +56,7 @@ fun ChooseMyTypeDestinationScreen(
                 fontWeight = FontWeight.Light,
                 color = Color.Gray
             )
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(85.dp))
 
             for (i in destinations.indices step 2) {
                 Row(
@@ -97,12 +97,10 @@ fun ChooseMyTypeDestinationScreen(
         ) {
             MainButton(
                 text = "선택 완료",
-                onClick = {
-                    // 선택 완료 처리
-                },
+                onClick = { /* 선택 완료 처리*/ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(65.dp)
+                    .height(55.dp)
             )
         }
     }

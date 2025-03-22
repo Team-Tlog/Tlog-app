@@ -1,7 +1,6 @@
 package com.tlog.ui.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,7 +8,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,6 +15,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
+import androidx.compose.foundation.border
+import androidx.compose.ui.graphics.graphicsLayer
+import com.tlog.ui.theme.MainColor
 
 @Composable
 fun DestinationCard(
@@ -26,29 +27,37 @@ fun DestinationCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Box(
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(if (isSelected) Color(0xFFE0EFFF) else Color(0xFFF8F8F8))
-            .clickable { onClick() },
-        horizontalAlignment = Alignment.CenterHorizontally
+            .width(150.dp)
+            .height(110.dp)
+            .graphicsLayer {
+                shadowElevation = 4.dp.toPx()
+                shape = RoundedCornerShape(16.dp)
+                clip = true // 그림자 영역 자르기
+            }
+            .border(
+                width = if (isSelected) 2.dp else 0.dp,
+                color = if (isSelected) MainColor else Color.Transparent,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable { onClick() }
     ) {
         Image(
             painter = painterResource(id = image),
             contentDescription = name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .clip(RoundedCornerShape(16.dp)),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = name,
             fontSize = 16.sp,
             fontFamily = MainFont,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            color = Color.White,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(start = 23.dp, bottom = 21.dp)
         )
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
