@@ -57,10 +57,10 @@ fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
                 contentAlignment = Alignment.Center
             ) {
                 SearchBar(
-                    value = viewModel.searchText,
+                    value = viewModel.searchText.value,
                     onValueChange = {
                         viewModel.updateSearchText(it)
-                        Log.d("SearchText", viewModel.searchText)
+                        Log.d("SearchText", viewModel.searchText.value)
                     },
                     leadingIcon = {
                         Icon(

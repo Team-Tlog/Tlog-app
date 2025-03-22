@@ -7,9 +7,10 @@ import androidx.lifecycle.ViewModel
 
 
 class SearchViewModel: ViewModel(){
-    var searchText by mutableStateOf("")
+    var _searchText = mutableStateOf("")
+    val searchText = _searchText
 
     fun updateSearchText(NewSearchText: String) {
-        searchText = NewSearchText
+        _searchText.value = NewSearchText
     }
 }
