@@ -65,10 +65,10 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(22.dp))
 
             StarRating(
-                rating = viewModel.starCnt,
+                rating = viewModel.starCnt.value,
                 onStarClicked = {
                     viewModel.updateStarCnt(it)
-                    Log.d("starCnt", viewModel.starCnt.toString())
+                    Log.d("starCnt", viewModel.starCnt.value.toString())
                 }
             )
 
@@ -76,7 +76,7 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
 
             MainInputField( // 안내 메시지 추가 필요
                 text = "리뷰작성",
-                value = viewModel.review,
+                value = viewModel.review.value,
                 onValueChange = { viewModel.updateReview(it) },
                 placeholderText = "입력해주세요",
                 singleLine = false,
@@ -86,7 +86,7 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(26.dp))
 
             PhotoUploadBox(
-                images = viewModel.imageList,
+                images = viewModel.imageList.value,
                 onAddClick = {
                     Log.d("addImage", "my click!!")
                 }
@@ -95,16 +95,16 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(25.dp))
 
             HashtagInputGroup(
-                value = viewModel.hashTag,
+                value = viewModel.hashTag.value,
                 placeholderText = "입력해주세요",
-                hashTags = viewModel.hashTags,
+                hashTags = viewModel.hashTags.value,
                 onValueChange = { viewModel.updateHashTag(it) },
                 onAddHashtag = { viewModel.addHashTag(it) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        if (viewModel.hashTag.isNotBlank()) {
-                            viewModel.addHashTag(viewModel.hashTag.trim())
+                        if (viewModel.hashTag.value.isNotBlank()) {
+                            viewModel.addHashTag(viewModel.hashTag.value.trim())
                             viewModel.updateHashTag("")
                         }
                     }

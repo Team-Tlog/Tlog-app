@@ -8,38 +8,43 @@ import androidx.lifecycle.ViewModel
 
 
 class ReviewViewModel: ViewModel() {
-    var starCnt by mutableStateOf(0)
-    var review by mutableStateOf("")
-    var hashTag by mutableStateOf("")
-    var hashTags by mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
-    var imageList by mutableStateOf<List<Uri>>(emptyList())
+    private var _starCnt = mutableStateOf(0)
+    val starCnt = _starCnt
+    private var _review = mutableStateOf("")
+    val review = _review
+    private var _hashTag = mutableStateOf("")
+    val hashTag = _hashTag
+    private var _hashTags = mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
+    val hashTags = _hashTags
+    private var _imageList = mutableStateOf<List<Uri>>(emptyList())
+    val imageList = _imageList
 
 
     fun updateStarCnt(newStarCnt: Int) {
-        starCnt = newStarCnt
+        _starCnt.value = newStarCnt
     }
 
     fun updateReview(newReview: String) {
-        review = newReview
+        _review.value = newReview
     }
 
     fun updateHashTag(newHashTag: String) {
-        hashTag = newHashTag
+        _hashTag.value = newHashTag
     }
 
     fun addHashTag(hashTag: String) {
-        hashTags += hashTag
+        _hashTags.value += hashTag
     }
 
     fun clearHashTags() {
-        hashTags = emptyList()
+        _hashTags.value = emptyList()
     }
 
     fun addImage(uri: Uri) {
-        imageList += uri
+        _imageList.value += uri
     }
 
     fun clearImages() {
-        imageList = emptyList()
+        _imageList.value = emptyList()
     }
 }

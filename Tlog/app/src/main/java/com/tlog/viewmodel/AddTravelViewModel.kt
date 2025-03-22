@@ -7,56 +7,63 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class AddTravelViewModel: ViewModel() {
-    var travelName by mutableStateOf("")
-    var travelAddress by mutableStateOf("")
-    var hasParking by mutableStateOf(false)
-    var isPetFriendly by mutableStateOf(false)
-    var hashTag by mutableStateOf("")
-    var hashTags by mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
-    var travelDescription by mutableStateOf("")
-    var imageList by mutableStateOf<List<Uri>>(emptyList())
-
+    private var _travelName = mutableStateOf("")
+    val travelName = _travelName
+    private var _travelAddress = mutableStateOf("")
+    val travelAddress = _travelAddress
+    private var _hasParking = mutableStateOf(false)
+    val hasParking = _hasParking
+    private var _isPetFriendly = mutableStateOf(false)
+    val isPetFriendly = _isPetFriendly
+    private var _hashTag = mutableStateOf("")
+    val hashTag = _hashTag
+    private var _hashTags = mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
+    val hashTags = _hashTags
+    private var _travelDescription = mutableStateOf("")
+    val travelDescription = _travelDescription
+    private var _imageList = mutableStateOf<List<Uri>>(emptyList())
+    val imageList = _imageList
 
 
 
     fun updateTravelName(newTravelName: String) {
-        travelName = newTravelName
+        _travelName.value = newTravelName
     }
 
     fun updateTravelAddress(newTravelAddress: String) {
-        travelAddress = newTravelAddress
+        _travelAddress.value = newTravelAddress
     }
 
     fun updateHasParking(newHasParking: Boolean) {
-        hasParking = newHasParking
+        _hasParking.value = newHasParking
     }
 
     fun updateIsPetFriendly(newIsPetFreindlyName: Boolean) {
-        isPetFriendly = newIsPetFreindlyName
+        _isPetFriendly.value = newIsPetFreindlyName
     }
 
     fun updateTravelDescription(newTravelDescription: String) {
-        travelDescription = newTravelDescription
+        _travelDescription.value = newTravelDescription
     }
 
     fun updateHashTag(newHashTag: String) {
-        hashTag = newHashTag
+        _hashTag.value = newHashTag
     }
 
     fun addHashTag(hashTag: String) {
-        hashTags += hashTag
+        _hashTags.value += hashTag
     }
 
     fun clearHashTags() {
-        hashTags = emptyList()
+        _hashTags.value = emptyList()
     }
 
     fun addImage(uri: Uri) {
-        imageList += uri
+        _imageList.value += uri
     }
 
     fun clearImages() {
-        imageList = emptyList()
+        _imageList.value = emptyList()
     }
 }
 

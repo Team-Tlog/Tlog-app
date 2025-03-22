@@ -53,10 +53,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
 
         MainInputField(
             text = "여행지명",
-            value = viewModel.travelName,
+            value = viewModel.travelName.value,
             onValueChange = {
                 viewModel.updateTravelName(it)
-                Log.d("travelName", viewModel.travelName)
+                Log.d("travelName", viewModel.travelName.value)
             },
             placeholderText = "입력해주세요"
         )
@@ -65,10 +65,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
 
         MainInputField(
             text = "주소",
-            value = viewModel.travelAddress,
+            value = viewModel.travelAddress.value,
             onValueChange = {
                 viewModel.updateTravelAddress(it)
-                Log.d("addressValue", viewModel.travelAddress)
+                Log.d("addressValue", viewModel.travelAddress.value)
             },
             placeholderText = "지도로 검색하기",
             trailingIcon = {
@@ -89,34 +89,34 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         TwoColumnRadioGroup(
             title = "주차 가능여부",
             options = listOf("가능", "불가능"),
-            selectedOption = if (viewModel.hasParking) "가능" else "불가능",
+            selectedOption = if (viewModel.hasParking.value) "가능" else "불가능",
             onOptionSelected = {
                 viewModel.updateHasParking(it == "가능")
-                Log.d("travelOption", viewModel.hasParking.toString())
+                Log.d("travelOption", viewModel.hasParking.value.toString())
             }
         )
 
         TwoColumnRadioGroup(
             title = "반려견 가능여부",
             options = listOf("가능", "불가능"),
-            selectedOption = if (viewModel.isPetFriendly) "가능" else "불가능",
+            selectedOption = if (viewModel.isPetFriendly.value) "가능" else "불가능",
             onOptionSelected = {
                 viewModel.updateIsPetFriendly(it == "가능")
-                Log.d("petFriendOption", viewModel.isPetFriendly.toString())
+                Log.d("petFriendOption", viewModel.isPetFriendly.value.toString())
             }
         )
 
         HashtagInputGroup(
-            value = viewModel.hashTag,
+            value = viewModel.hashTag.value,
             placeholderText = "입력해주세요",
-            hashTags = viewModel.hashTags,
+            hashTags = viewModel.hashTags.value,
             onValueChange = { viewModel.updateHashTag(it) },
             onAddHashtag = { viewModel.addHashTag(it) },
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    if (viewModel.hashTag.isNotBlank()) {
-                        viewModel.addHashTag(viewModel.hashTag.trim())
+                    if (viewModel.hashTag.value.isNotBlank()) {
+                        viewModel.addHashTag(viewModel.hashTag.value.trim())
                         viewModel.updateHashTag("")
                     }
                 }
@@ -127,10 +127,10 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
 
         MainInputField(
             text = "설명글",
-            value = viewModel.travelDescription,
+            value = viewModel.travelDescription.value,
             onValueChange = {
                 viewModel.updateTravelDescription(it) // 추후 글자수 제한?
-                Log.d("travelDescription", viewModel.travelDescription)
+                Log.d("travelDescription", viewModel.travelDescription.value)
             },
             placeholderText = "입력해주세요",
             singleLine = false,
@@ -140,7 +140,7 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         Spacer(modifier = Modifier.height(15.dp))
 
         PhotoUploadBox( // 추후 사진을 어떻게 크기를 줄일지 생각해보면 좋을 듯 성능적으로도, 우리 용량적으로도
-            images = viewModel.imageList,
+            images = viewModel.imageList.value,
             onAddClick = {
                 Log.d("PhotoUpload", "my click!!")
             }
