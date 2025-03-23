@@ -31,9 +31,9 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun TravelItem(
     index: Int,
-    travelName: String = "여행지 이름",
-    travelDescription: String = "소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용",
-    hashTags: List<String> = listOf("단풍", "가을"),
+    travelName: String,
+    travelDescription: String,
+    hashTags: List<String>,
     checked: Boolean = false,
     setCheckBox: (Int, Boolean) -> Unit
 ) {
