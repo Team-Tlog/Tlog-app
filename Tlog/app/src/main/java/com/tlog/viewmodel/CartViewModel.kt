@@ -32,7 +32,87 @@ class CartViewModel: ViewModel() {
                 hashTags = listOf("크다", "높다")
             ),
             checked = false
-        )
+        ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    ),
+    TravelUiData(
+        TravelData(
+            travelName = "남산타워",
+            description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
+            hashTags = listOf("크다", "높다")
+        ),
+        checked = false
+    )
     ))
     val travelList = _travelList
     private var _allChecked = mutableStateOf(false)
@@ -63,4 +143,7 @@ class CartViewModel: ViewModel() {
         }
     }
 
+    fun getCheckedTravelList(): List<TravelUiData> {
+        return _travelList.value.filter { it.checked }
+    }
 }
