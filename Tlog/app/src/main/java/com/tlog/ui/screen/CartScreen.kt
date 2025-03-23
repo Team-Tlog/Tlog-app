@@ -43,7 +43,7 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 118.dp) // 버튼에 가려지지 않도록 아래 패딩 추가
+                .padding(bottom = 120.dp) // 버튼에 가려지지 않도록 아래 패딩 추가
         ) {
             TopBar(
                 text = "내 장바구니",
