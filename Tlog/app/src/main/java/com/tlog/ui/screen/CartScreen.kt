@@ -50,7 +50,7 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
                     Log.d("all select", "my click!!");
                 },
             fontFamily = MainFont,
-            fontSize = 12.sp, // 피그마에 아직 안정해져있음
+            fontSize = 12.sp,
             fontWeight = FontWeight.Light,
             color = MainColor,
             textAlign = TextAlign.Right,

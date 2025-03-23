@@ -7,6 +7,7 @@ import com.tlog.data.model.TravelUiData
 
 class CartViewModel: ViewModel() {
 //    private var _travelList = mutableStateOf<List<TravelData>>(emptyList())
+    // 추후 api로 리스트 설정 (현재 리스트 삭제)
     private var _travelList = mutableStateOf(listOf(
         TravelUiData(
             TravelData(
