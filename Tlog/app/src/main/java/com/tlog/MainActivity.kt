@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.AddTravelDestinationScreen
+import com.tlog.ui.screen.CartScreen
 import com.tlog.ui.screen.LoginScreen
 import com.tlog.ui.screen.ReviewWritingScreen
 import com.tlog.ui.screen.SelectReviewWriteScreen
@@ -32,12 +33,13 @@ class MainActivity : ComponentActivity() {
             //LoginScreen()
             //TbtiIntroScreen()
             //TbtiCodeInputScreen()
-            UserInfoInputScreen()
+            //UserInfoInputScreen()
             //TbtiResultScreen()
             //AddTravelDestinationScreen()
             //SelectReviewWriteScreen()
             //ReviewWritingScreen()
-          //ChooseMyTypeDestinationScreen()
+            //ChooseMyTypeDestinationScreen()
+            //CartScreen()
 
         }
     }
