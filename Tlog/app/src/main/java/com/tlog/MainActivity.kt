@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
             //SelectReviewWriteScreen()
             //ReviewWritingScreen()
             //ChooseMyTypeDestinationScreen()
-            //CartScreen()
+            CartScreen()
 
         }
     }
