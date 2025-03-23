@@ -38,6 +38,12 @@ class CartViewModel: ViewModel() {
     private var _allChecked = mutableStateOf(false)
 
 
+    /*
+    val api 보낼 때 사용할 친구 = travelList.value
+    .filter { it.checked }
+    .map { it.travelData }
+     */
+
     fun updateTravelList(newTravelList: List<TravelUiData>) {
         _travelList.value = newTravelList
     }
@@ -52,8 +58,8 @@ class CartViewModel: ViewModel() {
 
     fun allChecked() {
         _allChecked.value = !(_allChecked.value)
-        _travelList.value = _travelList.value.map {
-            it.copy(checked = _allChecked.value)
+        _travelList.value = _travelList.value.map { // 리스트 원소 변환
+            it.copy(checked = _allChecked.value) // copy로 checked만 변경
         }
     }
 
