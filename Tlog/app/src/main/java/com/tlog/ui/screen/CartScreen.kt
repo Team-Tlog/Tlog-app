@@ -43,7 +43,7 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
     ) {
         Column(
             modifier = Modifier
-                .padding(bottom = 118.dp)
+                .padding(bottom = 118.dp) // 버튼에 가려지지 않도록 아래 패딩 추가
         ) {
             TopBar(
                 text = "내 장바구니",
@@ -82,14 +82,14 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
             )
         }
 
-        AnimatedVisibility(
-            visible = viewModel.getCheckedTravelList().isNotEmpty(),
+        AnimatedVisibility( // 애니메이션
+            visible = viewModel.getCheckedTravelList().isNotEmpty(), // 체크된 List가 비어있지 않으면 띄우기
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 63.dp) // 48 + 15
+                .padding(start = 24.dp, end = 24.dp, bottom = 63.dp) // 48 (갤럭시 하단바) + 15 (원래 패딩)
         ) {
             MainButton(
                 text = "AI 코스 짜기",
