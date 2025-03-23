@@ -13,7 +13,7 @@ import com.tlog.data.model.TravelUiData
 @Composable
 fun TravelList(
     travelList: List<TravelUiData>,
-    setCheckBox: (Int, Boolean) -> Unit
+    setCheckBox: (Int, Boolean) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(travelList) { index, item ->
@@ -25,7 +25,12 @@ fun TravelList(
                 checked = item.checked,
                 setCheckBox = setCheckBox
             )
-            Spacer(modifier = Modifier.height(24.dp))
+            if (index == travelList.lastIndex) {
+                Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
+            } else {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
         }
+
     }
 }

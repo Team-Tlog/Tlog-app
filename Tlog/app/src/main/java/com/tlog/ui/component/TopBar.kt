@@ -24,9 +24,6 @@ fun TopBar(
     fontSize: TextUnit = 20.sp,
     height: Dp = 42.dp
 ) {
-
-    Spacer(modifier = Modifier.height(42.dp))
-
     Box(
         Modifier
             .fillMaxWidth()

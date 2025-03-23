@@ -11,10 +11,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,15 +44,13 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        Column(
-            modifier = Modifier
-                .padding(bottom = 120.dp) // 버튼에 가려지지 않도록 아래 패딩 추가
-        ) {
+        Column {
             TopBar(
                 text = "내 장바구니",
                 fontSize = 15.sp,
-                height = 48.dp
+                height = 52.dp
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -89,7 +91,7 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 63.dp) // 48 (갤럭시 하단바) + 15 (원래 패딩)
+                .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
         ) {
             MainButton(
                 text = "AI 코스 짜기",
