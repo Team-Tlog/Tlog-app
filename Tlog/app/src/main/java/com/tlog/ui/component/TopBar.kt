@@ -3,6 +3,7 @@ package com.tlog.ui.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
@@ -20,43 +23,28 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TopBar(
-    text: String = "리뷰작성"
-    //, onBackClick: () -> Unit
+    text: String,
+    fontSize: TextUnit = 20.sp,
+    height: Dp = 42.dp
 ) {
+
+    Spacer(modifier = Modifier.height(42.dp))
+
     Box(
         Modifier
             .fillMaxWidth()
-            .height(84.dp)
-            .padding(top = 42.dp)
+            .height(height),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center, // 가로 방향 가운데 정렬
-            verticalAlignment = Alignment.CenterVertically // 세로 방향 가운데 정렬
-        ) {
-//            IconButton(
-//                onClick = onBackClick,
-//                modifier = Modifier
-//                    .size(42.dp)
-//                    .padding(10.dp)
-//            ) {
-//                Icon(                    /*추후 아이콘 생길 시 주석해제*/
-//                    painter = painterResource(id = R.drawable.ic_left_arrow),
-//                    contentDescription = "go_back",
-//                )
-//            }
-
             Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(42.dp),
+                    .fillMaxWidth(),
                 text = text,
-                fontSize = 20.sp,
+                fontSize = fontSize,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.Black,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Center
             )
-        }
     }
 }
