@@ -46,6 +46,7 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
                 .fillMaxWidth()
                 .padding(end = 20.dp)
                 .clickable {
+                    viewModel.allChecked()
                     Log.d("all select", "my click!!");
                 },
             fontFamily = MainFont,
@@ -59,7 +60,9 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
 
         TravelList(
             travelList =  viewModel.travelList.value,
-            checked = true
+            setCheckBox = { index, checked ->
+                viewModel.updateChecked(index, checked)
+            }
         )
 
 

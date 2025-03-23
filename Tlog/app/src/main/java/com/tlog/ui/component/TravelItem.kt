@@ -28,13 +28,14 @@ import com.tlog.R
 import com.tlog.ui.theme.MainFont
 
 
-@Preview
 @Composable
 fun TravelItem(
+    index: Int,
     travelName: String = "여행지 이름",
     travelDescription: String = "소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용소개내용",
     hashTags: List<String> = listOf("단풍", "가을"),
-    checked: Boolean = false
+    checked: Boolean = false,
+    setCheckBox: (Int, Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -81,7 +82,7 @@ fun TravelItem(
         Spacer(modifier = Modifier.width(25.dp))
 
         IconButton(
-            onClick = {},
+            onClick = {setCheckBox(index, !checked)},
             modifier = Modifier.fillMaxHeight()
         ) {
             Icon(

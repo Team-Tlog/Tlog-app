@@ -1,24 +1,31 @@
 package com.tlog.ui.component
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
-import com.tlog.data.model.TravelData
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.tlog.data.model.TravelUiData
 
 
 @Composable
 fun TravelList(
-    travelList: List<TravelData>,
-    checked: Boolean = false
+    travelList: List<TravelUiData>,
+    setCheckBox: (Int, Boolean) -> Unit
 ) {
     LazyColumn {
-        items(travelList) { item ->
+        itemsIndexed(travelList) { index, item ->
             TravelItem(
-                travelName = item.travelName,
-                travelDescription = item.description,
-                hashTags = item.hashTags,
-                checked =  checked
+                index = index,
+                travelName = item.travelData.travelName,
+                travelDescription = item.travelData.description,
+                hashTags = item.travelData.hashTags,
+                checked = item.checked,
+                setCheckBox = setCheckBox
             )
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
