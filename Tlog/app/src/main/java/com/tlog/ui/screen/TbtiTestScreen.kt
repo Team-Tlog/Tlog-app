@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
@@ -41,28 +44,21 @@ fun TbtiTestScreen(
     val progress = current.toFloat() / total.toFloat()
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         color = Color.White
     ) {
-        BoxWithConstraints(
+        Surface(
             modifier = Modifier.fillMaxSize()
         ){
-            val topPadding = maxHeight * 0.08f
-            val sidePadding = maxWidth * 0.05f
-            val questionTopPadding = maxHeight * 0.07f
-            val questionTextTopPadding = maxHeight * 0.06f
-            val midPadding = maxHeight * 0.07f
-            val boxPadding = maxWidth * 0.15f
-            val boxVerPadding = maxHeight * 0.05f
-            val vsVerPadding = maxHeight * 0.02f
-
             Column (
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Spacer(modifier = Modifier.height(topPadding))
+                Spacer(modifier = Modifier.height(9.dp))
 
                 LinearProgressIndicator( // 상단 진행률 표시해주는 바
                     progress = {progress},
@@ -71,7 +67,7 @@ fun TbtiTestScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(5.dp)
-                        .padding(horizontal = sidePadding)
+                        .padding(horizontal = 24.dp)
                         .clip(RoundedCornerShape(50))
                 )
 
@@ -80,7 +76,7 @@ fun TbtiTestScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = sidePadding)
+                        .padding(horizontal = 24.dp)
                 ) {
                     Text(
                         text = "$current/$total",
@@ -90,7 +86,7 @@ fun TbtiTestScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(questionTopPadding))
+                Spacer(modifier = Modifier.height(51.dp))
 
                 Text(
                     text = "Q.",
@@ -100,7 +96,7 @@ fun TbtiTestScreen(
                     fontWeight = FontWeight.ExtraBold
                 )
 
-                Spacer(modifier = Modifier.height(questionTextTopPadding))
+                Spacer(modifier = Modifier.height(50.dp))
 
                 Text(
                     text = question,
@@ -110,18 +106,18 @@ fun TbtiTestScreen(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(midPadding))
+                Spacer(modifier = Modifier.height(73.dp))
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = boxPadding)
+                        .padding(horizontal = 40.dp)
                         .clip(RoundedCornerShape(30.dp))
                         .background(Color(0xFFF1F4FD))
                         .clickable {
                             Log.d("choose1", "my click!!") // 추후 로직 만들 때 호출 매개변수로 받아야 될 듯!!
                         }
-                        .padding(vertical = boxVerPadding)
+                        .height(128.dp)
                 ) {
                     Text(
                         text = chooseText1,
@@ -141,19 +137,19 @@ fun TbtiTestScreen(
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
-                        .padding(vertical = vsVerPadding)
+                        .padding(vertical = 20.dp)
                 )
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = boxPadding)
+                        .padding(horizontal = 40.dp)
                         .clip(RoundedCornerShape(30.dp))
                         .background(Color(0xFFF1F4FD))
                         .clickable {
                             Log.d("choose2", "my click!!")
                         }
-                        .padding(vertical = boxVerPadding)
+                        .height(128.dp)
                 ) {
                     Text(
                         text = chooseText2,

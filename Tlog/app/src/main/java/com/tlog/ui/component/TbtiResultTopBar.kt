@@ -17,8 +17,7 @@ fun TbtiResultTopBar(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 45.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.End,
         verticalAlignment = Alignment.CenterVertically
     ) {

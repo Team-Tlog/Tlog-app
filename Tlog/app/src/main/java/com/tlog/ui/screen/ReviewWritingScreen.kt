@@ -3,10 +3,13 @@ package com.tlog.ui.screen
 import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -39,7 +42,9 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
     val scrollState = rememberScrollState()
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         color = Color.White
     ) {
         Column(
@@ -117,12 +122,9 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
                 text = "리뷰 등록하기",
                 onClick = { Log.d("addReview", "my click!!") },
                 modifier = Modifier
-                    .height(55.dp)
-                    .padding(horizontal = 10.dp)
+                    .height(70.dp)
+                    .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
             )
-
-            Spacer(modifier = Modifier.height(68.dp))
-
         }
     }
 }

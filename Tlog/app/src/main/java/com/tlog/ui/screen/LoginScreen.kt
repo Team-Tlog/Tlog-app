@@ -1,16 +1,20 @@
 package com.tlog.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,100 +36,89 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun LoginScreen() {
     Surface (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MainColor)
+            .windowInsetsPadding(WindowInsets.systemBars),
         color = MainColor
     ) {
-       BoxWithConstraints (
-           modifier = Modifier.fillMaxSize()
+       Column(
+           modifier = Modifier.fillMaxSize(),
+           horizontalAlignment = Alignment.CenterHorizontally
        ) {
-           val topPadding = maxHeight * 0.20f
-           val startPadding = maxWidth * 0.11f
-           val midPadding = maxHeight * 0.35f
-           val iconTopPadding = maxHeight * 0.04f
-           val bottomPadding = maxHeight * 0.1f
-           val iconSpace = maxWidth * 0.08f
-           val iconSize = maxWidth * 0.14f
-
            Column(
-               modifier = Modifier.fillMaxSize(),
-               horizontalAlignment = Alignment.CenterHorizontally
+               modifier = Modifier
+                   .fillMaxWidth()
+                   .padding(top = 144.dp),
+               horizontalAlignment = Alignment.Start
            ) {
-               Column(
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .padding(top = topPadding),
-                   horizontalAlignment = Alignment.Start
-               ) {
-                   Text(
-                       modifier = Modifier.padding(start = startPadding),
-                       text = "여행을",
-                       fontSize = 40.sp,
-                       fontFamily = MainFont,
-                       fontWeight = FontWeight.ExtraBold,
-                       color = Color.White
-                   )
-
-                   Text(
-                       modifier = Modifier.padding(start = startPadding),
-                       text = "담다",
-                       fontSize = 40.sp,
-                       fontFamily = MainFont,
-                       fontWeight = FontWeight.ExtraBold,
-                       color = Color.White
-                   )
-               }
-
-               Spacer(modifier = Modifier.height(midPadding))
-
                Text(
-                   text = "TBTI 기반으로 AI에게 여행지 추천을 받아보세요.",
+                   modifier = Modifier.padding(start = 70.dp),
+                   text = "여행을",
+                   fontSize = 40.sp,
                    fontFamily = MainFont,
-                   fontWeight = FontWeight.Medium,
-                   fontSize = 12.sp,
+                   fontWeight = FontWeight.ExtraBold,
                    color = Color.White
                )
 
-               Spacer(modifier = Modifier.height(iconTopPadding))
-
-               Row(
-                   horizontalArrangement = Arrangement.spacedBy(iconSpace),
-                   verticalAlignment = Alignment.CenterVertically
-               ) {
-                   // {} 사이에 실행 로직 넣을 것
-                   LoginIcon(R.drawable.naver_login_icon, "네이버", iconSize) {
-                       Log.d(
-                           "NaverLoginIcon",
-                           "my click!!"
-                       )
-                   }
-                   LoginIcon(R.drawable.google_login_icon, "구글", iconSize) {
-                       Log.d(
-                           "GoogleLoginIcon",
-                           "my click!!"
-                       )
-                   }
-                   LoginIcon(R.drawable.kakao_login_icon, "카카오", iconSize) {
-                       Log.d(
-                           "KakaoLoginIcon",
-                           "my click!!"
-                       )
-                   } // 카카오톡 로그인 사진 X -> 카카오 로그인 사진으로 변경하면 베스트
-               }
-
-               Spacer(modifier = Modifier.weight(1f)) // 남은 공간 아래로 밀어버리기
-
                Text(
-                   modifier = Modifier
-                       .padding(bottom = bottomPadding)
-                       .clickable { Log.d("GuestStart", "my click!!") },
-                   text = "게스트로 시작하기",
-                   color = Color.White,
+                   modifier = Modifier.padding(start = 70.dp),
+                   text = "담다",
+                   fontSize = 40.sp,
                    fontFamily = MainFont,
-                   fontWeight = FontWeight.Medium,
-                   fontSize = 11.sp,
-                   textDecoration = TextDecoration.Underline
+                   fontWeight = FontWeight.ExtraBold,
+                   color = Color.White
                )
            }
+
+//               Text(
+//                   text = "TBTI 기반으로 AI에게 여행지 추천을 받아보세요.",
+//                   fontFamily = MainFont,
+//                   fontWeight = FontWeight.Medium,
+//                   fontSize = 12.sp,
+//                   color = Color.White
+//               )
+
+           Spacer(modifier = Modifier.weight(1f)) // 남은 공간 아래로 밀어버리기
+
+           Row(
+               horizontalArrangement = Arrangement.spacedBy(35.dp),
+               verticalAlignment = Alignment.CenterVertically
+           ) {
+               // {} 사이에 실행 로직 넣을 것
+               LoginIcon(R.drawable.naver_login_icon, "네이버", 50.dp) {
+                   Log.d(
+                       "NaverLoginIcon",
+                       "my click!!"
+                   )
+               }
+               LoginIcon(R.drawable.google_login_icon, "구글", 50.dp) {
+                   Log.d(
+                       "GoogleLoginIcon",
+                       "my click!!"
+                   )
+               }
+               LoginIcon(R.drawable.kakao_login_icon, "카카오", 50.dp) {
+                   Log.d(
+                       "KakaoLoginIcon",
+                       "my click!!"
+                   )
+               } // 카카오톡 로그인 사진 X -> 카카오 로그인 사진으로 변경하면 베스트
+           }
+
+           Spacer(modifier = Modifier.height(22.dp))
+
+           Text(
+               modifier = Modifier
+                   .padding(bottom = 64.dp)
+                   .clickable { Log.d("GuestStart", "my click!!") },
+               text = "게스트로 시작하기",
+               color = Color.White,
+               fontFamily = MainFont,
+               fontWeight = FontWeight.Medium,
+               fontSize = 11.sp,
+               textDecoration = TextDecoration.Underline
+           )
        }
     }
 }

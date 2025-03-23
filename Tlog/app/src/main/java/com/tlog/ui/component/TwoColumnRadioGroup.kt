@@ -30,10 +30,10 @@ fun TwoColumnRadioGroup(
         fontFamily = MainFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
-        modifier = Modifier.padding(start = 30.dp)
+        modifier = Modifier.padding(start = 24.dp)
     )
 
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(24.dp))
 
     Column(
         modifier = Modifier

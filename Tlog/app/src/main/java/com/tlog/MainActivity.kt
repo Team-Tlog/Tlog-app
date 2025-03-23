@@ -32,12 +32,12 @@ class MainActivity : ComponentActivity() {
             //LoginScreen()
             //TbtiIntroScreen()
             //TbtiCodeInputScreen()
-            //UserInfoInputScreen()
+            UserInfoInputScreen()
             //TbtiResultScreen()
             //AddTravelDestinationScreen()
             //SelectReviewWriteScreen()
             //ReviewWritingScreen()
-          ChooseMyTypeDestinationScreen()
+          //ChooseMyTypeDestinationScreen()
 
         }
     }

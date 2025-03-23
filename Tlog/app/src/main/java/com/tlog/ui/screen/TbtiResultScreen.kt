@@ -80,7 +80,8 @@ fun TbtiResultScreen(
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(scrollState)
-            .padding(16.dp),
+            .padding(horizontal = 14.dp)
+            .windowInsetsPadding(WindowInsets.systemBars),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TbtiResultTopBar(
@@ -157,7 +158,9 @@ fun TbtiResultScreen(
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             lineHeight = 20.sp,
-            fontFamily = MainFont
+            fontFamily = MainFont,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -197,7 +200,7 @@ fun TbtiResultScreen(
                     .padding(8.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(Color(0xFFF1F4FD))
-                    .padding(12.dp),
+                    .padding(17.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text("안 맞는 TBTI", fontFamily = MainFont)
@@ -215,16 +218,16 @@ fun TbtiResultScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
         MainButton(
             text = "Tlog 시작하기",
             onClick = { /* 메인 화면 이동 */ },
             modifier = Modifier
-                .padding(start = 30.dp, end = 30.dp, bottom = 50.dp)
+                .padding(start = 30.dp, end = 30.dp)
                 .height(65.dp)
         )
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(29.dp))
     }
 }
