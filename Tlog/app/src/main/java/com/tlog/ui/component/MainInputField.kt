@@ -1,29 +1,63 @@
 package com.tlog.ui.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun MainInputField (
+    text: String,
     value: String,
     onValueChange: (String) -> Unit, // 갑 변경 시 수행
-    placeholder: @Composable (() -> Unit), // hint
+    placeholderText: String, // hint
     singleLine: Boolean = true,
-    modifier: Modifier
+    trailingIcon: @Composable (() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
+    val defaultModifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 24.dp)
+        .shadow(3.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
+        .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
+        .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
+
+    Text(
+        text = text,
+        fontFamily = MainFont,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp,
+        modifier = Modifier.padding(start = 24.dp)
+    )
+
+    Spacer(modifier = Modifier.height(20.dp))
+
     TextField(
         value = value,
         onValueChange = onValueChange,
-        placeholder = placeholder,
+        placeholder = { Text(
+            text = placeholderText,
+            fontSize = 13.sp,
+            fontFamily = MainFont,
+            fontWeight = FontWeight.Thin
+        ) },
         singleLine = singleLine,
         shape = RoundedCornerShape(45),
         colors = OutlinedTextFieldDefaults.colors(
@@ -35,6 +69,7 @@ fun MainInputField (
             fontFamily = MainFont,
             fontWeight = FontWeight.Thin
         ),
-        modifier = modifier
+        trailingIcon = trailingIcon,
+        modifier = defaultModifier.then(modifier)
     )
 }

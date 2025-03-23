@@ -1,37 +1,40 @@
 package com.tlog.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 
 class UserInfoViewModel: ViewModel() {
 
-    var nickname by mutableStateOf("")
-    var gender by mutableStateOf("성별")
-    var hasPet by mutableStateOf(false)
-    var travelType by mutableStateOf("가족여행")
-    var hasCar by mutableStateOf(false)
+    private var _nickname = mutableStateOf("")
+    val nickname = _nickname
+    private var _gender = mutableStateOf("성별")
+    val gender = _gender
+    private var _hasPet = mutableStateOf(false)
+    val hasPet = _hasPet
+    private var _travelType = mutableStateOf("가족여행")
+    val travelType = _travelType
+    private var _hasCar = mutableStateOf(false)
+    val hasCar = _hasCar
 
 
     fun updateNickname(newName: String) {
-        nickname = newName
+        _nickname.value = newName
     }
 
     fun updateGender(newGender: String) {
-        gender = newGender
+        _gender.value = newGender
     }
 
     fun updateCar(newHasCar: Boolean) {
-        hasCar = newHasCar
+        _hasCar.value = newHasCar
     }
 
     fun updateTravelType(newTravelType: String) {
-        travelType = newTravelType
+        _travelType.value = newTravelType
     }
 
     fun updatePet(newHasPet: Boolean) {
-        hasPet = newHasPet
+        _hasPet.value = newHasPet
     }
 }

@@ -59,7 +59,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 .fillMaxSize()
         ) {
             val topPadding = maxHeight * 0.08f
-            val textTopPadding = maxHeight * 0.03f
+            val textPadding = maxHeight * 0.03f
             val standardPadding = maxHeight * 0.025f
             val genderLeftPadding = maxWidth * 0.67f
 
@@ -78,37 +78,16 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                         .padding(start = 30.dp)
                 )
 
-                Spacer(modifier = Modifier.height(textTopPadding))
-
-                Text(
-                    text = "닉네임",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(start = 30.dp)
-                )
-
-                Spacer(modifier = Modifier.height(standardPadding))
-
+                Spacer(modifier = Modifier.height(textPadding))
+                
                 MainInputField(
-                    value = viewModel.nickname,
+                    text = "닉네임",
+                    value = viewModel.nickname.value,
                     onValueChange = {
                         viewModel.updateNickname(it)
                         Log.d("nickname", it)
                     },
-                    placeholder = { Text(
-                        text = "입력해주세요",
-                        fontSize = 13.sp,
-                        fontFamily = MainFont,
-                        fontWeight = FontWeight.Thin
-                    ) }, // hint
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 30.dp)
-                        .height(56.dp)
-                        .shadow(3.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
-                        .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
-                        .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
+                    placeholderText = "입력해주세요" // hint
                 )
 
                 Spacer(modifier = Modifier.height(standardPadding))
@@ -127,10 +106,10 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     expanded = expanded,
                     onExpandedChange = { expanded = !(expanded) },
                     options = genderOptions,
-                    value = viewModel.gender,
+                    value = viewModel.gender.value,
                     onOptionSelected = {
                         viewModel.updateGender(it)
-                        Log.d("genderOption", viewModel.gender)
+                        Log.d("genderOption", viewModel.gender.value)
                     },
                     modifier = Modifier
                         .background(Color.White)
@@ -145,7 +124,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "반려견 여부",
                     options = petOption,
-                    selectedOption = if (viewModel.hasPet) petOption[0] else petOption[1],
+                    selectedOption = if (viewModel.hasPet.value) petOption[0] else petOption[1],
                     onOptionSelected = {
                         viewModel.updatePet(if (it == petOption[0]) true else false)
                         Log.d("petOption", viewModel.hasPet.toString())
@@ -156,10 +135,10 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "즐겨하는 여행 타입",
                     options = travelOption,
-                    selectedOption = viewModel.travelType,
+                    selectedOption = viewModel.travelType.value,
                     onOptionSelected = {
                         viewModel.updateTravelType(it)
-                        Log.d("travelOption", viewModel.travelType)
+                        Log.d("travelOption", viewModel.travelType.value)
                     }
                 )
 
@@ -167,7 +146,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "자차유무",
                     options = carOption,
-                    selectedOption = if (viewModel.hasCar) carOption[0] else carOption[1],
+                    selectedOption = if (viewModel.hasCar.value) carOption[0] else carOption[1],
                     onOptionSelected = {
                         viewModel.updateCar(if (it == carOption[0]) true else false)
                         Log.d("carOption", viewModel.hasCar.toString())
