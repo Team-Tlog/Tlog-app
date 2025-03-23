@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.AddTravelDestinationScreen
 import com.tlog.ui.screen.CartScreen
 import com.tlog.ui.screen.LoginScreen
@@ -37,7 +38,9 @@ class MainActivity : ComponentActivity() {
             //AddTravelDestinationScreen()
             //SelectReviewWriteScreen()
             //ReviewWritingScreen()
+            //ChooseMyTypeDestinationScreen()
             CartScreen()
+
         }
     }
 }
