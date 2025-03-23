@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,17 +35,15 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun TbtiIntroScreen() {
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars),
         color = Color.White
     ) {
-        BoxWithConstraints(
+
+        Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            // 사용자 화면 크기에 반응하기 위해 값을 설정 후 n(숫자).dp 대신 사용
-            val topPadding = maxHeight * 0.18f
-            val midPadding = maxHeight * 0.015f
-            val bottomPadding = maxHeight * 0.08f
-
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -50,7 +51,7 @@ fun TbtiIntroScreen() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = topPadding),
+                        .padding(top = 157.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -61,7 +62,7 @@ fun TbtiIntroScreen() {
                         fontWeight = FontWeight.ExtraBold
                     )
 
-                    Spacer(modifier = Modifier.height(midPadding))
+                    Spacer(modifier = Modifier.height(17.dp))
 
                     Text(
                         text = "여행 성향을 분석해 나만의 여행 유형을",
@@ -86,17 +87,17 @@ fun TbtiIntroScreen() {
                     text = "테스트 시작",
                     onClick = {Log.d("TbtiTestStartButton", "my click!!")},
                     modifier = Modifier
-                        .padding(horizontal = 30.dp)
+                        .padding(horizontal = 24.dp)
                         .fillMaxWidth()
                         .height(55.dp)
                 )
 
-                Spacer(modifier = Modifier.height(midPadding))
+                Spacer(modifier = Modifier.padding(bottom = 4.dp))
 
                 Row(
                     horizontalArrangement =  Arrangement.spacedBy(10.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(bottom = bottomPadding)
+                    modifier = Modifier.padding(bottom = 26.dp)
                 ) {
                     Text(
                         text = "이미 테스트를 진행하셨나요?",
@@ -112,7 +113,9 @@ fun TbtiIntroScreen() {
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
                         textDecoration = TextDecoration.Underline,
-                        modifier = Modifier.clickable{ Log.d("TbtiSkipText", "my click!!") }
+                        modifier = Modifier
+                            .padding(vertical = 10.dp)
+                            .clickable{ Log.d("TbtiSkipText", "my click!!") }
                     )
                 }
             }

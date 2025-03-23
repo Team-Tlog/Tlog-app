@@ -35,9 +35,9 @@ fun ChooseMyTypeDestinationScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 90.dp)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 32.dp),
+                .padding(start = 24.dp, end = 24.dp, top = 32.dp, bottom = 45.dp)
+                .windowInsetsPadding(WindowInsets.systemBars),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(137.dp))
@@ -93,7 +93,7 @@ fun ChooseMyTypeDestinationScreen(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp, vertical = 62.dp)
+                .padding(horizontal = 24.dp, vertical = 15.dp)
         ) {
             MainButton(
                 text = "선택 완료",

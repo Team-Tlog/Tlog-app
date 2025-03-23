@@ -47,7 +47,7 @@ fun MainInputField (
         modifier = Modifier.padding(start = 24.dp)
     )
 
-    Spacer(modifier = Modifier.height(20.dp))
+    Spacer(modifier = Modifier.height(24.dp))
 
     TextField(
         value = value,

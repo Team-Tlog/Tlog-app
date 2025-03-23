@@ -5,10 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -54,15 +58,11 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
             .fillMaxSize(),
         color = Color.White
     ) {
-        BoxWithConstraints (
+        Surface (
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
         ) {
-            val topPadding = maxHeight * 0.08f
-            val textPadding = maxHeight * 0.03f
-            val standardPadding = maxHeight * 0.025f
-            val genderLeftPadding = maxWidth * 0.67f
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -74,11 +74,11 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     fontFamily = MainFont,
                     fontSize = 24.sp,
                     modifier = Modifier
-                        .padding(top = topPadding)
+                        .padding(top = 35.dp)
                         .padding(start = 30.dp)
                 )
 
-                Spacer(modifier = Modifier.height(textPadding))
+                Spacer(modifier = Modifier.height(38.dp))
                 
                 MainInputField(
                     text = "닉네임",
@@ -90,17 +90,17 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     placeholderText = "입력해주세요" // hint
                 )
 
-                Spacer(modifier = Modifier.height(standardPadding))
+                Spacer(modifier = Modifier.height(21.dp))
 
                 Text(
                     text = "성별",
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
-                    modifier = Modifier.padding(start = 30.dp)
+                    modifier = Modifier.padding(start = 24.dp)
                 )
 
-                Spacer(modifier = Modifier.height(standardPadding))
+                Spacer(modifier = Modifier.height(21.dp))
 
                 DropDownBox(
                     expanded = expanded,
@@ -113,13 +113,14 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     },
                     modifier = Modifier
                         .background(Color.White)
-                        .padding(start = 30.dp, end = genderLeftPadding)
+                        .padding(start = 24.dp)
+                        .width(95.dp)
                         .shadow(3.dp, shape = RoundedCornerShape(24.dp))
                         .clip(RoundedCornerShape(24.dp))
                         .background(Color.White)
                 )
 
-                Spacer(modifier = Modifier.height(standardPadding))
+                Spacer(modifier = Modifier.height(21.dp))
 
                 TwoColumnRadioGroup(
                     title = "반려견 여부",
@@ -165,14 +166,16 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Spacer(modifier = Modifier.height(15.dp))
+                Spacer(modifier = Modifier.height(13.dp))
 
                 MainButton(
                     text = "Tlog 시작하기",
                     onClick = { Log.d("startButton", "my click!!")},
                     modifier = Modifier
-                        .padding(start = 30.dp, end = 30.dp, bottom = 50.dp)
+                        .padding(start = 24.dp, end = 24.dp)
                 )
+
+                Spacer(modifier = Modifier.height(15.dp))
             }
         }
     }
