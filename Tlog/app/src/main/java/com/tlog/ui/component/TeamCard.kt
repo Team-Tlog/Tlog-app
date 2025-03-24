@@ -16,54 +16,53 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.R
 import com.tlog.ui.theme.MainFont
+import com.tlog.data.model.TeamData
 
 @Composable
-fun TeamCard() {
+fun TeamCard(team: TeamData) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(106.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center
-            ) {
+            Column {
                 Text(
-                    text = "팀이름",
-                    fontSize = 16.sp,
+                    text = team.teamName,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = MainFont
                 )
+                Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "여행지",
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
+                    text = team.teamDestination,
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Light,
                     fontFamily = MainFont,
                     color = Color.Gray
                 )
+                Spacer(modifier = Modifier.height(6.dp)) // 기존 15dp → 6dp로 줄임
                 Text(
-                    text = "팀장",
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
+                    text = "팀장: ${team.teamLeader}",
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
                     fontFamily = MainFont,
-                    color = Color.Gray
                 )
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy((-8).dp)) {
-                repeat(4) {
+                team.memberImage.forEach { imageResId ->
                     Image(
-                        painter = painterResource(id = R.drawable.test_image),
+                        painter = painterResource(id = imageResId),
                         contentDescription = "팀원 이미지",
                         modifier = Modifier
                             .size(28.dp)
@@ -73,5 +72,6 @@ fun TeamCard() {
                 }
             }
         }
+
     }
 }
