@@ -16,14 +16,14 @@ import com.tlog.R
 import com.tlog.ui.component.DestinationCard
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.ChooseDestinationViewModel
+import com.tlog.viewmodel.ChooseMyTypeViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Preview(showBackground = true)
 @Composable
 fun ChooseMyTypeDestinationScreen(
-    viewModel: ChooseDestinationViewModel = viewModel()
+    viewModel: ChooseMyTypeViewModel = viewModel()
 ) {
     val maxSelection = 3
     val destinations = listOf("놀이공원", "공원", "호수", "바다", "대전", "광주", "대구", "부산", "충남", "충북", "전남", "전북", "경북", "경남", "울산", "제주")
