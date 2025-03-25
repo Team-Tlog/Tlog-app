@@ -3,7 +3,7 @@ package com.tlog.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
-class ChooseDestinationViewModel : ViewModel() {
+class ChooseMyTypeViewModel : ViewModel() {
     private val _selected = mutableStateOf(setOf<String>())
     val selected get() = _selected
 
