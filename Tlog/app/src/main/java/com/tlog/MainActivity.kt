@@ -16,6 +16,7 @@ import com.tlog.ui.screen.AddTravelDestinationScreen
 import com.tlog.ui.screen.AiCourseSelectCartScreen
 import com.tlog.ui.screen.CartScreen
 import com.tlog.ui.screen.LoginScreen
+import com.tlog.ui.screen.MyTeamListScreen
 import com.tlog.ui.screen.ReviewWritingScreen
 import com.tlog.ui.screen.SelectReviewWriteScreen
 import com.tlog.ui.screen.TbtiCodeInputScreen
@@ -41,7 +42,9 @@ class MainActivity : ComponentActivity() {
             //ReviewWritingScreen()
             //ChooseMyTypeDestinationScreen()
             //CartScreen()
-            AiCourseSelectCartScreen()
+            //AiCourseSelectCartScreen()
+            MyTeamListScreen()
+
         }
     }
 }
