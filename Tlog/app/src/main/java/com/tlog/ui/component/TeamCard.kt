@@ -31,11 +31,12 @@ fun TeamCard(team: TeamData) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 20.dp),
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = team.teamName,
                     fontSize = 15.sp,
@@ -50,7 +51,7 @@ fun TeamCard(team: TeamData) {
                     fontFamily = MainFont,
                     color = Color.Gray
                 )
-                Spacer(modifier = Modifier.height(6.dp)) // 기존 15dp → 6dp로 줄임
+                Spacer(modifier = Modifier.height(15.dp))
                 Text(
                     text = "팀장: ${team.teamLeader}",
                     fontSize = 12.sp,
