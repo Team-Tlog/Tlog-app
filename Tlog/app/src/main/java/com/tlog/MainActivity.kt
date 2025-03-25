@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.AddTravelDestinationScreen
+import com.tlog.ui.screen.AiCourseSelectCartScreen
 import com.tlog.ui.screen.CartScreen
 import com.tlog.ui.screen.LoginScreen
 import com.tlog.ui.screen.MyTeamListScreen
@@ -41,7 +42,9 @@ class MainActivity : ComponentActivity() {
             //ReviewWritingScreen()
             //ChooseMyTypeDestinationScreen()
             //CartScreen()
+            //AiCourseSelectCartScreen()
             MyTeamListScreen()
+
         }
     }
 }
