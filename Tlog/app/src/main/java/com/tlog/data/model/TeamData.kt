@@ -1,5 +1,7 @@
 package com.tlog.data.model
 
+import android.net.Uri
+
 data class TeamData(
     val teamName: String,
     val teamTBTI: String? = null,
@@ -8,7 +10,7 @@ data class TeamData(
     val members: List<TeamMember> = emptyList(),
     val teamDestination: String? = null,
     val teamLeader: String? = null,
-    val memberImage: List<Int> = emptyList()
+    val memberImage: List<String> = emptyList()
 )
 
 data class TeamMember(
