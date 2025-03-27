@@ -49,7 +49,7 @@ fun TeamNameInputField (
         textAlign = TextAlign.Center
     )
 
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(modifier = Modifier.height(25.dp))
 
 
     TextField(

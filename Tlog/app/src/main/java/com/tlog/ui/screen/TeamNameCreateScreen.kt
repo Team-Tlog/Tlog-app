@@ -25,7 +25,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tlog.R
 import com.tlog.ui.component.HashtagInputGroup
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.MainInputField
@@ -60,15 +59,24 @@ fun TeamNameCreateScreen(viewModel: TeamNameViewModel = viewModel()) {
             value = viewModel.TeamName.value,
             onValueChange = {
                 viewModel.updateTeamName(it)
-                Log.d("addressValue", viewModel.TeamName.value)
+                Log.d("TeamNameValue", viewModel.TeamName.value)
             },
             placeholderText = "입력해주세요",
 
         )
 
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        // 입력값이 있을 때만 버튼 표시
+        if (viewModel.TeamName.value.isNotEmpty()) {
+            MainButton(
+                text = "팀 생성하기",
+                onClick = { Log.d("Team Create", "my click!!") },
+                modifier = Modifier
+                    .height(70.dp)
+                    .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
+            )
+        }
     }
-
-
-
-
 }
