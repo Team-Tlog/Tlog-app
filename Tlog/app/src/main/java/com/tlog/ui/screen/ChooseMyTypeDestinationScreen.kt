@@ -18,7 +18,6 @@ import com.tlog.ui.component.MainButton
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.ChooseMyTypeViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tlog.viewmodel.ChooseMyTypeViewModel
 
 
 @Preview(showBackground = true)
