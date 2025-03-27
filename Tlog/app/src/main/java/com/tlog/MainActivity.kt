@@ -25,6 +25,7 @@ import com.tlog.ui.screen.TbtiTestScreen
 import com.tlog.ui.screen.UserInfoInputScreen
 import com.tlog.ui.theme.TlogTheme
 import com.tlog.ui.screen.TbtiResultScreen
+import com.tlog.ui.screen.TeamDetailScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +44,9 @@ class MainActivity : ComponentActivity() {
             //ChooseMyTypeDestinationScreen()
             //CartScreen()
             //AiCourseSelectCartScreen()
-            MyTeamListScreen()
+            //MyTeamListScreen()
+            TeamDetailScreen()
+
 
         }
     }
