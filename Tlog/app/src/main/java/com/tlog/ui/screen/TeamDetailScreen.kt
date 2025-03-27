@@ -128,6 +128,22 @@ fun TeamDetailScreen(
             }
         }
 
+        Box(
+            modifier = Modifier
+                .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
+                .align(Alignment.BottomCenter)
+                .windowInsetsPadding(WindowInsets.navigationBars)
+        ) {
+            MainButton(
+                text = "AI 코스 탐색 시작",
+                onClick = {
+                    Log.d("AI Start", "my click!!")
+                },
+                modifier = Modifier
+                    .height(55.dp)
+            )
+        }
+
     }
 }
 

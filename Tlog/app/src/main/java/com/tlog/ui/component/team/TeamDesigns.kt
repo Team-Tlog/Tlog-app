@@ -1,5 +1,6 @@
 package com.tlog.ui.component.team
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -162,7 +163,13 @@ fun DefaultDesign(
                         )
                     )
 
-                    // 팀원 초대
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    AddMemberBox(
+                        {
+                            Log.d("add member", "my click!!")
+                        }
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -187,6 +194,7 @@ fun BigDesign(
                     bottomEnd = 30.dp
                 )
             )
+            .padding(bottom = 20.dp)
     ) {
         TeamTopBar()
 
@@ -223,10 +231,7 @@ fun BigDesign(
                         .fillMaxWidth()
                         .height(32.dp)
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
+                    Column {
                         Row (
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -259,10 +264,18 @@ fun BigDesign(
                             )
                         }
                     }
-                    // 팀원 초대
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    AddMemberBox(
+                        {
+                            Log.d("add member", "my click!!")
+                        }
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                //Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.weight(1f)) // 맨아래 고정시킬지 ? 팀원 목록 아래 띄울지 고민할 것
 
                 TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }

@@ -21,7 +21,7 @@ fun TeamMemberImageGroup(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy((-9).dp) // 살짝 겹쳐 보이게 (6이 맞는거같은데 추후 물어보고 수정)
     ) {
-        memberImageUrls.take(5).forEach { url ->
+        memberImageUrls.take(5).forEach { url -> // 현재 5명 제한 걸어둠 추후 이야기 해볼 것
             Box(//AsyncImage(
                 //model = url,
                 //contentDescription = "팀원 이미지",
