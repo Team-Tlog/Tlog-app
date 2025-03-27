@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.ui.theme.MainFont
 
-@Preview
 @Composable
 fun AddMemberBox(
     onClick: () -> Unit

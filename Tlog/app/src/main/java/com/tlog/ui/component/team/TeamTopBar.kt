@@ -1,6 +1,8 @@
 package com.tlog.ui.component.team
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +43,9 @@ fun TeamTopBar() {
             tint = Color.Unspecified,
             modifier = Modifier
                 .size(40.dp)
+                .clickable {
+                    Log.d("search ic", "my click!!")
+                }
         )
 
         Spacer(modifier = Modifier.width(5.dp))
@@ -51,6 +56,9 @@ fun TeamTopBar() {
             tint = Color.Unspecified,
             modifier = Modifier
                 .size(42.dp)
+                .clickable {
+                    Log.d("notification ic", "my click!!")
+                }
         )
 
     }
