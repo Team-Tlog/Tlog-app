@@ -74,7 +74,7 @@ fun SmallDesign(
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
-                        text = teamData.teamTBTI ?: "없음", // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
+                        text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
                         color = Color.White,
                         fontFamily = MainFont,
                         fontSize = 24.sp,
@@ -95,7 +95,7 @@ fun SmallDesign(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                TravelDateBox(teamData.teamStartDate ?: "", teamData.teamEndDate ?: "")
+                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }
         }
     }
@@ -139,7 +139,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI ?: "없음", // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
+                    text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
                     color = Color.White,
                     fontFamily = MainFont,
                     fontSize = 24.sp,
@@ -167,7 +167,7 @@ fun DefaultDesign(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TravelDateBox(teamData.teamStartDate ?: "", teamData.teamEndDate ?: "")
+                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }
         }
     }
@@ -209,7 +209,7 @@ fun BigDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI ?: "없음", // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
+                    text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
                     color = Color.White,
                     fontFamily = MainFont,
                     fontSize = 24.sp,
@@ -264,7 +264,7 @@ fun BigDesign(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TravelDateBox(teamData.teamStartDate ?: "", teamData.teamEndDate ?: "")
+                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }
         }
     }
