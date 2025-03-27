@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 //import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.TeamData
+import com.tlog.data.model.team.TeamData
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 

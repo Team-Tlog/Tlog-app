@@ -1,6 +1,10 @@
 package com.tlog.ui.screen
 
 import android.util.Log
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
@@ -29,10 +33,22 @@ fun TeamDetailScreen(
     cartViewModel: CartViewModel = viewModel(),
     teamDetailViewModel: TeamDetailViewModel = viewModel()
 ) {
-    var currentState by remember { mutableStateOf(PageState.DEFAULT) }
+    var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
     var dragOffset by remember { mutableStateOf(0f) }
-    val dragThreshold = 100f
+    val dragThreshold = 100f // 드래그 민감도
 
+    val height by animateDpAsState(
+        targetValue = when (sizeState) {
+            PageState.SMALL -> 183.dp
+            PageState.DEFAULT -> 288.dp
+            PageState.BIG -> 368.dp
+        },
+        animationSpec = tween(
+            durationMillis = 500, // 애니매이션 속도
+            easing = LinearOutSlowInEasing // 애니매이션 가속도
+        ),
+        label = "AnimatedHeaderHeight"
+    )
 
     Box(
         modifier = Modifier
@@ -46,79 +62,72 @@ fun TeamDetailScreen(
                 .align(Alignment.TopCenter)
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.systemBars)
-        ) {
-            Box(
+        Column {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .windowInsetsPadding(WindowInsets.systemBars)
-                    .pointerInput(Unit) {
-                        detectDragGestures(
-                            onDragEnd = {
-                                currentState = when {
-                                    dragOffset < -dragThreshold -> {
-                                        // 위로 드래그
-                                        when (currentState) {
-                                            PageState.DEFAULT -> PageState.SMALL
-                                            PageState.BIG -> PageState.DEFAULT
-                                            else -> currentState
-                                        }
-                                    }
-                                    dragOffset > dragThreshold -> {
-                                        // 아래로 드래그
-                                        when (currentState) {
-                                            PageState.SMALL -> PageState.DEFAULT
-                                            PageState.DEFAULT -> PageState.BIG
-                                            else -> currentState
-                                        }
-                                    }
-                                    else -> currentState // 변화 없음
-                                }
-                                dragOffset = 0f
-                            },
-                            onDrag = { change, dragAmount ->
-                                dragOffset += dragAmount.y
-                                change.consume()
-                            }
-                        )
-                    }
+                    .fillMaxSize()
             ) {
-                when (currentState) {
-                    PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
-                    PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
-                    PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(height)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .pointerInput(Unit) {
+                                detectDragGestures(
+                                    onDragEnd = {
+                                        sizeState = when {
+                                            dragOffset < -dragThreshold -> {
+                                                // 위로 드래그
+                                                when (sizeState) {
+                                                    PageState.DEFAULT -> PageState.SMALL
+                                                    PageState.BIG -> PageState.DEFAULT
+                                                    else -> sizeState
+                                                }
+                                            }
+
+                                            dragOffset > dragThreshold -> {
+                                                // 아래로 드래그
+                                                when (sizeState) {
+                                                    PageState.SMALL -> PageState.DEFAULT
+                                                    PageState.DEFAULT -> PageState.BIG
+                                                    else -> sizeState
+                                                }
+                                            }
+
+                                            else -> sizeState // 그대로 유지
+                                        }
+                                        dragOffset = 0f
+                                    },
+                                    onDrag = { change, dragAmount ->
+                                        dragOffset += dragAmount.y
+                                        change.consume()
+                                    }
+                                )
+                            }
+                    ) {
+                        when (sizeState) {
+                            PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
+                        }
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(28.dp))
+
+                TravelList(
+                    travelList = cartViewModel.travelList.value,
+                    setCheckBox = { index, checked ->
+                        cartViewModel.updateChecked(index, checked)
+                    }
+                )
             }
-
-            Spacer(modifier = Modifier.height(28.dp))
-
-            TravelList(
-                travelList = cartViewModel.travelList.value,
-                setCheckBox = { index, checked ->
-                     cartViewModel.updateChecked(index, checked)
-                }
-            )
         }
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.systemBars)
-        ) {
-            MainButton(
-                text = "AI 코스 탐색 시작",
-                onClick = {
-                    Log.d("AI Start", "my click!!")
-                },
-                modifier = Modifier
-                    .height(55.dp)
-            )
-        }
     }
 }
 
