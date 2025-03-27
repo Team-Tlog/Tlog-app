@@ -13,8 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.AddTravelDestinationScreen
+import com.tlog.ui.screen.AiCourseSelectCartScreen
 import com.tlog.ui.screen.CartScreen
 import com.tlog.ui.screen.LoginScreen
+import com.tlog.ui.screen.MyTeamListScreen
 import com.tlog.ui.screen.ReviewWritingScreen
 import com.tlog.ui.screen.SelectReviewWriteScreen
 import com.tlog.ui.screen.TbtiCodeInputScreen
@@ -24,6 +26,7 @@ import com.tlog.ui.screen.UserInfoInputScreen
 import com.tlog.ui.theme.TlogTheme
 import com.tlog.ui.screen.TbtiResultScreen
 import com.tlog.ui.screen.TeamNameCreateScreen
+import com.tlog.ui.screen.TeamDetailScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +44,10 @@ class MainActivity : ComponentActivity() {
             //ReviewWritingScreen()
             //ChooseMyTypeDestinationScreen()
             //CartScreen()
-            TeamNameCreateScreen()
+            //TeamNameCreateScreen()
+            //AiCourseSelectCartScreen()
+            //MyTeamListScreen()
+            TeamDetailScreen()
         }
     }
 }
