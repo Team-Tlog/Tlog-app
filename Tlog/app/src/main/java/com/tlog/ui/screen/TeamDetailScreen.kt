@@ -1,7 +1,6 @@
 package com.tlog.ui.screen
 
 import android.util.Log
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
