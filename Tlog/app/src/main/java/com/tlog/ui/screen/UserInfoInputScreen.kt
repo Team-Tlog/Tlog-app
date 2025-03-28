@@ -2,7 +2,6 @@ package com.tlog.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -11,21 +10,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -33,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tlog.ui.component.DropDownBox
 import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.MainInputField
 import com.tlog.ui.component.TwoColumnRadioGroup
+import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.UserInfoViewModel
 
@@ -44,10 +35,6 @@ import com.tlog.viewmodel.UserInfoViewModel
 @Preview
 @Composable
 fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
-    val scrollState = rememberScrollState()
-
-    var expanded by remember { mutableStateOf(false) }
-
     val genderOptions = listOf("남성", "여성")
     val petOption = listOf("있음", "없음")
     val travelOption = listOf("가족여행", "홀로여행", "우정여행", "커플여행")
@@ -55,18 +42,22 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
     Surface(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(Color.White),
         color = Color.White
     ) {
         Surface (
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = 21.dp)
                 .windowInsetsPadding(WindowInsets.systemBars)
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
+                    .background(Color.White)
+                    .padding(horizontal = 3.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 Text(
                     text = "추가 정보를 입력해주세요",
@@ -75,7 +66,6 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     fontSize = 24.sp,
                     modifier = Modifier
                         .padding(top = 35.dp)
-                        .padding(start = 30.dp)
                 )
 
                 Spacer(modifier = Modifier.height(38.dp))
@@ -96,28 +86,17 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     text = "성별",
                     fontFamily = MainFont,
                     fontWeight = FontWeight.Medium,
-                    fontSize = 15.sp,
-                    modifier = Modifier.padding(start = 24.dp)
+                    fontSize = 15.sp
                 )
 
                 Spacer(modifier = Modifier.height(21.dp))
 
-                DropDownBox(
-                    expanded = expanded,
-                    onExpandedChange = { expanded = !(expanded) },
+                DropDown(
                     options = genderOptions,
                     value = viewModel.gender.value,
-                    onOptionSelected = {
+                    valueChange = {
                         viewModel.updateGender(it)
-                        Log.d("genderOption", viewModel.gender.value)
-                    },
-                    modifier = Modifier
-                        .background(Color.White)
-                        .padding(start = 24.dp)
-                        .width(95.dp)
-                        .shadow(3.dp, shape = RoundedCornerShape(24.dp))
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color.White)
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(21.dp))
@@ -171,8 +150,6 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 MainButton(
                     text = "Tlog 시작하기",
                     onClick = { Log.d("startButton", "my click!!")},
-                    modifier = Modifier
-                        .padding(start = 24.dp, end = 24.dp)
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
