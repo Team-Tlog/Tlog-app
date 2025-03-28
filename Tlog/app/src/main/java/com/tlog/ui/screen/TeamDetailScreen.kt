@@ -37,8 +37,6 @@ fun TeamDetailScreen(
     teamDetailViewModel: TeamDetailViewModel = viewModel()
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
-    var dragOffset by remember { mutableStateOf(0f) }
-    val dragThreshold = 100f // 드래그 민감도
 
     val listState = rememberLazyListState()
 
@@ -94,6 +92,13 @@ fun TeamDetailScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clickable {
+                                when(sizeState) {
+                                    PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
+                                    PageState.DEFAULT -> sizeState = PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.SMALL -> sizeState =  PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                }
+                            }
                     ) {
                         when (sizeState) {
                             PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
