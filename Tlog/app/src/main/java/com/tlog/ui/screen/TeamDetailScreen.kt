@@ -22,9 +22,10 @@ import androidx.compose.ui.Alignment
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
+import com.tlog.ui.component.team.MidiumDesign
 
 
-enum class PageState { SMALL, DEFAULT, BIG }
+enum class PageState { DEFAULT, SMALL, MIDIUM, BIG }
 
 @Preview(showBackground = true)
 @Composable
@@ -53,6 +54,7 @@ fun TeamDetailScreen(
         targetValue = when (sizeState) {
             PageState.SMALL -> 183.dp
             PageState.DEFAULT -> 288.dp
+            PageState.MIDIUM -> 236.dp
             PageState.BIG -> 368.dp
         },
         animationSpec = tween(
@@ -92,7 +94,8 @@ fun TeamDetailScreen(
                                 when(sizeState) {
                                     PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
                                     PageState.DEFAULT -> sizeState = PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                    PageState.SMALL -> sizeState =  PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.SMALL -> sizeState =  PageState.MIDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.MIDIUM -> sizeState = PageState.SMALL
                                 }
                             }
                     ) {
@@ -100,6 +103,7 @@ fun TeamDetailScreen(
                             PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
                             PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
                             PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.MIDIUM -> MidiumDesign(teamData = teamDetailViewModel.teamData)
                         }
                     }
                 }
