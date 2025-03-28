@@ -1,14 +1,11 @@
 package com.tlog.ui.screen
 
-import android.graphics.pdf.PdfDocument.Page
 import android.util.Log
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
@@ -22,7 +19,6 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.CartViewModel
 import com.tlog.viewmodel.TeamDetailViewModel
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.pointer.pointerInput
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
