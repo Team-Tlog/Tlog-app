@@ -1,13 +1,16 @@
 package com.tlog.ui.screen
 
+import android.graphics.pdf.PdfDocument.Page
 import android.util.Log
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,6 +39,21 @@ fun TeamDetailScreen(
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
     var dragOffset by remember { mutableStateOf(0f) }
     val dragThreshold = 100f // 드래그 민감도
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+        }
+            .collect { (index, offset) ->
+                sizeState = when {
+                    index == 0 && offset == 0 -> PageState.DEFAULT
+                    index != 0 -> PageState.SMALL
+                    else -> sizeState
+                }
+            }
+    }
 
     val height by animateDpAsState(
         targetValue = when (sizeState) {
@@ -76,38 +94,6 @@ fun TeamDetailScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .pointerInput(Unit) {
-                                detectDragGestures(
-                                    onDragEnd = {
-                                        sizeState = when {
-                                            dragOffset < -dragThreshold -> {
-                                                // 위로 드래그
-                                                when (sizeState) {
-                                                    PageState.DEFAULT -> PageState.SMALL
-                                                    PageState.BIG -> PageState.DEFAULT
-                                                    else -> sizeState
-                                                }
-                                            }
-
-                                            dragOffset > dragThreshold -> {
-                                                // 아래로 드래그
-                                                when (sizeState) {
-                                                    PageState.SMALL -> PageState.DEFAULT
-                                                    PageState.DEFAULT -> PageState.BIG
-                                                    else -> sizeState
-                                                }
-                                            }
-
-                                            else -> sizeState // 그대로 유지
-                                        }
-                                        dragOffset = 0f
-                                    },
-                                    onDrag = { change, dragAmount ->
-                                        dragOffset += dragAmount.y
-                                        change.consume()
-                                    }
-                                )
-                            }
                     ) {
                         when (sizeState) {
                             PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
@@ -123,7 +109,8 @@ fun TeamDetailScreen(
                     travelList = cartViewModel.travelList.value,
                     setCheckBox = { index, checked ->
                         cartViewModel.updateChecked(index, checked)
-                    }
+                    },
+                    listState = listState
                 )
             }
         }
