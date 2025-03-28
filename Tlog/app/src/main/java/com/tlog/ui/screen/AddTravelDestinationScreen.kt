@@ -45,6 +45,7 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(scrollState)
+            .padding(horizontal =  24.dp)
             .windowInsetsPadding(WindowInsets.systemBars)
 
     ) {

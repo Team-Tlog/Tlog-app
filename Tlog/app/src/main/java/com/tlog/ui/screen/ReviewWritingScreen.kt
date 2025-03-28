@@ -50,6 +50,7 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState)
         ) {
             TopBar(
