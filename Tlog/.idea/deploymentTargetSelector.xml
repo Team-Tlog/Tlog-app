@@ -13,9 +13,9 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="TeamNameCreateScreen">
+      <SelectionState runConfigName="LoadingScreen">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-03-27T16:31:40.140287500Z">
+        <DropdownSelection timestamp="2025-03-27T17:22:34.994982800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\PC\.android\avd\Pixel_2_API_35.avd" />
