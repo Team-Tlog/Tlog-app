@@ -1,6 +1,7 @@
 package com.tlog.ui.screen
 
 import android.util.Log
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,9 +27,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.data.local.RegionData
 import com.tlog.ui.component.TwoColumnRadioGroup
+import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.CourseInputViewModel
+import java.time.LocalDate
 
 
 @Preview
@@ -37,6 +42,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             .fillMaxSize()
             .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
+            .verticalScroll(rememberScrollState())
     ) {
         Column(
             modifier = Modifier
@@ -100,6 +106,18 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
                     viewModel.updateCar(if (it == "있음") true else false)
                 }
             )
+
+            Text(
+                text = "여행일정",
+                fontFamily = MainFont,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+
+            Calendar(LocalDate.now())
         }
     }
 }
