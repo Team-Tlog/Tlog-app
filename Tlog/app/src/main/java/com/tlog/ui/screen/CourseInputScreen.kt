@@ -117,7 +117,10 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            Calendar(LocalDate.now())
+            Calendar(
+                today = LocalDate.now(),
+                viewModel = viewModel
+            )
         }
     }
 }
