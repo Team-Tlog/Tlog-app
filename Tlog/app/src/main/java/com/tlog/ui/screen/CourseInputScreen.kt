@@ -97,11 +97,12 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
 
                 // 시군구 필드
                 DropDownCheckBox(
+                    city = viewModel.city.value,
                     options = RegionData.regionMap[viewModel.city.value] ?: emptyList(),
                     value = viewModel.district.value,
                     checkedSet = viewModel.checkedDistrict.value,
                     onClick = {
-                        if (it in viewModel.checkedDistrict.value)
+                        if (it in viewModel.city.value + viewModel.checkedDistrict.value)
                             viewModel.deleteCheckedDistrict(it)
                         else
                             viewModel.updateCheckedDistrict(it)

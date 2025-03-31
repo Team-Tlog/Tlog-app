@@ -35,6 +35,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun DropDownCheckBox(
+    city: String,
     options: List<String>,
     value: String,
     checkedSet: Set<String>,
@@ -84,13 +85,13 @@ fun DropDownCheckBox(
                         .padding(horizontal = 16.dp),
                 ) {
                     options.forEachIndexed { index, item ->
-                        val checked = item in checkedSet
+                        val checked = city + item in checkedSet
 
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onClick(item)
+                                    onClick(city + item)
                                     //expanded = false
                                 }
                         ) {
