@@ -34,7 +34,8 @@ fun TravelItem(
     travelDescription: String,
     hashTags: List<String>,
     checked: Boolean = false,
-    setCheckBox: (Int, Boolean) -> Unit
+    setCheckBox: (Int, Boolean) -> Unit,
+    showCheckbox: Boolean = true
 ) {
     Row(
         modifier = Modifier
@@ -57,7 +58,7 @@ fun TravelItem(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-               text = travelName,
+                text = travelName,
                 fontFamily = MainFont,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
@@ -81,21 +82,26 @@ fun TravelItem(
         Spacer(modifier = Modifier.width(25.dp))
 
         IconButton(
-            onClick = {setCheckBox(index, !checked)},
+            onClick = { setCheckBox(index, !checked) },
             modifier = Modifier.fillMaxHeight()
         ) {
-            Icon(
-                painter =
-                if (checked)
-                    painterResource(R.drawable.ic_checkbox_checked)
-                else
-                    painterResource(R.drawable.ic_checkbox_unchecked),
-                contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
-                tint = Color.Unspecified
-            )
-
+            if (showCheckbox) {
+                Spacer(modifier = Modifier.width(25.dp))
+                IconButton(
+                    onClick = { setCheckBox(index, !checked) },
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    Icon(
+                        painter =
+                            if (checked)
+                                painterResource(R.drawable.ic_checkbox_checked)
+                            else
+                                painterResource(R.drawable.ic_checkbox_unchecked),
+                        contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
+                        tint = Color.Unspecified
+                    )
+                }
+            }
         }
-
-
     }
 }

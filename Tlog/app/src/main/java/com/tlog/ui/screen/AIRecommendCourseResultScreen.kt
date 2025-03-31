@@ -32,7 +32,9 @@ fun AIRecommendCourseResultScreen(
     // 도시별로 묶기
     val cityGrouped = travelList.groupBy { it.travelData.cityName }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.systemBars)) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -76,61 +78,69 @@ fun AIRecommendCourseResultScreen(
 
             cityGrouped.forEach { (city, list) ->
                 item {
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        // 세로선
-                        Column(
-                            modifier = Modifier
-                                .padding(start = 25.dp)
-                                .width(1.dp)
-                                .fillMaxHeight()
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(start = 15.dp, bottom = 4.dp, top = 12.dp)
                         ) {
-                            Spacer(modifier = Modifier.height(18.dp))
-                            Box(
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_destination),
+                                contentDescription = "지역 아이콘",
+                                tint = MainColor,
                                 modifier = Modifier
-                                    .fillMaxHeight()
-                                    .width(1.dp)
-                                    .background(Color.LightGray)
+                                    .size(width = 18.dp, height = 22.dp)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = city,
+                                fontSize = 15.sp,
+                                fontWeight = FontWeight.Bold
                             )
                         }
 
-                        // 콘텐츠
-                        Column(modifier = Modifier.weight(1f)) {
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.padding(start = 15.dp, bottom = 4.dp, top = 12.dp)
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_destination),
-                                    contentDescription = "지역 아이콘",
-                                    tint = MainColor,
-                                    modifier = Modifier
-                                        .size(width = 18.dp, height = 22.dp)
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                Text(
-                                    text = city,
-                                    fontSize = 15.sp,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
+                        Spacer(modifier = Modifier.height(6.dp))
 
-                            Spacer(modifier = Modifier.height(6.dp))
+                        Row(modifier = Modifier.padding(start = 24.dp)) {
+                            val totalHeight = list.size * 125
 
-                            Column(modifier = Modifier.padding(start = 37.dp)) {
+                            Box(
+                                modifier = Modifier
+                                    .width(1.dp)
+                                    .height(totalHeight.dp)
+                                    .background(Color.LightGray)
+                            )
+
+                            Spacer(modifier = Modifier.width(12.dp))
+
+                            Column {
                                 list.forEachIndexed { index, item ->
-                                    TravelItem(
-                                        index = index,
-                                        travelName = item.travelData.travelName,
-                                        travelDescription = item.travelData.description,
-                                        hashTags = item.travelData.hashTags,
-                                        checked = item.checked,
-                                        setCheckBox = { _, checked ->
-                                            val realIndex = travelList.indexOf(item)
-                                            if (realIndex != -1) {
-                                                viewModel.updateChecked(realIndex, checked)
-                                            }
+                                    Box(modifier = Modifier.fillMaxWidth()) {
+                                        TravelItem(
+                                            index = index,
+                                            travelName = item.travelData.travelName,
+                                            travelDescription = item.travelData.description,
+                                            hashTags = item.travelData.hashTags,
+                                            checked = item.checked,
+                                            setCheckBox = { i, checked ->
+                                                viewModel.updateChecked(i, checked)
+                                            },
+                                            showCheckbox = false // 체크박스 숨김
+                                        )
+                                        IconButton(
+                                            onClick = {
+                                                /* 여행지 삭제*/
+                                            },
+                                            modifier = Modifier
+                                                .align(Alignment.CenterEnd)
+                                                .padding(end = 20.dp)
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(id = R.drawable.ic_delete),
+                                                contentDescription = "삭제 아이콘",
+                                                tint = Color.Unspecified
+                                            )
                                         }
-                                    )
+                                    }
                                     Spacer(modifier = Modifier.height(24.dp))
                                 }
                             }
@@ -140,12 +150,20 @@ fun AIRecommendCourseResultScreen(
             }
         }
 
-        MainButton(
-            text = "저장하기",
-            onClick = { /* 저장 처리 */ },
+        Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp)
-        )
+                .fillMaxWidth()
+                .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
+        ) {
+            MainButton(
+                text = "저장하기",
+                onClick = { /* 저장 로직 처리*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(55.dp)
+            )
+        }
+
     }
 }
