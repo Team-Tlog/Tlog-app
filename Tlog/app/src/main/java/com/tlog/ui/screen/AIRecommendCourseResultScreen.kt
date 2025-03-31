@@ -28,15 +28,16 @@ fun AIRecommendCourseResultScreen(
     viewModel: CartViewModel = viewModel()
 ) {
     val travelList by viewModel.travelList
-
     var selectedDay by remember { mutableStateOf(1) }
 
     // 도시별로 묶기
     val cityGrouped = travelList.groupBy { it.travelData.cityName }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.systemBars)) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -77,7 +78,7 @@ fun AIRecommendCourseResultScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            cityGrouped.forEach { (city, list) ->
+            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
                 item {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -141,6 +142,10 @@ fun AIRecommendCourseResultScreen(
                                                 tint = Color.Unspecified
                                             )
                                         }
+
+                                        if (cityIndex == cityGrouped.toList().lastIndex && index == list.lastIndex)
+                                            Spacer(modifier = Modifier.height(145.dp))
+
                                     }
                                     Spacer(modifier = Modifier.height(24.dp))
                                 }
@@ -165,6 +170,5 @@ fun AIRecommendCourseResultScreen(
                     .height(55.dp)
             )
         }
-
     }
 }
