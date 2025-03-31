@@ -29,6 +29,8 @@ fun AIRecommendCourseResultScreen(
 ) {
     val travelList by viewModel.travelList
 
+    var selectedDay by remember { mutableStateOf(1) }
+
     // 도시별로 묶기
     val cityGrouped = travelList.groupBy { it.travelData.cityName }
 
@@ -37,8 +39,7 @@ fun AIRecommendCourseResultScreen(
         .windowInsetsPadding(WindowInsets.systemBars)) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 80.dp),
+                .fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
@@ -59,8 +60,8 @@ fun AIRecommendCourseResultScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     DayToggleBar(
-                        selectedDay = 1,
-                        onDaySelected = {}
+                        selectedDay = selectedDay,
+                        onDaySelected = { selectedDay = it }
                     )
                 }
 
