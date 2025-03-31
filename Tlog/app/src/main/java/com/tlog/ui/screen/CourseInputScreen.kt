@@ -1,13 +1,15 @@
 package com.tlog.ui.screen
 
 import android.util.Log
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -21,17 +23,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.data.local.RegionData
+import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.TwoColumnRadioGroup
 import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
+import com.tlog.ui.component.travel.DayTravelCounter
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.CourseInputViewModel
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 
 @Preview
@@ -116,11 +122,76 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
             Calendar(
                 today = LocalDate.now(),
                 viewModel = viewModel
             )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Text(
+                text = "방문 여행지 개수 설정",
+                fontFamily = MainFont,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+
+            val travelDates = viewModel.getTravelDates()
+
+            Column (
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                travelDates.forEach { day ->
+                    DayTravelCounter(
+                        idx = ChronoUnit.DAYS.between(
+                            viewModel.startDate.value,
+                            day
+                        ).toInt() + 1,
+                        travelCnt = viewModel.travelCountByDate.value[day] ?: 0,
+                        minusClick = {date, count -> viewModel.updatePlaceCount(date, count)},
+                        plusClick = {date, count -> viewModel.updatePlaceCount(date, count)},
+                        date = day
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(69.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "추후 변경이 가능합니다.",
+                fontFamily = MainFont,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color(0xFFA8A8A8),
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(85.dp)
+                    .padding(horizontal = 24.dp, vertical = 15.dp)
+            ) {
+                MainButton(
+                    text = "다음",
+                    onClick = {
+                        Log.d("course next button", "my click!!")
+                    },
+                    modifier = Modifier
+                        .height(55.dp)
+                )
+            }
+
         }
     }
 }

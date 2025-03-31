@@ -21,6 +21,14 @@ class CourseInputViewModel: ViewModel() {
     private val _endDate = mutableStateOf<LocalDate?>(null)
     val endDate: State<LocalDate?> = _endDate
 
+    private val _travelCountByDate = mutableStateOf<Map<LocalDate, Int>>(emptyMap())
+    val travelCountByDate: State<Map<LocalDate, Int>> = _travelCountByDate
+
+
+
+
+
+
     fun updateCity(newCity: String) {
         _city.value = newCity
     }
@@ -46,8 +54,20 @@ class CourseInputViewModel: ViewModel() {
         }
     }
 
-    fun clearDateRange() {
-        _startDate.value = null
-        _endDate.value = null
+    fun getTravelDates(): List<LocalDate> {
+        val start = startDate.value
+        val end = endDate.value
+
+        return if (start != null && end != null) {
+            generateSequence(start) { it.plusDays(1) }
+                .takeWhile { !it.isAfter(end) }
+                .toList()
+        } else emptyList()
+    }
+
+    fun updatePlaceCount(date: LocalDate, count: Int) {
+        _travelCountByDate.value = _travelCountByDate.value.toMutableMap().apply {
+            this[date] = count
+        }
     }
 }
