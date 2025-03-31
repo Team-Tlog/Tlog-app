@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.Text
@@ -30,7 +31,7 @@ fun TwoColumnRadioGroup(
         fontFamily = MainFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
-        modifier = Modifier.padding(start = 24.dp)
+        //modifier = Modifier.padding(start = 24.dp)
     )
 
     Spacer(modifier = Modifier.height(24.dp))
@@ -64,6 +65,8 @@ fun TwoColumnRadioGroup(
                             fontFamily = MainFont,
                             modifier = Modifier.padding(start = 10.dp)
                         )
+
+                        Spacer(modifier = Modifier.width(30.dp))
                     }
                 }
             }

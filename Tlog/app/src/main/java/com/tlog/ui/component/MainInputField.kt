@@ -34,7 +34,6 @@ fun MainInputField (
 ) {
     val defaultModifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 24.dp)
         .shadow(3.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
         .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
         .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
@@ -44,7 +43,6 @@ fun MainInputField (
         fontFamily = MainFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
-        modifier = Modifier.padding(start = 24.dp)
     )
 
     Spacer(modifier = Modifier.height(24.dp))
