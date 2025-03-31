@@ -36,6 +36,7 @@ class MainActivity : ComponentActivity() {
             //CourseInputScreen()
             //AiRecommendCourseResultScreen()
             //MyTravelingCourseScreen(navController)
+            //TeamTravelingCourseScreen(navController)
         }
     }
 }

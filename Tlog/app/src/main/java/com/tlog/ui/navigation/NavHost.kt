@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
+import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 
 @Composable
 fun NavHost(navController: NavHostController) {
@@ -15,7 +16,7 @@ fun NavHost(navController: NavHostController) {
         }
         composable("course") {
             //TeamTravelingCourse는 어떻게?
-            MyTravelingCourseScreen(navController)
+            TeamTravelingCourseScreen(navController)
         }
         composable("sns") {
             // 장바구니?화면으로 수정해야함

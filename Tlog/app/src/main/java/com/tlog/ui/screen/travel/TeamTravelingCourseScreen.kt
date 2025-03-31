@@ -10,6 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.team.TeamDetailViewModel
+import com.tlog.ui.component.team.TeamMemberImageGroup
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.tooling.preview.Preview
@@ -18,13 +20,17 @@ import androidx.compose.material3.Text
 import com.tlog.ui.style.Body1Bold
 
 @Composable
-fun MyTravelingCourseScreen(
+fun TeamTravelingCourseScreen(
     navController: NavController,
-    viewModel: CartViewModel = viewModel()
+    viewModel: CartViewModel = viewModel(),
+    teamViewModel: TeamDetailViewModel = viewModel()
 ) {
     val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
-    var selectedTab by remember { mutableStateOf(0) } // course 인덱스는 1
+    var selectedTab by remember { mutableStateOf(1) }
+
+    val teamMembers = teamViewModel.teamData.members
+    val memberImageUrls = teamMembers.map { it.imageUrl }
 
     val cityGrouped = travelList.groupBy { it.travelData.cityName }
 
@@ -36,7 +42,7 @@ fun MyTravelingCourseScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = 60.dp) // BottomBar 높이만큼 여백 줌
+                .padding(bottom = 60.dp) // BottomBar 높이만큼 여백
                 .padding(horizontal = 12.dp)
         ) {
             item {
@@ -53,6 +59,18 @@ fun MyTravelingCourseScreen(
                     )
                 }
             }
+
+            // 팀원 이미지
+            item {
+                Spacer(modifier = Modifier.height(13.dp))
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    TeamMemberImageGroup(memberImageUrls = memberImageUrls)
+                }
+            }
+
             item {
                 Spacer(modifier = Modifier.height(24.dp))
                 Box(
@@ -104,7 +122,7 @@ fun MyTravelingCourseScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewMyTravelingCourseScreen() {
+fun PreviewTeamTravelingCourseScreen() {
     val dummyNavController = rememberNavController()
-    MyTravelingCourseScreen(navController = dummyNavController)
+    TeamTravelingCourseScreen(navController = dummyNavController)
 }
