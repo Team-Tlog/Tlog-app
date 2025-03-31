@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -33,6 +34,7 @@ import com.tlog.ui.component.MainButton
 import com.tlog.ui.component.TwoColumnRadioGroup
 import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
+import com.tlog.ui.component.share.DropDownCheckBox
 import com.tlog.ui.component.travel.DayTravelCounter
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.CourseInputViewModel
@@ -78,19 +80,36 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            Row {
+            Row (
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
                 DropDown(
                     options = RegionData.regionMap.keys.toList(),
                     value = viewModel.city.value,
                     valueChange = {
                         viewModel.updateCity(it)
                         Log.d("city", it)
-                    }
+                    },
+                    modifier = Modifier
+                        .width(86.dp)
+                        .heightIn(max = 185.dp)
                 )
 
-                Spacer(modifier = Modifier.width(24.dp))
-
                 // 시군구 필드
+                DropDownCheckBox(
+                    options = RegionData.regionMap[viewModel.city.value] ?: emptyList(),
+                    value = viewModel.district.value,
+                    checkedSet = viewModel.checkedDistrict.value,
+                    onClick = {
+                        if (it in viewModel.checkedDistrict.value)
+                            viewModel.deleteCheckedDistrict(it)
+                        else
+                            viewModel.updateCheckedDistrict(it)
+                    },
+                    modifier = Modifier
+                        .width(202.dp)
+                        .heightIn(max = 285.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(30.dp))

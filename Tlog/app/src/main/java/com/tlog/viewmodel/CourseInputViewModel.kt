@@ -9,6 +9,12 @@ class CourseInputViewModel: ViewModel() {
     private val _city = mutableStateOf("지역")
     val city: State<String> = _city
 
+    private val _district = mutableStateOf("지역을 선택해주세요")
+    val district: State<String> = _district
+
+    private val _checkedDistrict = mutableStateOf<Set<String>>(emptySet())
+    val checkedDistrict: State<Set<String>> = _checkedDistrict
+
     private val _hasPet = mutableStateOf(false)
     val hasPet: State<Boolean> = _hasPet
 
@@ -27,7 +33,13 @@ class CourseInputViewModel: ViewModel() {
 
 
 
+    fun updateCheckedDistrict(district: String) {
+        _checkedDistrict.value = _checkedDistrict.value + district
+    }
 
+    fun deleteCheckedDistrict(district: String) {
+        _checkedDistrict.value = _checkedDistrict.value - district
+    }
 
     fun updateCity(newCity: String) {
         _city.value = newCity

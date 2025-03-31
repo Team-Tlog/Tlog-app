@@ -6,12 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -38,19 +34,20 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun DropDown(
+fun DropDownCheckBox(
     options: List<String>,
     value: String,
-    valueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    checkedSet: Set<String>,
+    onClick: (String) -> Unit,
+    modifier: Modifier
 ) {
+    var expanded by remember { mutableStateOf(false) }
+
     val defaultModifier = Modifier
         .shadow(3.dp, shape = RoundedCornerShape(20.dp))
-        .clip(RoundedCornerShape(20))
+        .shadow(if (expanded) 1.dp else 3.dp, shape = RoundedCornerShape(20.dp))
         .background(Color.White)
 
-
-    var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = defaultModifier.then(modifier)
@@ -71,14 +68,6 @@ fun DropDown(
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Thin
                 )
-
-                Spacer(modifier = Modifier.width(10.dp))
-
-                Icon(
-                    painter = painterResource (if(expanded) R.drawable.ic_top_arrow else R.drawable.ic_bottom_arrow),
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
             }
 
             // 드롭다운 펼쳐졌을 때
@@ -91,29 +80,50 @@ fun DropDown(
                 )
                 Column(
                     modifier = Modifier
-                        //.heightIn(max = 150.dp)
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp)
+                        .padding(horizontal = 16.dp),
                 ) {
                     options.forEachIndexed { index, item ->
+                        val checked = item in checkedSet
+
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    valueChange(item)
-                                    expanded = false
-                                },
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                    onClick(item)
+                                    //expanded = false
+                                }
                         ) {
-                            Text(
-                                text = item,
-                                fontFamily = MainFont,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Thin,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier
-                                    .padding(horizontal = 15.dp, vertical = 10.dp)
-                            )
+                            Row {
+                                Text(
+                                    text = item,
+                                    fontFamily = MainFont,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Thin,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier
+                                        .padding(horizontal = 15.dp, vertical = 10.dp)
+                                )
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(top = 10.dp, bottom = 10.dp, end = 10.dp)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(
+                                            if (checked)
+                                                R.drawable.ic_checkbox_checked
+                                            else
+                                                R.drawable.ic_checkbox_unchecked
+                                        ),
+                                        contentDescription = "$item" + if (checked) "체크해제하기" else "체크하기",
+                                        tint = Color.Unspecified,
+                                        modifier = Modifier
+                                            .align(Alignment.CenterEnd)
+                                    )
+                                }
+                            }
                             if (index < options.lastIndex) {
                                 Divider(
                                     color = Color(0xFFE8E8E8),
