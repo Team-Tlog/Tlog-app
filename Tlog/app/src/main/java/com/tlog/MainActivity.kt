@@ -4,31 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.tlog.ui.screen.AIRecommendCourseResultScreen
-import com.tlog.ui.screen.ChooseMyTypeDestinationScreen
-import com.tlog.ui.screen.AddTravelDestinationScreen
-import com.tlog.ui.screen.AiCourseSelectCartScreen
-import com.tlog.ui.screen.CartScreen
-import com.tlog.ui.screen.CourseInputScreen
-import com.tlog.ui.screen.LoginScreen
-import com.tlog.ui.screen.MyTeamListScreen
-import com.tlog.ui.screen.ReviewWritingScreen
-import com.tlog.ui.screen.SelectReviewWriteScreen
-import com.tlog.ui.screen.TbtiCodeInputScreen
-import com.tlog.ui.screen.TbtiIntroScreen
-import com.tlog.ui.screen.TbtiTestScreen
-import com.tlog.ui.screen.UserInfoInputScreen
-import com.tlog.ui.theme.TlogTheme
-import com.tlog.ui.screen.TbtiResultScreen
-import com.tlog.ui.screen.TeamNameCreateScreen
-import com.tlog.ui.screen.TeamDetailScreen
+import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +27,7 @@ class MainActivity : ComponentActivity() {
             //MyTeamListScreen()
             //TeamDetailScreen()
             //CourseInputScreen()
-            AIRecommendCourseResultScreen()
+            AiRecommendCourseResultScreen()
         }
     }
 }

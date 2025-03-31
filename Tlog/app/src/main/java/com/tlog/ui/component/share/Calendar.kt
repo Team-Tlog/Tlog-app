@@ -27,10 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.CourseInputViewModel
+import com.tlog.viewmodel.travel.CourseInputViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 
