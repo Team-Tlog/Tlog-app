@@ -5,5 +5,6 @@ package com.tlog.data.model
 data class TravelData(
     val travelName: String,
     val description: String,
-    val hashTags: List<String>
+    val hashTags: List<String>,
+    val cityName: String
 )
