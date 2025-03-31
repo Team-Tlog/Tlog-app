@@ -37,8 +37,8 @@ fun AIRecommendCourseResultScreen(
         .windowInsetsPadding(WindowInsets.systemBars)) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 80.dp),
+                .fillMaxSize(),
+                //.padding(bottom = 80.dp),
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
@@ -76,7 +76,7 @@ fun AIRecommendCourseResultScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            cityGrouped.forEach { (city, list) ->
+            cityGrouped.toList().forEachIndexed{ cityIndex, (city, list) ->
                 item {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
@@ -140,6 +140,10 @@ fun AIRecommendCourseResultScreen(
                                                 tint = Color.Unspecified
                                             )
                                         }
+
+                                        if (cityIndex == cityGrouped.toList().lastIndex && index == list.lastIndex)
+                                            Spacer(modifier = Modifier.height(145.dp))
+
                                     }
                                     Spacer(modifier = Modifier.height(24.dp))
                                 }
