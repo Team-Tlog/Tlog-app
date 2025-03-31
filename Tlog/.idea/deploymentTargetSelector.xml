@@ -13,6 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+
       <SelectionState runConfigName="LoadingScreen">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2025-03-27T17:22:34.994982800Z">
