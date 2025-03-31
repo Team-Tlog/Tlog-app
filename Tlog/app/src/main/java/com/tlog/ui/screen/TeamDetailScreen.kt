@@ -1,13 +1,13 @@
 package com.tlog.ui.screen
 
 import android.util.Log
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,13 +19,13 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.CartViewModel
 import com.tlog.viewmodel.TeamDetailViewModel
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.input.pointer.pointerInput
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
+import com.tlog.ui.component.team.MidiumDesign
 
 
-enum class PageState { SMALL, DEFAULT, BIG }
+enum class PageState { DEFAULT, SMALL, MIDIUM, BIG }
 
 @Preview(showBackground = true)
 @Composable
@@ -34,13 +34,27 @@ fun TeamDetailScreen(
     teamDetailViewModel: TeamDetailViewModel = viewModel()
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
-    var dragOffset by remember { mutableStateOf(0f) }
-    val dragThreshold = 100f // 드래그 민감도
+
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+        }
+            .collect { (index, offset) ->
+                sizeState = when {
+                    index == 0 && offset == 0 -> PageState.DEFAULT
+                    index != 0 -> PageState.SMALL
+                    else -> sizeState
+                }
+            }
+    }
 
     val height by animateDpAsState(
         targetValue = when (sizeState) {
             PageState.SMALL -> 183.dp
             PageState.DEFAULT -> 288.dp
+            PageState.MIDIUM -> 236.dp
             PageState.BIG -> 368.dp
         },
         animationSpec = tween(
@@ -76,43 +90,20 @@ fun TeamDetailScreen(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .pointerInput(Unit) {
-                                detectDragGestures(
-                                    onDragEnd = {
-                                        sizeState = when {
-                                            dragOffset < -dragThreshold -> {
-                                                // 위로 드래그
-                                                when (sizeState) {
-                                                    PageState.DEFAULT -> PageState.SMALL
-                                                    PageState.BIG -> PageState.DEFAULT
-                                                    else -> sizeState
-                                                }
-                                            }
-
-                                            dragOffset > dragThreshold -> {
-                                                // 아래로 드래그
-                                                when (sizeState) {
-                                                    PageState.SMALL -> PageState.DEFAULT
-                                                    PageState.DEFAULT -> PageState.BIG
-                                                    else -> sizeState
-                                                }
-                                            }
-
-                                            else -> sizeState // 그대로 유지
-                                        }
-                                        dragOffset = 0f
-                                    },
-                                    onDrag = { change, dragAmount ->
-                                        dragOffset += dragAmount.y
-                                        change.consume()
-                                    }
-                                )
+                            .clickable {
+                                when(sizeState) {
+                                    PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
+                                    PageState.DEFAULT -> sizeState = PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.SMALL -> sizeState =  PageState.MIDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.MIDIUM -> sizeState = PageState.SMALL
+                                }
                             }
                     ) {
                         when (sizeState) {
                             PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
                             PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
                             PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.MIDIUM -> MidiumDesign(teamData = teamDetailViewModel.teamData)
                         }
                     }
                 }
@@ -123,7 +114,8 @@ fun TeamDetailScreen(
                     travelList = cartViewModel.travelList.value,
                     setCheckBox = { index, checked ->
                         cartViewModel.updateChecked(index, checked)
-                    }
+                    },
+                    listState = listState
                 )
             }
         }

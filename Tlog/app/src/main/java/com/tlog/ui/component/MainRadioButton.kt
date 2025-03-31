@@ -25,7 +25,7 @@ fun MainRadioButton(
 ) {
     Box(
         modifier = Modifier
-            .padding(start = 24.dp)
+            //.padding(start = 24.dp)
             .size(24.dp)
             .shadow(3.dp, shape = RoundedCornerShape(24.dp))
             .clip(RoundedCornerShape(24.dp))
@@ -43,5 +43,4 @@ fun MainRadioButton(
             )
         }
     }
-
 }

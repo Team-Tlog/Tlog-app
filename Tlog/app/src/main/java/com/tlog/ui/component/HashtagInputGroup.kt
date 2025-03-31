@@ -48,7 +48,6 @@ fun HashtagInputGroup(
 ) {
     val defaultModifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 24.dp)
         .shadow(3.dp, shape = RoundedCornerShape(24.dp))
         .clip(RoundedCornerShape(24.dp))
         .background(Color.White)
@@ -58,13 +57,11 @@ fun HashtagInputGroup(
         fontFamily = MainFont,
         fontWeight = FontWeight.Medium,
         fontSize = 15.sp,
-        modifier = Modifier.padding(start = 24.dp)
     )
 
     Spacer(modifier = Modifier.height(10.dp))
 
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 24.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(hashTags) { tag ->

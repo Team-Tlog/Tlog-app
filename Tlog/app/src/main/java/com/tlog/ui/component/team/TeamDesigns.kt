@@ -60,9 +60,7 @@ fun SmallDesign(
                     .align(Alignment.CenterStart),
             ){
                 Row(
-
                     verticalAlignment = Alignment.CenterVertically
-
                 ) {
                     Text(
                         text = teamData.teamName,
@@ -148,6 +146,87 @@ fun DefaultDesign(
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                ) {
+                    TeamMemberImageGroup(
+                        memberImageUrls = listOf(
+                            "",
+                            "",
+                            "",
+                            ""
+                        )
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    AddMemberBox(
+                        {
+                            Log.d("add member", "my click!!")
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+            }
+        }
+    }
+}
+
+//236
+@Composable
+fun MidiumDesign(
+    teamData: TeamData
+) {
+    Column(
+        modifier = Modifier
+            .height(236.dp)
+            .background(
+                color = MainColor,
+                shape = RoundedCornerShape(
+                    bottomStart = 30.dp,
+                    bottomEnd = 30.dp
+                )
+            )
+    ) {
+        TeamTopBar()
+
+        Spacer(modifier = Modifier.height(9.dp))
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        ) {
+            Column {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = teamData.teamName,
+                        color = Color.White,
+                        fontFamily = MainFont,
+                        fontSize = 30.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+
+                    Spacer(modifier = Modifier.width(10.dp))
+
+                    Text(
+                        text = teamData.teamTBTI,
+                        color = Color.White,
+                        fontFamily = MainFont,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(30.dp))
 
                 Row(
                     modifier = Modifier

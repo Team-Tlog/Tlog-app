@@ -61,5 +61,18 @@ fun TeamTopBar() {
                 }
         )
 
+        Spacer(modifier = Modifier.width(5.dp))
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_chat),
+            contentDescription = "팀 채팅",
+            tint = Color.Unspecified,
+            modifier = Modifier
+                .size(42.dp)
+                .clickable {
+                    Log.d("chat ic", "my click!!")
+                }
+        )
+
     }
 }
