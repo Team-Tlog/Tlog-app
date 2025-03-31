@@ -60,7 +60,7 @@ fun DayTravelCounter(
         Icon(
             painter = painterResource(R.drawable.ic_minus),
             contentDescription = "Day $idx 여행지 빼기 버튼",
-            tint = Color.Transparent,
+            tint = Color.Unspecified,
             modifier = Modifier
                 .size(20.dp)
                 .clickable { minusClick(date, if (travelCnt != 0) travelCnt - 1 else 0) }
@@ -80,7 +80,7 @@ fun DayTravelCounter(
         Icon(
             painter = painterResource(R.drawable.ic_plus),
             contentDescription = "Day $idx 여행지 추가하기 버튼",
-            tint = Color.Transparent,
+            tint = Color.Unspecified,
             modifier = Modifier
                 .size(20.dp)
                 .clickable { plusClick(date, travelCnt + 1) }
