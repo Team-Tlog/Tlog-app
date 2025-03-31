@@ -1,14 +1,15 @@
 package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -36,7 +37,7 @@ fun DayTravelCounter(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = "DAY $idx",
@@ -61,6 +62,7 @@ fun DayTravelCounter(
             contentDescription = "Day $idx 여행지 빼기 버튼",
             tint = Color.Transparent,
             modifier = Modifier
+                .size(20.dp)
                 .clickable { minusClick(date, if (travelCnt != 0) travelCnt - 1 else 0) }
         )
 
@@ -80,6 +82,7 @@ fun DayTravelCounter(
             contentDescription = "Day $idx 여행지 추가하기 버튼",
             tint = Color.Transparent,
             modifier = Modifier
+                .size(20.dp)
                 .clickable { plusClick(date, travelCnt + 1) }
         )
     }
