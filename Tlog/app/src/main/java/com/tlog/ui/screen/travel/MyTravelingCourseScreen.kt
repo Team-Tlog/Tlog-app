@@ -24,7 +24,7 @@ fun MyTravelingCourseScreen(
 ) {
     val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
-    var selectedTab by remember { mutableStateOf(0) } // course 인덱스는 1
+    var selectedTab by remember { mutableStateOf(0) } // course 인덱스는 1 여기는 예시라서
 
     val cityGrouped = travelList.groupBy { it.travelData.cityName }
 

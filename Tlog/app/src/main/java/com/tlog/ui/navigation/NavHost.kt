@@ -15,7 +15,7 @@ fun NavHost(navController: NavHostController) {
             MyTravelingCourseScreen(navController)
         }
         composable("course") {
-            //TeamTravelingCourse는 어떻게?
+            //MyTravelingCourse는 어떻게?
             TeamTravelingCourseScreen(navController)
         }
         composable("sns") {
