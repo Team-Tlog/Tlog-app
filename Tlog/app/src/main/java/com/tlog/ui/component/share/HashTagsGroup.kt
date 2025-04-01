@@ -20,20 +20,22 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun HashTagsGroup(
-    hashTags: List<String>
+    hashTags: List<String>,
+    space: Dp = 8.dp
 ) {
     LazyRow(
         //contentPadding = PaddingValues(horizontal = 24.dp), // 여행지 등록, 리뷰 쓰기에 사용 가능 추후 변경할 것
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(space)
     ) {
         items(hashTags) { tag ->
-            val textWidth = 4 * tag.length + 25 // 박스 크기
+            //val textWidth = 4 * tag.length + 25 // 박스 크기
 
             Surface(
                 shape = RoundedCornerShape(50),
@@ -48,7 +50,8 @@ fun HashTagsGroup(
                     modifier = Modifier
                         .fillMaxSize()
                         .height(22.dp)
-                        .width(textWidth.dp),
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                        //.width(textWidth.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(

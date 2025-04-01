@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
+import com.tlog.ui.screen.travel.TravelInfoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,8 @@ class MainActivity : ComponentActivity() {
             //MyTeamListScreen()
             //TeamDetailScreen()
             //CourseInputScreen()
-            AiRecommendCourseResultScreen()
+            //AiRecommendCourseResultScreen()
+            TravelInfoScreen()
         }
     }
 }
