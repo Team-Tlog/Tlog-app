@@ -34,7 +34,8 @@ fun BottomBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 18.dp)
+                .padding(top = 18.dp),
+                horizontalArrangement = Arrangement.spacedBy(68.dp) //아이콘 간격
         ) {
             // 왼쪽 여백, 피그마에선 왼쪽 오른쪽 30씩 줬지만 좌우 대칭이 맞지 않아 임의로 수정
             Spacer(modifier = Modifier.width(50.dp))
@@ -56,9 +57,6 @@ fun BottomBar(
                             }
                         }
                 )
-                if (index != icons.lastIndex) {
-                    Spacer(modifier = Modifier.width(68.dp)) // 아이콘 간격
-                }
             }
         }
     }
