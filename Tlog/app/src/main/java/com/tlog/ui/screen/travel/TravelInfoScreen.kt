@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -47,14 +50,15 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .windowInsetsPadding(WindowInsets.systemBars)
+            //.windowInsetsPadding(WindowInsets.systemBars)
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .verticalScroll(rememberScrollState())
     ) {
         Column {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(319.dp),
+                    .height(319.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.tmp_jeju), // 너 이미지
@@ -64,7 +68,8 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
                 )
 
                 TravelInfoTopBar(
-                    iconList = listOf(R.drawable.ic_heart)
+                    iconList = listOf(R.drawable.ic_heart),
+                    topBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() // 상단도 그림으로 채워지게 하기 위해서 -> 상단바 크기 자동으로 가져와줌
                 )
             }
 
