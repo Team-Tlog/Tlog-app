@@ -29,7 +29,7 @@ fun TeamMemberImageGroup(
                 modifier = Modifier
                     .size(30.dp)
                     .clip(CircleShape)
-                    .background(Color.White)
+                    .background(if (url == "") Color.Black else Color.LightGray)
             )
         }
     }

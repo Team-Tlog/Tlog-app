@@ -17,14 +17,15 @@ import com.tlog.ui.theme.MainColor
 @Composable
 fun DayToggleBar(
     selectedDay: Int,
-    onDaySelected: (Int) -> Unit
+    onDaySelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(260.dp)
             .height(45.dp)
             .clip(CircleShape)
-            .background(Color(0xFFF1F4FD)), // 배경 원
+            .background(Color(0xFFF1F4FD)),
         contentAlignment = Alignment.Center
     ) {
         Row(
@@ -32,7 +33,7 @@ fun DayToggleBar(
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            (1..3).forEach { day ->
+            (1..4).forEach { day ->
                 val isSelected = selectedDay == day
                 Box(
                     modifier = Modifier
@@ -53,3 +54,4 @@ fun DayToggleBar(
         }
     }
 }
+
