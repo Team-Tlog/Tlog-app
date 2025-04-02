@@ -1,4 +1,4 @@
-package com.tlog.ui.screen.travel
+package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
