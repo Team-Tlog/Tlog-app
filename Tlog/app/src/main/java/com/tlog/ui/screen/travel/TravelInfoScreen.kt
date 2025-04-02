@@ -31,6 +31,7 @@ import com.tlog.R
 import com.tlog.ui.component.travel.TravelInfoTopBar
 import com.tlog.ui.component.travel.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
+import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 
@@ -41,8 +42,8 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .windowInsetsPadding(WindowInsets.navigationBars)
             .verticalScroll(rememberScrollState())
+            .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         Column {
             Box(
@@ -62,43 +63,50 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
                     topBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() // 상단도 그림으로 채워지게 하기 위해서 -> 상단바 크기 자동으로 가져와줌
                 )
             }
-
-            Box( // 박스의 범위도 고민되고 이 방식이 맞나도 고민됨 일단 여기선 여행지 이름, 위치, 별점, 해시태그까지 박스
+            Column (
                 modifier = Modifier
-                    .offset(y = (-79).dp)
-                    .fillMaxWidth()
-                    .background(Color.White, shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp))
-                    .padding(top = 30.dp) //, start = (31.5).dp, end = (31.5).dp)
-            ) {
-                Column {
-                    Column (
-                        modifier = Modifier
-                            .padding(horizontal = (31.5).dp)
-                    ) {
+                    .windowInsetsPadding(WindowInsets.statusBars)
+            ){
+                Box( // 박스의 범위도 고민되고 이 방식이 맞나도 고민됨 일단 여기선 여행지 이름, 위치, 별점, 해시태그까지 박스
+                    modifier = Modifier
+                        .offset(y = (-79).dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.White,
+                            shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                        )
+                        .padding(top = 30.dp) //, start = (31.5).dp, end = (31.5).dp)
+                ) {
+                    Column {
+                        Column(
+                            modifier = Modifier
+                                .padding(horizontal = (31.5).dp)
+                        ) {
 
-                        TravelInfoSummary(viewModel.selectedTravelInfo.value)
+                            TravelInfoSummary(viewModel.selectedTravelInfo.value)
 
-                        Spacer(modifier = Modifier.height(89.dp))
+                            Spacer(modifier = Modifier.height(89.dp))
 
-                        Divider(
-                            color = Color(0xFFE3E3E3),
-                            thickness = 1.dp
+                            Divider(
+                                color = Color(0xFFE3E3E3),
+                                thickness = 1.dp
+                            )
+
+                            Spacer(modifier = Modifier.height(29.dp))
+                        }
+
+                        ReviewSection(
+                            avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
+                            starRatings = viewModel.selectedTravelInfo.value.starRatings,
+                            reviewList = viewModel.selectedTravelInfo.value.reviewList,
+                            reviewCnt = 2
                         )
 
-                        Spacer(modifier = Modifier.height(29.dp))
+                        Spacer(modifier = Modifier.height(48.dp))
+
+                        SimilarTravelSection()
+
                     }
-
-                    ReviewSection(
-                        avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
-                        starRatings = viewModel.selectedTravelInfo.value.starRatings,
-                        reviewList = viewModel.selectedTravelInfo.value.reviewList,
-                        reviewCnt = 2
-                    )
-
-                    Spacer(modifier = Modifier.height(48.dp))
-
-                    SimilarTravelSection()
-
                 }
             }
 
