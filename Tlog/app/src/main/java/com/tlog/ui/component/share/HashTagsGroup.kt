@@ -41,7 +41,7 @@ fun HashTagsGroup(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 1.dp)
+                    .padding(1.dp) // 상하좌우 그림자 짤리기 방지
                     .shadow(2.dp, RoundedCornerShape(50))
                     .background(Color.White)
             ) {
@@ -49,6 +49,7 @@ fun HashTagsGroup(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(Color.White)
                         .height(22.dp)
                         .padding(horizontal = 10.dp, vertical = 5.dp),
                         //.width(textWidth.dp),
@@ -59,7 +60,7 @@ fun HashTagsGroup(
                         fontSize = 8.sp,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center,
+                        textAlign = TextAlign.Center
                     )
                 }
             }
