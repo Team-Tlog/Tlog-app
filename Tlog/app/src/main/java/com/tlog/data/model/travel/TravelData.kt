@@ -7,6 +7,7 @@ data class TravelData(
     val description: String,
     val hashTags: List<String>,
     val cityName: String,
-    val starRatings: ReviewStarRating,
+    val avgStarRating: Double,
+    val starRatings: List<Int>, // 0 -> 1점 리뷰 1 -> 2점리뷰 ... 4 -> 5점 리뷰 개수
     val reviewList: List<Review>
 )
