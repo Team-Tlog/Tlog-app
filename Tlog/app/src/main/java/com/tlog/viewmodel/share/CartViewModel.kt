@@ -3,7 +3,6 @@ package com.tlog.viewmodel.share
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.tlog.data.model.travel.Review
-import com.tlog.data.model.travel.ReviewStarRating
 import com.tlog.data.model.travel.TravelData
 import com.tlog.data.model.travel.TravelUiData
 
@@ -16,15 +15,10 @@ class CartViewModel: ViewModel() {
                 travelName = "83타워",
                 description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
                 hashTags = listOf("크다", "높다"),
-                cityName = "대구"
-                ,
-                starRatings = ReviewStarRating(
-                    fiveStar = 13,
-                    fourStar = 4,
-                    threeStar = 2,
-                    towStar = 1,
-                    oneStar = 0,
-                    avgStarRating = 4.5
+                cityName = "대구",
+                avgStarRating = 4.5,
+                starRatings = listOf(
+                    13, 4, 2, 1, 0
                 ),
                 reviewList = listOf(
                     Review(
@@ -53,13 +47,9 @@ class CartViewModel: ViewModel() {
                 description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
                 hashTags = listOf("크다", "높다"),
                 cityName = "대구",
-                starRatings = ReviewStarRating(
-                    fiveStar = 13,
-                    fourStar = 4,
-                    threeStar = 2,
-                    towStar = 1,
-                    oneStar = 0,
-                    avgStarRating = 4.5
+                avgStarRating = 4.5,
+                starRatings = listOf(
+                    13, 4, 2, 1, 0
                 ),
                 reviewList = listOf(
                     Review(
@@ -88,14 +78,10 @@ class CartViewModel: ViewModel() {
                 description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
                 hashTags = listOf("크다", "높다"),
                 cityName = "서울",
-                starRatings = ReviewStarRating(
-                    fiveStar = 13,
-                    fourStar = 4,
-                    threeStar = 2,
-                    towStar = 1,
-                    oneStar = 0,
-                    avgStarRating = 4.5
+                starRatings = listOf(
+                    13, 4, 2, 1, 0
                 ),
+                avgStarRating = 4.5,
                 reviewList = listOf(
                     Review(
                         author = "정찬",
@@ -123,14 +109,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -158,14 +140,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "부산",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -193,14 +171,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "부산",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -228,14 +202,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -263,14 +233,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -298,14 +264,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -333,14 +295,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -368,14 +326,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -403,14 +357,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",
@@ -438,14 +388,10 @@ class CartViewModel: ViewModel() {
             description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
             hashTags = listOf("크다", "높다"),
             cityName = "서울",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            starRatings = listOf(
+                13, 4, 2, 1, 0
             ),
+            avgStarRating = 4.5,
             reviewList = listOf(
                 Review(
                     author = "정찬",

@@ -19,13 +19,9 @@ class TravelInfoViewModel: ViewModel() {
                     "서귀포는 빠르게 돌아보는 관광지가 아니라,느리게 머무르며 '나'를 돌아볼 수 있는 도시예요.제주 여행을 생각 중이라면, 서귀포에서 하루쯤은 꼭 머물러보길 추천해요.",
             hashTags = listOf("낭만", "바다", "섬"),
             cityName = "제주도",
-            starRatings = ReviewStarRating(
-                fiveStar = 13,
-                fourStar = 4,
-                threeStar = 2,
-                towStar = 1,
-                oneStar = 0,
-                avgStarRating = 4.5
+            avgStarRating = 4.5,
+            starRatings = listOf(
+                0, 1, 2, 4, 13
             ),
             reviewList = listOf(
                 Review(
