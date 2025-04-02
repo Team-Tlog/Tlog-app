@@ -1,12 +1,10 @@
 package com.tlog.ui.screen.travel
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,16 +20,14 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
-import com.tlog.ui.component.travel.TravelInfoTopBar
 import com.tlog.ui.component.travel.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
+import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 
@@ -46,71 +42,54 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
         Column {
-            Box(
+            TravelTopImageBox(imageUrl = R.drawable.tmp_jeju)
+
+            Box( // 박스의 범위도 고민되고 이 방식이 맞나도 고민됨 일단 여기선 여행지 이름, 위치, 별점, 해시태그까지 박스
                 modifier = Modifier
+                    .offset(y = (-79).dp)
                     .fillMaxWidth()
-                    .height(319.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
+                    .background(
+                        Color.White,
+                        shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                    )
+                    .padding(top = 30.dp)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.tmp_jeju), // 너 이미지
-                    contentDescription = "여행지 샤진",
-                    contentScale = ContentScale.Crop, // 비율 맞춰 채우기
-                    modifier = Modifier.matchParentSize() // Box 크기에 맞춰줌!
-                )
+                // 여행지 정보 ~ 회색 선
+                Column {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = (31.5).dp)
+                    ) {
 
-                TravelInfoTopBar(
-                    iconList = listOf(R.drawable.ic_heart),
-                    topBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() // 상단도 그림으로 채워지게 하기 위해서 -> 상단바 크기 자동으로 가져와줌
-                )
-            }
-            Column (
-                modifier = Modifier
-                    .windowInsetsPadding(WindowInsets.statusBars)
-            ){
-                Box( // 박스의 범위도 고민되고 이 방식이 맞나도 고민됨 일단 여기선 여행지 이름, 위치, 별점, 해시태그까지 박스
-                    modifier = Modifier
-                        .offset(y = (-79).dp)
-                        .fillMaxWidth()
-                        .background(
-                            Color.White,
-                            shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                        TravelInfoSummary(viewModel.selectedTravelInfo.value)
+
+                        Spacer(modifier = Modifier.height(89.dp))
+
+                        Divider(
+                            color = Color(0xFFE3E3E3),
+                            thickness = 1.dp
                         )
-                        .padding(top = 30.dp) //, start = (31.5).dp, end = (31.5).dp)
-                ) {
-                    Column {
-                        Column(
-                            modifier = Modifier
-                                .padding(horizontal = (31.5).dp)
-                        ) {
-
-                            TravelInfoSummary(viewModel.selectedTravelInfo.value)
-
-                            Spacer(modifier = Modifier.height(89.dp))
-
-                            Divider(
-                                color = Color(0xFFE3E3E3),
-                                thickness = 1.dp
-                            )
-
-                            Spacer(modifier = Modifier.height(29.dp))
-                        }
-
-                        ReviewSection(
-                            avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
-                            starRatings = viewModel.selectedTravelInfo.value.starRatings,
-                            reviewList = viewModel.selectedTravelInfo.value.reviewList,
-                            reviewCnt = 2
-                        )
-
-                        Spacer(modifier = Modifier.height(48.dp))
-
-                        SimilarTravelSection()
-
                     }
+
+                    Spacer(modifier = Modifier.height(29.dp))
+
+                    // 리뷰 부분
+                    ReviewSection(
+                        avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
+                        starRatings = viewModel.selectedTravelInfo.value.starRatings,
+                        reviewList = viewModel.selectedTravelInfo.value.reviewList,
+                        reviewCnt = 2
+                    )
+
+                    Spacer(modifier = Modifier.height(48.dp))
+
+                    // 비슷한 여행지 부분
+                    SimilarTravelSection()
+
                 }
             }
-
-
         }
+
+
     }
 }
