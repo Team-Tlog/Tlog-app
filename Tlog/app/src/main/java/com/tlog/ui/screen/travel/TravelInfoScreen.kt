@@ -83,11 +83,16 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
                     Spacer(modifier = Modifier.height(48.dp))
 
                     // 비슷한 여행지 부분
-                    SimilarTravelSection()
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = (31.5).dp)
+                    ) {
+                        SimilarTravelSection()
+                    }
                 }
             }
         }
-
-
     }
 }

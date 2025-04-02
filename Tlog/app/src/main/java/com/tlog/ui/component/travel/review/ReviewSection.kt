@@ -29,7 +29,7 @@ fun ReviewSection(
     avgStarRating: Double,
     starRatings: List<Int>,
     reviewList: List<Review>,
-    reviewCnt: Int
+    reviewCnt: Int = Int.MAX_VALUE
 ) {
     Column {
         Column(
@@ -84,9 +84,15 @@ fun ReviewSection(
         Spacer(modifier = Modifier.height(29.dp))
 
         // 리뷰 2개 띄우기
-        ReviewList(
-            reviewList = reviewList,
-            maxCnt = reviewCnt
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = (31.5).dp)
+        ) {
+            ReviewList(
+                reviewList = reviewList,
+                maxCnt = reviewCnt
+            )
+        }
     }
 }

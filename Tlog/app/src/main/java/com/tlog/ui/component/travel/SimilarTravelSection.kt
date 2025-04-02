@@ -20,35 +20,31 @@ import com.tlog.ui.theme.MainFont
 fun SimilarTravelSection() {
     val tmpList = listOf("", "", "", "", "", "", "") // api 완성 시 수정 할 것 임시로 UI 나오는거 보려고 함
     
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = (31.5).dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-        ) {
-            Text(
-                text = "비슷한 여행지",
-                fontFamily = MainFont,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.ExtraBold
-            )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 20.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+    ) {
+        Text(
+            text = "비슷한 여행지",
+            fontFamily = MainFont,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.ExtraBold
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 20.dp)
+        ) {
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(15.dp)
-                ) {
-                    items(tmpList) {
-                        SimilarTravelSpots()
-                    }
+                items(tmpList) {
+                    SimilarTravelSpots()
                 }
             }
         }
     }
+
 }

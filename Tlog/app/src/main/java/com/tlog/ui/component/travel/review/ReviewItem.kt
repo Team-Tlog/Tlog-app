@@ -39,8 +39,7 @@ fun ReviewItem(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = (31.5).dp, end = (31.5).dp),
+            .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Box(
