@@ -1,4 +1,4 @@
-package com.tlog.data.model
+package com.tlog.data.model.travel
 
 data class TravelUiData(
     val travelData: TravelData,
