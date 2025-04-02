@@ -6,9 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.tlog.ui.navigation.NavHost
-import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
-import com.tlog.ui.screen.travel.TravelInfoScreen
-import com.tlog.ui.screen.travel.MyTravelingCourseScreen
+import com.tlog.ui.screen.travel.CourseInputScreen
+import com.tlog.ui.screen.travel.ReviewListScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -39,7 +38,8 @@ class MainActivity : ComponentActivity() {
             //AiRecommendCourseResultScreen()
             //MyTravelingCourseScreen(navController)
             //TeamTravelingCourseScreen(navController)
-            TravelInfoScreen()
+            //TravelInfoScreen()
+            ReviewListScreen()
         }
     }
 }
