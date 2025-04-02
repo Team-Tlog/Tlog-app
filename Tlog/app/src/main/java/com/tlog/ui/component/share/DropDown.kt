@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -58,7 +57,6 @@ fun DropDown(
             // 선택된 항목 표시 영역
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .clickable { expanded = !expanded }
                     .padding(horizontal = 16.dp, vertical = 15.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -71,7 +69,7 @@ fun DropDown(
                     fontWeight = FontWeight.Thin
                 )
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(15.dp))
 
                 Icon(
                     painter = painterResource (if(expanded) R.drawable.ic_top_arrow else R.drawable.ic_bottom_arrow),
@@ -90,14 +88,12 @@ fun DropDown(
                 )
                 Column(
                     modifier = Modifier
-                        //.heightIn(max = 150.dp)
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = 16.dp)
+                        //.padding(horizontal = 16.dp)
                 ) {
                     options.forEachIndexed { index, item ->
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
                                 .clickable {
                                     valueChange(item)
                                     expanded = false
@@ -106,6 +102,7 @@ fun DropDown(
                         ) {
                             Text(
                                 text = item,
+                                maxLines = 1,
                                 fontFamily = MainFont,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Thin,
@@ -113,12 +110,20 @@ fun DropDown(
                                 modifier = Modifier
                                     .padding(horizontal = 15.dp, vertical = 10.dp)
                             )
+
+
+                            Divider(
+                                color = Color(if (index < options.lastIndex) 0xFFE8E8E8 else 0xFFFFFFFF),
+                                thickness = 0.5.dp,
+                            )
                             if (index < options.lastIndex) {
+
+                            }
+                            else
                                 Divider(
-                                    color = Color(0xFFE8E8E8),
+                                    color = Color.White,
                                     thickness = 0.5.dp,
                                 )
-                            }
                         }
                     }
                 }
