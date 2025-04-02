@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -73,7 +72,7 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
 
                     Spacer(modifier = Modifier.height(29.dp))
 
-                    // 리뷰 부분
+                    // 리뷰 헤더 + 리뷰 부분
                     ReviewSection(
                         avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
                         starRatings = viewModel.selectedTravelInfo.value.starRatings,
@@ -85,7 +84,6 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
 
                     // 비슷한 여행지 부분
                     SimilarTravelSection()
-
                 }
             }
         }
