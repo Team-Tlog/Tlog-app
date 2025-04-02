@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
-import com.tlog.data.model.TravelUiData
+import com.tlog.data.model.travel.TravelUiData
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.style.Body1Bold
 
