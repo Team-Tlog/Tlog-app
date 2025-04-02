@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.tlog.ui.navigation.NavHost
+import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
             //TbtiResultScreen()
             //AddTravelDestinationScreen()
             //SelectReviewWriteScreen()
-            //ReviewWritingScreen()
+            ReviewWritingScreen()
             //ChooseMyTypeDestinationScreen()
             //CartScreen()
             //TeamNameCreateScreen()
