@@ -49,30 +49,34 @@ fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
         // 중복 여부 메시지 표시
         when (isDuplicated) {
             true -> {
-                Text(
-                    text = "중복된 아이디입니다",
-                    color = Color.Red,
-                    modifier = Modifier
-                        .padding(top = 43.dp)
-                        .fillMaxWidth(),
-                    fontFamily = MainFont,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center
-                )
+                if (id.isNotEmpty()) {
+                    Text(
+                        text = "중복된 아이디입니다",
+                        color = Color.Red,
+                        modifier = Modifier
+                            .padding(top = 43.dp)
+                            .fillMaxWidth(),
+                        fontFamily = MainFont,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
             false -> {
-                Text(
-                    text = "사용 가능한 ID입니다!",
-                    color = Color(0xFF4CAF50),
-                    modifier = Modifier
-                        .padding(top = 43.dp)
-                        .fillMaxWidth(),
-                    fontFamily = MainFont,
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center
-                )
+                if (id.isNotEmpty()) {
+                    Text(
+                        text = "사용 가능한 ID입니다!",
+                        color = Color(0xFF4CAF50),
+                        modifier = Modifier
+                            .padding(top = 43.dp)
+                            .fillMaxWidth(),
+                        fontFamily = MainFont,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
             null -> {
                 // 아무 것도 표시하지 않음
