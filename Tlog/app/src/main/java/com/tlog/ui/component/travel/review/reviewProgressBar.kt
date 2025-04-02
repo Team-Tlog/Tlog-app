@@ -1,4 +1,4 @@
-package com.tlog.ui.component.travel
+package com.tlog.ui.component.travel.review
 
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable

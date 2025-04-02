@@ -1,4 +1,4 @@
-package com.tlog.ui.component.travel
+package com.tlog.ui.component.travel.review
 
 import android.util.Log
 import androidx.compose.foundation.Image

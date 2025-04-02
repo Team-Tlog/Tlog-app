@@ -1,4 +1,4 @@
-package com.tlog.ui.component.travel
+package com.tlog.ui.component.travel.review
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
