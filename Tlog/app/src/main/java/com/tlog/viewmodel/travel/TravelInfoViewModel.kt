@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.tlog.data.model.travel.Review
-import com.tlog.data.model.travel.ReviewStarRating
 import com.tlog.data.model.travel.TravelData
 
 class TravelInfoViewModel: ViewModel() {

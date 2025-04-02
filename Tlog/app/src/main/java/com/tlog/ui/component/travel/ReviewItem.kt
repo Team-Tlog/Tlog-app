@@ -1,6 +1,8 @@
 package com.tlog.ui.component.travel
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -58,6 +60,9 @@ fun ReviewItem(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(RoundedCornerShape(100))
+                        .clickable {
+                            Log.d("user", "my click!!")
+                        }
                 )
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -67,7 +72,11 @@ fun ReviewItem(
                 ) {
                     Text(
                         text = review.author,
-                        style = Body1Bold
+                        style = Body1Bold,
+                        modifier = Modifier
+                            .clickable {
+                                Log.d("user", "my click!!")
+                            }
                     )
 
                     ReviewStar(
