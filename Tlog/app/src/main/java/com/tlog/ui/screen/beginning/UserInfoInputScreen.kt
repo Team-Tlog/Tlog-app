@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -96,7 +98,10 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                     value = viewModel.gender.value,
                     valueChange = {
                         viewModel.updateGender(it)
-                    }
+                    },
+                    modifier = Modifier
+                        .width(86.dp)
+                        .heightIn(max = 130.dp)
                 )
 
                 Spacer(modifier = Modifier.height(21.dp))
