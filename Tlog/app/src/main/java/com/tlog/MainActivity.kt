@@ -7,8 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
-import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
-import com.tlog.ui.screen.travel.MyTravelingCourseScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +37,10 @@ class MainActivity : ComponentActivity() {
             //AiRecommendCourseResultScreen()
             //MyTravelingCourseScreen(navController)
             //TeamTravelingCourseScreen(navController)
+            //TravelInfoScreen()
+            //ReviewListScreen()
             SNSIdCreateScreen()
+
         }
     }
 }

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.TravelUiData
+import com.tlog.data.model.travel.TravelUiData
 import com.tlog.ui.component.travel.TravelItem
 import com.tlog.ui.theme.MainColor
 
