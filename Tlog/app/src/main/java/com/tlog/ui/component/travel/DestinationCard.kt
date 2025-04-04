@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,11 +86,11 @@ fun DestinationCard(
                         }
                     }
                     Icon(
-                        imageVector = if (destination.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                        painter = painterResource(id = R.drawable.ic_heart),        //추후 하트 이미지 다시 적용해야함, 현재 채워진 하트 오류로 삽입불가
                         contentDescription = "Favorite",
                         tint = if (destination.isFavorite) Color.Red else Color.White,
                         modifier = Modifier
-                            .size(40.dp)
+                            .size(31.dp)
                             .clickable { onFavoriteToggle(destination.id) }
                     )
                 }
