@@ -2,8 +2,13 @@ package com.tlog.ui.component.mypage
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -15,12 +20,11 @@ import com.tlog.ui.theme.MainColor
 fun BlueCircle() {
     Box(
         modifier = Modifier
-            .height(462.dp)
+            .height(462.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
     ) {
         Canvas(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(462.dp)
+                .fillMaxSize()
         ) {
             drawCircle( // 너무 어렵티비....
                 color = MainColor,
