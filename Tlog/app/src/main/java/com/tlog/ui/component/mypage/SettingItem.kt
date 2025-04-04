@@ -3,11 +3,15 @@ package com.tlog.ui.component.mypage
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -15,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,17 +56,25 @@ fun SettingItem(viewModel: MyPageViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Switch(
-                checked = viewModel.notification.value,
-                onCheckedChange = { viewModel.changeNotification() },
-                colors = SwitchDefaults.colors(
-                    uncheckedTrackColor = Color(0xFFE1E1E1),
-                    uncheckedThumbColor = Color.White,
-                    checkedThumbColor = Color.White,
-                    checkedTrackColor = MainColor,
-                    uncheckedBorderColor = Color.Transparent
+            Box(
+                modifier = Modifier
+                    .height(21.dp)
+                    .width(42.dp)
+            ) {
+                Switch(
+                    checked = viewModel.notification.value,
+                    onCheckedChange = { viewModel.changeNotification() },
+                    colors = SwitchDefaults.colors(
+                        uncheckedTrackColor = Color(0xFFE1E1E1),
+                        uncheckedThumbColor = Color.White,
+                        checkedThumbColor = Color.White,
+                        checkedTrackColor = MainColor,
+                        uncheckedBorderColor = Color.Transparent
+                    ),
+                    modifier = Modifier // 고정된 크기라 scale로 비율 조정
+                        .scale(0.656f)
                 )
-            )
+            }
         }
 
         val tmpList = listOf("개인정보처리방침", "고객센터", "개발자에게 피드백 해주기")
