@@ -2,45 +2,36 @@ package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tlog.data.model.TravelDestinationData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-
-data class Destination(
-    val id: String,
-    val name: String,
-    val location: String,
-    val rating: Double,
-    val reviewCount: Int,
-    val tags: List<String>,
-    val isFavorite: Boolean = false
-)
 
 class TravelDestinationRecommendationViewModel : ViewModel() {
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
     private val _originalDestinations = listOf(
-        Destination(
+        TravelDestinationData(
             id = "1",
             name = "광안리",
             location = "부산",
             rating = 4.8,
             reviewCount = 1245,
-            tags = listOf("바다", "자연"),
+            tags = listOf("바다", "자연", "핫플", "부산"),
             isFavorite = false
         ),
-        Destination(
+        TravelDestinationData(
             id = "2",
             name = "강남",
             location = "서울",
             rating = 4.5,
-            reviewCount = 3456,
-            tags = listOf("도시", "쇼핑"),
+            reviewCount = 20,
+            tags = listOf("도시", "쇼핑", "핫플"),
             isFavorite = false
         ),
-        Destination(
+        TravelDestinationData(
             id = "3",
             name = "서귀포",
             location = "제주도",
@@ -49,7 +40,7 @@ class TravelDestinationRecommendationViewModel : ViewModel() {
             tags = listOf("바다", "항구"),
             isFavorite = false
         ),
-        Destination(
+        TravelDestinationData(
             id = "4",
             name = "수성못",
             location = "대구",
@@ -58,7 +49,7 @@ class TravelDestinationRecommendationViewModel : ViewModel() {
             tags = listOf("데이트", "핫플"),
             isFavorite = false
         ),
-        Destination(
+        TravelDestinationData(
             id = "5",
             name = "해운대",
             location = "부산",
@@ -70,7 +61,7 @@ class TravelDestinationRecommendationViewModel : ViewModel() {
     )
 
     private val _destinations = MutableStateFlow(_originalDestinations)
-    val destinations: StateFlow<List<Destination>> = _destinations.asStateFlow()
+    val destinations: StateFlow<List<TravelDestinationData>> = _destinations.asStateFlow()
 
     fun setCategory(category: String) {
         _selectedCategory.value = category
@@ -84,8 +75,6 @@ class TravelDestinationRecommendationViewModel : ViewModel() {
 
         _destinations.value = sortedList
     }
-
-
 
     fun toggleFavorite(id: String) {
         viewModelScope.launch {
