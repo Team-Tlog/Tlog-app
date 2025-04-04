@@ -80,7 +80,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            Row (
+            Row ( 
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 DropDown(
