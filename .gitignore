@@ -6,3 +6,5 @@
 .cxx
 local.properties
 .idea/
+/.idea/*
+.idea/deploymentTargetSelector.xml
