@@ -11,11 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.tlog.ui.theme.MainFont
+import com.tlog.ui.style.Body1Regular
 
 @Composable
 fun TravelDateBox(
@@ -33,9 +31,7 @@ fun TravelDateBox(
                 text = "${startDate} ~ ${endDate}",
                 color = Color.White,
                 textAlign = TextAlign.Center,
-                fontFamily = MainFont,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal,
+                style = Body1Regular,
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             )
