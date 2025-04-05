@@ -39,7 +39,8 @@ fun TbtiTestAnswerBox(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(1.dp, RoundedCornerShape(10.dp))
+            .shadow(2.dp, RoundedCornerShape(10.dp))
+            //.shadow(elevation = 5.dp, spotColor = Color(0x40000000), ambientColor = Color(0x40000000))
             .clip(RoundedCornerShape(10.dp))
             .background(color)
             .clickable {
