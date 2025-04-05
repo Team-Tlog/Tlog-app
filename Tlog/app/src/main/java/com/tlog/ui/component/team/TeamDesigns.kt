@@ -24,9 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 //import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.team.TeamData
+import com.tlog.ui.style.Body1Regular
+import com.tlog.ui.style.BodyTitle
+import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
@@ -64,20 +68,16 @@ fun SmallDesign(
                 ) {
                     Text(
                         text = teamData.teamName,
-                        color = Color.White,
-                        fontFamily = MainFont,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        style = SubTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
-                        text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
-                        color = Color.White,
-                        fontFamily = MainFont,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        text = teamData.teamTBTI,
+                        style = BodyTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -129,23 +129,27 @@ fun DefaultDesign(
             Column {
                 Text(
                     text = teamData.teamName,
-                    color = Color.White,
-                    fontFamily = MainFont,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    style = SubTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
-                    color = Color.White,
-                    fontFamily = MainFont,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    text = teamData.teamTBTI,
+                    style = BodyTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
+
+                Text(
+                    text = "${teamData.teamStartDate} ~ ${teamData.teamEndDate}",
+                    style = Body1Regular,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
 
                 Row(
                     modifier = Modifier
@@ -170,9 +174,7 @@ fun DefaultDesign(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+                //TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }
         }
     }
@@ -209,20 +211,16 @@ fun MidiumDesign(
                 ) {
                     Text(
                         text = teamData.teamName,
-                        color = Color.White,
-                        fontFamily = MainFont,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        style = SubTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
                         text = teamData.teamTBTI,
-                        color = Color.White,
-                        fontFamily = MainFont,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        style = BodyTitle,
+                        color = Color.White
                     )
                 }
 
@@ -287,20 +285,16 @@ fun BigDesign(
             Column {
                 Text(
                     text = teamData.teamName,
-                    color = Color.White,
-                    fontFamily = MainFont,
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    style = SubTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI, // 없을 일이 없음 만들면 테스트 하기 때문 추후 수정할 것
-                    color = Color.White,
-                    fontFamily = MainFont,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold
+                    text = teamData.teamTBTI,
+                    style = BodyTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
