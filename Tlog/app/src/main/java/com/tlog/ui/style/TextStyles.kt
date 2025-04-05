@@ -35,3 +35,9 @@ val Body1Bold = TextStyle(
     fontSize = 15.sp,
     fontWeight = FontWeight.Bold
 )
+
+val SubTitle = TextStyle(
+    fontFamily = MainFont,
+    fontSize = 30.sp,
+    fontWeight = FontWeight.Bold
+)
