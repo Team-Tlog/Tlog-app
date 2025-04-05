@@ -19,7 +19,7 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun TbtiQuestionSection(
+fun TbtiQuestionSection( // 추후 퀘스쳔 번호만 받아와서 우리 오브젝트에서 불러와서 할 수 있도록 하는게 베스트일 듯!
     question: String = "여행을 가기 전날 밤\n내 가방의 상태는?", // 질문
     chooseText1: String = "이미 갈 준비 완료! 편하게 자볼까?", // 선택지 1
     chooseText2: String = "벌써 내일이야? 빨리 짐싸자!!" // 선택지 2,
