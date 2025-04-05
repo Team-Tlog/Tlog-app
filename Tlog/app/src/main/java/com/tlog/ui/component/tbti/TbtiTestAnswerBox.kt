@@ -22,13 +22,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.beginning.TbtiTestViewModel
 
 
 @Composable
 fun TbtiTestAnswerBox(
-    answer: String
+    selectIdx: Int,
+    answer: String,
+    viewModel: TbtiTestViewModel = viewModel()
 ) {
     var color by remember { mutableStateOf(Color.White) }
 
@@ -39,8 +43,9 @@ fun TbtiTestAnswerBox(
             .clip(RoundedCornerShape(10.dp))
             .background(color)
             .clickable {
-                Log.d("choose2", "my click!!")
+                Log.d("choose", "my click!!")
                 color = if (color == Color.White) MainColor else Color.White
+                viewModel.addList(selectIdx)
             }
             .height(58.dp)
     ) {

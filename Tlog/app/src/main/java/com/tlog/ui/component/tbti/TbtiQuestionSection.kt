@@ -56,9 +56,9 @@ fun TbtiQuestionSection(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(30.dp)
         ) {
-            TbtiTestAnswerBox(chooseText1)
+            TbtiTestAnswerBox(1, chooseText1)
 
-            TbtiTestAnswerBox(chooseText2)
+            TbtiTestAnswerBox(2, chooseText2)
         }
     }
 }
