@@ -58,8 +58,7 @@ fun TeamTravelingCourseScreen(
         ) {
             BottomBar(
                 navController = navController,
-                selectedIndex = selectedTab,
-                onTabSelected = { selectedTab = it }
+                selectedIndex = selectedTab
             )
         }
     }

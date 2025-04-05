@@ -18,8 +18,7 @@ fun MyTravelingCourseScreen(
     viewModel: CartViewModel = viewModel()
 ) {
     val travelList by viewModel.travelList
-    var selectedDay by remember { mutableStateOf(1) }
-    var selectedTab by remember { mutableStateOf(0) }
+    var selectedDay by remember { mutableStateOf(2) }
 
     Box(
         modifier = Modifier
@@ -43,13 +42,13 @@ fun MyTravelingCourseScreen(
         ) {
             BottomBar(
                 navController = navController,
-                selectedIndex = selectedTab,
-                onTabSelected = { selectedTab = it }
+                selectedIndex = 1
             )
         }
     }
 }
 
+// 하단바 미리보기용 추후 삭제 예정
 @Preview(showBackground = true)
 @Composable
 fun PreviewMyTravelingCourseScreen() {
