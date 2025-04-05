@@ -68,14 +68,16 @@ fun SmallDesign(
                 ) {
                     Text(
                         text = teamData.teamName,
-                        style = SubTitle
+                        style = SubTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
                         text = teamData.teamTBTI,
-                        style = BodyTitle
+                        style = BodyTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -127,14 +129,16 @@ fun DefaultDesign(
             Column {
                 Text(
                     text = teamData.teamName,
-                    style = SubTitle
+                    style = SubTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
                     text = teamData.teamTBTI,
-                    style = BodyTitle
+                    style = BodyTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -207,14 +211,16 @@ fun MidiumDesign(
                 ) {
                     Text(
                         text = teamData.teamName,
-                        style = SubTitle
+                        style = SubTitle,
+                        color = Color.White
                     )
 
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
                         text = teamData.teamTBTI,
-                        style = BodyTitle
+                        style = BodyTitle,
+                        color = Color.White
                     )
                 }
 
@@ -279,14 +285,16 @@ fun BigDesign(
             Column {
                 Text(
                     text = teamData.teamName,
-                    style = SubTitle
+                    style = SubTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
                     text = teamData.teamTBTI,
-                    style = BodyTitle
+                    style = BodyTitle,
+                    color = Color.White
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
