@@ -16,12 +16,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.travel.TravelUiData
 import com.tlog.ui.component.travel.TravelItem
+import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 
 @Composable
@@ -48,8 +47,7 @@ fun CityTravelList(
             Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = city,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
+                style = Body1Bold
             )
         }
 

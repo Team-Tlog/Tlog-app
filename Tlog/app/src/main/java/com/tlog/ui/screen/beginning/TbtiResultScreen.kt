@@ -23,6 +23,7 @@ import com.tlog.R
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.component.tbti.TbtiResultTopBar
+import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 
 fun parseTbtiCode(code: String): Map<String, Float> {
@@ -180,7 +181,10 @@ fun TbtiResultScreen(
                     .padding(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("잘 맞는 TBTI", fontFamily = MainFont)
+                Text(
+                    text = "잘 맞는 TBTI",
+                    style = Body1Regular
+                    )
                 Spacer(modifier = Modifier.height(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.test_image),
@@ -203,7 +207,10 @@ fun TbtiResultScreen(
                     .padding(17.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("안 맞는 TBTI", fontFamily = MainFont)
+                Text(
+                    text = "안 맞는 TBTI",
+                    style = Body1Regular
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Image(
                     painter = painterResource(id = R.drawable.test_image),

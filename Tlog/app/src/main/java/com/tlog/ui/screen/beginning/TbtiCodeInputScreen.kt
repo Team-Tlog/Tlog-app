@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.OtpCodeInput
+import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
 
@@ -63,10 +64,7 @@ fun TbtiCodeInputScreen() {
             Spacer(modifier = Modifier.height(157.dp))
             Text(
                 text = "TBTI 코드 입력",
-                fontSize = 30.sp,
-                fontFamily = MainFont,
-                fontWeight = FontWeight.ExtraBold,
-                color = Color.Black
+                style = SubTitle
             )
 
             Spacer(modifier = Modifier.height(61.dp))

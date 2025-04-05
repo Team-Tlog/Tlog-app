@@ -24,12 +24,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
@@ -37,12 +35,12 @@ import com.tlog.ui.component.share.MainInputField
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.StarRating
 import com.tlog.ui.component.share.TopBar
-import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.review.ReviewViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.painterResource
 import com.tlog.R
+import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
 
 
@@ -73,9 +71,7 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = "남산타워는 어떠셨나요?",
-                fontFamily = MainFont,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold,
+                style = BodyTitle,
                 textAlign = TextAlign.Center
             )
 
