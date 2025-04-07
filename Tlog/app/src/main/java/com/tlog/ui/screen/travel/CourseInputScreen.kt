@@ -69,7 +69,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             )
 
             Spacer(modifier = Modifier.height(30.dp))
-
+ 
             Text(
                 text = "지역",
                 fontFamily = MainFont,
