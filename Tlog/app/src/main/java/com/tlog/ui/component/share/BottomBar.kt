@@ -36,7 +36,7 @@ fun BottomBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp, vertical = 18.dp),
-                horizontalArrangement = Arrangement.SpaceBetween, //아이콘 간격
+                horizontalArrangement = Arrangement.SpaceBetween, // 아이콘 간격
                 verticalAlignment = Alignment.CenterVertically
         ) {
             icons.forEachIndexed { index, (selectedIcon, defaultIcon) ->
