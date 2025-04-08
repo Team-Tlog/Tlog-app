@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 
@@ -60,9 +61,7 @@ fun TravelItem(
         ) {
             Text(
                 text = travelName,
-                fontFamily = MainFont,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
+                style = Body1Bold
             )
 
             Spacer(modifier = Modifier.height(20.dp))

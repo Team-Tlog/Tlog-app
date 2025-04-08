@@ -30,6 +30,7 @@ import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.MainInputField
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.component.share.DropDown
+import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.UserInfoViewModel
 
@@ -63,9 +64,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
             ) {
                 Text(
                     text = "추가 정보를 입력해주세요",
-                    fontWeight = FontWeight.ExtraBold,
-                    fontFamily = MainFont,
-                    fontSize = 24.sp,
+                    style = BodyTitle,
                     modifier = Modifier
                         .padding(top = 35.dp)
                 )

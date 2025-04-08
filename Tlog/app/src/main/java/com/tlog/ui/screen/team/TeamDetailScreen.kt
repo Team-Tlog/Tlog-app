@@ -25,7 +25,7 @@ import com.tlog.ui.component.team.DefaultDesign
 import com.tlog.ui.component.team.MidiumDesign
 
 
-enum class PageState { DEFAULT, SMALL, MIDIUM, BIG }
+enum class PageState { DEFAULT, SMALL, MEDIUM, BIG }
 
 @Preview(showBackground = true)
 @Composable
@@ -54,7 +54,7 @@ fun TeamDetailScreen(
         targetValue = when (sizeState) {
             PageState.SMALL -> 183.dp
             PageState.DEFAULT -> 288.dp
-            PageState.MIDIUM -> 236.dp
+            PageState.MEDIUM -> 236.dp
             PageState.BIG -> 368.dp
         },
         animationSpec = tween(
@@ -96,8 +96,8 @@ fun TeamDetailScreen(
                                     PageState.DEFAULT -> sizeState =
                                         PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
                                     PageState.SMALL -> sizeState =
-                                        PageState.MIDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                    PageState.MIDIUM -> sizeState = PageState.SMALL
+                                        PageState.MEDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                    PageState.MEDIUM -> sizeState = PageState.SMALL
                                 }
                             }
                     ) {
@@ -105,7 +105,7 @@ fun TeamDetailScreen(
                             PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
                             PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
                             PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
-                            PageState.MIDIUM -> MidiumDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.MEDIUM -> MidiumDesign(teamData = teamDetailViewModel.teamData)
                         }
                     }
                 }
