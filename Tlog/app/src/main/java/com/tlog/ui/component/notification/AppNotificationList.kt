@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
@@ -40,10 +41,10 @@ fun AppNotificationList(viewModel: NotificationViewModel) {
 @Composable
 fun AppNotificationItem(content: String, date: String) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .width(312.dp)
-            .height(78.dp)
+            .fillMaxWidth()
+            .height(84.dp)
+            .padding(horizontal = 24.dp)
             .drawBehind {
                 val strokeWidth = 0.5.dp.toPx()
                 val y = size.height - strokeWidth / 2
@@ -54,7 +55,9 @@ fun AppNotificationItem(content: String, date: String) {
                     strokeWidth = strokeWidth
                 )
             }
-            .padding(start = 0.dp, top = 15.dp, end = 0.dp, bottom = 15.dp)
+            .padding(start = 0.dp, top = 15.dp, end = 0.dp, bottom = 15.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_filled_notification),
@@ -68,17 +71,16 @@ fun AppNotificationItem(content: String, date: String) {
         Column(
             modifier = Modifier
                 .width(242.dp)
-                .height(50.dp)
         ) {
             Text(
                 text = content,
                 style = Body2Regular,
-                modifier = Modifier
-                    .width(242.dp)
-                    .height(24.dp)
+                modifier = Modifier.fillMaxWidth(),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Box(
                 modifier = Modifier
@@ -99,4 +101,5 @@ fun AppNotificationItem(content: String, date: String) {
             }
         }
     }
+
 }

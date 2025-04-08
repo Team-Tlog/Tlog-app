@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -34,12 +35,10 @@ fun BottomBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 18.dp),
-                horizontalArrangement = Arrangement.spacedBy(68.dp) //아이콘 간격
+                .padding(horizontal = 30.dp, vertical = 18.dp),
+                horizontalArrangement = Arrangement.SpaceBetween, //아이콘 간격
+                verticalAlignment = Alignment.CenterVertically
         ) {
-            // 왼쪽 여백, 피그마에선 왼쪽 오른쪽 30씩 줬지만 좌우 대칭이 맞지 않아 임의로 수정
-            Spacer(modifier = Modifier.width(50.dp))
-
             icons.forEachIndexed { index, (selectedIcon, defaultIcon) ->
                 Icon(
                     painter = painterResource(id = if (index == selectedIndex) selectedIcon else defaultIcon),

@@ -1,6 +1,5 @@
 package com.tlog.ui.component.notification
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,11 +13,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.tlog.viewmodel.share.TsnsNotificationViewModel
 
 @Composable
@@ -35,18 +41,23 @@ fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
                 userName = item.userName,
                 action = item.action,
                 time = item.time,
-                showFollowButton = item.showFollowButton
+                showFollowButton = item.showFollowButton,
+                userProfileImageUrl = item.userProfileImageUrl,
+                postThumbnailImageUrl = item.postThumbnailImageUrl
             )
         }
     }
 }
+
 
 @Composable
 fun TsnsNotificationItem(
     userName: String,
     action: String,
     time: String,
-    showFollowButton: Boolean
+    showFollowButton: Boolean,
+    userProfileImageUrl: String,
+    postThumbnailImageUrl: String?
 ) {
     Row(
         modifier = Modifier
@@ -54,10 +65,13 @@ fun TsnsNotificationItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
+        AsyncImage(
+            model = userProfileImageUrl,
+            contentDescription = null,
             modifier = Modifier
-                .size(40.dp)
-                .background(Color.LightGray, shape = CircleShape)
+                .size(48.dp)
+                .clip(CircleShape),
+            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -65,19 +79,21 @@ fun TsnsNotificationItem(
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = userName,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 14.sp
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = action,
-                    fontSize = 14.sp
-                )
-            }
+            // userName + action 이어서 출력 (userName만 Bold)
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(userName)
+                    }
+                    append(action)
+                },
+                fontSize = 14.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+
             Spacer(modifier = Modifier.height(4.dp))
+
             Text(
                 text = time,
                 fontSize = 12.sp,
@@ -89,7 +105,7 @@ fun TsnsNotificationItem(
 
         if (showFollowButton) {
             Button(
-                onClick = { },
+                onClick = { /* 맞팔로우 기능 */ },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4F8FF9),
                     contentColor = Color.White
@@ -100,10 +116,13 @@ fun TsnsNotificationItem(
                 Text(text = "맞팔로우", fontSize = 12.sp)
             }
         } else {
-            Box(
+            AsyncImage(
+                model = postThumbnailImageUrl,
+                contentDescription = null,
                 modifier = Modifier
-                    .size(40.dp)
-                    .background(Color.LightGray, shape = RoundedCornerShape(4.dp))
+                    .size(63.dp)
+                    .clip(RoundedCornerShape(4.dp)),
+                contentScale = ContentScale.Crop
             )
         }
     }

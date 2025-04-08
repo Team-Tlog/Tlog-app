@@ -16,9 +16,9 @@ class NotificationViewModel : ViewModel() {
 
     private fun fetchNotifications() {
         _notifications.value = listOf(
-            NotificationData(content = "소식기 내용소식기 내용 1", date = "03/25"),
-            NotificationData(content = "소식기 내용소식기 내용 2", date = "03/15"),
-            NotificationData(content = "소식기 내용소식기 내용 3", date = "03/10"),
+            NotificationData(content = "소식기 내용소식기 내용 1 소식기 내용소식기 내용 1 소식기 내용소식기 내용 1 소식기 내용소식기 내용 1 소식기 내용소식기 내용 1", date = "03/25"),
+            NotificationData(content = "소식기 내용소식기 내용 2 소식기 내용소식기 내용 2 소식기 내용소식기 내용 2 소식기 내용소식기 내용 2 소식기 내용소식기 내용 2", date = "03/15"),
+            NotificationData(content = "소식기 내용소식기 내용 3 소식기 내용소식기 내용 3 소식기 내용소식기 내용 3 소식기 내용소식기 내용 3 소식기 내용소식기 내용 3", date = "03/10"),
         )
     }
 }

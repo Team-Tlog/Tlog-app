@@ -20,7 +20,10 @@ fun NotificationScreen(
     var selectedTab by remember { mutableStateOf(NotificationTabType.News) }
     val viewModel: NotificationViewModel = viewModel()
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
         TopBar(text = "알림")
         NotificationTab(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
 
