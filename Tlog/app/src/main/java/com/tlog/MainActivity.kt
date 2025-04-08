@@ -12,7 +12,6 @@ import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +43,7 @@ class MainActivity : ComponentActivity() {
             //TravelInfoScreen()
             //ReviewListScreen()
             //SNSIdCreateScreen()
-            NotificationScreen()
+            //NotificationScreen()
         }
     }
 }

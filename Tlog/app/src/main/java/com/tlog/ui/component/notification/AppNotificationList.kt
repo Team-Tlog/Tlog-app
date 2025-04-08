@@ -1,0 +1,102 @@
+package com.tlog.ui.component.notification
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.tlog.R
+import com.tlog.ui.style.Body2Regular
+import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.share.NotificationViewModel
+
+@Composable
+fun AppNotificationList(viewModel: NotificationViewModel) {
+    val notifications by viewModel.notifications.collectAsState()
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        items(notifications) { item ->
+            AppNotificationItem(content = item.content, date = item.date)
+        }
+    }
+}
+
+@Composable
+fun AppNotificationItem(content: String, date: String) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .width(312.dp)
+            .height(78.dp)
+            .drawBehind {
+                val strokeWidth = 0.5.dp.toPx()
+                val y = size.height - strokeWidth / 2
+                drawLine(
+                    color = Color(0xFFF0F0F0),
+                    start = androidx.compose.ui.geometry.Offset(0f, y),
+                    end = androidx.compose.ui.geometry.Offset(size.width, y),
+                    strokeWidth = strokeWidth
+                )
+            }
+            .padding(start = 0.dp, top = 15.dp, end = 0.dp, bottom = 15.dp)
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_filled_notification),
+            contentDescription = null,
+            tint = Color.Unspecified,
+            modifier = Modifier.size(48.dp)
+        )
+
+        Spacer(modifier = Modifier.width(15.dp))
+
+        Column(
+            modifier = Modifier
+                .width(242.dp)
+                .height(50.dp)
+        ) {
+            Text(
+                text = content,
+                style = Body2Regular,
+                modifier = Modifier
+                    .width(242.dp)
+                    .height(24.dp)
+            )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Box(
+                modifier = Modifier
+                    .width(23.dp)
+                    .height(12.dp),
+                contentAlignment = Alignment.CenterStart
+            ) {
+                Text(
+                    text = date,
+                    style = TextStyle(
+                        fontSize = 8.sp,
+                        lineHeight = 8.sp,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.W300,
+                        color = Color(0xFF696969),
+                    ),
+                )
+            }
+        }
+    }
+}

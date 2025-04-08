@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 
@@ -12,7 +13,7 @@ fun NavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             // 메인화면으로 수정해야함
-            MyTravelingCourseScreen(navController)
+            NotificationScreen(navController, previousSelectedIndex = 0)
         }
         composable("course") {
             //MyTravelingCourse는 어떻게?
