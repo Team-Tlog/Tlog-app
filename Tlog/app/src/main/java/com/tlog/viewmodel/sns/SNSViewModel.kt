@@ -42,7 +42,8 @@ class SNSViewModel : ViewModel() {
                     Comment("user1", "첫 번째 게시물의 댓글입니다."),
                     Comment("user2", "멋진 게시물이네요!")
                 ),
-                courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5","코스6", "코스7") // 예시
+                courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5","코스6", "코스7") ,
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
             ),
             PostData(
                 id = "post2",
@@ -52,9 +53,10 @@ class SNSViewModel : ViewModel() {
                 isUserFollowing = false,
                 commentsPreview = listOf(
                     Comment("user3", "두 번째 게시물에 댓글 남깁니다!"),
-                    Comment("user4", "좋은 정보 감사합니다.")
+                    Comment("user4", "좋은 정보 감사합니다."),
                 ),
-                courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5") // 예시
+                courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5"),
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
             ),
             PostData(
                 id = "post3",
@@ -66,7 +68,8 @@ class SNSViewModel : ViewModel() {
                     Comment("user5", "세 번째 게시물 댓글입니다."),
                     Comment("user6", "흥미로운 내용이네요.")
                 ),
-                courseTitles = listOf("코스1", "코스2", "코스3") // 예시
+                courseTitles = listOf("코스1", "코스2", "코스3"),
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
             )
         )
 
@@ -129,24 +132,3 @@ class SNSViewModel : ViewModel() {
     }
 
 }
-
-//// 데이터 클래스들
-//data class User(
-//    val id: String,
-//    val isFollowing: Boolean
-//)
-
-//data class Post(
-//    val id: String,
-//    val userId: String,
-//    val likesCount: Int,
-//    val isLiked: Boolean,
-//    val isUserFollowing: Boolean,
-//    val commentsPreview: List<Comment> = emptyList(),
-//    val courseTitles: List<String> = emptyList() // 추가된 필드
-//)
-
-//data class Comment(
-//    val userId: String,
-//    val content: String
-//)

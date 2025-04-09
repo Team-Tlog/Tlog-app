@@ -8,5 +8,6 @@ data class PostData(
     val isLiked: Boolean,
     val isUserFollowing: Boolean,
     val commentsPreview: List<Comment> = emptyList(),
-    val courseTitles: List<String> = emptyList()
+    val courseTitles: List<String> = emptyList(),
+    val content: String,
 )

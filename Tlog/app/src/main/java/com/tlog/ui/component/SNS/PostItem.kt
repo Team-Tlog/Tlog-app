@@ -26,6 +26,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.sns.PostData
 import com.tlog.ui.style.Body1Bold
+import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.Essential
@@ -62,12 +66,12 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
             // 프로필 사진
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(44.dp)
                     .clip(CircleShape)
                     .background(Color.LightGray)
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(16.dp))
 
             // 사용자 이름
             Text(
@@ -103,11 +107,9 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(360.dp)
+                .height(430.dp)
                 .background(Color.Gray)
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
 
         // 코스바
         Column(modifier = Modifier.padding(16.dp)) {
@@ -142,6 +144,32 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
             }
         }
 
+        // 게시물 내용 추가
+        if (post.content.isNotEmpty()) {
+            var isTextTruncated by remember { mutableStateOf(false) }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Text(
+                    text = post.content,
+                    style = Body2Regular,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    onTextLayout = { textLayoutResult ->
+                        // 텍스트가 잘렸는지 확인
+                        isTextTruncated = textLayoutResult.hasVisualOverflow
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = if (isTextTruncated) 0.dp else 16.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         // 좋아요, 공유 ,신고 버튼
         Row(
@@ -153,20 +181,20 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(end = 24.dp)
+                    .padding(end = 10.dp)
                     .clickable { viewModel.toggleLike(post.id) }
             ) {
                 Icon(
-                    imageVector = if (post.isLiked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                    painter = painterResource(id = R.drawable.ic_heart),    //하트 아이콘 추후 바꿔야함, 채워진 하트 오류로 인해 삽입 불가
                     contentDescription = "좋아요",
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(30.dp),
                     tint = if (post.isLiked) Color.Red else Color.Black
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "좋아요 ${post.likesCount}",        //동작되는지 확인하기위해 좋아요 카운트 추후 제거하면 될듯
-                    fontSize = 14.sp
-                )
+//                Text(
+//                    text = "좋아요 ${post.likesCount}",        //동작되는지 확인하기위해 좋아요 카운트 추후 제거하면 될듯
+//                    fontSize = 14.sp
+//                )
             }
 
             Row(
@@ -184,10 +212,7 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
 
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "공유",
-                    fontSize = 14.sp
-                )
+
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -201,38 +226,10 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
         // 현재 표시된 댓글 목록
         displayedComments.forEach { comment ->
             CommentItem(comment = comment)
         }
 
-        // 더 볼 댓글이 있을 때만 표시
-        if (hasMoreComments) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .clickable { viewModel.loadAllComments(post.id) },
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "더보기",
-                        style = Body2Regular,
-                        color = Essential
-                    )
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_right_arrow),
-                        contentDescription = "더보기",
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-            }
-        }
     }
 }
