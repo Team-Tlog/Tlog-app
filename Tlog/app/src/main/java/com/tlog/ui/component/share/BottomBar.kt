@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,11 +14,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tlog.R
 
+@Preview
 @Composable
 fun BottomBar(
-    navController: NavController,
-    selectedIndex: Int,
-    onTabSelected: (Int) -> Unit // 적용
+    navController: NavController = rememberNavController(),
+    selectedIndex: Int = 0,
 ) {
     val icons = listOf(
         Pair(R.drawable.ic_main_selected, R.drawable.ic_main),
@@ -37,9 +36,8 @@ fun BottomBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp, vertical = 18.dp),
-                horizontalArrangement = Arrangement.SpaceBetween, // 아이콘 간격
-                verticalAlignment = Alignment.CenterVertically
+                .padding(top = 18.dp, start = 50.dp, end = 50.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             icons.forEachIndexed { index, (selectedIcon, defaultIcon) ->
                 Icon(
@@ -49,7 +47,6 @@ fun BottomBar(
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {
-                            onTabSelected(index)
                             when (index) {
                                 0 -> navController.navigate("main")
                                 1 -> navController.navigate("course")
