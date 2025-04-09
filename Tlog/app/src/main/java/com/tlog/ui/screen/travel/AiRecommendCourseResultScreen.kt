@@ -7,14 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.RetryButton
+import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.share.CartViewModel
 
 @Preview(showBackground = true)
@@ -40,8 +39,7 @@ fun AiRecommendCourseResultScreen(
                 Spacer(modifier = Modifier.height(117.dp))
                 Text(
                     text = "AI추천 코스결과",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.ExtraBold,
+                    style = BodyTitle,
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.CenterHorizontally)

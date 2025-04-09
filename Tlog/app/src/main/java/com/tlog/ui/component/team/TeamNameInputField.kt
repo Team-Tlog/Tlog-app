@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
@@ -43,9 +44,7 @@ fun TeamNameInputField (
     Text(
         modifier = Modifier.fillMaxWidth(),
         text = text,
-        fontFamily = MainFont,
-        fontSize = 24.sp,
-        fontWeight = FontWeight.ExtraBold,
+        style = BodyTitle,
         textAlign = TextAlign.Center
     )
 

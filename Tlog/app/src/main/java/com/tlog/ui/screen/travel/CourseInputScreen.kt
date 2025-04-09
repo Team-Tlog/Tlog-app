@@ -36,6 +36,7 @@ import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.share.DropDownCheckBox
 import com.tlog.ui.component.travel.DayTravelCounter
+import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.CourseInputViewModel
 import java.time.LocalDate
@@ -63,9 +64,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
 
             Text(
                 text = "이것만 알려주세요!",
-                fontFamily = MainFont,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.ExtraBold
+                style = BodyTitle
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -80,7 +79,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            Row (
+            Row ( 
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 DropDown(
