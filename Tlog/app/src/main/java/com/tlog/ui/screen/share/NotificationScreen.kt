@@ -33,7 +33,7 @@ fun NotificationScreen(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        BottomBar(navController = navController, selectedIndex = previousSelectedIndex, onTabSelected = {})
+        BottomBar(navController = navController, selectedIndex = previousSelectedIndex, )
     }
 }
 

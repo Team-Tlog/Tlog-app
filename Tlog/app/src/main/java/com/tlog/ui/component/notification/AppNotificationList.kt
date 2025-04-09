@@ -30,7 +30,7 @@ fun AppNotificationList(viewModel: NotificationViewModel) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 24.dp)
     ) {
         items(notifications) { item ->
             AppNotificationItem(content = item.content, date = item.date)
@@ -44,7 +44,7 @@ fun AppNotificationItem(content: String, date: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(84.dp)
-            .padding(horizontal = 24.dp)
+            //.padding(horizontal = 24.dp)
             .drawBehind {
                 val strokeWidth = 0.5.dp.toPx()
                 val y = size.height - strokeWidth / 2
@@ -55,7 +55,7 @@ fun AppNotificationItem(content: String, date: String) {
                     strokeWidth = strokeWidth
                 )
             }
-            .padding(start = 0.dp, top = 15.dp, end = 0.dp, bottom = 15.dp),
+            .padding(top = 15.dp, bottom = 15.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -18,13 +18,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.tlog.data.model.notification.TsnsNotificationData
+import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.TsnsNotificationViewModel
 
 @Composable
@@ -34,31 +36,16 @@ fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 24.dp)
     ) {
         items(tsnsNotifications) { item ->
-            TsnsNotificationItem(
-                userName = item.userName,
-                action = item.action,
-                time = item.time,
-                showFollowButton = item.showFollowButton,
-                userProfileImageUrl = item.userProfileImageUrl,
-                postThumbnailImageUrl = item.postThumbnailImageUrl
-            )
+            TsnsNotificationItem(item = item) // 이렇게 넘기자
         }
     }
 }
 
-
 @Composable
-fun TsnsNotificationItem(
-    userName: String,
-    action: String,
-    time: String,
-    showFollowButton: Boolean,
-    userProfileImageUrl: String,
-    postThumbnailImageUrl: String?
-) {
+fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,7 +53,7 @@ fun TsnsNotificationItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = userProfileImageUrl,
+            model = item.userProfileImageUrl,
             contentDescription = null,
             modifier = Modifier
                 .size(48.dp)
@@ -83,9 +70,9 @@ fun TsnsNotificationItem(
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(userName)
+                        append(item.userName)
                     }
-                    append(action)
+                    append(item.action)
                 },
                 fontSize = 14.sp,
                 maxLines = 2,
@@ -95,7 +82,7 @@ fun TsnsNotificationItem(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = time,
+                text = item.time,
                 fontSize = 12.sp,
                 color = Color.Gray
             )
@@ -103,7 +90,7 @@ fun TsnsNotificationItem(
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        if (showFollowButton) {
+        if (item.showFollowButton) {
             Button(
                 onClick = { /* 맞팔로우 기능 */ },
                 colors = ButtonDefaults.buttonColors(
@@ -111,13 +98,22 @@ fun TsnsNotificationItem(
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.height(32.dp)
+                modifier = Modifier
+                    .height(32.dp)
+                    .width(73.dp),
+                contentPadding = PaddingValues(0.dp)
             ) {
-                Text(text = "맞팔로우", fontSize = 12.sp)
+                Text(
+                    text = "맞팔로우",
+                    fontSize = 12.sp,
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
             }
         } else {
             AsyncImage(
-                model = postThumbnailImageUrl,
+                model = item.postThumbnailImageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .size(63.dp)
