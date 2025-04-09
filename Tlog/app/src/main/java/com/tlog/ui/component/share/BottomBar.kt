@@ -17,7 +17,7 @@ import com.tlog.R
 fun BottomBar(
     navController: NavController,
     selectedIndex: Int,
-    onTabSelected: (Int) -> Unit
+    onTabSelected: (Int) -> Unit // 적용
 ) {
     val icons = listOf(
         Pair(R.drawable.ic_main_selected, R.drawable.ic_main),
