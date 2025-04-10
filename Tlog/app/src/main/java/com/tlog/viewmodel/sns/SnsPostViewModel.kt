@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.sns
 
+import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -69,5 +70,10 @@ class SnsPostViewModel: ViewModel() {
     )
     val recentTravelCourses: State<List<TravelCourse>> = _recentTravelCourses
 
+    private var _selectImages = mutableStateOf<List<Uri>>(emptyList())
+    val selectImages: State<List<Uri>> = _selectImages
 
+    fun updateSelectImages(uri: Uri) {
+        _selectImages.value = _selectImages.value + uri // += ?
+    }
 }

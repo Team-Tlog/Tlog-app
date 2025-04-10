@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.sns.SnsPostWriteScreen
 import com.tlog.viewmodel.share.MainViewModel
 
 
@@ -45,7 +46,8 @@ class MainActivity : ComponentActivity() {
             //TravelInfoScreen()
             //ReviewListScreen()
             //SNSIdCreateScreen()
-            MyPageScreen()
+            //MyPageScreen()
+            SnsPostWriteScreen()
 
         }
     }
