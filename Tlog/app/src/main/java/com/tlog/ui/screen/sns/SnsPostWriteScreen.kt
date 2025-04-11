@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +20,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -188,7 +188,7 @@ fun galleryImageView(
         columns = GridCells.Fixed(3),
         modifier = modifier
             .fillMaxWidth()
-            .height(LocalConfiguration.current.screenHeightDp.dp)
+            .heightIn(max = LocalConfiguration.current.screenHeightDp.dp)
     ) {
         items(images) { uri ->
             Image(
