@@ -7,6 +7,8 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -62,7 +64,9 @@ import com.tlog.viewmodel.sns.SnsPostViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.core.content.FileProvider
 import com.tlog.ui.component.share.TextButtonTopBar
+import java.io.File
 
 @Preview
 @OptIn(ExperimentalPermissionsApi::class)
@@ -183,6 +187,21 @@ fun galleryImageView(
     images: List<Uri>,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
+    var photoUri by remember { mutableStateOf<Uri?>(null) }
+    var capturedImageUri by remember { mutableStateOf<Uri?>(null) }
+    var cameraImages by remember { mutableStateOf<List<Uri>>(emptyList()) } // 카메라에서 촬영한 사진 저장
+    // 카메라 촬영 결과를 받을 곳
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            capturedImageUri = photoUri
+            cameraImages = listOf(photoUri!!) + cameraImages
+            viewModel.updateSelectImages(photoUri!!)
+        }
+    }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -190,6 +209,51 @@ fun galleryImageView(
             .fillMaxWidth()
             .heightIn(max = LocalConfiguration.current.screenHeightDp.dp)
     ) {
+        item {
+            Box(
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .clickable { // 카메라 버튼 클릭 시
+                        val photoFile = File(
+                            context.cacheDir,
+                            "${System.currentTimeMillis()}.jpg"
+                        )
+                        photoUri = FileProvider.getUriForFile(
+                            context,
+                            "${context.packageName}.provider",
+                            photoFile
+                        )
+                        cameraLauncher.launch(photoUri!!)
+                    }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_camera),
+                    contentDescription = "카메라",
+                    tint = Color.Unspecified,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)
+                        .padding(horizontal = 48.dp, vertical = 50.dp)
+                )
+            }
+        }
+        items(cameraImages) {uri ->
+            Image(
+                painter = rememberAsyncImagePainter(uri),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .aspectRatio(1f)
+                    .clickable {
+                        viewModel.updateSelectImages(uri)
+                    }
+                    .border(
+                        2.dp,
+                        shape = RectangleShape,
+                        color = if (viewModel.selectImagesIn(uri)) MainColor else Color.Unspecified
+                    )
+            )
+        }
         items(images) { uri ->
             Image(
                 painter = rememberAsyncImagePainter(uri),
