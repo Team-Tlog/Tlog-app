@@ -73,7 +73,23 @@ class SnsPostViewModel: ViewModel() {
     private var _selectImages = mutableStateOf<List<Uri>>(emptyList())
     val selectImages: State<List<Uri>> = _selectImages
 
+    private var _selectedCourse = mutableStateOf(-1)
+    val selectedCourse = _selectedCourse
+
     fun updateSelectImages(uri: Uri) {
-        _selectImages.value = _selectImages.value + uri // += ?
+        if (_selectImages.value.contains(uri))
+            _selectImages.value = _selectImages.value - uri // += ?
+        else
+            _selectImages.value = _selectImages.value + uri // += ?
+    }
+
+    fun selectImagesIn(uri: Uri): Boolean {
+        if (_selectImages.value.contains(uri))
+            return true
+        return false
+    }
+
+    fun updateSelectedCourse(idx: Int) {
+        _selectedCourse.value = idx
     }
 }
