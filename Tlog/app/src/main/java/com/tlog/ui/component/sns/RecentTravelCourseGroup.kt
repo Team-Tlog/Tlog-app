@@ -3,6 +3,7 @@ package com.tlog.ui.component.sns
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,10 +67,13 @@ fun RecentTravelCourse(
         modifier = Modifier
             .padding(vertical = 10.dp)
     ) {
-        items(viewModel.recentTravelCourses.value) { item ->
+        itemsIndexed(viewModel.recentTravelCourses.value) { idx, item ->
             Column(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
+                    .clickable {
+                        viewModel.updateSelectedCourse(idx)
+                    }
             ) {
                 Image(
                     painter = painterResource(item.pictureList[0]),
@@ -77,13 +83,22 @@ fun RecentTravelCourse(
                         .size(100.dp)
                         .clip(RoundedCornerShape(15.dp))
                         .background(Color.Gray)
+                        .border(2.dp, if (viewModel.selectedCourse.value == idx) MainColor else Color.Unspecified, RoundedCornerShape(15.dp))
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
                 Text(
                     text = item.city,
-                    style = Body2Regular
+                        style =
+                            if (viewModel.selectedCourse.value == idx)
+                                TextStyle(
+                                    fontFamily = MainFont,
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
+                            else
+                                Body2Regular
                 )
             }
         }
