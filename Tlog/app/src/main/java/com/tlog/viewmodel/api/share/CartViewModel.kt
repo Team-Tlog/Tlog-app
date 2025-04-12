@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.api.share
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,9 @@ import com.tlog.data.repository.CartRepository
 import com.tlog.ui.api.travel.TravelData
 import kotlinx.coroutines.launch
 
-class CartViewModel: ViewModel() {
+class CartViewModel(
+    private val userId: String
+): ViewModel() {
     private val repository = CartRepository()
 
     init {
@@ -22,11 +23,10 @@ class CartViewModel: ViewModel() {
     fun fetchCart() {
         viewModelScope.launch {
             try {
-                val result = repository.getUserCart("94e94a78-170a-11f0-b854-02520f3d109f")
+                val result = repository.getUserCart(userId)
                 _cartList.value = result ?: emptyList() // null이면 emptyList
             } catch (e: Exception) {
-                _cartList.value = emptyList()
-                Log.e("CartViewModel", "API 실패: ${e.message}")
+                // api실패 시
             }
         }
     }
@@ -53,45 +53,4 @@ class CartViewModel: ViewModel() {
             _checkedTravelList.value = emptyList()
     }
 
-
-
-
-
-
-
-
-
-
-
-    private var _allChecked = mutableStateOf(false)
-
-
-    /*
-    val api 보낼 때 사용할 친구 = travelList.value
-    .filter { it.checked }
-    .map { it.travelData }
-     */
-
-    fun updateTravelList(newTravelList: List<TravelData>) {
-        _cartList.value = newTravelList
-    }
-
-//    fun updateChecked(index: Int, newChecked: Boolean) {
-//        val updateList = _cartList.value.toMutableList()
-//        val currentItem = updateList[index]
-//
-//        updateList[index] = currentItem.copy(checked = newChecked)
-//        _cartList.value = updateList
-//    }
-//
-//    fun allChecked() {
-//        _allChecked.value = !(_allChecked.value)
-//        _cartList.value = _cartList.value.map { // 리스트 원소 변환
-//            it.copy(checked = _allChecked.value) // copy로 checked만 변경
-//        }
-//    }
-//
-//    fun getCheckedTravelList(): List<TravelUiData> {
-//        return _cartList.value.filter { it.checked }
-//    }
 }

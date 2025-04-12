@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.tlog.ui.api.travel.component.travel.TravelList
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TopBar
@@ -35,9 +36,11 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.api.share.CartViewModel
 
 
-@Preview
 @Composable
-fun CartScreen(viewModel: CartViewModel = viewModel()) {
+fun CartScreen(
+    viewModel: CartViewModel,
+    navController: NavHostController
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()

@@ -4,16 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
-import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.share.CartScreen
-import com.tlog.ui.screen.share.NotificationScreen
-import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
-import com.tlog.ui.screen.travel.MyTravelingCourseScreen
-import com.tlog.ui.screen.sns.SNSIdCreateScreen
-import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.viewmodel.api.share.CartViewModel
+import com.tlog.viewmodel.api.share.CartViewModelFactory
 import com.tlog.viewmodel.share.MainViewModel
 
 class MainActivity : ComponentActivity() {
@@ -23,12 +25,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel: MainViewModel = viewModel()
 
-
-            //Bottom Bar를 사용한 화면 전환을 위한 컨트롤러
             val navController = rememberNavController()
-            NavHost(navController = navController)
 
-            CartScreen()
+            // CartScreen
+            var userId by remember { mutableStateOf<String?>(null) }
+
+            LaunchedEffect(Unit) {
+                userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
+            }
+
+            if (userId != null) {
+                NavHost(
+                    navController = navController,
+                    userId = userId!!
+                )
+            }
+
         }
     }
 }

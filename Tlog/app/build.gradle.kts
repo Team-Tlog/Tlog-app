@@ -84,7 +84,13 @@ dependencies {
     // OkHttp (네트워크 통신, Retrofit 내부에서 사용)
     implementation("com.squareup.okhttp3:okhttp:4.9.3")
 
-    // OkHttp Logging Interceptor (통신 로그 찍고 싶으면)
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+    // OkHttp Logging Interceptor (통신 로그 찍고 싶을 때 사용)
+    // implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
+
+    // Preferences DataStore (키-값 저장 시 사용)
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // 코루틴 사용
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
