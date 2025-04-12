@@ -13,6 +13,7 @@ import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.sns.SnsPostWriteScreen
 import com.tlog.viewmodel.share.MainViewModel
 
 class MainActivity : ComponentActivity() {
@@ -49,6 +50,8 @@ class MainActivity : ComponentActivity() {
             //TravelInfoScreen()
             //ReviewListScreen()
             //SNSIdCreateScreen()
+            //MyPageScreen()
+            SnsPostWriteScreen()
             //NotificationScreen()
             //MyPageScreen()
         }
