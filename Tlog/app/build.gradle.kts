@@ -75,5 +75,16 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
 
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Gson Converter (JSON 파싱용)
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp (네트워크 통신, Retrofit 내부에서 사용)
+    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+
+    // OkHttp Logging Interceptor (통신 로그 찍고 싶으면)
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
 }

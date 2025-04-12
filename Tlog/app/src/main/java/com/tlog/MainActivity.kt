@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.review.ReviewWritingScreen
+import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
@@ -27,30 +28,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             NavHost(navController = navController)
 
-            //TbtiTestScreen(1, 10)
-            //LoginScreen()
-            //TbtiIntroScreen()
-            //TbtiCodeInputScreen()
-            //UserInfoInputScreen()
-            //TbtiResultScreen()
-            //AddTravelDestinationScreen()
-            //SelectReviewWriteScreen()
-            //ReviewWritingScreen()
-            //ChooseMyTypeDestinationScreen()
-            //CartScreen()
-            //TeamNameCreateScreen()
-            //AiCourseSelectCartScreen()
-            //MyTeamListScreen()
-            //TeamDetailScreen()
-            //CourseInputScreen()
-            //AiRecommendCourseResultScreen()
-            //MyTravelingCourseScreen(navController)
-            //TeamTravelingCourseScreen(navController)
-            //TravelInfoScreen()
-            //ReviewListScreen()
-            //SNSIdCreateScreen()
-            //NotificationScreen()
-            //MyPageScreen()
+            CartScreen()
         }
     }
 }

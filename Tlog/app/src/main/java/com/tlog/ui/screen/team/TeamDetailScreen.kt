@@ -113,7 +113,7 @@ fun TeamDetailScreen(
                 Spacer(modifier = Modifier.height(28.dp))
 
                 TravelList(
-                    travelList = cartViewModel.travelList.value,
+                    travelList = cartViewModel.cartList.value,
                     setCheckBox = { index, checked ->
                         cartViewModel.updateChecked(index, checked)
                     },
