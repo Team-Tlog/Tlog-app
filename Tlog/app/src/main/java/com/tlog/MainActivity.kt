@@ -16,6 +16,7 @@ import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.viewmodel.api.share.CartViewModel
 import com.tlog.viewmodel.api.share.CartViewModelFactory
+
 import com.tlog.viewmodel.share.MainViewModel
 
 class MainActivity : ComponentActivity() {
@@ -27,7 +28,6 @@ class MainActivity : ComponentActivity() {
 
             val navController = rememberNavController()
 
-            // CartScreen
             var userId by remember { mutableStateOf<String?>(null) }
 
             LaunchedEffect(Unit) {
@@ -40,7 +40,6 @@ class MainActivity : ComponentActivity() {
                     userId = userId!!
                 )
             }
-
         }
     }
 }
