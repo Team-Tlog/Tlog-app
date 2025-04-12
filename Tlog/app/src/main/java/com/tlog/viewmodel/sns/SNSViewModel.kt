@@ -1,15 +1,12 @@
 package com.tlog.viewmodel.sns
 
 // ViewModel 및 데이터 모델
-import android.util.Log
-import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.tlog.data.model.sns.Comment
 import com.tlog.data.model.sns.PostData
 import com.tlog.data.model.sns.SNSIdRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 
 class SNSViewModel : ViewModel() {
     // 현재 로그인한 사용자 정보
@@ -43,7 +40,16 @@ class SNSViewModel : ViewModel() {
                     Comment("user2", "멋진 게시물이네요!")
                 ),
                 courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5","코스6", "코스7") ,
-                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요.",
+                images = listOf(   //인터넷에서 그냥 이미지 주소 복사해서 들고옴
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                )
             ),
             PostData(
                 id = "post2",
@@ -56,7 +62,14 @@ class SNSViewModel : ViewModel() {
                     Comment("user4", "좋은 정보 감사합니다."),
                 ),
                 courseTitles = listOf("코스1", "코스2", "코스3", "코스4", "코스5"),
-                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요.",
+                images = listOf(
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                )
             ),
             PostData(
                 id = "post3",
@@ -69,7 +82,11 @@ class SNSViewModel : ViewModel() {
                     Comment("user6", "흥미로운 내용이네요.")
                 ),
                 courseTitles = listOf("코스1", "코스2", "코스3"),
-                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요."
+                content = "오늘은 정말 좋은 날씨에 친구들과 함께 여행을 다녀왔습니다. 추천하는 코스를 공유합니다! 경치도 좋고 맛집도 많아서 매우 만족스러웠어요.",images = listOf(
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                    "https://img.freepik.com/free-photo/beautiful-tropical-beach-sea-ocean-with-white-cloud-blue-sky-copyspace_74190-8663.jpg?semt=ais_hybrid&w=740",
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8JUVCJUIwJTk0JUVCJThCJUE0JTIwJUVEJTkyJThEJUVBJUIyJUJEfGVufDB8fDB8fHww",
+                )
             )
         )
 

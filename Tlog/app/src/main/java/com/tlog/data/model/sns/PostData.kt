@@ -10,4 +10,5 @@ data class PostData(
     val commentsPreview: List<Comment> = emptyList(),
     val courseTitles: List<String> = emptyList(),
     val content: String,
+    val images: List<String> = emptyList(),
 )
