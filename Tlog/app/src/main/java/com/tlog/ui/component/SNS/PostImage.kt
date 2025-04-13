@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -33,14 +34,17 @@ fun PostImage(
     iconTint: Color = Color.White,
     activeIndicatorColor: Color = Color.White,
     inactiveIndicatorColor: Color = Color.Gray,
-    onPageChanged: (Int) -> Unit = {} //  현재 페이지 콜백 추가
+    pagerState: PagerState? = null, // 외부에서 제어할 수 있는 PagerState 추가
+    onPageChanged: (Int) -> Unit = {} // 현재 페이지 콜백 유지
 ) {
     if (images.isNotEmpty()) {
-        val pagerState = rememberPagerState(pageCount = { images.size })
+        // 외부에서 PagerState가 제공되지 않을 경우 내부에서 생성
+        val internalPagerState = rememberPagerState(pageCount = { images.size })
+        val effectivePagerState = pagerState ?: internalPagerState
 
         // 페이지 변경될 때마다 콜백 실행
-        LaunchedEffect(pagerState.currentPage) {
-            onPageChanged(pagerState.currentPage)
+        LaunchedEffect(effectivePagerState.currentPage) {
+            onPageChanged(effectivePagerState.currentPage)
         }
 
         Box(
@@ -49,7 +53,7 @@ fun PostImage(
                 .height(height.dp)
         ) {
             HorizontalPager(
-                state = pagerState,
+                state = effectivePagerState,
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -63,17 +67,17 @@ fun PostImage(
             }
 
             // 이미지가 여러 개인 경우 표시할 아이콘
-//            if (images.size > 1) {            //추후 추가되면 사용 하면 될 듯, 필요 없으면 삭제
-//                Icon(
-//                    painter = painterResource(id = iconResId),
-//                    contentDescription = "여러 이미지",
-//                    tint = iconTint,
-//                    modifier = Modifier
-//                        .align(Alignment.BottomEnd)
-//                        .padding(end = 12.dp, bottom = 8.dp)
-//                        .size(42.dp)
-//                )
-//            }
+            // if (images.size > 1) {            //추후 추가되면 사용 하면 될 듯, 필요 없으면 삭제
+            //     Icon(
+            //         painter = painterResource(id = iconResId),
+            //         contentDescription = "여러 이미지",
+            //         tint = iconTint,
+            //         modifier = Modifier
+            //             .align(Alignment.BottomEnd)
+            //             .padding(end = 12.dp, bottom = 8.dp)
+            //             .size(42.dp)
+            //     )
+            // }
 
             // 현재 페이지 표시기
             if (images.size > 1) {                              //테스트 할때 보기 싶게 만들어놈, 사진이 여러장일때 어떻게 표시 할지 물어보고 추후 변경 or 삭제
@@ -84,7 +88,7 @@ fun PostImage(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     repeat(images.size) { index ->
-                        val color = if (pagerState.currentPage == index) activeIndicatorColor else inactiveIndicatorColor
+                        val color = if (effectivePagerState.currentPage == index) activeIndicatorColor else inactiveIndicatorColor
                         Box(
                             modifier = Modifier
                                 .padding(horizontal = 4.dp)

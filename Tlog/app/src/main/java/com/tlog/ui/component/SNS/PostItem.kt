@@ -1,9 +1,12 @@
 package com.tlog.ui.component.SNS
 
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,11 +17,30 @@ import com.tlog.R
 import com.tlog.data.model.sns.PostData
 import com.tlog.viewmodel.sns.SNSViewModel
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PostItem(post: PostData, viewModel: SNSViewModel) {
     val displayedComments by viewModel.getDisplayedComments(post.id).collectAsState()
     val hasMoreComments by viewModel.hasMoreComments(post.id).collectAsState()
     var selectedImageIndex by remember { mutableStateOf(0) }
+
+    // 이미지 페이저 상태 생성
+    val pagerState = rememberPagerState(pageCount = { post.images.size })
+
+    // 페이저 상태와 선택된 이미지 인덱스 간의 동기화
+    LaunchedEffect(selectedImageIndex) {
+        if (pagerState.currentPage != selectedImageIndex) {
+            // 애니메이션 없이 바로 페이지 이동
+            pagerState.scrollToPage(selectedImageIndex)
+        }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        if (selectedImageIndex != pagerState.currentPage) {
+            selectedImageIndex = pagerState.currentPage
+        }
+    }
+
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // 게시물 작성자 정보
@@ -31,14 +53,23 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
         PostImage(
             images = post.images,
             iconResId = R.drawable.ic_add_circle,
+            pagerState = pagerState,
             onPageChanged = { newIndex ->
-                selectedImageIndex = newIndex
+                if (selectedImageIndex != newIndex) {
+                    selectedImageIndex = newIndex
+                }
             }
         )
 
         StepCourseBar(
             courseTitles = post.courseTitles,
-            activeStepIndex = selectedImageIndex
+            activeStepIndex = selectedImageIndex,
+            onStepClicked = { newIndex ->
+                // 클릭한 코스 인덱스가 이미지 범위 내에 있는지 확인
+                if (newIndex < post.images.size && selectedImageIndex != newIndex) {
+                    selectedImageIndex = newIndex
+                }
+            }
         )
 
         ViewCourseButton(
@@ -68,6 +99,5 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
         displayedComments.forEach { comment ->
             CommentItem(comment = comment)
         }
-
     }
 }

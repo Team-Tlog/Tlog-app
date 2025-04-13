@@ -2,6 +2,7 @@ package com.tlog.ui.component.SNS
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -34,6 +35,7 @@ fun StepCourseBar(
     lineHeight: Dp = 4.dp,
     circleSize: Dp = 16.dp,
     maxVisibleSteps: Int = 4,
+    onStepClicked: (Int) -> Unit = {} // 클릭 이벤트 콜백 추가
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val visibleSteps = courseTitles.size.coerceAtMost(maxVisibleSteps)
@@ -52,7 +54,9 @@ fun StepCourseBar(
 
                 Column(
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.width(itemWidth)
+                    modifier = Modifier
+                        .width(itemWidth)
+                        .clickable { onStepClicked(stepIndex) } // 클릭 이벤트 추가
                 ) {
                     Text(
                         text = courseTitles[stepIndex],
