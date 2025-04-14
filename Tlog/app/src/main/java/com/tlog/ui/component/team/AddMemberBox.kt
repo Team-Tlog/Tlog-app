@@ -33,8 +33,8 @@ fun AddMemberBox(
     Box(
         modifier = Modifier
             .height(31.dp)
-            .clip(RoundedCornerShape(50))
-            .background(Color(0xFF6792EF))
+            .clip(RoundedCornerShape(10.dp))
+            .background(Color(0x666792EF))
             .clickable { onClick() }
     ) {
         Row(
@@ -54,7 +54,7 @@ fun AddMemberBox(
             Spacer(modifier = Modifier.width(4.dp))
 
             Icon(
-                painter = painterResource(R.drawable.ic_add_circle),
+                painter = painterResource(R.drawable.ic_filled_add_circle),
                 contentDescription = "팀원추가",
                 tint = Color.White,
                 modifier = Modifier
