@@ -95,4 +95,6 @@ dependencies {
 
     // 코루틴 사용
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    implementation("com.kakao.sdk:v2-all:2.21.1")
 }

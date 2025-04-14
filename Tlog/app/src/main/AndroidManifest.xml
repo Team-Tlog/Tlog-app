@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
   <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -23,12 +24,26 @@
             android:theme="@style/Theme.Tlog">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <provider
+      <!--카카오 로그인용-->
+      <activity
+          android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+          android:exported="true">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data
+                  android:host="oauth"
+                  android:scheme="kakao1672339d7fda09e058a54ca329612700" /> <!-- 네이티브 앱 키 -->
+          </intent-filter>
+      </activity>
+
+
+      <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
