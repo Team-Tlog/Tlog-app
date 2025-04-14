@@ -20,7 +20,7 @@ fun TeamTravelingCourseScreen(
     viewModel: CartViewModel = viewModel(),
     teamViewModel: TeamDetailViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+    val travelList by viewModel.cartList
     var selectedDay by remember { mutableStateOf(1) }
     var selectedTab by remember { mutableStateOf(1) }
 

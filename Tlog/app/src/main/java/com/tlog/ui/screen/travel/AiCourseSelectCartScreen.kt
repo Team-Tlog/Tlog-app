@@ -82,7 +82,7 @@ fun AiCourseSelectCartScreen(viewModel: CartViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
 
             TravelList(
-                travelList = viewModel.travelList.value,
+                travelList = viewModel.cartList.value,
                 setCheckBox = { index, checked ->
                     viewModel.updateChecked(index, checked)
                 }

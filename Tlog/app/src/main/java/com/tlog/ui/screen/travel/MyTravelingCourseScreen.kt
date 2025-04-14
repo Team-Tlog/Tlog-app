@@ -17,7 +17,7 @@ fun MyTravelingCourseScreen(
     navController: NavController,
     viewModel: CartViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+    val travelList by viewModel.cartList
     var selectedDay by remember { mutableStateOf(2) }
 
     Box(

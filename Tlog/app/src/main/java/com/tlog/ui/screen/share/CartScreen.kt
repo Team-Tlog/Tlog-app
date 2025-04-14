@@ -27,17 +27,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.tlog.ui.api.travel.component.travel.TravelList
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TopBar
-import com.tlog.ui.component.travel.TravelList
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.api.share.CartViewModel
 
 
-@Preview
 @Composable
-fun CartScreen(viewModel: CartViewModel = viewModel()) {
+fun CartScreen(
+    viewModel: CartViewModel,
+    navController: NavHostController
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -73,15 +76,12 @@ fun CartScreen(viewModel: CartViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(20.dp))
 
             TravelList(
-                travelList = viewModel.travelList.value,
-                setCheckBox = { index, checked ->
-                    viewModel.updateChecked(index, checked)
-                }
+                travelList = viewModel.cartList.value,
             )
         }
 
         AnimatedVisibility( // 애니메이션
-            visible = viewModel.getCheckedTravelList().isNotEmpty(), // 체크된 List가 비어있지 않으면 띄우기
+            visible = viewModel.checkedTravelList.value.isNotEmpty(), // 체크된 List가 비어있지 않으면 띄우기
             enter = fadeIn(),
             exit = fadeOut(),
             modifier = Modifier

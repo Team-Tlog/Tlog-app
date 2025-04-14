@@ -21,7 +21,7 @@ import com.tlog.viewmodel.share.CartViewModel
 fun AiRecommendCourseResultScreen(
     viewModel: CartViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+    val travelList by viewModel.cartList
     var selectedDay by remember { mutableStateOf(1) }
 
     // 도시별로 묶기
