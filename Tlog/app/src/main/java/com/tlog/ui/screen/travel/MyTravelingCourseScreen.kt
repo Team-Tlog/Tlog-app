@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.BottomBar
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 @Composable
 fun MyTravelingCourseScreen(
     navController: NavController,
-    viewModel: CartViewModel = viewModel()
+    viewModel: TmpCartViewModel = viewModel()
 ) {
     val travelList by viewModel.cartList
     var selectedDay by remember { mutableStateOf(2) }

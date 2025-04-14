@@ -9,8 +9,8 @@ import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
-import com.tlog.viewmodel.api.share.CartViewModel
-import com.tlog.viewmodel.api.share.CartViewModelFactory
+import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.share.CartViewModelFactory
 
 @Composable
 fun NavHost(

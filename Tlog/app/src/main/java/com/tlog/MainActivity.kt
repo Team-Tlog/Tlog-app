@@ -13,9 +13,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
-import com.tlog.ui.screen.share.CartScreen
-import com.tlog.viewmodel.api.share.CartViewModel
-import com.tlog.viewmodel.api.share.CartViewModelFactory
 
 import com.tlog.viewmodel.share.MainViewModel
 

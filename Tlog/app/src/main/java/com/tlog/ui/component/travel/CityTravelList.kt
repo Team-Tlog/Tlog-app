@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
 import com.tlog.data.model.travel.TravelUiData
-import com.tlog.ui.component.travel.TravelItem
+import com.tlog.ui.component.tmp.TravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 

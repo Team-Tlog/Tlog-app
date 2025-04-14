@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.travel.TravelData
+import com.tlog.data.model.tmp.TmpTravelData
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
@@ -26,7 +26,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TravelInfoSummary(
-    travelInfo: TravelData
+    travelInfo: TmpTravelData
 ) {
     Column {
         Text(

@@ -14,12 +14,12 @@ import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.RetryButton
 import com.tlog.ui.style.BodyTitle
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun AiRecommendCourseResultScreen(
-    viewModel: CartViewModel = viewModel()
+    viewModel: TmpCartViewModel = viewModel()
 ) {
     val travelList by viewModel.cartList
     var selectedDay by remember { mutableStateOf(1) }

@@ -4,13 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.tlog.data.model.travel.Review
-import com.tlog.data.model.travel.TravelData
+import com.tlog.data.model.tmp.TmpTravelData
 
 class TravelInfoViewModel: ViewModel() {
     // 임시 뷰모델 추천 화면 리스트에서 넘겨받는 용도로 사용할거임 추후 필수적으로 수정할 것
 
-    private val _selectedTravelInfo = mutableStateOf<TravelData>(
-        TravelData(
+    private val _selectedTravelInfo = mutableStateOf<TmpTravelData>(
+        TmpTravelData(
             travelName = "서귀포",
             description = "주도의 남쪽, 푸른 바다와 울창한 숲 사이에 자리한 서귀포는 ‘자연이 만든 힐링 도시’라 불릴 만한 곳입니다.높은 빌딩도, 시끄러운 소음도 없이 모든 게 천천히 흐르고, 그 속에서 여행자는 어느새 자신의 속도대로 걷게 됩니다.\n" +
                     "정방폭포와 천지연폭포처럼 시원하게 떨어지는 폭포는 도심 속에서는 느낄 수 없는 자연의 에너지로 가득하고,외돌개, 쇠소깍, 올레길 7코스를 걷다 보면 바다와 절벽, 숲이 한꺼번에 품어주는 풍경에 마음이 차분해져요.\n" +
@@ -66,11 +66,11 @@ class TravelInfoViewModel: ViewModel() {
             )
     )
     )
-    val selectedTravelInfo: State<TravelData> = _selectedTravelInfo
+    val selectedTravelInfo: State<TmpTravelData> = _selectedTravelInfo
 
 
 
-    fun selectTravelInfo(info: TravelData) {
+    fun selectTravelInfo(info: TmpTravelData) {
         _selectedTravelInfo.value = info
     }
 

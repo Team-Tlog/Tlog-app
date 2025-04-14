@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.BottomBar
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import com.tlog.ui.component.team.TeamMemberImageGroup
 import androidx.navigation.NavController
@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 @Composable
 fun TeamTravelingCourseScreen(
     navController: NavController,
-    viewModel: CartViewModel = viewModel(),
+    viewModel: TmpCartViewModel = viewModel(),
     teamViewModel: TeamDetailViewModel = viewModel()
 ) {
     val travelList by viewModel.cartList
