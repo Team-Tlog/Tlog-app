@@ -42,6 +42,22 @@
           </intent-filter>
       </activity>
 
+      <!-- 네이버 로그인용 하지만 아직 모름-->
+      <!--
+      <activity
+          android:name="com.navercorp.nid.oauth.view.NidOAuthLoginActivity"
+          android:exported="true">
+          <intent-filter>
+              <action android:name="android.intent.action.VIEW" />
+              <category android:name="android.intent.category.DEFAULT" />
+              <category android:name="android.intent.category.BROWSABLE" />
+              <data
+                  android:scheme="naverlogin"
+                  android:host="callback" />
+          </intent-filter>
+      </activity>
+      -->
+
 
       <provider
             android:name="androidx.core.content.FileProvider"

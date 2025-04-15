@@ -12,6 +12,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.tlog.data.api.LoginRequest
 import retrofit2.Response
 
@@ -26,7 +28,7 @@ class LoginViewModel(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     }
 
-    /** 카카오 로그인 */
+    //카카오 로그인
     fun kakaoLogin(context: Context) {
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
             // 카카오톡으로 로그인 시도
@@ -53,6 +55,7 @@ class LoginViewModel(
         }
     }
 
+    //안드로이드에 카카오톡 앱이 없다면 웹뷰로 넘어가서 로그인하는 부분
     private fun loginWithKakaoAccount(context: Context) {
         UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
             if (error != null) {
@@ -70,10 +73,35 @@ class LoginViewModel(
         }
     }
 
+    //네이버 로그인
+    fun naverLogin(context: Context) {
+        NaverIdLoginSDK.authenticate(context, object : OAuthLoginCallback {
+            override fun onSuccess() {
+                val accessToken = NaverIdLoginSDK.getAccessToken()
 
-    /** 서버 로그인 */
-    /** 서버 로그인 */
-    private fun loginToServer(type: String, socialAccessToken: String) {
+                Log.d("LoginViewModel", "네이버 로그인 성공")
+                Log.d("LoginViewModel", "accessToken: $accessToken")
+
+                if (accessToken != null) {
+                    loginToServer("NAVER", accessToken)
+                } else {
+                    Log.d("LoginViewModel", "idToken null")
+                }
+            }
+
+            override fun onFailure(httpStatus: Int, message: String) {
+                Log.d("LoginViewModel", "네이버 로그인 실패 - $httpStatus: $message")
+            }
+
+            override fun onError(errorCode: Int, message: String) {
+                Log.d("LoginViewModel", "네이버 로그인 에러 - $errorCode: $message")
+            }
+        })
+    }
+
+
+    //서버로 토큰 보내고 받기
+    fun loginToServer(type: String, socialAccessToken: String) {
         viewModelScope.launch {
             try {
                 val request = LoginRequest(type = type, accessToken = socialAccessToken)
@@ -90,11 +118,8 @@ class LoginViewModel(
                     Log.d("LoginViewModel", "Authorization 헤더: $authorizationHeader")
                     Log.d("LoginViewModel", "Set-Cookie 헤더: $setCookieHeader")
 
-                    val accessToken = authorizationHeader
-                    val refreshToken = setCookieHeader
-
-                    if (accessToken != null && refreshToken != null) {
-                        saveTokens(accessToken, refreshToken)
+                    if (authorizationHeader != null && setCookieHeader != null) {
+                        saveTokens(authorizationHeader, setCookieHeader)
                         Log.d("LoginViewModel", "로그인 성공! 토큰 저장 완료")
                     } else {
                         Log.d("LoginViewModel", "로그인 성공했지만 토큰 없음")

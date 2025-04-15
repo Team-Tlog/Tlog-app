@@ -57,9 +57,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-    // Tlog
-
     // Jetpack Compose
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.ui:ui:1.5.3")
@@ -76,7 +73,6 @@ dependencies {
     // 접근 권한 (갤러리)
     implementation(libs.accompanist.permissions)
 
-
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
@@ -89,12 +85,18 @@ dependencies {
     // OkHttp Logging Interceptor (통신 로그 찍고 싶을 때 사용)
     // implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
-
     // Preferences DataStore (키-값 저장 시 사용)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 코루틴 사용
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    //카카오 로그인용 sdk
     implementation("com.kakao.sdk:v2-all:2.21.1")
+
+    //구글 로그인
+    implementation ("com.google.android.gms:play-services-auth:21.0.0")
+
+    //네이버 로그인
+    implementation ("com.navercorp.nid:oauth:5.10.0")
 }
