@@ -85,7 +85,7 @@ class LoginViewModel(
                 if (accessToken != null) {
                     loginToServer("NAVER", accessToken)
                 } else {
-                    Log.d("LoginViewModel", "idToken null")
+                    Log.d("LoginViewModel", "accessToken null")
                 }
             }
 

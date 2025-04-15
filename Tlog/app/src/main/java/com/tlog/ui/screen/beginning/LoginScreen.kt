@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.beginning
 
-import android.app.Activity
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.foundation.background
@@ -28,7 +27,6 @@ import com.tlog.viewmodel.api.beginning.LoginViewModel
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel(),
-    activity: Activity,
     googleLauncher: ActivityResultLauncher<Intent>
 ) {
     val context = LocalContext.current

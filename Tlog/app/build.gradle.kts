@@ -16,6 +16,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //Manifest에서 사용하는 용도
+        //카카오 네이티브 앱키
+        manifestPlaceholders["KakaoScheme"] = "kakao${project.property("KAKAO_NATIVE_APP_KEY")}"
+
+        //실제 코드에서 사용하는 용도
+        //구글 클라이언트 ID
+        buildConfigField("String","GOOGLE_WEB_CLIENT_ID", "\"${project.findProperty("GOOGLE_WEB_CLIENT_ID")}\"")
+        //카카오 네이티브 앱키
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${project.findProperty("KAKAO_NATIVE_APP_KEY")}\"")
+        //네이버 클라이언트 ID, 클라이언트 시크릿
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${project.findProperty("NAVER_CLIENT_ID")}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${project.findProperty("NAVER_CLIENT_SECRET")}\"")
     }
 
     buildTypes {
@@ -36,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
