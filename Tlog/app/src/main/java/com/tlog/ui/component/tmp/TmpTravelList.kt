@@ -13,7 +13,7 @@ import com.tlog.data.model.travel.TravelUiData
 
 
 @Composable
-fun TravelList(
+fun TmpTravelList(
     travelList: List<TravelUiData>,
     setCheckBox: (Int, Boolean) -> Unit,
     listState: LazyListState = rememberLazyListState()
@@ -22,7 +22,7 @@ fun TravelList(
         state = listState
     ) {
         itemsIndexed(travelList) { index, item ->
-            TravelItem(
+            TmpTravelItem(
                 index = index,
                 travelName = item.travelData.travelName,
                 travelDescription = item.travelData.description,

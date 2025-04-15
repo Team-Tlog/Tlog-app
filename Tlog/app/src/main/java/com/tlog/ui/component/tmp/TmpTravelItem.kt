@@ -30,7 +30,7 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun TravelItem(
+fun TmpTravelItem(
     index: Int,
     travelName: String,
     travelDescription: String,

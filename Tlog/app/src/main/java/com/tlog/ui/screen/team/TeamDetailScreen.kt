@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.tmp.TravelList
+import com.tlog.ui.component.tmp.TmpTravelList
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
@@ -112,7 +112,7 @@ fun TeamDetailScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                TravelList(
+                TmpTravelList(
                     travelList = cartViewModel.cartList.value,
                     setCheckBox = { index, checked ->
                         cartViewModel.updateChecked(index, checked)

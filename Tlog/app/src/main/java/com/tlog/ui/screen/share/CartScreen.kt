@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TopBar
-import com.tlog.ui.component.tmp.TravelList
+import com.tlog.ui.component.travel.TravelList
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.share.CartViewModel
