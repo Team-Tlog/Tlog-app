@@ -1,4 +1,4 @@
-package com.tlog.viewmodel.api.share
+package com.tlog.viewmodel.share
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

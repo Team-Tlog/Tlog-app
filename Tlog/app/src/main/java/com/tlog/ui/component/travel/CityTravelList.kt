@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
 import com.tlog.data.model.travel.TravelUiData
-import com.tlog.ui.component.travel.TravelItem
+import com.tlog.ui.component.tmp.TmpTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 
@@ -68,7 +68,7 @@ fun CityTravelList(
             Column {
                 travelItems.forEachIndexed { index, item ->
                     Box(modifier = Modifier.fillMaxWidth()) {
-                        TravelItem(
+                        TmpTravelItem(
                             index = index,
                             travelName = item.travelData.travelName,
                             travelDescription = item.travelData.description,

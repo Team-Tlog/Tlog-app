@@ -14,9 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.travel.TravelList
+import com.tlog.ui.component.tmp.TmpTravelList
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
 import com.tlog.ui.component.team.SmallDesign
@@ -30,7 +30,7 @@ enum class PageState { DEFAULT, SMALL, MEDIUM, BIG }
 @Preview(showBackground = true)
 @Composable
 fun TeamDetailScreen(
-    cartViewModel: CartViewModel = viewModel(),
+    cartViewModel: TmpCartViewModel = viewModel(),
     teamDetailViewModel: TeamDetailViewModel = viewModel()
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
@@ -112,7 +112,7 @@ fun TeamDetailScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                TravelList(
+                TmpTravelList(
                     travelList = cartViewModel.cartList.value,
                     setCheckBox = { index, checked ->
                         cartViewModel.updateChecked(index, checked)

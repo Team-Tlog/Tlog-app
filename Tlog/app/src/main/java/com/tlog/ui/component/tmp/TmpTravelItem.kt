@@ -1,4 +1,4 @@
-package com.tlog.ui.api.travel.component.travel
+package com.tlog.ui.component.tmp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,19 +23,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
-import com.tlog.ui.api.travel.TravelData
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.api.share.CartViewModel
 
 
 @Composable
-fun TravelItem(
-    viewModel: CartViewModel = viewModel(),
-    travel: TravelData
+fun TmpTravelItem(
+    index: Int,
+    travelName: String,
+    travelDescription: String,
+    hashTags: List<String>,
+    checked: Boolean = false,
+    setCheckBox: (Int, Boolean) -> Unit,
+    showCheckbox: Boolean = true
 ) {
     Row(
         modifier = Modifier
@@ -45,7 +47,7 @@ fun TravelItem(
     ) {
         Image(
             painter = painterResource(id = R.drawable.test_image),
-            contentDescription = "${travel.name} 사진",
+            contentDescription = "$travelName 사진",
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp))
@@ -58,14 +60,14 @@ fun TravelItem(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = travel.name,
+                text = travelName,
                 style = Body1Bold
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "대충 설명 글",
+                text = travelDescription,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -74,30 +76,31 @@ fun TravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(listOf("단풍", "가을")) // 태그 예시임
+            HashTagsGroup(hashTags) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))
 
         IconButton(
-            onClick = { viewModel.updateCheckedTravelList(travel.name) },
+            onClick = { setCheckBox(index, !checked) },
             modifier = Modifier.fillMaxHeight()
         ) {
-            Spacer(modifier = Modifier.width(25.dp))
-            IconButton(
-                onClick = { viewModel.updateCheckedTravelList(travel.name) },
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                Icon(
-                    painter =
-                        if (viewModel.isChecked(travel.name))
-                            painterResource(R.drawable.ic_checkbox_checked)
-                        else
-                            painterResource(R.drawable.ic_checkbox_unchecked),
-                    contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
-                    tint = Color.Unspecified
-                )
-
+            if (showCheckbox) {
+                Spacer(modifier = Modifier.width(25.dp))
+                IconButton(
+                    onClick = { setCheckBox(index, !checked) },
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    Icon(
+                        painter =
+                            if (checked)
+                                painterResource(R.drawable.ic_checkbox_checked)
+                            else
+                                painterResource(R.drawable.ic_checkbox_unchecked),
+                        contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
+                        tint = Color.Unspecified
+                    )
+                }
             }
         }
     }
