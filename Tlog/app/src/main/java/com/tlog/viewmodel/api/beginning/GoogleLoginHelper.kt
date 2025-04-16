@@ -7,6 +7,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
+import com.tlog.BuildConfig
 
 object GoogleLoginHelper {
 
@@ -15,7 +16,7 @@ object GoogleLoginHelper {
     // 초기화 - ApplicationContext에서 한 번만
     fun init(context: Context, webClientId: String) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(webClientId)  // 웹 어플리케이션 클라이언트 ID 필요
+            .requestIdToken(BuildConfig.GOOGLE_CLIENT_ID)  // 웹 어플리케이션 클라이언트 ID
             .requestEmail()
             .build()
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tlog"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -38,7 +39,7 @@
               <category android:name="android.intent.category.BROWSABLE" />
               <data
                   android:host="oauth"
-                  android:scheme="kakao1672339d7fda09e058a54ca329612700"/>
+                  android:scheme="${KakaoScheme}"/>
               <!-- 카카오 네이티브 앱 키 gradle.properties에 숨김(gradle.properties 파일 .gitignore 적용)-->
           </intent-filter>
       </activity>

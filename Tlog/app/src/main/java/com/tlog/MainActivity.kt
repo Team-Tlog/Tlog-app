@@ -2,16 +2,20 @@ package com.tlog
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.viewmodel.api.beginning.GoogleLoginManager
 import com.tlog.viewmodel.api.beginning.LoginViewModel
 import com.tlog.viewmodel.api.beginning.LoginViewModelFactory
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+import android.content.pm.PackageManager
 
 class MainActivity : ComponentActivity() {
     private val ComponentActivity.dataStore by preferencesDataStore(name = "user_prefs")
@@ -20,12 +24,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val loginViewModel = ViewModelProvider(this, LoginViewModelFactory(dataStore))[LoginViewModel::class.java]
+        printSha1Key() // SHA1 키 로그 출력
+
+        val loginViewModel =
+            ViewModelProvider(this, LoginViewModelFactory(dataStore))[LoginViewModel::class.java]
 
         val googleLoginManager = GoogleLoginManager(
             activity = this,
             viewModel = loginViewModel,
-            webClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID
+            webClientId = BuildConfig.GOOGLE_CLIENT_ID
         )
 
         setContent {
@@ -37,25 +44,43 @@ class MainActivity : ComponentActivity() {
             )
         }
 
+        /*
+        val mainViewModel: MainViewModel = viewModel()
 
-            /*
-            val mainViewModel: MainViewModel = viewModel()
+        val navController = rememberNavController()
 
-            val navController = rememberNavController()
+        var userId by remember { mutableStateOf<String?>(null) }
 
-            var userId by remember { mutableStateOf<String?>(null) }
-
-            LaunchedEffect(Unit) {
-                userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
-            }
-
-            if (userId != null) {
-                NavHost(
-                    navController = navController,
-                    userId = userId!!
-                )
-            }
-            */
+        LaunchedEffect(Unit) {
+            userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
         }
 
+        if (userId != null) {
+            NavHost(
+                navController = navController,
+                userId = userId!!
+            )
+        }
+        */
+    }
+
+    private fun printSha1Key() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+            val signatures = info.signingInfo?.apkContentsSigners
+            if (signatures != null) {
+                for (signature in signatures) {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    val sha1Bytes = md.digest()
+                    val sha1Hex = sha1Bytes.joinToString(":") { "%02X".format(it) }
+                    Log.d("SHA1_KEY", "현재 SHA1: $sha1Hex")
+                }
+            } else {
+                Log.e("SHA1_KEY", "signatures가 null입니다.")
+            }
+        } catch (e: Exception) {
+            Log.e("SHA1_KEY", "SHA1 추출 실패: ${e.message}")
+        }
+    }
 }
