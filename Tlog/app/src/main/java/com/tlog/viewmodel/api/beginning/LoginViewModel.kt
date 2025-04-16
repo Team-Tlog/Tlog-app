@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kakao.sdk.user.UserApiClient
 import com.tlog.api.LoginApi
 import com.tlog.api.RetrofitInstance
 import kotlinx.coroutines.launch
@@ -12,8 +11,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.navercorp.nid.NaverIdLoginSDK
-import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.tlog.data.api.LoginRequest
 import retrofit2.Response
 
@@ -28,93 +25,33 @@ class LoginViewModel(
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
     }
 
-    //카카오 로그인
+    // Kakao Manager 사용
     fun kakaoLogin(context: Context) {
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(context)) {
-            // 카카오톡으로 로그인 시도
-            UserApiClient.instance.loginWithKakaoTalk(context) { token, error ->
-                if (error != null) {
-                    Log.d("LoginViewModel", "카카오톡 로그인 실패: ${error.localizedMessage}")
-
-                    // 사용자가 카카오톡 설치했지만, 로그인 취소한 경우
-                    if (error is com.kakao.sdk.common.model.ClientError && error.reason == com.kakao.sdk.common.model.ClientErrorCause.Cancelled) {
-                        Log.d("LoginViewModel", "사용자가 로그인 취소")
-                        return@loginWithKakaoTalk
-                    }
-
-                    // 다른 이유로 카카오톡 로그인 실패 → 카카오계정(웹뷰) 로그인 시도
-                    loginWithKakaoAccount(context)
-                } else if (token != null) {
-                    Log.d("LoginViewModel", "카카오톡 로그인 성공")
-                    loginToServer("KAKAO", token.accessToken)
-                }
-            }
-        } else {
-            // 카카오톡 설치 안 되어있으면 → 카카오계정(웹뷰) 로그인 바로 시도
-            loginWithKakaoAccount(context)
-        }
+        KakaoLoginManager(context) { token ->
+            loginToServer("KAKAO", token)
+        }.login()
     }
 
-    //안드로이드에 카카오톡 앱이 없다면 웹뷰로 넘어가서 로그인하는 부분
-    private fun loginWithKakaoAccount(context: Context) {
-        UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
-            if (error != null) {
-                Log.d("LoginViewModel", "카카오계정 로그인 실패: ${error.localizedMessage}")
-
-                if (error is com.kakao.sdk.common.model.ClientError && error.reason == com.kakao.sdk.common.model.ClientErrorCause.Cancelled) {
-                    Log.d("LoginViewModel", "사용자가 계정 로그인 취소")
-                    return@loginWithKakaoAccount
-                }
-            } else if (token != null) {
-                Log.d("LoginViewModel", "카카오계정 로그인 성공")
-                Log.d("LoginViewModel", "카카오 accessToken: ${token.accessToken}")
-                loginToServer("KAKAO", token.accessToken)
-            }
-        }
-    }
-
-    //네이버 로그인
+    // Naver Manager 사용
     fun naverLogin(context: Context) {
-        NaverIdLoginSDK.authenticate(context, object : OAuthLoginCallback {
-            override fun onSuccess() {
-                val accessToken = NaverIdLoginSDK.getAccessToken()
-
-                Log.d("LoginViewModel", "네이버 로그인 성공")
-                Log.d("LoginViewModel", "accessToken: $accessToken")
-
-                if (accessToken != null) {
-                    loginToServer("NAVER", accessToken)
-                } else {
-                    Log.d("LoginViewModel", "accessToken null")
-                }
-            }
-
-            override fun onFailure(httpStatus: Int, message: String) {
-                Log.d("LoginViewModel", "네이버 로그인 실패 - $httpStatus: $message")
-            }
-
-            override fun onError(errorCode: Int, message: String) {
-                Log.d("LoginViewModel", "네이버 로그인 에러 - $errorCode: $message")
-            }
-        })
+        NaverLoginManager(context) { token ->
+            loginToServer("NAVER", token)
+        }.login()
     }
 
-
-    //서버로 토큰 보내고 받기
+    // 서버로 로그인 요청
     fun loginToServer(type: String, socialAccessToken: String) {
         viewModelScope.launch {
             try {
                 val request = LoginRequest(type = type, accessToken = socialAccessToken)
                 val response: Response<Unit> = loginApi.ssoLogin(request)
 
-                // 디버깅용 전체 헤더 출력
                 Log.d("LoginViewModel", "서버 응답 전체 헤더: ${response.headers().toMultimap()}")
 
                 if (response.isSuccessful) {
                     val authorizationHeader = response.headers()["authorization"]
                     val setCookieHeader = response.headers()["set-cookie"]
 
-                    // 디버깅용 개별 헤더 출력
                     Log.d("LoginViewModel", "Authorization 헤더: $authorizationHeader")
                     Log.d("LoginViewModel", "Set-Cookie 헤더: $setCookieHeader")
 
@@ -132,7 +69,6 @@ class LoginViewModel(
             }
         }
     }
-
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String) {
         dataStore.edit { preferences ->

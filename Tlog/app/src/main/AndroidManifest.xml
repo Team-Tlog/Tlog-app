@@ -38,7 +38,7 @@
               <category android:name="android.intent.category.BROWSABLE" />
               <data
                   android:host="oauth"
-                  android:scheme="${KakaoScheme}" />
+                  android:scheme="kakao1672339d7fda09e058a54ca329612700"/>
               <!-- 카카오 네이티브 앱 키 gradle.properties에 숨김(gradle.properties 파일 .gitignore 적용)-->
           </intent-filter>
       </activity>

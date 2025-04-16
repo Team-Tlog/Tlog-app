@@ -10,13 +10,16 @@ import com.google.android.gms.common.api.ApiException
 class GoogleLoginManager(
     private val activity: ComponentActivity,
     private val viewModel: LoginViewModel,
-    private val webClientId: String
+    webClientId: String
 ) {
-    lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
-    fun registerLauncher(): ActivityResultLauncher<Intent> {
+    init {
         GoogleLoginHelper.init(activity, webClientId)
+        registerLauncher()
+    }
 
+    private fun registerLauncher() {
         launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             val task = GoogleLoginHelper.getLoginAccountFromIntent(result.data!!)
             try {
@@ -30,7 +33,10 @@ class GoogleLoginManager(
                 Log.e("GoogleLogin", "구글 로그인 실패: ${e.message}")
             }
         }
+    }
 
-        return launcher
+    fun startLogin() {
+        val intent = GoogleLoginHelper.getLoginIntent()
+        launcher.launch(intent)
     }
 }
