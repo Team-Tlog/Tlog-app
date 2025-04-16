@@ -5,12 +5,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.tlog.data.repository.CartRepository
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.viewmodel.share.CartViewModel
-import com.tlog.viewmodel.share.CartViewModelFactory
 
 @Composable
 fun NavHost(
@@ -35,9 +35,17 @@ fun NavHost(
             MyTravelingCourseScreen(navController)
         }
         composable("cart") {
-            // 받아온 userId 넣기
+            val factory = object : CartViewModel.AssistedFactory {
+                override fun create(userId: String): CartViewModel {
+                    return CartViewModel(
+                        repository = CartRepository(),
+                        userId = userId
+                    )
+                }
+            }
+
             val cartViewModel: CartViewModel = viewModel(
-                factory = CartViewModelFactory(userId)
+                factory = CartViewModel.provideFactory(factory, userId)
             )
             CartScreen(
                 viewModel = cartViewModel,
