@@ -1,5 +1,6 @@
 package com.tlog.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -11,11 +12,12 @@ import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.share.MainViewModel
 
 @Composable
 fun NavHost(
     navController: NavHostController,
-    userId: String
+    mainViewModel: MainViewModel
 ) {
     NavHost(navController = navController, startDestination = "cart") {
         composable("main") {
@@ -39,13 +41,13 @@ fun NavHost(
                 override fun create(userId: String): CartViewModel {
                     return CartViewModel(
                         repository = CartRepository(),
-                        userId = userId
+                        userId = mainViewModel.userId.value!!
                     )
                 }
             }
 
             val cartViewModel: CartViewModel = viewModel(
-                factory = CartViewModel.provideFactory(factory, userId)
+                factory = CartViewModel.provideFactory(factory, mainViewModel.userId.value!!)
             )
             CartScreen(
                 viewModel = cartViewModel,
