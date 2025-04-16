@@ -3,24 +3,25 @@ package com.tlog.viewmodel.share
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.repository.CartRepository
 import com.tlog.ui.api.travel.TravelData
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
 
-class CartViewModel(
-    private val userId: String
+
+class CartViewModel @AssistedInject constructor(
+    private val repository: CartRepository,
+    @Assisted private val userId: String
 ): ViewModel() {
-    private val repository = CartRepository()
 
     init {
         fetchCart()
     }
 
-    private var _cartList = mutableStateOf<List<TravelData>>(emptyList())
-    val cartList: State<List<TravelData>> = _cartList
-
-    fun fetchCart() {
+    private fun fetchCart() {
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
@@ -31,6 +32,12 @@ class CartViewModel(
         }
     }
 
+
+
+
+
+    private var _cartList = mutableStateOf<List<TravelData>>(emptyList())
+    val cartList: State<List<TravelData>> = _cartList
 
     private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
     val checkedTravelList: State<List<String>> = _checkedTravelList
@@ -53,4 +60,23 @@ class CartViewModel(
             _checkedTravelList.value = emptyList()
     }
 
+
+    @dagger.assisted.AssistedFactory
+    interface AssistedFactory {
+        fun create(userId: String): CartViewModel
+    }
+
+    companion object {
+        fun provideFactory(
+            factory: AssistedFactory,
+            userId: String
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return factory.create(userId) as T
+            }
+        }
+    }
 }
+
+

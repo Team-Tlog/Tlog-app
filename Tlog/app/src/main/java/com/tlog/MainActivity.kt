@@ -30,11 +30,12 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
             }
+            mainViewModel.set(userId)
 
             if (userId != null) {
                 NavHost(
                     navController = navController,
-                    userId = userId!!
+                    mainViewModel = mainViewModel
                 )
             }
         }
