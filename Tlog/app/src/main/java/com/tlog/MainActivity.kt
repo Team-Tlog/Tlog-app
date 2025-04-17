@@ -14,7 +14,6 @@ import com.tlog.viewmodel.api.beginning.GoogleLoginManager
 import com.tlog.viewmodel.api.beginning.LoginViewModel
 import com.tlog.viewmodel.api.beginning.LoginViewModelFactory
 import java.security.MessageDigest
-import java.security.NoSuchAlgorithmException
 import android.content.pm.PackageManager
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        printSha1Key() // SHA1 키 로그 출력
+        //SHA1 키 로그 출력
+        printSha1Key()
 
         val loginViewModel =
             ViewModelProvider(this, LoginViewModelFactory(dataStore))[LoginViewModel::class.java]
@@ -64,6 +64,7 @@ class MainActivity : ComponentActivity() {
         */
     }
 
+    //sha1키 출력하는 함수
     private fun printSha1Key() {
         try {
             val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
@@ -74,13 +75,14 @@ class MainActivity : ComponentActivity() {
                     md.update(signature.toByteArray())
                     val sha1Bytes = md.digest()
                     val sha1Hex = sha1Bytes.joinToString(":") { "%02X".format(it) }
-                    Log.d("SHA1_KEY", "현재 SHA1: $sha1Hex")
+                    Log.d("SHA1_KEY", "현재 SHA1 키: $sha1Hex")
                 }
             } else {
-                Log.e("SHA1_KEY", "signatures가 null입니다.")
+                Log.e("SHA1_KEY", "서명 정보가 없습니다.")
             }
         } catch (e: Exception) {
-            Log.e("SHA1_KEY", "SHA1 추출 실패: ${e.message}")
+            Log.e("SHA1_KEY", "SHA1 키 추출 실패: ${e.message}")
         }
     }
+
 }
