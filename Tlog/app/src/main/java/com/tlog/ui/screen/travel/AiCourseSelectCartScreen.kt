@@ -28,16 +28,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.travel.TravelList
+import com.tlog.ui.component.tmp.TmpTravelList
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 
 
 @Preview
 @Composable
-fun AiCourseSelectCartScreen(viewModel: CartViewModel = viewModel()) {
+fun AiCourseSelectCartScreen(viewModel: TmpCartViewModel = viewModel()) {
 
     Box(
         modifier = Modifier
@@ -81,7 +81,7 @@ fun AiCourseSelectCartScreen(viewModel: CartViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            TravelList(
+            TmpTravelList(
                 travelList = viewModel.cartList.value,
                 setCheckBox = { index, checked ->
                     viewModel.updateChecked(index, checked)

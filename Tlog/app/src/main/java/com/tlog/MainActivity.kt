@@ -15,6 +15,17 @@ import com.tlog.viewmodel.api.beginning.LoginViewModel
 import com.tlog.viewmodel.api.beginning.LoginViewModelFactory
 import java.security.MessageDigest
 import android.content.pm.PackageManager
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.tlog.data.local.UserPreferences
+import com.tlog.ui.navigation.NavHost
+import com.tlog.viewmodel.share.MainViewModel
+
 
 class MainActivity : ComponentActivity() {
     private val ComponentActivity.dataStore by preferencesDataStore(name = "user_prefs")
@@ -48,7 +59,7 @@ class MainActivity : ComponentActivity() {
         val mainViewModel: MainViewModel = viewModel()
 
         val navController = rememberNavController()
-
+        
         var userId by remember { mutableStateOf<String?>(null) }
 
         LaunchedEffect(Unit) {
@@ -62,6 +73,23 @@ class MainActivity : ComponentActivity() {
             )
         }
         */
+        
+        
+        
+        
+         /* DI
+            LaunchedEffect(Unit) {
+                userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
+            }
+            mainViewModel.set(userId)
+
+            if (userId != null) {
+                NavHost(
+                    navController = navController,
+                    mainViewModel = mainViewModel
+                )
+                */
+                
     }
 
     //sha1키 출력하는 함수

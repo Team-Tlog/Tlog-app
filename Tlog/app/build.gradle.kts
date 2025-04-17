@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("org.jetbrains.kotlin.kapt")
+    //id("com.google.dagger.hilt.android") version "2.48"// Hilt
 }
 
 android {
@@ -70,6 +72,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    // Tlog
     // Jetpack Compose
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.ui:ui:1.5.3")
@@ -112,4 +116,15 @@ dependencies {
 
     //네이버 로그인
     implementation ("com.navercorp.nid:oauth:5.10.0")
+
+
+    // hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    // ViewModel에서 Hilt 쓰려면 추가
+    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    // Navigation Compose + Hilt 연동 (Compose 쓰면 필요)
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
 }
