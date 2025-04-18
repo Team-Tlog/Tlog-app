@@ -18,6 +18,18 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        //Manifest에서 사용하는 용도
+        //카카오 네이티브 앱키
+        manifestPlaceholders["KakaoScheme"] = "kakao${project.findProperty("KAKAO_NATIVE_APP_KEY")}"
+
+        //실제 코드에서 사용하는 용도
+        //구글 클라이언트 ID
+        buildConfigField("String","GOOGLE_CLIENT_ID", "\"${project.findProperty("GOOGLE_CLIENT_ID")}\"")
+        //카카오 네이티브 앱키
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${project.findProperty("KAKAO_NATIVE_APP_KEY")}\"")
+        //네이버 클라이언트 ID, 클라이언트 시크릿
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"${project.findProperty("NAVER_CLIENT_ID")}\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${project.findProperty("NAVER_CLIENT_SECRET")}\"")
     }
 
     buildTypes {
@@ -38,6 +50,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -61,7 +74,6 @@ dependencies {
 
 
     // Tlog
-
     // Jetpack Compose
     implementation("androidx.activity:activity-compose:1.7.2")
     implementation("androidx.compose.ui:ui:1.5.3")
@@ -78,7 +90,6 @@ dependencies {
     // 접근 권한 (갤러리)
     implementation(libs.accompanist.permissions)
 
-
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
 
@@ -91,12 +102,20 @@ dependencies {
     // OkHttp Logging Interceptor (통신 로그 찍고 싶을 때 사용)
     // implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 
-
     // Preferences DataStore (키-값 저장 시 사용)
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     // 코루틴 사용
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    //카카오 로그인용 sdk
+    implementation("com.kakao.sdk:v2-all:2.21.1")
+
+    //구글 로그인
+    implementation ("com.google.android.gms:play-services-auth:21.0.0")
+
+    //네이버 로그인
+    implementation ("com.navercorp.nid:oauth:5.10.0")
 
 
     // hilt
@@ -107,4 +126,5 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.0.0")
     // Navigation Compose + Hilt 연동 (Compose 쓰면 필요)
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
 }
