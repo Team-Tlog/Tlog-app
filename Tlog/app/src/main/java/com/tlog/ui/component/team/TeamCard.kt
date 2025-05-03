@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
-import com.tlog.data.model.TeamData
+import com.tlog.data.api.TeamData
 
 @Composable
 fun TeamCard(team: TeamData) {
@@ -45,7 +45,8 @@ fun TeamCard(team: TeamData) {
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = team.teamDestination,
+                    text = //team.teamDestination, //아직 백에서 만들어지지 않음 나중에 dataclass에 추가 필요
+                        "여행지",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Light,
                     fontFamily = MainFont,
@@ -53,14 +54,16 @@ fun TeamCard(team: TeamData) {
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = "팀장: ${team.teamLeader}",
+                    text = //"팀장: ${team.teamLeader}", //아직 백에서 만들어지지 않음 나중에 dataclss에 추가 필요
+                        "팀장",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = MainFont,
                 )
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy((-8).dp)) {
+            /*
+            Row(horizontalArrangement = Arrangement.spacedBy((-8).dp)) { // 아직 백에서 만들어지지 않음 나중에 dataclass에 추가 필요
                 team.memberImage.forEach { imageResId ->
                     Image(
                         painter = painterResource(id = imageResId),
@@ -71,7 +74,7 @@ fun TeamCard(team: TeamData) {
                             .clip(CircleShape)
                     )
                 }
-            }
+            }*/
         }
 
     }

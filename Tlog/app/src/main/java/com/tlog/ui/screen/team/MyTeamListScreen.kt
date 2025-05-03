@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,12 +18,18 @@ import com.tlog.ui.component.team.TeamCard
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.team.MyTeamListViewModel
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun MyTeamListScreen(
+    userId: String, // userId를 파라미터로 받아야 함
     viewModel: MyTeamListViewModel = viewModel()
 ) {
-    val teams by viewModel.teams // State<List<TeamData>>에서 값 추출
+    val teams by viewModel.teams
+
+    // 화면 진입 시 userId로 팀 목록 요청
+    LaunchedEffect(userId) {
+        viewModel.fetchTeamsFromServer(userId)
+    }
 
     Column(
         modifier = Modifier

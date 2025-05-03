@@ -1,4 +1,7 @@
-package com.tlog.ui.api.travel
+package com.tlog.data.model.travel
+
+import com.tlog.ui.api.travel.Location
+import com.tlog.ui.api.travel.Tag
 
 data class TravelData(
     val name: String,

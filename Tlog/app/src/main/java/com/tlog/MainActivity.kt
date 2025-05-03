@@ -2,7 +2,6 @@ package com.tlog
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,7 +23,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
+import com.tlog.ui.screen.team.MyTeamListScreen
+
 import com.tlog.viewmodel.share.MainViewModel
+import com.tlog.viewmodel.team.MyTeamListViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -47,12 +49,28 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            /*
             LoginScreen(
                 viewModel = loginViewModel,
                 onGoogleLoginClick = {
                     googleLoginManager.startLogin()
                 }
-            )
+            )*/
+            val navController = rememberNavController()
+            var userId by remember { mutableStateOf<String?>(null) }
+
+            LaunchedEffect(Unit) {
+                // 실제 userId를 불러오기
+                userId = UserPreferences.getUserId(this@MainActivity)
+                    ?: "94e94a78-170a-11f0-b854-02520f3d109f" //  테스트용 userId
+            }
+
+            if (userId != null) {
+                MyTeamListScreen(
+                    userId = userId!!,
+                    viewModel = viewModel()
+                )
+            }
         }
 
         /*

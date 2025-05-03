@@ -3,7 +3,7 @@ package com.tlog.data.repository
 import android.util.Log
 import com.tlog.api.RetrofitInstance
 import com.tlog.api.UserApi
-import com.tlog.ui.api.travel.TravelData
+import com.tlog.data.model.travel.TravelData
 import retrofit2.create
 
 class CartRepository {
