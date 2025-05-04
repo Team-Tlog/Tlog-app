@@ -1,4 +1,4 @@
-package com.tlog.viewmodel.api.beginning
+package com.tlog.viewmodel.beginning.login
 
 import android.content.Context
 import android.util.Log
@@ -7,23 +7,19 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.LoginApi
 import com.tlog.api.RetrofitInstance
 import kotlinx.coroutines.launch
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.tlog.data.api.LoginRequest
+import com.tlog.data.local.UserPreferences
+import com.tlog.viewmodel.api.beginning.KakaoLoginManager
+import com.tlog.viewmodel.api.beginning.NaverLoginManager
 import retrofit2.Response
 
-class LoginViewModel(
-    private val dataStore: DataStore<Preferences>
-) : ViewModel() {
 
+class LoginViewModel(
+    private val userPreferences: UserPreferences,
+    private val context: Context
+) : ViewModel() {
     private val loginApi = RetrofitInstance.getInstance().create(LoginApi::class.java)
 
-    companion object {
-        private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
-        private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
-    }
 
     // Kakao Manager 사용
     fun kakaoLogin(context: Context) {
@@ -71,9 +67,10 @@ class LoginViewModel(
     }
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String) {
-        dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN_KEY] = accessToken
-            preferences[REFRESH_TOKEN_KEY] = refreshToken
-        }
+        userPreferences.saveTokensAndUserId(
+            context = context,
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
 }
