@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.team.MyTeamListScreen
+import com.tlog.ui.screen.team.TeamNameCreateScreen
 
 import com.tlog.viewmodel.share.MainViewModel
 import com.tlog.viewmodel.team.MyTeamListViewModel
@@ -62,7 +63,7 @@ class MainActivity : ComponentActivity() {
             LaunchedEffect(Unit) {
                 // 실제 userId를 불러오기
                 userId = UserPreferences.getUserId(this@MainActivity)
-                    ?: "94e94a78-170a-11f0-b854-02520f3d109f" //  테스트용 userId
+                    ?: "9888b62b-170a-11f0-b854-02520f3d109f" //  테스트용 userId
             }
 
             if (userId != null) {
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
         val mainViewModel: MainViewModel = viewModel()
 
         val navController = rememberNavController()
-        
+
         var userId by remember { mutableStateOf<String?>(null) }
 
         LaunchedEffect(Unit) {
@@ -91,10 +92,10 @@ class MainActivity : ComponentActivity() {
             )
         }
         */
-        
-        
-        
-        
+
+
+
+
          /* DI
             LaunchedEffect(Unit) {
                 userId = UserPreferences.getUserId(this@MainActivity) ?: "94e94a78-170a-11f0-b854-02520f3d109f"
@@ -107,7 +108,7 @@ class MainActivity : ComponentActivity() {
                     mainViewModel = mainViewModel
                 )
                 */
-                
+
     }
 
     //sha1키 출력하는 함수

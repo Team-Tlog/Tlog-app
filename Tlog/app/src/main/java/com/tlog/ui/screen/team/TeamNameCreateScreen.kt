@@ -23,9 +23,11 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
-@Preview
 @Composable
-fun TeamNameCreateScreen(viewModel: TeamNameViewModel = viewModel()) {
+fun TeamNameCreateScreen(
+    userId: String,
+    viewModel: TeamNameViewModel = viewModel()
+) {
 
     Column(
         modifier = Modifier
@@ -59,7 +61,9 @@ fun TeamNameCreateScreen(viewModel: TeamNameViewModel = viewModel()) {
         if (viewModel.TeamName.value.isNotEmpty()) {
             MainButton(
                 text = "팀 생성하기",
-                onClick = { Log.d("Team Create", "my click!!") },
+                onClick = {
+                    viewModel.createTeam(userId)
+                },
                 modifier = Modifier
                     .height(70.dp)
                     .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
