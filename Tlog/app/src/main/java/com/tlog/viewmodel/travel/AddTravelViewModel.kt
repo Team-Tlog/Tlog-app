@@ -1,4 +1,4 @@
-package com.tlog.viewmodel.review
+package com.tlog.viewmodel.travel
 
 import android.net.Uri
 import android.util.Log

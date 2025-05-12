@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.review
 
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
@@ -33,8 +31,7 @@ import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.review.AddTravelViewModel
-import dagger.hilt.android.AndroidEntryPoint
+import com.tlog.viewmodel.travel.AddTravelViewModel
 
 
 //@Preview
