@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.review
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
 import com.tlog.ui.component.share.HashtagInputGroup
@@ -33,11 +34,12 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.review.AddTravelViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-@Preview
+//@Preview
 @Composable
-fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
+fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = hiltViewModel()) {
     val scrollState = rememberScrollState()
 
     Column(
@@ -143,10 +145,19 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.height(15.dp))
 
-        PhotoUploadBox( // 추후 사진을 어떻게 크기를 줄일지 생각해보면 좋을 듯 성능적으로도, 우리 용량적으로도
-            images = viewModel.imageList.value,
+        //val context = androidx.compose.ui.platform.LocalContext.current
+        val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+            contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+        ) { uri ->
+            uri?.let {
+                viewModel.addImage(it)
+            }
+        }
+
+        PhotoUploadBox(
+            images = listOf(viewModel.imageUri.value),
             onAddClick = {
-                Log.d("PhotoUpload", "my click!!")
+                imagePickerLauncher.launch("image/*")
             }
         )
 
@@ -155,10 +166,12 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = viewModel()) {
         MainButton(
             text = "여행지 등록하기",
             onClick = {
+                viewModel.addNewTravel()
                 Log.d("addTravel", "my click!!")
                 viewModel.clearImages()
                 viewModel.clearHashTags()
             },
+            enabled = viewModel.checkInput(),
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
         )

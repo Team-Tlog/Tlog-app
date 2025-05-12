@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
-import com.tlog.ui.api.travel.TravelData
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.launch
@@ -36,8 +36,8 @@ class CartViewModel @AssistedInject constructor(
 
 
 
-    private var _cartList = mutableStateOf<List<TravelData>>(emptyList())
-    val cartList: State<List<TravelData>> = _cartList
+    private var _cartList = mutableStateOf<List<Travel>>(emptyList())
+    val cartList: State<List<Travel>> = _cartList
 
     private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
     val checkedTravelList: State<List<String>> = _checkedTravelList
