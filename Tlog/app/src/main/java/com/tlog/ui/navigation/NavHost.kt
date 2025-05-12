@@ -9,6 +9,7 @@ import com.tlog.data.repository.CartRepository
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
+import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.viewmodel.share.CartViewModel
@@ -56,6 +57,8 @@ fun NavHost(
         }
         composable("addTravel") {
             AddTravelDestinationScreen()
+        composable("post2") {
+            SnsPostWriteDetailScreen()
         }
 
     }
