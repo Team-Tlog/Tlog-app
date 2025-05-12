@@ -9,12 +9,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.ui.api.travel.TravelData
+import com.tlog.data.model.travel.Travel
 
 
 @Composable
 fun TravelList(
-    travelList: List<TravelData>,
+    travelList: List<Travel>,
     listState: LazyListState = rememberLazyListState()
 ) {
     LazyColumn(

@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
-import com.tlog.ui.api.travel.TravelData
+import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -35,7 +35,7 @@ import com.tlog.viewmodel.share.CartViewModel
 @Composable
 fun TravelItem(
     viewModel: CartViewModel = viewModel(),
-    travel: TravelData
+    travel: Travel
 ) {
     Row(
         modifier = Modifier
