@@ -32,7 +32,7 @@ fun TeamCard(team: TeamData) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.Bottom,
+            verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
@@ -54,8 +54,7 @@ fun TeamCard(team: TeamData) {
                 )
                 Spacer(modifier = Modifier.height(15.dp))
                 Text(
-                    text = //"팀장: ${team.teamLeader}", //아직 백에서 만들어지지 않음 나중에 dataclss에 추가 필요
-                        "팀장",
+                    text = team.teamLeaderName,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = MainFont,
