@@ -1,4 +1,4 @@
-package com.tlog.ui.api.travel
+package com.tlog.data.model.share
 
 data class Tag(
     val tagId: String,

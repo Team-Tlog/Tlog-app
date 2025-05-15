@@ -1,10 +1,10 @@
-package com.tlog.viewmodel.review
+package com.tlog.viewmodel.tmp
 
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
-class AddTravelViewModel: ViewModel() {
+class TmpAddTravelViewModel: ViewModel() {
     private var _travelName = mutableStateOf("")
     val travelName = _travelName
     private var _travelAddress = mutableStateOf("")
@@ -15,7 +15,8 @@ class AddTravelViewModel: ViewModel() {
     val isPetFriendly = _isPetFriendly
     private var _hashTag = mutableStateOf("")
     val hashTag = _hashTag
-    private var _hashTags = mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
+    private var _hashTags =
+        mutableStateOf<List<String>>(listOf("단풍", "관광")) // 테스트용 2개 추후 로직 생성 시 삭제할 것
     val hashTags = _hashTags
     private var _travelDescription = mutableStateOf("")
     val travelDescription = _travelDescription
@@ -64,5 +65,3 @@ class AddTravelViewModel: ViewModel() {
         _imageList.value = emptyList()
     }
 }
-
-

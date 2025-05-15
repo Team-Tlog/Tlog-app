@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tlog.data.repository.CartRepository
+import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -19,7 +20,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "post2") {
+    NavHost(navController = navController, startDestination = "addTravel") {
         composable("main") {
             // 메인화면으로 수정해야함
             NotificationScreen(navController, previousSelectedIndex = 0)
@@ -54,6 +55,8 @@ fun NavHost(
                 navController = navController
             )
         }
+        composable("addTravel") {
+            AddTravelDestinationScreen()
         composable("post2") {
             SnsPostWriteDetailScreen()
         }

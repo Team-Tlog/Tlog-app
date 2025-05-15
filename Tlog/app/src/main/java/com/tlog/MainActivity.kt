@@ -20,8 +20,10 @@ import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import com.tlog.viewmodel.share.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,22 +58,25 @@ class MainActivity : ComponentActivity() {
 
 
 
-            LoginScreen(
-                viewModel = loginViewModel,
-                onGoogleLoginClick = {
-                    googleLoginManager.startLogin()
-                }
-            )
 
-            Log.d("MainActivity", "hi "+mainViewModel.userId.value?:"없음")
-            Log.d("MainActivity", "hi2 "+mainViewModel.accessToken.value?:"없음")
-            Log.d("MainActivity", "hi3 "+mainViewModel.refreshToken.value?:"없음")
+
+//            Log.d("MainActivity", "hi "+mainViewModel.userId.value?:"없음")
+//            Log.d("MainActivity", "hi2 "+mainViewModel.accessToken.value?:"없음")
+//            Log.d("MainActivity", "hi3 "+mainViewModel.refreshToken.value?:"없음")
 
 
             if (userId != null && accessToken != null) {
                 NavHost(
                     navController = navController,
                     mainViewModel = mainViewModel
+                )
+            }
+            else {
+                LoginScreen(
+                    viewModel = loginViewModel,
+                    onGoogleLoginClick = {
+                        googleLoginManager.startLogin()
+                    }
                 )
             }
         }
