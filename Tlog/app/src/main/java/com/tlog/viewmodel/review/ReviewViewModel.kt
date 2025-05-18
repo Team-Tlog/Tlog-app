@@ -23,8 +23,7 @@ import kotlinx.coroutines.launch
 class ReviewViewModel @Inject constructor(
     private val repository: ReviewRepository
 ): ViewModel() {
-
-
+    
     // api 결과에 따른 이벤트 값
     sealed class UiEvent {
         object ReviewSuccess: UiEvent()
