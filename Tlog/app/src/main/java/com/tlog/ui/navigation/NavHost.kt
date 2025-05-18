@@ -63,7 +63,7 @@ fun NavHost(
             SnsPostWriteDetailScreen()
         }
         composable("review") {
-            ReviewWritingScreen()
+            ReviewWritingScreen(navController = navController)
         }
 
     }

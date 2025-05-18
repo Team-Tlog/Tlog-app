@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.review
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -42,20 +43,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
+import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 
 
 //@Preview
 @Composable
-fun ReviewWritingScreen(viewModel: ReviewViewModel = hiltViewModel()) {
+fun ReviewWritingScreen(
+    viewModel: ReviewViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
     val scrollState = rememberScrollState()
     var showHelp by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context)
+        viewModel.initUserId(context) // user Id 가져오기 -> cart에도 이 방식으로 수정하기 !!
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ReviewSuccess -> {
+                    navController.navigate("main") {
+                        popUpTo("main") { inclusive = false } // 메인 화면을 제외하고 모두 제거
+                    }
+                }
+                is UiEvent.ReviewError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     Surface(
