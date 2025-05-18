@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.review
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -38,17 +40,42 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.review.ReviewViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
+import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 
 
-@Preview
+//@Preview
 @Composable
-fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
+fun ReviewWritingScreen(
+    viewModel: ReviewViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
     val scrollState = rememberScrollState()
     var showHelp by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.initUserId(context) // user Id 가져오기 -> cart에도 이 방식으로 수정하기 !!
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ReviewSuccess -> {
+                    navController.navigate("main") {
+                        popUpTo("main") { inclusive = false } // 메인 화면을 제외하고 모두 제거
+                    }
+                }
+                is UiEvent.ReviewError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     Surface(
         modifier = Modifier
@@ -78,10 +105,10 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(22.dp))
 
             StarRating(
-                rating = viewModel.starCnt.value,
+                rating = viewModel.rating.value,
                 onStarClicked = {
-                    viewModel.updateStarCnt(it)
-                    Log.d("starCnt", viewModel.starCnt.value.toString())
+                    viewModel.updateRating(it)
+                    Log.d("starCnt", viewModel.rating.value.toString())
                 }
             )
 
@@ -108,10 +135,18 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(26.dp))
 
+            val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+                contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+            ) { uri ->
+                uri?.let {
+                    viewModel.addImage(it)
+                }
+            }
+
             PhotoUploadBox(
                 images = viewModel.imageList.value,
                 onAddClick = {
-                    Log.d("addImage", "my click!!")
+                    imagePickerLauncher.launch("image/*")
                 }
             )
 
@@ -138,7 +173,9 @@ fun ReviewWritingScreen(viewModel: ReviewViewModel = viewModel()) {
 
             MainButton(
                 text = "리뷰 등록하기",
-                onClick = { Log.d("addReview", "my click!!") },
+                onClick = {
+                    viewModel.addReview()
+                },
                 modifier = Modifier
                     .height(70.dp)
                     .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
