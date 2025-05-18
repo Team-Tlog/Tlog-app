@@ -1,6 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ReviewRequest
 import com.tlog.data.model.travel.Travel
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -11,4 +12,10 @@ interface TravelApi {
         @Body travel: Travel
     ): BaseResponse<String?>
 
+    @POST("/api/reviews")
+    suspend fun addReview(
+        @Body reviewRequest: ReviewRequest
+    ): BaseResponse<String?>
+
 }
+
