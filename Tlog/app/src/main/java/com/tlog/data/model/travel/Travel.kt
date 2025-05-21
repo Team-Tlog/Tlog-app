@@ -1,15 +1,18 @@
 package com.tlog.data.model.travel
 
-import com.tlog.ui.api.travel.Location
-import com.tlog.ui.api.travel.Tag
+import com.tlog.data.model.Location
 
-data class TravelData(
+
+// AddTravel
+data class Travel(
     val name: String,
     val address: String,
     val location: Location,
-    val rating: Int,
     val city: String,
+    val district: String,
     val hasParking: Boolean,
     val petFriendly: Boolean,
-    val tags: List<Tag>
+    val imageUri: String,
+    val description: String,
+    val customTags: List<String>
 )

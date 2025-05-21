@@ -1,4 +1,4 @@
-package com.tlog.ui.api.travel
+package com.tlog.data.model
 
 data class Location(
     val longitude: String,

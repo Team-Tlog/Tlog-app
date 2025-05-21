@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import android.util.Log
 import com.google.android.gms.common.api.ApiException
+import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 class GoogleLoginManager(
     private val activity: ComponentActivity,
