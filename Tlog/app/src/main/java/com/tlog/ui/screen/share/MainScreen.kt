@@ -826,11 +826,113 @@ fun MainScreen(
 
 
 
+            // ISSUE
+
+            data class TmpIssue(
+                val title: String,
+                val content: String,
+                val image: Int,
+                val hashTagList: List<String>
+            )
+
+            val tmpIssueList = listOf(
+                TmpIssue(
+                    title = "더현대 서울 팝업스토어",
+                    content = "000과 000의 만남",
+                    image = R.drawable.tmp_jeju,
+                    hashTagList = listOf("팝업스토어", "서울")
+                ),
+                TmpIssue(
+                    title = "영남대학교 맛집 소개",
+                    content = "불맛 제육의 1티어 !!",
+                    image = R.drawable.destination_img,
+                    hashTagList = listOf("맛집", "한식")
+                ),
+                TmpIssue(
+                    title = "광안리 회 축제",
+                    content = "회 무한리필",
+                    image = R.drawable.tmp_flower,
+                    hashTagList = listOf("회", "부산")
+                )
+            )
+            Spacer(modifier = Modifier.height(43.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = "ISSUE",
+                    style = BodyTitle,
+                    modifier = Modifier
+                        .padding(start = 24.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                tmpIssueList.forEach { tmpIssue ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 28.dp, vertical = 20.dp)
+                    ) {
+                        Column (
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(158.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                            ) {
+                                Image(
+                                    painter = painterResource(id = tmpIssue.image),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(14.dp))
+
+                            Text(
+                                text = tmpIssue.title,
+                                style = TextStyle(
+                                    fontFamily = MainFont,
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(
+                                text = tmpIssue.content,
+                                style = TextStyle(
+                                    fontFamily = MainFont,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Light
+                                )
+                            )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            BlueHashTagGroup(tmpIssue.hashTagList)
+                        }
+                    }
+                }
+            }
+
 
 
 
 
 
         }
+
+
+
     }
 }
