@@ -85,7 +85,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "팀 생성",
             onClick = {
-                navController.navigate("createTeam")
+                navController.navigate("recommendDestination")
             },
             modifier = Modifier
                 .fillMaxWidth()

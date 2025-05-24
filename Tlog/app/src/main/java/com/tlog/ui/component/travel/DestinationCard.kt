@@ -1,30 +1,25 @@
 package com.tlog.ui.component.travel
 
-import  androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.TravelDestinationData
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.theme.MainFont
+import coil.compose.AsyncImage
 
 @Composable
 fun DestinationCard(
@@ -42,8 +37,8 @@ fun DestinationCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+            AsyncImage(
+                model = destination.imageUrl,
                 contentDescription = destination.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

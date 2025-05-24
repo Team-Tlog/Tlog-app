@@ -19,7 +19,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
@@ -27,7 +29,9 @@ import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 
 @Composable
-fun TravelDestinationRecommendation(viewModel: TravelDestinationRecommendationViewModel = viewModel()) {
+fun TravelDestinationRecommendation(
+    viewModel: TravelDestinationRecommendationViewModel = hiltViewModel(),
+    navController: NavHostController) {
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
     val scrollState = rememberScrollState()

@@ -16,7 +16,7 @@ class RecommendDestinationRepository @Inject constructor(
     suspend fun getDestinations(): TravelRecommendPagedResponse<TravelDestinationResponse>{
         val result = retrofitInstance.getDestinations(
             page = 0,
-            size = 20,
+            size = 5,
             sort = "rating,desc"
         )
         Log.d("RecommendDestinationRepository", "getDestination: $result")

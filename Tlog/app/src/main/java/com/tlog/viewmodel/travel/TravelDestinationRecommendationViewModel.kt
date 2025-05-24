@@ -2,10 +2,18 @@ package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tlog.api.RetrofitInstance
+import com.tlog.api.TeamApi
+import com.tlog.api.TravelApi
 import com.tlog.data.model.TravelDestinationData
 import com.tlog.data.model.travel.TravelDestinationResponse
+import com.tlog.data.repository.MyTeamListRepository
 import com.tlog.data.repository.RecommendDestinationRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -61,4 +69,16 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
             }
         }
     }*/
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object RecommendDestinationModule {
+    @Provides
+    fun provideRecommendDestinationRepository(
+        travelApi: TravelApi
+    ): RecommendDestinationRepository {
+        return RecommendDestinationRepository(travelApi)
+    }
+
 }

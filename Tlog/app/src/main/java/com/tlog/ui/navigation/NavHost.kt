@@ -15,6 +15,7 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
+import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.viewmodel.share.CartViewModel
 import com.tlog.viewmodel.share.MainViewModel
 
@@ -72,6 +73,9 @@ fun NavHost(
         }
         composable("createTeam") {
             TeamNameCreateScreen(navController = navController)
+        }
+        composable("recommendDestination") {
+            TravelDestinationRecommendation(navController = navController)
         }
 
     }
