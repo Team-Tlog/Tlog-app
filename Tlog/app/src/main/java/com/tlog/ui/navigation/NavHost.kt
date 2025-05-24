@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import com.tlog.data.repository.CartRepository
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
+import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -23,7 +24,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "teamList") {
+    NavHost(navController = navController, startDestination = "searchReview") {
         composable("main") {
             // 메인화면으로 수정해야함
             NotificationScreen(navController, previousSelectedIndex = 0)
@@ -72,6 +73,9 @@ fun NavHost(
         }
         composable("createTeam") {
             TeamNameCreateScreen(navController = navController)
+        }
+        composable("searchReview") {
+            SelectReviewWriteScreen(navController = navController)
         }
 
     }
