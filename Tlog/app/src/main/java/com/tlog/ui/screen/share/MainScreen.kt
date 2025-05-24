@@ -151,6 +151,54 @@ fun MainScreen(
             }
 
 
+            // 아이콘 배너
+            val iconList = mapOf(
+                "AI 추천 코스" to R.drawable.ai,
+                "리뷰 쓰기" to R.drawable.review_write,
+                "지도에서 보기" to R.drawable.looking_map,
+                "내 팀보기" to R.drawable.my_team,
+                "스크랩" to R.drawable.scrap,
+                "지도 채우기" to R.drawable.fill_map
+            )
+
+            LazyRow(
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+            ) {
+                iconList.forEach { name, icon ->
+                    item {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .width(70.dp)
+                                //.size(height = 62.dp, width = 70.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = icon),
+                                contentDescription = null,
+                                tint = Color.Unspecified,
+                                modifier = Modifier
+                                    .height((41.25).dp)
+                                    .width((49.5).dp)
+                                    .padding(8.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(7.dp))
+
+                            Text(
+                                text = name,
+                                style = TextStyle(
+                                    fontFamily = MainFont,
+                                    fontSize = 10.sp,
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            )
+                        }
+                    }
+                }
+            }
+
 
 
 
