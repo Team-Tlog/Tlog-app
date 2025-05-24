@@ -31,12 +31,13 @@ fun TeamCard(team: TeamData) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(horizontal = 20.dp),
-            verticalAlignment = Alignment.Top,
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
-                Spacer(modifier = Modifier.height(20.dp))
+                //Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = team.teamName,
                     fontSize = 15.sp,
