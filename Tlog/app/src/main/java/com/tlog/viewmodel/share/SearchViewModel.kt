@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.MinimalTravel
 import com.tlog.api.RetrofitInstance
 import com.tlog.api.SearchApi
-import com.tlog.api.TravelApi
-import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -16,7 +14,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
