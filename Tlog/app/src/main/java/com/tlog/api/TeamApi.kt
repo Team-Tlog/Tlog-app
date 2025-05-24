@@ -13,10 +13,10 @@ interface TeamApi {
     @GET("/api/team")
     suspend fun getTeamList(
         @Query("userId") userId: String
-    ): Response<BaseResponse<List<TeamData>>>
+    ): BaseResponse<List<TeamData>>
 
     @POST("/api/team")
     suspend fun createTeam(
         @Body request: CreateTeamRequest
-    ): Response<BaseResponse<String>>
+    ): BaseResponse<String>
 }

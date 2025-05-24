@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.team
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,22 +13,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.team.TeamNameInputField
 import com.tlog.ui.component.share.TopBar
+import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
 @Composable
 fun TeamNameCreateScreen(
-    userId: String,
-    viewModel: TeamNameViewModel = viewModel()
+    viewModel: TeamNameViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.initUserId(context)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ApiSuccess -> {
+                    navController.popBackStack()
+                }
+                is UiEvent.ApiError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -62,7 +82,7 @@ fun TeamNameCreateScreen(
             MainButton(
                 text = "팀 생성하기",
                 onClick = {
-                    viewModel.createTeam(userId)
+                    viewModel.createTeam()
                 },
                 modifier = Modifier
                     .height(70.dp)

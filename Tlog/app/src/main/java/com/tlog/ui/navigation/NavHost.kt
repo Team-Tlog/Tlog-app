@@ -11,6 +11,8 @@ import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
+import com.tlog.ui.screen.team.MyTeamListScreen
+import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.viewmodel.share.CartViewModel
@@ -21,7 +23,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "review") {
+    NavHost(navController = navController, startDestination = "teamList") {
         composable("main") {
             // 메인화면으로 수정해야함
             NotificationScreen(navController, previousSelectedIndex = 0)
@@ -64,6 +66,12 @@ fun NavHost(
         }
         composable("review") {
             ReviewWritingScreen(navController = navController)
+        }
+        composable("teamList") {
+            MyTeamListScreen(navController = navController)
+        }
+        composable("createTeam") {
+            TeamNameCreateScreen(navController = navController)
         }
 
     }
