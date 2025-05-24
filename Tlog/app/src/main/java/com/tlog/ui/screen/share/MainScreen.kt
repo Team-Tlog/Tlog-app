@@ -95,6 +95,60 @@ fun MainScreen(
 
 
 
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // 추천 박스
+            val recommendList = listOf(
+                "RENA를 위한 9월\n추천 여행지",
+                "ABCD를 위한 9월\n추천 여행지",
+                "지금 핫한\n제주 여행지"
+            )
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(208.dp)
+                    .padding(horizontal = 24.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                recommendList.forEach { recommend ->
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .size(width = 312.dp, height = 188.dp)
+                                .clickable {
+                                    //navController.navigate("detail")
+                                }
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.destination_img),
+                                contentDescription = recommend,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(10.dp))
+
+                            )
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = 26.dp, bottom = 20.dp, start = 29.dp)
+                            ) {
+                                Text(
+                                    text = recommend,
+                                    style = TextStyle(
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White
+                                    )
+                                )
+
+                                Spacer(modifier = Modifier.weight(1f))
+                            }
+                        }
+                    }
+                }
+            }
 
 
 
