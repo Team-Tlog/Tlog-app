@@ -3,7 +3,6 @@ package com.tlog.api
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.TeamData
 import com.tlog.data.api.CreateTeamRequest
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

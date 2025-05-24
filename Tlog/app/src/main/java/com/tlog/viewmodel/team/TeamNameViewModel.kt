@@ -29,7 +29,7 @@ class TeamNameViewModel @Inject constructor(
         data class ApiError(val message: String): UiEvent()
     }
 
-    private val _eventFlow = MutableSharedFlow<TeamNameViewModel.UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private var userId: String? = null
@@ -59,10 +59,10 @@ class TeamNameViewModel @Inject constructor(
                 )
                 when (result.status) {
                     200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    else -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "Unknown error"))
+                    else -> _eventFlow.emit(UiEvent.ApiError(result.message))
                 }
             } catch (e: Exception) {
-                _eventFlow.emit(TeamNameViewModel.UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
             }
         }
     }

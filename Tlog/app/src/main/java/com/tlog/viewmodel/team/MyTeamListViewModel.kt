@@ -30,7 +30,7 @@ class MyTeamListViewModel @Inject constructor(
         data class ApiError(val message: String) : UiEvent()
     }
 
-    private val _eventFlow = MutableSharedFlow<MyTeamListViewModel.UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
     private val _teamList = mutableStateOf<List<TeamData>>(emptyList())
@@ -56,7 +56,7 @@ class MyTeamListViewModel @Inject constructor(
                     else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
                 }
             } catch (e: Exception) {
-                _eventFlow.emit(MyTeamListViewModel.UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
             }
         }
     }
