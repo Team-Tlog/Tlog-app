@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -28,6 +29,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -36,8 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.tlog.R
+import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
 
@@ -171,7 +174,7 @@ fun MainScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .width(70.dp)
-                                //.size(height = 62.dp, width = 70.dp)
+                            //.size(height = 62.dp, width = 70.dp)
                         ) {
                             Icon(
                                 painter = painterResource(id = icon),
@@ -203,10 +206,6 @@ fun MainScreen(
             Spacer(modifier = Modifier.height(38.dp))
 
 
-
-
-
-
             // 지역 별 여행지
             val cityMap = mapOf(
                 "서울" to R.drawable.google_login_icon,
@@ -226,7 +225,7 @@ fun MainScreen(
                 "강원" to R.drawable.google_login_icon,
                 "제주" to R.drawable.google_login_icon
                 // 세종 어카지?
-                )
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -256,31 +255,31 @@ fun MainScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             rowItems.forEach { (name, image) ->
-                               Column(
-                                   horizontalAlignment = Alignment.CenterHorizontally,
-                                   verticalArrangement = Arrangement.spacedBy(space = 5.dp),
-                                   modifier = Modifier
-                                       .clickable {}
-                               ) {
-                                   Icon(
-                                       painter = painterResource(id = image),
-                                       contentDescription = null,
-                                       tint = Color.Unspecified,
-                                       modifier = Modifier
-                                           .size(size = 60.dp)
-                                           .clip(shape = CircleShape)
-                                   )
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(space = 5.dp),
+                                    modifier = Modifier
+                                        .clickable {}
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = image),
+                                        contentDescription = null,
+                                        tint = Color.Unspecified,
+                                        modifier = Modifier
+                                            .size(size = 60.dp)
+                                            .clip(shape = CircleShape)
+                                    )
 
-                                   Text(
-                                       text = name,
-                                       style = TextStyle(
-                                           fontSize = 12.sp,
-                                           fontWeight = FontWeight.Medium,
-                                           color = Color.Black
-                                       ),
-                                       textAlign = TextAlign.Center
-                                   )
-                               }
+                                    Text(
+                                        text = name,
+                                        style = TextStyle(
+                                            fontSize = 12.sp,
+                                            fontWeight = FontWeight.Medium,
+                                            color = Color.Black
+                                        ),
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
                             }
                         }
                     }
@@ -303,6 +302,7 @@ fun MainScreen(
                 val description: String,
                 val image: Int
             )
+
             val popularCourseList = listOf(
                 Course(
                     title = "서울 청계천",
@@ -398,6 +398,264 @@ fun MainScreen(
 
 
 
+
+
+
+
+
+
+
+
+            // 추천 여행지
+            data class TmpTravel(
+                val title: String,
+                val image: Int
+            )
+
+            data class RecommendTravel(
+                val title: String,
+                val description: String,
+                val travelList: List<TmpTravel>
+            )
+
+            val recommendTravelList = listOf(
+                RecommendTravel(
+                    title = "봄인데, 벚꽃보러 갈래요?",
+                    description = "국내 벚꽃 명소 보러가기",
+                    travelList = listOf(
+                        TmpTravel(
+                            title = "여의도 한강공원",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "월미도 감꽃축제",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "대구 이월드",
+                            image = R.drawable.tmp_flower
+                        )
+                    )
+                ),
+                RecommendTravel(
+                    title = "봄인데, 벚꽃보러 갈래요?",
+                    description = "국내 벚꽃 명소 보러가기",
+                    travelList = listOf(
+                        TmpTravel(
+                            title = "여의도 한강공원",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "월미도 감꽃축제",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "대구 이월드",
+                            image = R.drawable.tmp_flower
+                        )
+                    )
+                ),
+                RecommendTravel(
+                    title = "봄인데, 벚꽃보러 갈래요?",
+                    description = "국내 벚꽃 명소 보러가기",
+                    travelList = listOf(
+                        TmpTravel(
+                            title = "여의도 한강공원",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "월미도 감꽃축제",
+                            image = R.drawable.tmp_flower
+                        ),
+                        TmpTravel(
+                            title = "대구 이월드",
+                            image = R.drawable.tmp_flower
+                        )
+                    )
+                )
+            )
+
+            Spacer(modifier = Modifier.height(42.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .background(Color.White)
+            ) {
+                Text(
+                    text = "추천 여행지",
+                    style = BodyTitle,
+                    color = Color.Black
+                )
+
+                Spacer(modifier = Modifier.height(15.dp))
+
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                ) {
+                    recommendTravelList.forEach { item ->
+                        item {
+                            Column(
+                                modifier = Modifier
+                                    .width(320.dp)
+                                    .padding((0.5).dp)
+                                    .shadow(1.dp, RoundedCornerShape(10.dp))
+                                    .background(Color.White)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .fillMaxWidth()
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.tmp_flower),
+                                        contentDescription = "",
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(123.dp)
+                                    )
+
+                                    // 뷸러
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .height(46.dp)
+                                            .align(Alignment.TopCenter)
+                                            .offset(y = 95.dp)
+                                            .background(
+                                                brush = Brush.verticalGradient(
+                                                    colors = listOf(Color.Transparent, Color.White)
+                                                )
+                                            )
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.height(23.dp))
+
+
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                    //.padding(top = 141.dp)
+                                ) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 24.dp, end = 20.dp)
+                                    ) {
+                                        Column {
+                                            Text(
+                                                text = item.title,
+                                                style = Body1Bold,
+                                                color = Color.Black
+                                            )
+
+                                            Spacer(modifier = Modifier.height(4.dp))
+
+                                            Text(
+                                                text = item.description,
+                                                style = TextStyle(
+                                                    fontFamily = MainFont,
+                                                    fontSize = 11.sp,
+                                                    fontWeight = FontWeight.Normal,
+                                                    color = Color.Black
+                                                )
+                                            )
+                                        }
+
+                                        Spacer(modifier = Modifier.weight(1f))
+
+                                        Box(
+                                            modifier = Modifier
+                                                .size(height = 31.dp, width = 63.dp)
+                                                .clip(RoundedCornerShape(50.dp))
+                                                .background(Color(0xFFF0F5FF)),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Row(
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Text(
+                                                    text = "더보기",
+                                                    style = TextStyle(
+                                                        fontFamily = MainFont,
+                                                        fontSize = 10.sp,
+                                                        fontWeight = FontWeight.SemiBold,
+                                                        color = Color(0xFF676767)
+                                                    )
+                                                )
+
+                                                Spacer(modifier = Modifier.width(4.dp))
+
+                                                // 더보기
+                                                Icon(
+                                                    painter = painterResource(id = R.drawable.ic_add_circle),
+                                                    contentDescription = "plus",
+                                                    tint = Color(0xFF676767),
+                                                    modifier = Modifier.size(11.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+
+                                    Spacer(modifier = Modifier.height(18.dp))
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 23.dp, end = 15.dp),
+                                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                                    ) {
+                                        item.travelList.forEach { travel ->
+                                            Row(
+                                                modifier = Modifier
+                                                    .height(34.dp)
+                                                    .fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                Image(
+                                                    painter = painterResource(travel.image),
+                                                    contentDescription = "travel",
+                                                    contentScale = ContentScale.Crop,
+                                                    modifier = Modifier
+                                                        .size(34.dp)
+                                                        .clip(CircleShape)
+                                                )
+
+                                                Spacer(modifier = Modifier.width(9.dp))
+
+                                                Text(
+                                                    text = travel.title,
+                                                    style = TextStyle(
+                                                        fontFamily = MainFont,
+                                                        fontSize = 10.sp,
+                                                        fontWeight = FontWeight.Light,
+                                                        color = Color.Black
+                                                    )
+                                                )
+
+                                                Spacer(modifier = Modifier.weight(1f))
+
+                                                Icon(
+                                                    painter = painterResource(R.drawable.ic_right_arrow),
+                                                    contentDescription = travel.title,
+                                                    tint = Color.Black,
+                                                    modifier = Modifier
+                                                        .size(24.dp)
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 
 
