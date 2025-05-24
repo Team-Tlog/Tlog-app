@@ -295,6 +295,104 @@ fun MainScreen(
 
 
 
+            Spacer(modifier = Modifier.height(height = 49.dp))
+
+
+            data class Course(
+                val title: String,
+                val description: String,
+                val image: Int
+            )
+            val popularCourseList = listOf(
+                Course(
+                    title = "서울 청계천",
+                    description = "서울 중심에 위치한 청계천 코스",
+                    image = R.drawable.destination_img
+                ),
+                Course(
+                    title = "서울",
+                    description = "서울 중심에 위치한 청계천 코스",
+                    image = R.drawable.destination_img
+                ),
+                Course(
+                    title = "광명 여행",
+                    description = "서울 중심에 위치한 청계천 코스",
+                    image = R.drawable.destination_img
+                ),
+                Course(
+                    title = "대구 이월드 부근",
+                    description = "서울 중심에 위치한 청계천 코스",
+                    image = R.drawable.destination_img
+                )
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(space = 27.dp)
+                ) {
+                    Text(
+                        text = "인기 코스",
+                        style = BodyTitle
+                    )
+
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(height = 146.dp)
+                    ) {
+                        popularCourseList.forEach { course ->
+                            item {
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 16.dp)
+                                        .clip(shape = RoundedCornerShape(size = 10.dp))
+                                        .background(color = Color.Gray)
+                                        .clip(shape = RoundedCornerShape(size = 10.dp))
+                                        .clickable { }
+                                ) {
+                                    Image(
+                                        painter = painterResource(id = course.image),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Crop,
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                    )
+
+                                    Column(
+                                        verticalArrangement = Arrangement.spacedBy(space = 30.dp),
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .padding(top = 24.dp, start = 24.dp)
+                                    ) {
+                                        Text(
+                                            text = course.title,
+                                            style = TextStyle(
+                                                fontFamily = MainFont,
+                                                fontSize = 24.sp,
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White
+                                            )
+                                        )
+
+                                        Text(
+                                            text = course.description,
+                                            style = TextStyle(
+                                                fontFamily = MainFont,
+                                                fontSize = 13.sp,
+                                                fontWeight = FontWeight.Light,
+                                                color = Color.White
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 
 
