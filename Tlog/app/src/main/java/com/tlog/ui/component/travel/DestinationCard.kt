@@ -1,6 +1,6 @@
 package com.tlog.ui.component.travel
 
-import androidx.compose.foundation.Image
+import  androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,19 +22,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.TravelDestinationData
+import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun DestinationCard(
-    destination: TravelDestinationData,
-    onFavoriteToggle: (String) -> Unit,
-    onClick: (TravelDestinationData) -> Unit
+    destination: TravelDestinationResponse,
+    //isFavorite: Boolean,
+    //onFavoriteToggle: (String) -> Unit,
+    onClick: (TravelDestinationResponse) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .width(312.dp)
             .height(188.dp)
             .clip(RoundedCornerShape(20.dp))
             .clickable { onClick(destination) },
@@ -74,10 +75,9 @@ fun DestinationCard(
                                 contentDescription = null,
                                 tint = Color.White,
                             )
-
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = destination.location,
+                                text = destination.city,
                                 color = Color.White,
                                 fontFamily = MainFont,
                                 fontWeight = FontWeight.Normal,
@@ -85,15 +85,18 @@ fun DestinationCard(
                             )
                         }
                     }
+                    /*
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_heart),        //추후 하트 이미지 다시 적용해야함, 현재 채워진 하트 오류로 삽입불가
+                        painter = painterResource(id = R.drawable.ic_heart),
                         contentDescription = "Favorite",
-                        tint = if (destination.isFavorite) Color.Red else Color.White,
+                        tint = if (isFavorite) Color.Red else Color.White,
                         modifier = Modifier
                             .size(31.dp)
                             .clickable { onFavoriteToggle(destination.id) }
                     )
+                    */
                 }
+
                 Spacer(modifier = Modifier.height(69.dp))
 
                 Row(
@@ -101,7 +104,7 @@ fun DestinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HashTagsGroup(hashTags = destination.tags)
+                    HashTagsGroup(hashTags = destination.tagCountList.map { it.tagName })
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -113,7 +116,7 @@ fun DestinationCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             fontFamily = MainFont,
-                            text = "${destination.rating}(${destination.reviewCount})",
+                            text = "${destination.averageRating}(${destination.reviewCount})",
                             color = Color.White,
                             fontWeight = FontWeight.Light,
                             fontSize = 12.sp

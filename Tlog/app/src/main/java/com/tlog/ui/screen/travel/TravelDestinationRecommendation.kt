@@ -26,7 +26,6 @@ import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 
-@Preview
 @Composable
 fun TravelDestinationRecommendation(viewModel: TravelDestinationRecommendationViewModel = viewModel()) {
     val selectedCategory by viewModel.selectedCategory.collectAsState()
@@ -135,8 +134,9 @@ fun TravelDestinationRecommendation(viewModel: TravelDestinationRecommendationVi
                     destinations.forEach { destination ->
                         DestinationCard(
                             destination = destination,
-                            onFavoriteToggle = { viewModel.toggleFavorite(it) },
-                            onClick = { println("Clicked: ${it.name}") }
+                            onClick = {
+                                Log.d("RecommendDestination", "여행지 출력 성공")
+                            }
                         )
                     }
                 }

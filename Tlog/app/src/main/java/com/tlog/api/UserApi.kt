@@ -10,5 +10,4 @@ interface UserApi {
     suspend fun getUserCart(
         @Path("userId") userId: String
     ): BaseResponse<List<Travel>>
-
 }
