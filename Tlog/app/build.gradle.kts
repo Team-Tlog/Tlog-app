@@ -24,7 +24,7 @@ android {
 
         //실제 코드에서 사용하는 용도
         //구글 클라이언트 ID
-        buildConfigField("String","GOOGLE_CLIENT_ID", "\"${project.findProperty("GOOGLE_CLIENT_ID")}\"")
+        buildConfigField("String","GOOGLE_CLIENT_ID", "\"${property("GOOGLE_CLIENT_ID")}\"")
         //카카오 네이티브 앱키
         buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${project.findProperty("KAKAO_NATIVE_APP_KEY")}\"")
         //네이버 클라이언트 ID, 클라이언트 시크릿

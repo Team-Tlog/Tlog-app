@@ -1,29 +1,52 @@
 package com.tlog.ui.screen.team
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.team.TeamCard
 import com.tlog.ui.component.share.TopBar
+import com.tlog.viewmodel.team.MyTeamListViewModel.UiEvent
 import com.tlog.viewmodel.team.MyTeamListViewModel
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun MyTeamListScreen(
-    viewModel: MyTeamListViewModel = viewModel()
+    viewModel: MyTeamListViewModel = hiltViewModel(),
+    navController: NavHostController
 ) {
-    val teams by viewModel.teams // State<List<TeamData>>에서 값 추출
+    val teams by viewModel.teamsList
+    val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        viewModel.initUserId(context)
+        viewModel.fetchTeamsFromServer()
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ApiSuccess -> {
+                    Log.d("MyTeamListScreen", "ApiSuccess")
+                }
+                is UiEvent.ApiError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                    // Error Screen 이동?
+                }
+            }
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +84,9 @@ fun MyTeamListScreen(
 
         MainButton(
             text = "팀 생성",
-            onClick = { /* 팀 생성 화면 이동 */ },
+            onClick = {
+                navController.navigate("createTeam")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp)

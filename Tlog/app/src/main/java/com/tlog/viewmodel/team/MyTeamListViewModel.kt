@@ -1,23 +1,79 @@
 package com.tlog.viewmodel.team
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
-import com.tlog.R
-import com.tlog.data.model.TeamData
+import androidx.compose.runtime.State
+import com.tlog.api.RetrofitInstance
+import com.tlog.api.TeamApi
+import com.tlog.data.api.TeamData
+import com.tlog.data.local.UserPreferences
+import com.tlog.data.repository.MyTeamListRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyTeamListViewModel : ViewModel() {
-    // 서버에서 가져올 데이터라고 가정
-    private val _teams = mutableStateOf(
-        listOf(
-            TeamData("동해번쩍팀", "제주도", "찬", listOf(R.drawable.test_image, R.drawable.test_image)),
-            TeamData("서해번쩍팀", "부산", "슬기", listOf(R.drawable.test_image, R.drawable.test_image, R.drawable.test_image)),
-            TeamData("남해넘실팀", "서울", "지우", listOf(R.drawable.test_image))
-        )
-    )
+@HiltViewModel
+class MyTeamListViewModel @Inject constructor(
+    private val myTeamListRepository: MyTeamListRepository
+) : ViewModel() {
 
-    val teams = _teams
-    // 추후 서버 통신을 통해 데이터를 갱신하는 함수 예시
+    sealed class UiEvent {
+        object ApiSuccess : UiEvent()
+        data class ApiError(val message: String) : UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    private val _teamList = mutableStateOf<List<TeamData>>(emptyList())
+    val teamsList: State<List<TeamData>> = _teamList
+
+    private var userId: String? = null
+
+    fun initUserId(context: Context) {
+        viewModelScope.launch {
+            userId = UserPreferences.getUserId(context)
+        }
+    }
+
     fun fetchTeamsFromServer() {
-        // Retrofit 등의 통신 라이브러리 사용해서 데이터 받아온 후 _teams.value = ~~ 로 갱신
+        viewModelScope.launch {
+            try {
+                val safeUserId = userId ?: return@launch
+                val result = myTeamListRepository.getTeamList(safeUserId)
+                _teamList.value = result.data
+                when (result.status) {
+                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
+                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
+                }
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+            }
+        }
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object MyTeamListModule {
+    @Provides
+    fun provideMyTeamListRepository(
+        teamApi: TeamApi
+    ): MyTeamListRepository {
+        return MyTeamListRepository(teamApi)
+    }
+
+    @Provides
+    fun provideTeamApi(): TeamApi {
+        return RetrofitInstance.getInstance().create(TeamApi::class.java)
     }
 }

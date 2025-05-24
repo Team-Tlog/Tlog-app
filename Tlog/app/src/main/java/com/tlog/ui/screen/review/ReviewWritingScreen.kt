@@ -28,9 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.MainInputField
