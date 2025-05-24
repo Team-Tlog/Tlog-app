@@ -200,6 +200,103 @@ fun MainScreen(
             }
 
 
+            Spacer(modifier = Modifier.height(38.dp))
+
+
+
+
+
+
+            // 지역 별 여행지
+            val cityMap = mapOf(
+                "서울" to R.drawable.google_login_icon,
+                "경기" to R.drawable.google_login_icon,
+                "인천" to R.drawable.google_login_icon,
+                "부산" to R.drawable.google_login_icon,
+                "대구" to R.drawable.google_login_icon,
+                "대전" to R.drawable.google_login_icon,
+                "광주" to R.drawable.google_login_icon,
+                "울산" to R.drawable.google_login_icon,
+                "충북" to R.drawable.google_login_icon,
+                "충남" to R.drawable.google_login_icon,
+                "경북" to R.drawable.google_login_icon,
+                "경남" to R.drawable.google_login_icon,
+                "전북" to R.drawable.google_login_icon,
+                "전남" to R.drawable.google_login_icon,
+                "강원" to R.drawable.google_login_icon,
+                "제주" to R.drawable.google_login_icon
+                // 세종 어카지?
+                )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(36.dp)
+            ) {
+                Text(
+                    text = "어떤 지역의 여행지를 찾으세요?",
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 20.sp,
+                        color = Color.Black,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(27.dp))
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(space = 20.dp)
+                ) {
+                    cityMap.entries.chunked(4).forEach { rowItems ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            rowItems.forEach { (name, image) ->
+                               Column(
+                                   horizontalAlignment = Alignment.CenterHorizontally,
+                                   verticalArrangement = Arrangement.spacedBy(space = 5.dp),
+                                   modifier = Modifier
+                                       .clickable {}
+                               ) {
+                                   Icon(
+                                       painter = painterResource(id = image),
+                                       contentDescription = null,
+                                       tint = Color.Unspecified,
+                                       modifier = Modifier
+                                           .size(size = 60.dp)
+                                           .clip(shape = CircleShape)
+                                   )
+
+                                   Text(
+                                       text = name,
+                                       style = TextStyle(
+                                           fontSize = 12.sp,
+                                           fontWeight = FontWeight.Medium,
+                                           color = Color.Black
+                                       ),
+                                       textAlign = TextAlign.Center
+                                   )
+                               }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
