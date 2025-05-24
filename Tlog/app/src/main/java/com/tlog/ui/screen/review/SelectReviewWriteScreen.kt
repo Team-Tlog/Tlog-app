@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.share.TopBar
@@ -38,9 +40,11 @@ import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
 
 
-@Preview
 @Composable
-fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
+fun SelectReviewWriteScreen(
+    viewModel: SearchViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -69,7 +73,7 @@ fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
                 contentAlignment = Alignment.Center
             ) {
                 SearchBar(
-                    value = viewModel.searchText.value,
+                    value = viewModel.searchText.collectAsState().value,
                     onValueChange = {
                         viewModel.updateSearchText(it)
                         Log.d("SearchText", viewModel.searchText.value)
@@ -89,7 +93,7 @@ fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(201.dp))
 
-            if (viewModel.searchText.value.isEmpty()) {
+            if (viewModel.searchText.collectAsState().value.isEmpty() || viewModel.searchResult.value.isEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -99,7 +103,7 @@ fun SelectReviewWriteScreen(viewModel: SearchViewModel = viewModel()) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .clickable {
-                                Log.d("여행지 등록", "my click!!")
+                                navController.navigate("addTravel")
                             }
                     ) {
                         Image(
