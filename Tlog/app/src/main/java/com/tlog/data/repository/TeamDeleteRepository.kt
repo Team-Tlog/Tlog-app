@@ -6,13 +6,12 @@ import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.TeamData
 import jakarta.inject.Inject
 
-class MyTeamListRepository @Inject constructor(
+class TeamDeleteRepository @Inject constructor(
     private val retrofitInstance: TeamApi
 ) {
-    suspend fun getTeamList(userId: String): BaseResponse<List<TeamData>>{
-        val result = retrofitInstance.getTeamList(userId)
-        Log.d("MyTeamListRepository", "addReview: $result")
+    suspend fun deleteTeam(teamId: String): BaseResponse<String> {
+        val result = retrofitInstance.deleteTeam(teamId)
+        Log.d("TeamDeleteRepository", "deleteTeam: $result")
         return result
     }
 }
-
