@@ -22,7 +22,6 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.team.MyTeamListViewModel.UiEvent
 import com.tlog.viewmodel.team.MyTeamListViewModel
 
-//@Preview(showBackground = true)
 @Composable
 fun MyTeamListScreen(
     viewModel: MyTeamListViewModel = hiltViewModel(),
@@ -66,7 +65,10 @@ fun MyTeamListScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(teams) { team ->
-                TeamCard(team = team)
+                TeamCard(
+                    team = team,
+                    onDeleteClick = { viewModel.deleteTeam(it) }
+                )
             }
         }
 
@@ -85,7 +87,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "팀 생성",
             onClick = {
-                navController.navigate("recommendDestination")
+                navController.navigate("createTeam")
             },
             modifier = Modifier
                 .fillMaxWidth()

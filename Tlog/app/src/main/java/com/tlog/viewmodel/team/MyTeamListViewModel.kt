@@ -10,6 +10,7 @@ import com.tlog.api.TeamApi
 import com.tlog.data.api.TeamData
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyTeamListRepository
+import com.tlog.data.repository.TeamDeleteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
-    private val myTeamListRepository: MyTeamListRepository
+    private val myTeamListRepository: MyTeamListRepository,
+    private val teamDeleteRepository: TeamDeleteRepository
 ) : ViewModel() {
 
     sealed class UiEvent {
@@ -54,6 +56,22 @@ class MyTeamListViewModel @Inject constructor(
                     200 -> _eventFlow.emit(UiEvent.ApiSuccess)
                     500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
                     else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
+                }
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+            }
+        }
+    }
+
+    fun deleteTeam(teamId: String) {
+        viewModelScope.launch {
+            try {
+                val result = teamDeleteRepository.deleteTeam(teamId)
+                if (result.status == 200) {
+                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    _eventFlow.emit(UiEvent.ApiSuccess)
+                } else {
+                    _eventFlow.emit(UiEvent.ApiError("삭제 실패: ${result.message}"))
                 }
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
