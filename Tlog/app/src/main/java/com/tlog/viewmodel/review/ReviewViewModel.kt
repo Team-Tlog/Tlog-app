@@ -2,6 +2,7 @@ package com.tlog.viewmodel.review
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.tlog.api.TravelApi
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.ReviewRepository
+import com.tlog.data.util.FirebaseImageUploader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +20,11 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
+
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
@@ -52,19 +59,51 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
-    fun addReview() {
+
+    suspend fun imageUpload(context: Context, imageUriList: List<Uri>): List<String> {
+        // 이미지 업로드를 병렬로 처리
+        return imageUriList.map { uri ->
+            viewModelScope.async {
+                FirebaseImageUploader.uploadWebpImage(
+                    context,
+                    uri,
+                    "images/review/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
+                )
+            }
+        }.awaitAll()
+
+        // 직렬
+//        val returnList = mutableListOf<String>()
+//        imageUriList.forEach { uri ->
+//            returnList.add(FirebaseImageUploader.uploadWebpImage(
+//                    context,
+//                    uri,
+//                    "images/review/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
+//                )
+//            )
+//
+//
+//        }
+//
+//        return returnList
+
+    }
+
+    fun addReview(context: Context) {
         viewModelScope.launch {
             val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
+            Log.d("auth", FirebaseAuth.getInstance().currentUser?.uid ?: "로그인 안됨")
 
             try {
-               val result = repository.addReview(
+                val imageUrlList = imageUpload(context, imageList.value)
+                val result = repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
                         destinationId = "tmp",
                         username = "tmp",
                         rating = rating.value,
                         content = review.value,
-                        imageUrlList = imageList.value.map { it.toString() },
+                        imageUrlList = imageUrlList,
                         customTagNames = hashTags.value
                     )
                 )
@@ -75,7 +114,7 @@ class ReviewViewModel @Inject constructor(
                     else -> _eventFlow.emit(UiEvent.ReviewError("알 수 없는 오류가 발생했습니다."))
                 }
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ReviewError("네트워크 오류가 발생했습니다."))
+                _eventFlow.emit(UiEvent.ReviewError("네트워크 오류가 발생했습니다. ${e.message}"))
             }
         }
     }

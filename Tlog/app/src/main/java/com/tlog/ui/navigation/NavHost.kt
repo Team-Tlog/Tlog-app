@@ -26,9 +26,8 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "teamList") {
+    NavHost(navController = navController, startDestination = "review") {
         composable("main") {
-            // 메인화면으로 수정해야함
             MainScreen(navController = navController)
         }
         composable("course") {

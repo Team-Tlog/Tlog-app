@@ -172,7 +172,7 @@ fun ReviewWritingScreen(
             MainButton(
                 text = "리뷰 등록하기",
                 onClick = {
-                    viewModel.addReview()
+                    viewModel.addReview(context)
                 },
                 modifier = Modifier
                     .height(70.dp)
