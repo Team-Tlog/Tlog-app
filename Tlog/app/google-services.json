@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "248288207145",
     "project_id": "tlognotification",
-    "storage_bucket": "tlognotification.firebasestorage.app"
+    "storage_bucket": "tlog"
   },
   "client": [
     {
