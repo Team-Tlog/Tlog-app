@@ -38,6 +38,7 @@ class GoogleLoginManager(
 
     fun startLogin() {
         val intent = GoogleLoginHelper.getLoginIntent()
+        Log.d("GoogleLogin", "로그인 intent 실행됨")
         launcher.launch(intent)
     }
 }

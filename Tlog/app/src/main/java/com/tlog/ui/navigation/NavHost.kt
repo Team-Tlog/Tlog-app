@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tlog.data.repository.CartRepository
+import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
@@ -26,7 +27,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "teamList") {
+    NavHost(navController = navController, startDestination = "main") {
         composable("main") {
             // 메인화면으로 수정해야함
             MainScreen(navController = navController)
