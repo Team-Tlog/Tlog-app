@@ -1,6 +1,5 @@
 package com.tlog.ui.component.travel
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -10,25 +9,25 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.tlog.R
 
 
 @Composable
 fun TravelTopImageBox(
-    imageUrl: Int // 알아서 바꾸기 URL로
+    imageUrl: String // 알아서 바꾸기 URL로
 ) {
     Box( // 상단 이미지 + topbar
         modifier = Modifier
             .fillMaxWidth()
             .height(319.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
     ) {
-        Image(
-            painter = painterResource(imageUrl), // 너 이미지
-            contentDescription = "여행지 샤진",
-            contentScale = ContentScale.Crop, // 비율 맞춰 채우기
-            modifier = Modifier.matchParentSize() // Box 크기에 맞추기
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "여행지 사진",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.matchParentSize()
         )
 
         TravelInfoTopBar(

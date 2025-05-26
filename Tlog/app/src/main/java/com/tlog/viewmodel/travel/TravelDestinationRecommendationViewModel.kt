@@ -80,5 +80,4 @@ object RecommendDestinationModule {
     ): RecommendDestinationRepository {
         return RecommendDestinationRepository(travelApi)
     }
-
 }

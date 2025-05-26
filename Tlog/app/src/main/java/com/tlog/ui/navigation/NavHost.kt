@@ -19,6 +19,7 @@ import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
+import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.share.CartViewModel
 import com.tlog.viewmodel.share.MainViewModel
 
@@ -27,7 +28,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "main") {
+    NavHost(navController = navController, startDestination = "recommendDestination") {
         composable("main") {
             // 메인화면으로 수정해야함
             MainScreen(navController = navController)
@@ -83,6 +84,9 @@ fun NavHost(
         composable("searchReview") {
             SelectReviewWriteScreen(navController = navController)
         }
-
+        composable("travelInfo/{id}") { backStackEntry ->
+            val id = backStackEntry.arguments?.getString("id") ?: return@composable
+            TravelInfoScreen(id = id)
+        }
     }
 }
