@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 accessToken = UserPreferences.getAccessToken(this@MainActivity)
                 refreshToken = UserPreferences.getRefreshToken(this@MainActivity)
             }
-            mainViewModel.set(userId, accessToken, refreshToken)
+            mainViewModel.set(userId, accessToken, refreshToken) // 추후 뷰모델에서 알아서 실행되는걸로 바꾸고 hilt 갑시닷 혹은 이 위에 ㄱㄱ
 
             // google login
             val context = LocalContext.current
@@ -66,19 +66,16 @@ class MainActivity : ComponentActivity() {
             ) { result ->
                 loginViewModel.googleLogin(result.data, navController)
             }
-
-
-            val startScreen = if (userId != null && accessToken != null) "main" else "login"
+            // google end
 
             NavHost(
                 navController = navController,
-                startScreen = startScreen,
+                startScreen = if (userId != null && accessToken != null) "main" else "login",
                 loginViewModel = loginViewModel,
                 mainViewModel = mainViewModel,
                 launcher = launcher,
                 googleSignInClient = googleSignInClient
             )
-
 
 
 
