@@ -11,7 +11,6 @@ import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.MainScreen
-import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamNameCreateScreen
@@ -26,7 +25,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "review") {
+    NavHost(navController = navController, startDestination = "addTravel") {
         composable("main") {
             MainScreen(navController = navController)
         }
@@ -61,7 +60,7 @@ fun NavHost(
             )
         }
         composable("addTravel") {
-            AddTravelDestinationScreen()
+            AddTravelDestinationScreen(navController = navController)
         }
         composable("post2") {
             SnsPostWriteDetailScreen()

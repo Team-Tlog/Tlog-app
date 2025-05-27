@@ -34,9 +34,10 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun PhotoUploadBox(
+    modifier: Modifier = Modifier,
     images: List<Uri>,
-    onAddClick: () -> Unit,
-    modifier: Modifier = Modifier
+    maxImageCnt: Int = 5,
+    onAddClick: () -> Unit
 ) {
     Row(
         modifier = modifier
@@ -51,7 +52,7 @@ fun PhotoUploadBox(
             fontSize = 15.sp
         )
         Text(
-            text = "${images.size}/5",
+            text = "${images.size}/${maxImageCnt}",
             color = FontGray,
             fontFamily = MainFont,
             fontSize = 13.sp
