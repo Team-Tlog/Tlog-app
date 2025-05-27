@@ -85,8 +85,8 @@ fun NavHost(
             SelectReviewWriteScreen(navController = navController)
         }
         composable("travelInfo/{id}") { backStackEntry ->
-            val id = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(id = id)
+            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
+            TravelInfoScreen(id = travelId)
         }
     }
 }
