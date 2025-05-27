@@ -139,7 +139,7 @@ fun TravelDestinationRecommendation(
                         DestinationCard(
                             destination = destination,
                             onClick = {
-                                Log.d("RecommendDestination", "여행지 출력 성공")
+                                navController.navigate("travelInfo/${destination.id}")
                             }
                         )
                     }
@@ -148,4 +148,3 @@ fun TravelDestinationRecommendation(
         }
     }
 }
-

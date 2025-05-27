@@ -6,6 +6,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import android.util.Log
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 class GoogleLoginManager(
@@ -22,16 +24,30 @@ class GoogleLoginManager(
 
     private fun registerLauncher() {
         launcher = activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val task = GoogleLoginHelper.getLoginAccountFromIntent(result.data!!)
+            val task = GoogleLoginHelper.getLoginAccountFromIntent(result.data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                val idToken = account.idToken
-                if (idToken != null) {
-                    Log.d("GoogleLogin", "구글 로그인 성공 - token: $idToken")
-                    viewModel.loginToServer("GOOGLE", idToken)
-                }
-            } catch (e: Exception) {
-                Log.e("GoogleLogin", "구글 로그인 실패: ${e.message}")
+                Log.d("GoogleLogin", "Google 로그인 성공 - ID Token: ${account.idToken}")
+
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                FirebaseAuth.getInstance().signInWithCredential(credential)
+                    .addOnCompleteListener(activity) { authResult ->
+                        if (authResult.isSuccessful) {
+                            val firebaseUser = FirebaseAuth.getInstance().currentUser
+                            Log.d("GoogleLogin", "Firebase 로그인 성공: ${firebaseUser?.email}")
+
+                            // 서버 전송용 ID 토큰 획득
+                            firebaseUser?.getIdToken(false)?.addOnSuccessListener { result ->
+                                val token = result.token
+                                viewModel.loginToServer("GOOGLE", token ?: "")
+                            }
+                        } else {
+                            Log.w("GoogleLogin", "Firebase 로그인 실패", authResult.exception)
+                        }
+                    }
+
+            } catch (e: ApiException) {
+                Log.w("GoogleLogin", "Google 로그인 실패", e)
             }
         }
     }

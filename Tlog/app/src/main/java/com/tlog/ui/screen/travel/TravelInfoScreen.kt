@@ -1,38 +1,38 @@
 package com.tlog.ui.screen.travel
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tlog.R
 import com.tlog.ui.component.travel.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
 
-
-@Preview
 @Composable
-fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
+fun TravelInfoScreen(
+    id: String,
+    viewModel: TravelInfoViewModel = hiltViewModel()
+) {
+    val detail = viewModel.destinationDetail.collectAsState().value
+
+    // 여행지 ID로 API 호출 (최초 1회)
+    LaunchedEffect(id) {
+        viewModel.loadDestinationById(id)
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -40,58 +40,63 @@ fun TravelInfoScreen(viewModel: TravelInfoViewModel = viewModel()) {
             .verticalScroll(rememberScrollState())
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
-        Column {
-            TravelTopImageBox(imageUrl = R.drawable.tmp_jeju)
+        detail?.let { destination ->
+            Column {
+                TravelTopImageBox(imageUrl = destination.imageUrl)
 
-            Box( // 박스의 범위도 고민되고 이 방식이 맞나도 고민됨 일단 여기선 여행지 이름, 위치, 별점, 해시태그까지 박스
-                modifier = Modifier
-                    .offset(y = (-79).dp)
-                    .fillMaxWidth()
-                    .background(
-                        Color.White,
-                        shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
-                    )
-                    .padding(top = 30.dp)
-            ) {
-                // 여행지 정보 ~ 회색 선
-                Column {
-                    Column(
-                        modifier = Modifier
-                            .padding(horizontal = (31.5).dp)
-                    ) {
-
-                        TravelInfoSummary(viewModel.selectedTravelInfo.value)
-
-                        Spacer(modifier = Modifier.height(89.dp))
-
-                        Divider(
-                            color = Color(0xFFE3E3E3),
-                            thickness = 1.dp
+                Box(
+                    modifier = Modifier
+                        .offset(y = (-79).dp)
+                        .fillMaxWidth()
+                        .background(
+                            Color.White,
+                            shape = RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                         )
-                    }
+                        .padding(top = 30.dp)
+                ) {
+                    Column {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 31.5.dp)
+                        ) {
+                            TravelInfoSummary(destination)
 
-                    Spacer(modifier = Modifier.height(29.dp))
+                            Spacer(modifier = Modifier.height(89.dp))
 
-                    // 리뷰 헤더 + 리뷰 부분
-                    ReviewSection(
-                        avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
-                        starRatings = viewModel.selectedTravelInfo.value.starRatings,
-                        reviewList = viewModel.selectedTravelInfo.value.reviewList,
-                        reviewCnt = 2
-                    )
+                            Divider(
+                                color = Color(0xFFE3E3E3),
+                                thickness = 1.dp
+                            )
+                        }
 
-                    Spacer(modifier = Modifier.height(48.dp))
+                        Spacer(modifier = Modifier.height(29.dp))
 
-                    // 비슷한 여행지 부분
+                        ReviewSection(
+                            avgStarRating = destination.averageRating.toFloat(),
+                            ratingDistribution = destination.ratingDistribution,
+                            reviewList = destination.top2Reviews,
+                            reviewCnt = destination.reviewCount
+                        )
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = (31.5).dp)
-                    ) {
-                        SimilarTravelSection()
+                        Spacer(modifier = Modifier.height(48.dp))
+
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 31.5.dp)
+                        ) {
+                            SimilarTravelSection()
+                        }
                     }
                 }
+            }
+        } ?: run {
+            // 로딩 또는 데이터 없음 처리
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 100.dp),
+            ) {
+                Text("여행지를 불러오는 중입니다...")
             }
         }
     }

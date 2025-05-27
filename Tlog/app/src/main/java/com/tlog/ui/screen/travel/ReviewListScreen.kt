@@ -16,12 +16,13 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.travel.TravelInfoTopBar
 import com.tlog.ui.component.travel.review.ReviewList
@@ -31,7 +32,10 @@ import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 @Preview
 @Composable
-fun ReviewListScreen(viewModel: TravelInfoViewModel = viewModel()) {
+fun ReviewListScreen(viewModel: TravelInfoViewModel = hiltViewModel()) {
+    val detail = viewModel.destinationDetail.collectAsState().value
+    val sortOption = viewModel.sortOption.collectAsState().value
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -39,44 +43,46 @@ fun ReviewListScreen(viewModel: TravelInfoViewModel = viewModel()) {
             .windowInsetsPadding(WindowInsets.systemBars)
             .background(Color.White)
     ) {
-        Column {
-            TravelInfoTopBar()
-
-            Spacer(modifier = Modifier.height(29.dp))
-
-            Column(
-                modifier = Modifier
-                    .padding((31.5).dp)
-            ) {
-                ReviewStatistics(
-                    avgStarRating = viewModel.selectedTravelInfo.value.avgStarRating,
-                    starRatings = viewModel.selectedTravelInfo.value.starRatings
-                )
+        detail?.let {
+            Column {
+                TravelInfoTopBar()
 
                 Spacer(modifier = Modifier.height(29.dp))
 
-                Box(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .padding(31.5.dp)
                 ) {
-                    DropDown(
-                        options = listOf("추천순", "낮은순", "높은순"),
-                        value = viewModel.sortOption.value,
-                        valueChange = {
-                            viewModel.updateSelectOption(it)
-                        },
+                    ReviewStatistics(
+                        avgStarRating = it.averageRating,
+                        ratingDistribution = it.ratingDistribution
+                    )
+
+                    Spacer(modifier = Modifier.height(29.dp))
+
+                    Box(
                         modifier = Modifier
-                            .heightIn(max = 130.dp)
-                            .width(98.dp)
-                            .align(Alignment.CenterEnd)
+                            .fillMaxWidth()
+                    ) {
+                        DropDown(
+                            options = listOf("추천순", "낮은순", "높은순"),
+                            value = sortOption,
+                            valueChange = {
+                                viewModel.updateSelectOption(it)
+                            },
+                            modifier = Modifier
+                                .heightIn(max = 130.dp)
+                                .width(98.dp)
+                                .align(Alignment.CenterEnd)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(29.dp))
+
+                    ReviewList(
+                        reviewList = it.top2Reviews
                     )
                 }
-
-                Spacer(modifier = Modifier.height(29.dp))
-
-                ReviewList(
-                    reviewList = viewModel.selectedTravelInfo.value.reviewList,
-                )
             }
         }
     }

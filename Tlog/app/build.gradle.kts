@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -123,4 +124,7 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.56.1")
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    // build.gradle.kts (앱 레벨)
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    apply(plugin = "com.google.gms.google-services")
 }

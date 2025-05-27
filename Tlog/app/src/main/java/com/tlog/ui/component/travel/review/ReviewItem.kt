@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
+import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -35,7 +36,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun ReviewItem(
-    review: Review
+    review: DetailReview
 ) {
     Column(
         modifier = Modifier
@@ -70,7 +71,7 @@ fun ReviewItem(
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = review.author,
+                        text = review.username,
                         style = Body1Bold,
                         modifier = Modifier
                             .clickable {
@@ -92,7 +93,7 @@ fun ReviewItem(
                         .fillMaxHeight(),
                 ) {
                     Text(
-                        text = review.createAt,
+                        text = review.createdAt,
                         fontFamily = MainFont,
                         fontSize = 8.sp,
                         fontWeight = FontWeight.Light,

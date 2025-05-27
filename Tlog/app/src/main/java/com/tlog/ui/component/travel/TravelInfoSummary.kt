@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.tmp.TmpTravelData
+import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
@@ -26,11 +26,11 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TravelInfoSummary(
-    travelInfo: TmpTravelData
+    travelInfo: TravelDetailResponse
 ) {
     Column {
         Text(
-            text = travelInfo.travelName,
+            text = travelInfo.name,
             fontFamily = MainFont,
             fontSize = 22.sp,
             fontWeight = FontWeight.Bold
@@ -44,12 +44,12 @@ fun TravelInfoSummary(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_map_pin),
-                    contentDescription = "위치 ${travelInfo.cityName}",
+                    contentDescription = "위치 ${travelInfo.city}",
                     tint = Color.Unspecified
                 )
 
                 Text(
-                    text = travelInfo.cityName,
+                    text = travelInfo.city,
                     style = Body2Regular
                 )
             }
@@ -63,14 +63,14 @@ fun TravelInfoSummary(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_filled_star),
-                    contentDescription = "${travelInfo.cityName} 별점",
+                    contentDescription = "${travelInfo.city} 별점",
                     tint = Color.Unspecified,
                     modifier = Modifier
                         .size(14.dp)
                 )
 
                 Text(
-                    text = travelInfo.avgStarRating.toString(),
+                    text = travelInfo.averageRating.toString(),
                     style = Body2Regular
                 )
 
@@ -84,15 +84,12 @@ fun TravelInfoSummary(
         Spacer(modifier = Modifier.height(26.dp))
 
         HashTagsGroup(
-            hashTags = travelInfo.hashTags,
+            hashTags = travelInfo.topTags.map { it.tagName },
             space = 4.dp
         )
 
         Spacer(modifier = Modifier.height(57.dp))
 
-        Text(
-            text = travelInfo.description,
-            style = Body1Regular
-        )
+        // Removed description Text because it's not present in TravelDetailResponse
     }
 }

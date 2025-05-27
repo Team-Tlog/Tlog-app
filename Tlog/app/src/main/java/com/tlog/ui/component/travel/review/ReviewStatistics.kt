@@ -24,10 +24,10 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun ReviewStatistics(
-    avgStarRating: Double,
-    starRatings: List<Int>
+    avgStarRating: Float,
+    ratingDistribution: Map<String, Int>
 ) {
-    val totalReviewCount = starRatings.sum()
+    val totalReviewCount = ratingDistribution.values.sum()
 
     Row(
         modifier = Modifier
@@ -47,8 +47,8 @@ fun ReviewStatistics(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(5.dp)
         ) {
-            for (i in 5 downTo 1) { // 별점 별 개수 별로 변수 -> 배열화?
-                val reviewCount = starRatings[i - 1]
+            for (i in 5 downTo 1) {
+                val reviewCount = ratingDistribution[i.toString()] ?: 0
 
                 Row {
                     ReviewStar(
