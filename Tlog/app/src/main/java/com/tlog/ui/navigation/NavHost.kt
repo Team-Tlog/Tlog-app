@@ -27,7 +27,7 @@ fun NavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    NavHost(navController = navController, startDestination = "addTravel") {
+    NavHost(navController = navController, startDestination = "recommendDestination") {
         composable("main") {
             MainScreen(navController = navController)
         }

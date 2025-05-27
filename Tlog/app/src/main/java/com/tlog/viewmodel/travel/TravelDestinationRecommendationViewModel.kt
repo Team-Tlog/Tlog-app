@@ -1,13 +1,11 @@
 package com.tlog.viewmodel.travel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
-import com.tlog.api.TeamApi
 import com.tlog.api.TravelApi
-import com.tlog.data.model.TravelDestinationData
+import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.TravelDestinationResponse
-import com.tlog.data.repository.MyTeamListRepository
 import com.tlog.data.repository.RecommendDestinationRepository
 import dagger.Module
 import dagger.Provides
@@ -31,8 +29,16 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
     private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
     val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
 
+    private var userId: String? = null
+
     init {
         loadDestinations()
+    }
+
+    fun initUserId(context: Context) {
+        viewModelScope.launch {
+            userId = UserPreferences.getUserId(context)
+        }
     }
 
     fun loadDestinations() {
@@ -60,15 +66,17 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         _destinations.value = sortedList
     }
 
-    /*
-    fun toggleFavorite(id: String) {
+
+    fun toggleScrap(destinationId: String) {
         viewModelScope.launch {
-            _destinations.value = _destinations.value.map {
-                if (it.id == id) it.copy(isFavorite = !it.isFavorite)
-                else it
+            try {
+                val safeUserId = userId ?: return@launch
+                repository.scrapDestination(safeUserId, destinationId)
+            } catch (e: Exception) {
+
             }
         }
-    }*/
+    }
 }
 
 @Module

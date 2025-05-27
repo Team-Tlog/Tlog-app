@@ -24,8 +24,8 @@ import coil.compose.AsyncImage
 @Composable
 fun DestinationCard(
     destination: TravelDestinationResponse,
-    //isFavorite: Boolean,
-    //onFavoriteToggle: (String) -> Unit,
+    isFavorite: Boolean,
+    onFavoriteToggle: (String) -> Unit,
     onClick: (TravelDestinationResponse) -> Unit
 ) {
     Card(
@@ -80,7 +80,7 @@ fun DestinationCard(
                             )
                         }
                     }
-                    /*
+
                     Icon(
                         painter = painterResource(id = R.drawable.ic_heart),
                         contentDescription = "Favorite",
@@ -89,7 +89,7 @@ fun DestinationCard(
                             .size(31.dp)
                             .clickable { onFavoriteToggle(destination.id) }
                     )
-                    */
+
                 }
 
                 Spacer(modifier = Modifier.height(69.dp))
