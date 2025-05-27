@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.travel
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
@@ -8,26 +9,32 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.RetrofitInstance
 import com.tlog.api.TravelApi
+import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.Location
+import com.tlog.data.model.travel.AddTravelRequest
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.AddTravelRepository
+import com.tlog.data.util.FirebaseImageUploader
+import com.tlog.viewmodel.review.ReviewViewModel
+import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import java.util.UUID
 
 @HiltViewModel
 class AddTravelViewModel @Inject constructor(
     private val repository: AddTravelRepository
 ): ViewModel() {
-
-    suspend fun addTravel(travel: Travel) {
-        repository.addTravel(travel)
-    }
 
     private var _travelName = mutableStateOf("")
     val travelName: State<String> = _travelName
@@ -45,7 +52,7 @@ class AddTravelViewModel @Inject constructor(
     val hashTag: State<String> = _hashTag
 
     private var _hashTags =
-        mutableStateOf<List<String>>(emptyList()) // 테스트용 2개 추후 로직 생성 시 삭제할 것
+        mutableStateOf<List<String>>(emptyList())
     val hashTags: State<List<String>> = _hashTags
 
     private var _travelDescription = mutableStateOf("")
@@ -55,13 +62,41 @@ class AddTravelViewModel @Inject constructor(
     val imageUri: State<Uri> = _imageUri
 
 
+    sealed class UiEvent {
+        object ApiSuccess: UiEvent()
+        data class ApiError(val message: String): UiEvent()
+    }
 
+    private val _eventFlow = MutableSharedFlow<AddTravelViewModel.UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
-    fun addNewTravel() {
+    private var userId: String? = null
+
+    fun initUserId(context: Context) {
         viewModelScope.launch {
+            userId = UserPreferences.getUserId(context)
+        }
+    }
+
+    suspend fun imageUpload(context: Context, imageUri: Uri, city: String, district: String): String {
+        // 이미지 업로드를 병렬로 처리
+        return FirebaseImageUploader.uploadWebpImage(
+                    context,
+                    imageUri,
+                    "images/${city}/${district}/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
+                )
+        }
+
+    fun addNewTravel(context: Context) {
+        viewModelScope.launch {
+            val safeUserId = userId ?: return@launch
+
             try {
-                addTravel(
-                    Travel(
+                val imageUrl = imageUpload(context, imageUri.value, "city", "district")
+
+                val result = repository.addTravel(
+                    AddTravelRequest(
+                        creater = safeUserId,
                         name = travelName.value,
                         address = travelAddress.value,
                         location = Location("0.0", "0.0"),
@@ -69,15 +104,20 @@ class AddTravelViewModel @Inject constructor(
                         district = "임시", // 시, 군, 구
                         hasParking = hasParking.value,
                         petFriendly = isPetFriendly.value,
-                        imageUri = imageUri.value.toString(),
+                        imageUrl = imageUrl,
                         description = travelDescription.value,
                         customTags = hashTags.value
                     )
                 )
+
+                when (result.status) {
+                    201 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiSuccess)
+                    409 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("이미 존재하는 여행지 입니다."))
+                    500 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("서버 오류가 발생했습니다."))
+                    else -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
+                }
             }
-            catch (e: HttpException) {
-                Log.e("AddTravel", "서버 오류: ${e.code()} - ${e.message()}")
-            } catch (e: Exception) {
+            catch (e: Exception) {
                 Log.e("AddTravel", "알 수 없는 오류", e)
             }
         }

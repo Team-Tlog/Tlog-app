@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+
+    // firebase
     id("com.google.gms.google-services")
 }
 
@@ -124,7 +126,18 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.56.1")
     implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
+    // firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
+    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // await (콜백 -> 비동기)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
     // build.gradle.kts (앱 레벨)
-    implementation("com.google.firebase:firebase-auth:22.3.1")
+    // implementation("com.google.firebase:firebase-auth:22.3.1")
     apply(plugin = "com.google.gms.google-services")
+
 }

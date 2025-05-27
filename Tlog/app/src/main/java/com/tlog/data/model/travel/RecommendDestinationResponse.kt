@@ -49,3 +49,19 @@ data class PageableInfo(
     val pageSize: Int,
     val unpaged: Boolean
 )
+
+
+// 여행지 추가
+data class AddTravelRequest(
+    val creater: String,
+    val name: String,
+    val address: String,
+    val location: com.tlog.data.model.Location,
+    val city: String,
+    val district: String,
+    val hasParking: Boolean,
+    val petFriendly: Boolean,
+    val imageUrl: String,
+    val description: String,
+    val customTags: List<String>
+)

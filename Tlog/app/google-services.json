@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "248288207145",
+    "project_id": "tlognotification",
+    "storage_bucket": "tlog"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248288207145:android:3fd61efd6e9bdd35465738",
+        "android_client_info": {
+          "package_name": "com.tlog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYMETD7NPXeuP8FZyi4rvptUYxpdHeL9c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

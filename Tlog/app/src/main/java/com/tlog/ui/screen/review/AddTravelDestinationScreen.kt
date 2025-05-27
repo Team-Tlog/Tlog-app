@@ -1,6 +1,8 @@
 package com.tlog.ui.screen.review
 
+import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -17,12 +19,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
@@ -36,14 +41,36 @@ import com.tlog.viewmodel.travel.AddTravelViewModel
 
 //@Preview
 @Composable
-fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = hiltViewModel()) {
-    val scrollState = rememberScrollState()
+fun AddTravelDestinationScreen(
+    viewModel: AddTravelViewModel = hiltViewModel(),
+    navController: NavHostController
+) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.initUserId(context)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is AddTravelViewModel.UiEvent.ApiSuccess -> {
+                    navController.navigate("main") {
+                        viewModel.clearImages()
+                        viewModel.clearHashTags()
+                        popUpTo("main") { inclusive = false }
+                    }
+                }
+                is AddTravelViewModel.UiEvent.ApiError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .verticalScroll(scrollState)
+            .verticalScroll(rememberScrollState())
             .padding(horizontal =  24.dp)
             .windowInsetsPadding(WindowInsets.systemBars)
 
@@ -152,7 +179,8 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = hiltViewModel()) 
         }
 
         PhotoUploadBox(
-            images = listOf(viewModel.imageUri.value),
+            images = if (viewModel.imageUri.value == Uri.EMPTY) emptyList() else listOf(viewModel.imageUri.value),
+            maxImageCnt = 1,
             onAddClick = {
                 imagePickerLauncher.launch("image/*")
             }
@@ -163,10 +191,7 @@ fun AddTravelDestinationScreen(viewModel: AddTravelViewModel = hiltViewModel()) 
         MainButton(
             text = "여행지 등록하기",
             onClick = {
-                viewModel.addNewTravel()
-                Log.d("addTravel", "my click!!")
-                viewModel.clearImages()
-                viewModel.clearHashTags()
+                viewModel.addNewTravel(context)
             },
             enabled = viewModel.checkInput(),
             modifier = Modifier
