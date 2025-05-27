@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.travel.TravelInfoTopBar
 import com.tlog.ui.component.travel.review.ReviewList
@@ -32,7 +32,7 @@ import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 @Preview
 @Composable
-fun ReviewListScreen(viewModel: TravelInfoViewModel = viewModel()) {
+fun ReviewListScreen(viewModel: TravelInfoViewModel = hiltViewModel()) {
     val detail = viewModel.destinationDetail.collectAsState().value
     val sortOption = viewModel.sortOption.collectAsState().value
 
