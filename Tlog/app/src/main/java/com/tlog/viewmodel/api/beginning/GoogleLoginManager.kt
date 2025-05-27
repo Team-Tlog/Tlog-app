@@ -39,7 +39,7 @@ class GoogleLoginManager(
                             // 서버 전송용 ID 토큰 획득
                             firebaseUser?.getIdToken(false)?.addOnSuccessListener { result ->
                                 val token = result.token
-                                viewModel.loginToServer("GOOGLE", token ?: "")
+                                //viewModel.loginToServer("GOOGLE", token, navController)
                             }
                         } else {
                             Log.w("GoogleLogin", "Firebase 로그인 실패", authResult.exception)
