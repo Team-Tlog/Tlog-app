@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 
 
@@ -13,7 +14,7 @@ import com.tlog.data.model.travel.Review
 fun ReviewListSection(
     avgStarRating: Double,
     starRatings: List<Int>,
-    reviewList: List<Review>,
+    reviewList: List<DetailReview>,
     reviewCnt: Int = Int.MAX_VALUE
 ) {
     Column {
@@ -23,10 +24,10 @@ fun ReviewListSection(
         Spacer(modifier = Modifier.height(29.dp))
 
         // 평균 별점 + 별점 + 리뷰개수
-        ReviewStatistics(
+        /*ReviewStatistics(
             avgStarRating = avgStarRating,
             starRatings = starRatings
-        )
+        )*/
 
 
         Spacer(modifier = Modifier.height(29.dp))

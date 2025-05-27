@@ -20,15 +20,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
+import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun ReviewSection(
-    avgStarRating: Double,
-    starRatings: List<Int>,
-    reviewList: List<Review>,
+    avgStarRating: Float,
+    ratingDistribution: Map<String, Int>,
+    reviewList: List<DetailReview>,
     reviewCnt: Int = Int.MAX_VALUE
 ) {
     Column {
@@ -44,7 +45,7 @@ fun ReviewSection(
             // 평균 별점 + 별점 + 리뷰개수
             ReviewStatistics(
                 avgStarRating = avgStarRating,
-                starRatings = starRatings
+                ratingDistribution = ratingDistribution
             )
         }
 

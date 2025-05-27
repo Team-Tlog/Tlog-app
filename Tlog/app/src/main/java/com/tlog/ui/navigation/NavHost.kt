@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.tlog.data.repository.CartRepository
+import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
@@ -17,6 +18,7 @@ import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
+import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.share.CartViewModel
 import com.tlog.viewmodel.share.MainViewModel
 
@@ -80,6 +82,9 @@ fun NavHost(
         composable("searchReview") {
             SelectReviewWriteScreen(navController = navController)
         }
-
+        composable("travelInfo/{id}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
+            TravelInfoScreen(id = travelId)
+        }
     }
 }
