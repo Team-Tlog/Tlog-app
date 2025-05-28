@@ -7,6 +7,7 @@ import com.tlog.api.TravelApi
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.repository.RecommendDestinationRepository
+import com.tlog.util.ScrapManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -67,13 +68,16 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
     }
 
 
-    fun toggleScrap(destinationId: String) {
+    fun toggleScrap(context: Context, destinationId: String) {
         viewModelScope.launch {
             try {
                 val safeUserId = userId ?: return@launch
                 repository.scrapDestination(safeUserId, destinationId)
+                // Use ScrapManager's new toggleScrap
+                ScrapManager.toggleScrap(context, destinationId)
+                _destinations.value = _destinations.value.toList()
             } catch (e: Exception) {
-
+                // TODO: Error handling
             }
         }
     }

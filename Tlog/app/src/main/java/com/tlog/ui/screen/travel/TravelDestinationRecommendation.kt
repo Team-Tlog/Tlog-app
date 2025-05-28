@@ -12,7 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +31,7 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
+import com.tlog.util.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 
 @Composable
@@ -40,8 +43,13 @@ fun TravelDestinationRecommendation(
     val scrollState = rememberScrollState()
 
     val context = LocalContext.current
+
+    // Observe scrapList from ScrapManager's StateFlow
+    val scrapList by ScrapManager.scrapList.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.initUserId(context)
+        ScrapManager.init(context)
     }
 
     Column(
@@ -144,10 +152,13 @@ fun TravelDestinationRecommendation(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     destinations.forEach { destination ->
+                        val isFavorite = scrapList.contains(destination.id)
                         DestinationCard(
                             destination = destination,
-                            isFavorite = false,
-                            onFavoriteToggle = { viewModel.toggleScrap(destinationId = it) },
+                            isFavorite = isFavorite,
+                            onFavoriteToggle = {
+                                viewModel.toggleScrap(context, destination.id)
+                            },
                             onClick = {
                                 navController.navigate("travelInfo/${destination.id}")
                             }
