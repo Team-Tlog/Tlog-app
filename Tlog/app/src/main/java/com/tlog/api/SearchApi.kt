@@ -5,9 +5,9 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SearchApi {
-    @GET("/api/search/destination")
-    suspend fun getTravelList(
-        @Query("searchText") searchText: String
+    @GET("/api/search/destination/by-name") // 여행지 이름으로 검색
+    suspend fun getTravelListByName(
+        @Query("name") searchText: String
     ): BaseResponse<List<MinimalTravel>>
 }
 
