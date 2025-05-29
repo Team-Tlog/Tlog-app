@@ -14,7 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.login.LoginIcon
 import com.tlog.ui.theme.MainColor
@@ -23,7 +25,8 @@ import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel(),
+    viewModel: LoginViewModel,
+    navController: NavController,
     onGoogleLoginClick: () -> Unit
 ) {
     val context = LocalContext.current
@@ -71,13 +74,13 @@ fun LoginScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 LoginIcon(R.drawable.naver_login_icon, "네이버", 50.dp) {
-                    viewModel.naverLogin(context)
+                    viewModel.naverLogin(context, navController)
                 }
                 LoginIcon(R.drawable.google_login_icon, "구글", 50.dp) {
                     onGoogleLoginClick()
                 }
                 LoginIcon(R.drawable.kakao_login_icon, "카카오", 50.dp) {
-                    viewModel.kakaoLogin(context)
+                    viewModel.kakaoLogin(context, navController)
                 }
             }
 

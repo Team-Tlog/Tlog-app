@@ -136,8 +136,8 @@ dependencies {
     // await (콜백 -> 비동기)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
 
-    // build.gradle.kts (앱 레벨)
-    // implementation("com.google.firebase:firebase-auth:22.3.1")
+    // 구글 로그인 (파이어베이스)
     apply(plugin = "com.google.gms.google-services")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 
 }
