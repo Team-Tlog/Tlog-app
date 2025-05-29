@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.repository.RecommendDestinationRepository
-import com.tlog.util.ScrapManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,9 +72,14 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val safeUserId = userId ?: return@launch
-                repository.scrapDestination(safeUserId, destinationId)
-                // Use ScrapManager's new toggleScrap
-                ScrapManager.toggleScrap(context, destinationId)
+                val isScrapped = ScrapManager.scrapList.value.contains(destinationId)
+                if (isScrapped) {
+                    repository.deleteScrapDestination(safeUserId, destinationId)
+                    ScrapManager.removeScrap(context, destinationId)
+                } else {
+                    repository.scrapDestination(safeUserId, destinationId)
+                    ScrapManager.toggleScrap(context, destinationId)
+                }
                 _destinations.value = _destinations.value.toList()
             } catch (e: Exception) {
                 // TODO: Error handling

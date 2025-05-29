@@ -1,5 +1,6 @@
-package com.tlog.util
+package com.tlog.data.local
 
+import android.util.Log
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -17,11 +18,10 @@ private val Context.dataStore by preferencesDataStore(name = "scrap_prefs")
 object ScrapManager {
     private val SCRAP_KEY = stringSetPreferencesKey("scrap_list")
 
-    // StateFlow to hold the current scrap list
     private val _scrapList = MutableStateFlow<List<String>>(emptyList())
     val scrapList: StateFlow<List<String>> = _scrapList
 
-    // Call this to initialize or reload the scrap list from DataStore
+
     fun init(context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
             val savedList = loadScrapList(context)
@@ -45,6 +45,7 @@ object ScrapManager {
         }
         _scrapList.value = currentList
         saveScrapList(context, currentList)
+        Log.d("ScrapManager", "스크랩 추가됨: $id")
     }
 
     private suspend fun saveScrapList(context: Context, list: List<String>) {
@@ -53,7 +54,14 @@ object ScrapManager {
         }
     }
 
-    suspend fun isScrapped(context: Context, id: String): Boolean {
-        return scrapList.value.contains(id)
+    fun removeScrap(context: Context, destinationId: String) {
+        val currentList = _scrapList.value.toMutableList()
+        if (currentList.remove(destinationId)) {
+            _scrapList.value = currentList
+            CoroutineScope(Dispatchers.IO).launch {
+                saveScrapList(context, currentList)
+            }
+            Log.d("ScrapManager", "스크랩 제거됨: $destinationId")
+        }
     }
 }

@@ -31,7 +31,7 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
-import com.tlog.util.ScrapManager
+import com.tlog.data.local.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 
 @Composable

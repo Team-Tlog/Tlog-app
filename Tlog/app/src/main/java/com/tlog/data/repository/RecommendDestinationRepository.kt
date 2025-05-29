@@ -30,4 +30,8 @@ class RecommendDestinationRepository @Inject constructor(
         val plainBody: RequestBody = destinationId.toRequestBody("text/plain".toMediaTypeOrNull())
         return retrofitInstance.scrapDestination(userId, plainBody)
     }
+
+    suspend fun deleteScrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
+        return retrofitInstance.deleteScrapDestination(userId, destinationId)
+    }
 }

@@ -7,6 +7,7 @@ import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.model.travel.TravelRecommendPagedResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -43,5 +44,11 @@ interface TravelApi {
     suspend fun scrapDestination(
         @Path("userId") userId: String,
         @Body travelId: okhttp3.RequestBody
+    ): BaseResponse<Unit>
+
+    @DELETE("/api/scrap/user/{userId}/destination/{destId}")
+    suspend fun deleteScrapDestination(
+        @Path("userId") userId: String,
+        @Path("destId") destinationId: String
     ): BaseResponse<Unit>
 }
