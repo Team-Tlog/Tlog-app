@@ -20,8 +20,9 @@ object UserPreferences {
     private val USER_ID = stringPreferencesKey("userId")
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
+    private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
 
-    suspend fun saveTokensAndUserId(context: Context, accessToken: String, refreshToken: String) {
+    suspend fun saveTokensAndUserId(context: Context, accessToken: String, refreshToken: String, firebaseCustomToken: String) {
         val userId = userIdFromJwt(accessToken)
 
         Log.d("tokens", userId?:"없다고")
@@ -35,6 +36,7 @@ object UserPreferences {
             preferences[USER_ID] = userId
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
+            preferences[FIREBASE_CUSTOM_TOKEN] = firebaseCustomToken
         }
     }
 
