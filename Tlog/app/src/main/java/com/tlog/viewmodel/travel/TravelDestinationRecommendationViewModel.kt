@@ -1,13 +1,12 @@
 package com.tlog.viewmodel.travel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
-import com.tlog.api.TeamApi
 import com.tlog.api.TravelApi
-import com.tlog.data.model.TravelDestinationData
+import com.tlog.data.local.ScrapManager
+import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.TravelDestinationResponse
-import com.tlog.data.repository.MyTeamListRepository
 import com.tlog.data.repository.RecommendDestinationRepository
 import dagger.Module
 import dagger.Provides
@@ -31,8 +30,17 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
     private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
     val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
 
+    private var userId: String? = null
+
     init {
         loadDestinations()
+    }
+
+    fun initUserId(context: Context) {
+        viewModelScope.launch {
+            userId = UserPreferences.getUserId(context)
+            userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
+        }
     }
 
     fun loadDestinations() {
@@ -60,15 +68,24 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         _destinations.value = sortedList
     }
 
-    /*
-    fun toggleFavorite(id: String) {
+
+    fun toggleScrap(context: Context, destinationId: String) {
         viewModelScope.launch {
-            _destinations.value = _destinations.value.map {
-                if (it.id == id) it.copy(isFavorite = !it.isFavorite)
-                else it
+            try {
+                val safeUserId = userId ?: return@launch
+                val isScrapped = ScrapManager.scrapList.value.contains(destinationId)
+                if (isScrapped) {
+                    repository.deleteScrapDestination(safeUserId, destinationId)
+                } else {
+                    repository.scrapDestination(safeUserId, destinationId)
+                }
+                ScrapManager.refreshScrapList(context, safeUserId, repository)
+                _destinations.value = _destinations.value.toList()
+            } catch (e: Exception) {
+                // TODO: Error handling
             }
         }
-    }*/
+    }
 }
 
 @Module

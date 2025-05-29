@@ -5,7 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,8 +24,8 @@ import coil.compose.AsyncImage
 @Composable
 fun DestinationCard(
     destination: TravelDestinationResponse,
-    //isFavorite: Boolean,
-    //onFavoriteToggle: (String) -> Unit,
+    isFavorite: Boolean,
+    onFavoriteToggle: (String) -> Unit,
     onClick: (TravelDestinationResponse) -> Unit
 ) {
     Card(
@@ -80,16 +80,29 @@ fun DestinationCard(
                             )
                         }
                     }
-                    /*
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_heart),
-                        contentDescription = "Favorite",
-                        tint = if (isFavorite) Color.Red else Color.White,
-                        modifier = Modifier
-                            .size(31.dp)
-                            .clickable { onFavoriteToggle(destination.id) }
-                    )
-                    */
+
+                    if (isFavorite) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_filled_heart),
+                            contentDescription = "스크랩됨",
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable {
+                                    onFavoriteToggle(destination.id)
+                                },
+                            tint = Color.Red
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_heart),
+                            contentDescription = "스크랩 아이콘",
+                            modifier = Modifier
+                                .size(24.dp)
+                                .clickable {
+                                    onFavoriteToggle(destination.id)
+                                }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(69.dp))

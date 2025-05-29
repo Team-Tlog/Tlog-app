@@ -9,12 +9,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +31,7 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
+import com.tlog.data.local.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 
 @Composable
@@ -35,6 +41,16 @@ fun TravelDestinationRecommendation(
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
+
+    // Observe scrapList from ScrapManager's StateFlow
+    val scrapList by ScrapManager.scrapList.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.initUserId(context)
+        ScrapManager.init(context)
+    }
 
     Column(
         modifier = Modifier
@@ -136,8 +152,13 @@ fun TravelDestinationRecommendation(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     destinations.forEach { destination ->
+                        val isFavorite = scrapList.contains(destination.id)
                         DestinationCard(
                             destination = destination,
+                            isFavorite = isFavorite,
+                            onFavoriteToggle = {
+                                viewModel.toggleScrap(context, destination.id)
+                            },
                             onClick = {
                                 navController.navigate("travelInfo/${destination.id}")
                             }

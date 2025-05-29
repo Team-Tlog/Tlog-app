@@ -36,6 +36,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
     NavHost(navController = navController, startDestination = startScreen) {
+
         composable("main") {
             MainScreen(navController = navController)
         }

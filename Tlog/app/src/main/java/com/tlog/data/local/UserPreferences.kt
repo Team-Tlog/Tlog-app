@@ -9,9 +9,7 @@ import android.util.Base64
 import android.util.Log
 import org.json.JSONObject
 
-
 //private val Context.userDataStore by preferencesDataStore(name = "user")
-
 
 object UserPreferences {
     private val Context.dataStore by preferencesDataStore(name = "user")
