@@ -20,12 +20,14 @@ import com.tlog.data.api.LoginRequest
 import com.tlog.data.local.UserPreferences
 import com.tlog.viewmodel.api.beginning.KakaoLoginManager
 import com.tlog.viewmodel.api.beginning.NaverLoginManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import jakarta.inject.Inject
 import retrofit2.Response
 
-
-class LoginViewModel(
-    private val userPreferences: UserPreferences,
-    private val context: Context
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
     private val loginApi = RetrofitInstance.getInstance().create(LoginApi::class.java)
 
@@ -97,7 +99,7 @@ class LoginViewModel(
     }
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
-        userPreferences.saveTokensAndUserId(
+        UserPreferences.saveTokensAndUserId(
             context = context,
             accessToken = accessToken,
             refreshToken = refreshToken,

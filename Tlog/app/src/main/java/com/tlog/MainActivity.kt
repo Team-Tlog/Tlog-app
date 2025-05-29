@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +22,7 @@ import com.tlog.ui.navigation.NavHost
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import com.tlog.viewmodel.share.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 @AndroidEntryPoint
@@ -37,10 +39,7 @@ class MainActivity : ComponentActivity() {
             var accessToken by remember { mutableStateOf<String?>(null) }
             var refreshToken by remember { mutableStateOf<String?>(null) }
 
-            val loginViewModel = LoginViewModel(
-                userPreferences = UserPreferences,
-                context = this
-            )
+            val loginViewModel: LoginViewModel by viewModels()
 
             LaunchedEffect(Unit) {
                 userId =
@@ -68,14 +67,23 @@ class MainActivity : ComponentActivity() {
             }
             // google end
 
-            NavHost(
-                navController = navController,
-                startScreen = if (userId != null && accessToken != null) "main" else "login",
-                loginViewModel = loginViewModel,
-                mainViewModel = mainViewModel,
-                launcher = launcher,
-                googleSignInClient = googleSignInClient
-            )
+
+            val isReady = userId != null && accessToken != null && refreshToken != null
+
+            if (isReady) {
+                NavHost(
+                    navController = navController,
+                    startScreen = "main",
+                    loginViewModel = loginViewModel,
+                    mainViewModel = mainViewModel,
+                    launcher = launcher,
+                    googleSignInClient = googleSignInClient
+                )
+            } else {
+                // 로딩 화면 보여주기 (또는 아무것도 안 보여주기) 시작화면 만들어지면 보여주면 될 듯!
+
+            }
+
 
 
 
