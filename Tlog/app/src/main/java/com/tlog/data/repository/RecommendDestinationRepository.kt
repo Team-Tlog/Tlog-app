@@ -1,10 +1,10 @@
 package com.tlog.data.repository
 
 import android.util.Log
-import com.kakao.sdk.friend.core.l.T
 import com.tlog.api.TeamApi
 import com.tlog.api.TravelApi
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.api.TeamData
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.model.travel.TravelRecommendPagedResponse
@@ -34,4 +34,9 @@ class RecommendDestinationRepository @Inject constructor(
     suspend fun deleteScrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
         return retrofitInstance.deleteScrapDestination(userId, destinationId)
     }
+
+    suspend fun getUserScraps(userId: String): BaseResponse<List<ScrapDestinationResponse>> {
+        return retrofitInstance.getUserScraps(userId)
+    }
 }
+

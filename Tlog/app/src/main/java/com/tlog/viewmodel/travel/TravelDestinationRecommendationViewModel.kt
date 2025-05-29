@@ -39,6 +39,7 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
     fun initUserId(context: Context) {
         viewModelScope.launch {
             userId = UserPreferences.getUserId(context)
+            userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
         }
     }
 
@@ -75,11 +76,10 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
                 val isScrapped = ScrapManager.scrapList.value.contains(destinationId)
                 if (isScrapped) {
                     repository.deleteScrapDestination(safeUserId, destinationId)
-                    ScrapManager.removeScrap(context, destinationId)
                 } else {
                     repository.scrapDestination(safeUserId, destinationId)
-                    ScrapManager.toggleScrap(context, destinationId)
                 }
+                ScrapManager.refreshScrapList(context, safeUserId, repository)
                 _destinations.value = _destinations.value.toList()
             } catch (e: Exception) {
                 // TODO: Error handling

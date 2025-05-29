@@ -2,6 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewRequest
+import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.AddTravelRequest
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.model.travel.TravelDestinationResponse
@@ -51,4 +52,9 @@ interface TravelApi {
         @Path("userId") userId: String,
         @Path("destId") destinationId: String
     ): BaseResponse<Unit>
+
+    @GET("/api/scrap/user/{userId}")
+    suspend fun getUserScraps(
+        @Path("userId") userId: String
+    ): BaseResponse<List<ScrapDestinationResponse>>
 }

@@ -1,5 +1,7 @@
 package com.tlog.data.local
 
+import com.tlog.data.repository.RecommendDestinationRepository
+
 import android.util.Log
 import android.content.Context
 import androidx.datastore.preferences.core.edit
@@ -30,10 +32,10 @@ object ScrapManager {
     }
 
     private suspend fun loadScrapList(context: Context): List<String> {
-        return context.dataStore.data
-            .map { preferences -> preferences[SCRAP_KEY] ?: emptySet() }
+        val preferences = context.dataStore.data
             .first()
-            .toList()
+        Log.d("ScrapManager", "DataStore에서 불러온 scrapList: ${preferences[SCRAP_KEY] ?: emptySet()}")
+        return preferences[SCRAP_KEY]?.toList() ?: emptyList()
     }
 
     suspend fun toggleScrap(context: Context, id: String) {
@@ -52,6 +54,7 @@ object ScrapManager {
         context.dataStore.edit { prefs ->
             prefs[SCRAP_KEY] = list.toSet()
         }
+        Log.d("ScrapManager", "DataStore에 저장된 scrapList: ${list.toSet()}")
     }
 
     fun removeScrap(context: Context, destinationId: String) {
@@ -62,6 +65,19 @@ object ScrapManager {
                 saveScrapList(context, currentList)
             }
             Log.d("ScrapManager", "스크랩 제거됨: $destinationId")
+        }
+    }
+
+    suspend fun refreshScrapList(context: Context, userId: String, repository: RecommendDestinationRepository) {
+        try {
+            val response = repository.getUserScraps(userId)
+            val destinationIds = response.data?.map { it.id } ?: emptyList()
+            _scrapList.value = destinationIds
+            Log.d("ScrapManager", "리프레시된 scrapList: $destinationIds")
+            saveScrapList(context, destinationIds)
+            Log.d("ScrapManager", "스크랩 목록 갱신됨: $destinationIds")
+        } catch (e: Exception) {
+            Log.e("ScrapManager", "스크랩 목록 갱신 실패", e)
         }
     }
 }
