@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.ui.component.share.HashTagsGroup
-import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 
@@ -84,7 +83,7 @@ fun TravelInfoSummary(
         Spacer(modifier = Modifier.height(26.dp))
 
         HashTagsGroup(
-            hashTags = travelInfo.topTags.map { it.tagName },
+            hashTags = travelInfo.topTags.map { it.tag },
             space = 4.dp
         )
 

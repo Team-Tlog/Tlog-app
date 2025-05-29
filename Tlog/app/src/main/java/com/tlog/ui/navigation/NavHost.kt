@@ -35,7 +35,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "searchReview") { //startScreen) {
         composable("main") {
             MainScreen(navController = navController)
         }

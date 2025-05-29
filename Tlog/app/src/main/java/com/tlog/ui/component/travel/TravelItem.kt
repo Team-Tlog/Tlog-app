@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.R
+import com.tlog.data.model.travel.SearchTravel
 import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
@@ -100,5 +101,53 @@ fun TravelItem(
 
             }
         }
+    }
+}
+
+@Composable
+fun SearchTravelItem(
+    travel: SearchTravel
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(101.dp)
+            .padding(horizontal = 20.dp)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.test_image),
+            contentDescription = "${travel.name} 사진",
+            modifier = Modifier
+                .size(99.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .background(Color.Gray) // 추후 제거 지금 구분되는거 보려고 잠시 놔둠
+        )
+
+        Spacer(modifier = Modifier.width(15.dp))
+
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = travel.name,
+                style = Body1Bold
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = "대충 설명 글",
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Light,
+                fontSize = 10.sp,
+                modifier = Modifier.height(30.dp)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            HashTagsGroup(listOf("단풍", "가을")) // 태그 예시임
+        }
+
+        Spacer(modifier = Modifier.width(25.dp))
     }
 }

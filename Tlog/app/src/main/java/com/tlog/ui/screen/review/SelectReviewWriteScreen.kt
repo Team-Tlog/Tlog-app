@@ -34,6 +34,7 @@ import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.share.TopBar
+import com.tlog.ui.component.travel.SearchTravelList
 import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
@@ -90,9 +91,10 @@ fun SelectReviewWriteScreen(
 
             }
 
-            Spacer(modifier = Modifier.height(201.dp))
 
-            if (viewModel.searchText.collectAsState().value.isEmpty() || viewModel.searchResult.value.isEmpty()) {
+            if (viewModel.searchResult.value.isEmpty()) {
+                Spacer(modifier = Modifier.height(201.dp))
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -122,6 +124,8 @@ fun SelectReviewWriteScreen(
                         )
                     }
                 }
+            } else {
+                SearchTravelList(travelList = viewModel.searchResult.value)
             }
         }
     }

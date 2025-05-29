@@ -31,7 +31,7 @@ data class Location(
 )
 
 data class TagCount(
-    val tagName: String,
+    val tag: String,
     val count: Int
 )
 

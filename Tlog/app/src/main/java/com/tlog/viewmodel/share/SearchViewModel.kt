@@ -4,9 +4,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.MinimalTravel
 import com.tlog.api.RetrofitInstance
 import com.tlog.api.SearchApi
+import com.tlog.data.model.travel.SearchTravel
 import com.tlog.data.repository.SearchRepository
 import dagger.Module
 import dagger.Provides
@@ -26,9 +26,8 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository
 ): ViewModel() {
-
-    private var _searchResult = mutableStateOf<List<MinimalTravel>>(listOf())
-    val searchResult: State<List<MinimalTravel>> = _searchResult
+    private var _searchResult = mutableStateOf<List<SearchTravel>>(emptyList())
+    val searchResult: State<List<SearchTravel>> = _searchResult
 
     private var _searchText = MutableStateFlow("")
     val searchText = _searchText
