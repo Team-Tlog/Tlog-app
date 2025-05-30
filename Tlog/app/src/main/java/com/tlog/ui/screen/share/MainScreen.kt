@@ -84,7 +84,7 @@ fun MainScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        navController.navigate("searchReview")
+                        //navController.navigate("searchReview") -> 추후 search로 변경
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_search),
@@ -208,6 +208,18 @@ fun MainScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
                                     .width(70.dp)
+                                    .clickable {
+                                        when (name) {
+                                            "AI 추천 코스" -> {}
+                                            "리뷰 쓰기" -> {
+                                                navController.navigate("searchReview")
+                                            }
+                                            "지도에서 보기" -> {}
+                                            "내 팀보기" -> {}
+                                            "스크랩" -> {}
+                                            "지도 채우기" -> {}
+                                        }
+                                    }
                                 //.size(height = 62.dp, width = 70.dp)
                             ) {
                                 Icon(
@@ -219,6 +231,7 @@ fun MainScreen(
                                         .width((49.5).dp)
                                         .padding(8.dp)
                                 )
+
 
                                 Spacer(modifier = Modifier.height(7.dp))
 
