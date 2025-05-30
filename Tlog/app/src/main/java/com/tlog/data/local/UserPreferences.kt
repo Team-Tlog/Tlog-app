@@ -7,25 +7,29 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import android.util.Base64
 import android.util.Log
+import com.tlog.api.retrofit.TokenProvider
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 
-//private val Context.userDataStore by preferencesDataStore(name = "user")
+// DataStore를 재사용 하기 위해 전역으로 선언 + 싱글톤 보장 (중복 생성 방지)
+private val Context.dataStore by preferencesDataStore(name = "user")
 
-object UserPreferences {
-    private val Context.dataStore by preferencesDataStore(name = "user")
 
+@Singleton
+class UserPreferences @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val tokenProvider: TokenProvider
+) {
 
     private val USER_ID = stringPreferencesKey("userId")
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
 
-    suspend fun saveTokensAndUserId(context: Context, accessToken: String, refreshToken: String, firebaseCustomToken: String) {
+    suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
         val userId = userIdFromJwt(accessToken)
-
-        Log.d("tokens", userId?:"없다고")
-        Log.d("tokens", accessToken)
-        Log.d("tokens", refreshToken)
 
         if (userId == null) {
             return
@@ -38,19 +42,27 @@ object UserPreferences {
         }
     }
 
-    suspend fun getUserId(context: Context): String? {
+    suspend fun getUserId(): String? {
         val prefs = context.dataStore.data.first()
         return prefs[USER_ID]
     }
 
-    suspend fun getAccessToken(context: Context): String? {
+    suspend fun getAccessToken(): String? {
         val prefs = context.dataStore.data.first()
         return prefs[ACCESS_TOKEN]
     }
 
-    suspend fun getRefreshToken(context: Context): String? {
+    suspend fun getRefreshToken(): String? {
         val prefs = context.dataStore.data.first()
         return prefs[REFRESH_TOKEN]
+    }
+
+    suspend fun updateTokens(accessToken: String, refreshToken: String) {
+        context.dataStore.edit { preferences ->
+            preferences[ACCESS_TOKEN] = accessToken
+            preferences[REFRESH_TOKEN] = refreshToken
+        }
+        tokenProvider.setAccessToken(accessToken)
     }
 
 
