@@ -62,20 +62,7 @@ fun NavHost(
             MyTravelingCourseScreen(navController)
         }
         composable("cart") {
-            val factory = object : CartViewModel.AssistedFactory {
-                override fun create(userId: String): CartViewModel {
-                    return CartViewModel(
-                        repository = CartRepository(),
-                        userId = mainViewModel.userId.value!!
-                    )
-                }
-            }
-
-            val cartViewModel: CartViewModel = viewModel(
-                factory = CartViewModel.provideFactory(factory, mainViewModel.userId.value!!)
-            )
             CartScreen(
-                viewModel = cartViewModel,
                 navController = navController
             )
         }
