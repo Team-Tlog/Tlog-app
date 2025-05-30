@@ -145,7 +145,7 @@ class ReviewViewModel @Inject constructor(
             return 1
         if (_rating.value == 0)
             return 2
-        if (_review.value.isEmpty())
+        if (_review.value.isEmpty() || _review.value.isBlank())
             return 3
         return 0
     }
