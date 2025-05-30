@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tlog.ui.screen.beginning.LoginScreen
+import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
@@ -32,7 +33,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = "tbtiTest") {
 
         composable("main") {
             MainScreen(navController = navController)
@@ -91,6 +92,9 @@ fun NavHost(
         composable("travelInfo/{id}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
             TravelInfoScreen(id = travelId)
+        }
+        composable("tbtiTest") {
+            TbtiTestScreen()
         }
     }
 }

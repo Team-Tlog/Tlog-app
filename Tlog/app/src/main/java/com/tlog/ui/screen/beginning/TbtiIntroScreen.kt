@@ -101,14 +101,15 @@ fun TbtiIntroScreen() {
                 ) {
                     Text(
                         text = "이미 테스트를 진행하셨나요?",
+                        color = Color(0xFF989898),
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 14.sp
+                        fontSize = 12.sp
                     )
 
                     Text(
                         text = "건너뛰기",
-                        fontSize = 14.sp,
+                        fontSize = 12.sp,
                         color = FontBlue,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,

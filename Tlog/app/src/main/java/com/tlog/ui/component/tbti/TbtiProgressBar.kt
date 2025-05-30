@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -22,38 +23,25 @@ import com.tlog.ui.theme.MainColor
 @Composable
 fun TbtiProgressBar(
     current: Int = 1, // 질문 번호
-    total: Int = 10 // 총 질문 개수
+    total: Int = 10, // 총 질문 개수
+    barWidth: androidx.compose.ui.unit.Dp? = null // 추가: barWidth 지정 가능
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally // 중앙 정렬
     ) {
         val progress = current.toFloat() / total.toFloat()
 
         Spacer(modifier = Modifier.height(9.dp))
 
-        LinearProgressIndicator( // 상단 진행률 표시해주는 바
-            progress = {progress},
+        LinearProgressIndicator(
+            progress = progress,
             color = MainColor,
             trackColor = Color(0xFFF0F0F0),
             modifier = Modifier
-                .fillMaxWidth()
+                .width(barWidth ?: 184.dp)
                 .height(5.dp)
                 .clip(RoundedCornerShape(50))
         )
-
-        Spacer(modifier = Modifier.height(5.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(
-                text = "$current/$total",
-                fontSize = 11.sp,
-                color = Color(0xFFC4C4C4),
-                modifier = Modifier.align(Alignment.CenterEnd) // Alignment.Horizontal 후 사용 시 CenterEnd 사용 시 Box로
-            )
-        }
     }
 }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
@@ -46,17 +47,13 @@ fun TbtiTestScreen(viewModel: TbtiTestViewModel = viewModel()) {
             .windowInsetsPadding(WindowInsets.systemBars)
             .background(Color.White)
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 36.dp, start = 24.dp, end = 24.dp),
+                .padding(top = 93.dp, start = 24.dp, end = 24.dp), // 1️⃣
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TbtiProgressBar()
-
-            Spacer(modifier = Modifier.height((70.5).dp))
-
             TbtiQuestionSection()
         }
     }
