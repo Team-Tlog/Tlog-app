@@ -2,8 +2,9 @@ package com.tlog.data.repository
 
 import com.tlog.api.UserApi
 import com.tlog.data.model.travel.Travel
+import javax.inject.Inject
 
-class CartRepository(
+class CartRepository @Inject constructor(
     private val retrofitInstance: UserApi
 ) {
     suspend fun getUserCart(userId: String): List<Travel> {

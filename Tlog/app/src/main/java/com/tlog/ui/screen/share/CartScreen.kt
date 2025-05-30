@@ -45,7 +45,7 @@ fun CartScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context)
+        viewModel.initUserIdAndCart(context)
     }
 
 

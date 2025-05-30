@@ -4,20 +4,14 @@ import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.RetrofitInstance
-import com.tlog.api.SearchApi
-import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
-import com.tlog.data.repository.ReviewRepository
 import dagger.Module
 import dagger.Provides
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
@@ -33,9 +27,9 @@ class CartViewModel @Inject constructor(
 
     private var userId: String = ""
 
-    init {
-        fetchCart(userId)
-    }
+//    init {
+//        fetchCart(userId)
+//    }
     private fun fetchCart(userId: String) {
         viewModelScope.launch {
             try {
@@ -48,10 +42,11 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun initUserId(context: Context) {
+    fun initUserIdAndCart(context: Context) {
         viewModelScope.launch {
             userId = UserPreferences.getUserId(context)?: ""
         }
+        fetchCart(userId)
     }
 
 
