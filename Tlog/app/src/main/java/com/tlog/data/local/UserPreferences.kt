@@ -28,18 +28,26 @@ class UserPreferences @Inject constructor(
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
 
-    suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
+    suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
         val userId = userIdFromJwt(accessToken)
 
         if (userId == null) {
             return
         }
+
         context.dataStore.edit { preferences ->
             preferences[USER_ID] = userId
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
-            preferences[FIREBASE_CUSTOM_TOKEN] = firebaseCustomToken
+            if (firebaseCustomToken != null)
+                preferences[FIREBASE_CUSTOM_TOKEN] = firebaseCustomToken
         }
+
+        tokenProvider.setUserId(userId)
+        tokenProvider.setAccessToken(accessToken)
+        tokenProvider.setRefreshToken(refreshToken)
+        if (firebaseCustomToken != null)
+            tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
     }
 
     suspend fun getUserId(): String? {
@@ -57,14 +65,20 @@ class UserPreferences @Inject constructor(
         return prefs[REFRESH_TOKEN]
     }
 
+    suspend fun getFirebaseCustomToken(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[FIREBASE_CUSTOM_TOKEN]
+    }
+
+    // api 실패 시 사용? -> 위에 함수로 해도 될 것 같은데 일단 대기
     suspend fun updateTokens(accessToken: String, refreshToken: String) {
         context.dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN] = accessToken
             preferences[REFRESH_TOKEN] = refreshToken
         }
         tokenProvider.setAccessToken(accessToken)
+        tokenProvider.setRefreshToken(refreshToken)
     }
-
 
 
     // JWT 토큰에서 UserId 파싱하는 함수

@@ -25,11 +25,30 @@ class AuthInterceptor @Inject constructor(
 
 @Singleton
 class TokenProvider @Inject constructor() {
+    private var userId: String? = null
     private var accessToken: String? = null
+    private var refreshToken: String? = null
+    private var firebaseCustomToken: String? = null
 
+    fun getUserId(): String? = userId
     fun getAccessToken(): String? = accessToken
+    fun getRefreshToken(): String? = refreshToken
+    fun getFirebaseCustomToken(): String? = firebaseCustomToken
+
+
+    fun setUserId(id: String?) {
+        userId = id
+    }
 
     fun setAccessToken(token: String?) {
         accessToken = token
+    }
+
+    fun setRefreshToken(token: String?) {
+        refreshToken = token
+    }
+
+    fun setFirebaseCustomToken(token: String?) {
+        firebaseCustomToken = token
     }
 }

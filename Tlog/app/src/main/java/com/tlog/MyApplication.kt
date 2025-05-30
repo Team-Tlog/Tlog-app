@@ -28,9 +28,15 @@ class MyApplication : Application() {
             clientName = "Tlog"
         )
 
+        // 앱 시작 시 tokenProvider에 토큰 저장
         CoroutineScope(Dispatchers.IO).launch {
-            val token = userPreferences.getAccessToken()
-            tokenProvider.setAccessToken(token)
+            val accessToken = userPreferences.getAccessToken()
+            val refreshToken = userPreferences.getRefreshToken()
+            val firebaseCustomToken = userPreferences.getFirebaseCustomToken()
+
+            tokenProvider.setAccessToken(accessToken)
+            tokenProvider.setRefreshToken(refreshToken)
+            tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
         }
     }
 }
