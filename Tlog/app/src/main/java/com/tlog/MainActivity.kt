@@ -22,7 +22,6 @@ import com.tlog.ui.navigation.NavHost
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import com.tlog.viewmodel.share.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 
@@ -71,9 +70,6 @@ class MainActivity : ComponentActivity() {
             }
             // google end
 
-
-
-            val startScreen = if (userId != null && accessToken != null && refreshToken != null) "main" else "login"
 
 
 

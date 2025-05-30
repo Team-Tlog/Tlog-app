@@ -42,8 +42,6 @@ fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val context = LocalContext.current
-
     LaunchedEffect(Unit) {
         viewModel.initUserIdAndCart()
     }

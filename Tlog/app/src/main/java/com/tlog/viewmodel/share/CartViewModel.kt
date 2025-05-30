@@ -31,7 +31,7 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
-                _cartList.value = result ?: emptyList() // null이면 emptyList
+                _cartList.value = result
             } catch (e: Exception) {
                 // api실패 시
             }
