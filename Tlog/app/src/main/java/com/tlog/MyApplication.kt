@@ -30,10 +30,12 @@ class MyApplication : Application() {
 
         // 앱 시작 시 tokenProvider에 토큰 저장
         CoroutineScope(Dispatchers.IO).launch {
+            val userId = userPreferences.getUserId()
             val accessToken = userPreferences.getAccessToken()
             val refreshToken = userPreferences.getRefreshToken()
             val firebaseCustomToken = userPreferences.getFirebaseCustomToken()
 
+            tokenProvider.setUserId(userId)
             tokenProvider.setAccessToken(accessToken)
             tokenProvider.setRefreshToken(refreshToken)
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
