@@ -49,33 +49,35 @@ fun TbtiIntroScreen() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 157.dp),
+                        .padding(top = 263.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "TBTI란?",
+                        text = "TBTI를 아시나요?",
                         color = Color.Black,
-                        fontSize = 34.sp,
+                        fontSize = 24.sp,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.ExtraBold
                     )
 
-                    Spacer(modifier = Modifier.height(17.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
 
                     Text(
-                        text = "여행 성향을 분석해 나만의 여행 유형을",
-                        color = Color.Black,
+                        text = "테스트하고 성격에 맞는 여행을 즐기러 가볼까요?",
+                        color = Color(0xFF767676),
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 15.sp,
+                        fontSize = 14.sp,
                     )
 
+                    Spacer(modifier = Modifier.height(10.dp))
+
                     Text(
-                        text = "찾아주는 맞춤형 여행 성향 테스트",
-                        color = Color.Black,
+                        text = "여행 성향을 분석해 나만의 여행 유형을\n찾아주는 맞춤형 여행 성향 테스트입니다",
+                        color = Color(0xFF989898),
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 15.sp,
+                        fontSize = 14.sp,
                     )
                 }
 
