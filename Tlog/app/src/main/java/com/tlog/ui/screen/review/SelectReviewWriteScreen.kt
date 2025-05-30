@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,7 @@ import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.share.TopBar
+import com.tlog.ui.component.travel.SearchTravelList
 import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
@@ -44,6 +46,15 @@ fun SelectReviewWriteScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val selectedItemState = viewModel.selectTravel.collectAsState(initial = null)
+    val selectedItem = selectedItemState.value
+    selectedItem?.let { (travelId, travelName) ->
+        LaunchedEffect(selectedItem) {
+            navController.navigate("review/$travelId/$travelName")
+            viewModel.clearSelectTravel()
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -90,9 +101,10 @@ fun SelectReviewWriteScreen(
 
             }
 
-            Spacer(modifier = Modifier.height(201.dp))
 
-            if (viewModel.searchText.collectAsState().value.isEmpty() || viewModel.searchResult.value.isEmpty()) {
+            if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
+                Spacer(modifier = Modifier.height(201.dp))
+
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -122,7 +134,17 @@ fun SelectReviewWriteScreen(
                         )
                     }
                 }
+            } else {
+                Spacer(modifier = Modifier.height(20.dp))
+                SearchTravelList(
+                    travelList = viewModel.searchResult.value,
+                    onClick = { travelId, travelName ->
+                        viewModel.selectTravel(travelId, travelName)
+                    }
+                )
             }
         }
     }
+
+
 }

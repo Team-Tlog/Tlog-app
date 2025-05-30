@@ -52,6 +52,8 @@ import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 @Composable
 fun ReviewWritingScreen(
     viewModel: ReviewViewModel = hiltViewModel(),
+    travelId: String,
+    travelName: String, // id로 api 호출하기엔 이름만 필요해서 이렇게 하고 등록할 때 id 이용해서 등록하는게 좋을 것 같습니다
     navController: NavHostController
 ) {
     val scrollState = rememberScrollState()
@@ -59,7 +61,7 @@ fun ReviewWritingScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context) // user Id 가져오기 -> cart에도 이 방식으로 수정하기 !!
+        viewModel.initUserId(context)
 
         viewModel.eventFlow.collect { event ->
             when (event) {
@@ -95,7 +97,7 @@ fun ReviewWritingScreen(
 
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "남산타워는 어떠셨나요?",
+                text = travelName + (if(hasJongseong(travelName)) "은" else "는") + " 어떠셨나요?",
                 style = BodyTitle,
                 textAlign = TextAlign.Center
             )
@@ -118,6 +120,7 @@ fun ReviewWritingScreen(
                 onValueChange = { viewModel.updateReview(it) },
                 placeholderText = "입력해주세요",
                 showHelpPopup = showHelp,
+                singleLine = false,
                 onDismissHelpPopup = { showHelp = false },
                 trailingIcon = {
                     Icon(
@@ -128,7 +131,8 @@ fun ReviewWritingScreen(
                             .size(20.dp)
                             .clickable { showHelp = true }
                     )
-                }
+                },
+                modifier = Modifier.height(117.dp)
             )
 
             Spacer(modifier = Modifier.height(26.dp))
@@ -172,7 +176,12 @@ fun ReviewWritingScreen(
             MainButton(
                 text = "리뷰 등록하기",
                 onClick = {
-                    viewModel.addReview(context)
+                    when (viewModel.checkInput()){
+                        0 -> viewModel.addReview(context = context, travelId = travelId)
+                        1 -> Toast.makeText(context, "사진을 한 장 이상 등록해주세요.", Toast.LENGTH_SHORT).show()
+                        2 -> Toast.makeText(context, "별점을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                        3 -> Toast.makeText(context, "리뷰 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 modifier = Modifier
                     .height(70.dp)
@@ -180,4 +189,15 @@ fun ReviewWritingScreen(
             )
         }
     }
+}
+
+fun hasJongseong(text: String): Boolean {
+    if (text.isEmpty()) return false
+
+    val lastChar = if (text.last() == ')' && text.length >= 2) text[text.length - 2] else text.last()
+
+    if (lastChar !in '\uAC00'..'\uD7A3') return false
+
+    val jongseongIndex = (lastChar.code - 0xAC00) % 28
+    return jongseongIndex != 0
 }

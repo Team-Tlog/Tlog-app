@@ -20,11 +20,14 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TopBar
@@ -36,9 +39,16 @@ import com.tlog.viewmodel.share.CartViewModel
 
 @Composable
 fun CartScreen(
-    viewModel: CartViewModel,
+    viewModel: CartViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.initUserIdAndCart(context)
+    }
+
+
     Box(
         modifier = Modifier
             .fillMaxSize()

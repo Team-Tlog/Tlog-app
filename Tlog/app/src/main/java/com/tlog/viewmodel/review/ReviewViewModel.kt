@@ -89,7 +89,7 @@ class ReviewViewModel @Inject constructor(
 
     }
 
-    fun addReview(context: Context) {
+    fun addReview(context: Context, travelId: String) {
         viewModelScope.launch {
             val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
             Log.d("auth", FirebaseAuth.getInstance().currentUser?.uid ?: "로그인 안됨")
@@ -99,7 +99,7 @@ class ReviewViewModel @Inject constructor(
                 val result = repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
-                        destinationId = "tmp",
+                        destinationId = travelId,
                         username = "tmp",
                         rating = rating.value,
                         content = review.value,
@@ -136,12 +136,22 @@ class ReviewViewModel @Inject constructor(
         _hashTags.value += hashTag
     }
 
-    fun clearHashTags() {
-        _hashTags.value = emptyList()
-    }
-
     fun addImage(uri: Uri) {
         _imageList.value += uri
+    }
+
+    fun checkInput(): Int {
+        if (_imageList.value.isEmpty())
+            return 1
+        if (_rating.value == 0)
+            return 2
+        if (_review.value.isEmpty() || _review.value.isBlank())
+            return 3
+        return 0
+    }
+
+    fun clearHashTags() {
+        _hashTags.value = emptyList()
     }
 
     fun clearImages() {

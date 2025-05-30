@@ -1,27 +1,36 @@
 package com.tlog.viewmodel.share
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.tlog.api.RetrofitInstance
+import com.tlog.api.UserApi
+import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class CartViewModel @AssistedInject constructor(
-    private val repository: CartRepository,
-    @Assisted private val userId: String
+@HiltViewModel
+class CartViewModel @Inject constructor(
+    private val repository: CartRepository
 ): ViewModel() {
 
-    init {
-        fetchCart()
-    }
 
-    private fun fetchCart() {
+    private var userId: String = ""
+
+//    init {
+//        fetchCart(userId)
+//    }
+    private fun fetchCart(userId: String) {
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
@@ -32,6 +41,13 @@ class CartViewModel @AssistedInject constructor(
         }
     }
 
+
+    fun initUserIdAndCart(context: Context) {
+        viewModelScope.launch {
+            userId = UserPreferences.getUserId(context)?: ""
+        }
+        fetchCart(userId)
+    }
 
 
 
@@ -59,24 +75,21 @@ class CartViewModel @AssistedInject constructor(
         else
             _checkedTravelList.value = emptyList()
     }
-
-
-    @dagger.assisted.AssistedFactory
-    interface AssistedFactory {
-        fun create(userId: String): CartViewModel
-    }
-
-    companion object {
-        fun provideFactory(
-            factory: AssistedFactory,
-            userId: String
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return factory.create(userId) as T
-            }
-        }
-    }
 }
 
 
+@Module
+@InstallIn(SingletonComponent::class)
+object CartModule {
+    @Provides
+    fun provideCartRepository(
+        userApi: UserApi
+    ): CartRepository {
+        return CartRepository(userApi)
+    }
+
+    @Provides
+    fun provideUserApi(): UserApi {
+        return RetrofitInstance.getInstance().create(UserApi::class.java)
+    }
+}

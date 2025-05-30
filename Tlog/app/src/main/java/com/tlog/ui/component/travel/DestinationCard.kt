@@ -112,7 +112,7 @@ fun DestinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HashTagsGroup(hashTags = destination.tagCountList.map { it.tagName })
+                    HashTagsGroup(hashTags = destination.tagCountList.map { it.tag })
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(

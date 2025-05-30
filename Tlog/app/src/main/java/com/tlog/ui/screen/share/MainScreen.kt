@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,12 +83,17 @@ fun MainScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Icon(
-                        painter = painterResource(R.drawable.ic_search),
-                        contentDescription = "검색",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Black
-                    )
+                    IconButton(onClick = {
+                        //navController.navigate("searchReview") -> 추후 search로 변경
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_search),
+                            contentDescription = "검색",
+                            modifier = Modifier
+                                .size(40.dp),
+                            tint = Color.Black
+                        )
+                    }
 
                     Icon(
                         painter = painterResource(R.drawable.ic_notification),
@@ -202,6 +208,18 @@ fun MainScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier
                                     .width(70.dp)
+                                    .clickable {
+                                        when (name) {
+                                            "AI 추천 코스" -> {}
+                                            "리뷰 쓰기" -> {
+                                                navController.navigate("searchReview")
+                                            }
+                                            "지도에서 보기" -> {}
+                                            "내 팀보기" -> {}
+                                            "스크랩" -> {}
+                                            "지도 채우기" -> {}
+                                        }
+                                    }
                                 //.size(height = 62.dp, width = 70.dp)
                             ) {
                                 Icon(
@@ -213,6 +231,7 @@ fun MainScreen(
                                         .width((49.5).dp)
                                         .padding(8.dp)
                                 )
+
 
                                 Spacer(modifier = Modifier.height(7.dp))
 
