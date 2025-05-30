@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +46,15 @@ fun SelectReviewWriteScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val selectedItemState = viewModel.selectTravel.collectAsState(initial = null)
+    val selectedItem = selectedItemState.value
+    selectedItem?.let { (travelId, travelName) ->
+        LaunchedEffect(selectedItem) {
+            navController.navigate("review/$travelId/$travelName")
+            viewModel.clearSelectTravel()
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -126,8 +136,15 @@ fun SelectReviewWriteScreen(
                 }
             } else {
                 Spacer(modifier = Modifier.height(20.dp))
-                SearchTravelList(travelList = viewModel.searchResult.value)
+                SearchTravelList(
+                    travelList = viewModel.searchResult.value,
+                    onClick = { travelId, travelName ->
+                        viewModel.selectTravel(travelId, travelName)
+                    }
+                )
             }
         }
     }
+
+
 }

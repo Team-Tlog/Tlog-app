@@ -15,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -29,8 +30,13 @@ class SearchViewModel @Inject constructor(
     private var _searchResult = mutableStateOf<List<SearchTravel>>(emptyList())
     val searchResult: State<List<SearchTravel>> = _searchResult
 
+    // 검색어
     private var _searchText = MutableStateFlow("")
     val searchText = _searchText
+
+    // 클릭 시 선택
+    private val _selectTravel = MutableStateFlow<Pair<String, String>?>(null)
+    val selectTravel: StateFlow<Pair<String, String>?> = _selectTravel
 
     init {
         viewModelScope.launch {
@@ -41,6 +47,15 @@ class SearchViewModel @Inject constructor(
                 .distinctUntilChanged()
                 .collect { searchTravel(it) }
         }
+    }
+
+
+    fun selectTravel(id: String, name: String) {
+        _selectTravel.value = id to name
+    }
+
+    fun clearSelectTravel() {
+        _selectTravel.value = null
     }
 
     suspend fun searchTravel(searchText: String) {

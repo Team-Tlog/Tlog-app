@@ -3,12 +3,10 @@ package com.tlog.ui.navigation
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.tlog.data.repository.CartRepository
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
@@ -71,8 +69,11 @@ fun NavHost(
         composable("post2") {
             SnsPostWriteDetailScreen()
         }
-        composable("review") {
-            ReviewWritingScreen(navController = navController)
+        composable("review/{travelId}/{travelName}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
+            val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
+
+            ReviewWritingScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
         composable("teamList") {
             MyTeamListScreen(navController = navController)

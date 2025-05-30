@@ -37,13 +37,14 @@ fun TravelList(
 @Composable
 fun SearchTravelList(
     travelList: List<SearchTravel>,
+    onClick: (String, String) -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
     LazyColumn(
         state = listState
     ) {
         itemsIndexed(travelList) { index, item ->
-            SearchTravelItem(travel = item)
+            SearchTravelItem(travel = item, onClick = onClick)
             if (index == travelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {

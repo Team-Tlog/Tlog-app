@@ -2,6 +2,7 @@ package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -106,13 +107,17 @@ fun TravelItem(
 
 @Composable
 fun SearchTravelItem(
-    travel: SearchTravel
+    travel: SearchTravel,
+    onClick: (String, String) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(101.dp)
             .padding(horizontal = 20.dp)
+            .clickable{
+                onClick(travel.id, travel.name)
+            }
     ) {
         Image(
             painter = painterResource(id = R.drawable.test_image),

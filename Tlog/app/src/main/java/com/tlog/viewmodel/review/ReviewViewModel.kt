@@ -89,7 +89,7 @@ class ReviewViewModel @Inject constructor(
 
     }
 
-    fun addReview(context: Context) {
+    fun addReview(context: Context, travelId: String) {
         viewModelScope.launch {
             val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
             Log.d("auth", FirebaseAuth.getInstance().currentUser?.uid ?: "로그인 안됨")
@@ -99,7 +99,7 @@ class ReviewViewModel @Inject constructor(
                 val result = repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
-                        destinationId = "tmp",
+                        destinationId = travelId,
                         username = "tmp",
                         rating = rating.value,
                         content = review.value,

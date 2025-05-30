@@ -27,6 +27,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -82,12 +83,17 @@ fun MainScreen(
 
                     Spacer(modifier = Modifier.weight(1f))
 
-                    Icon(
-                        painter = painterResource(R.drawable.ic_search),
-                        contentDescription = "검색",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.Black
-                    )
+                    IconButton(onClick = {
+                        navController.navigate("searchReview")
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_search),
+                            contentDescription = "검색",
+                            modifier = Modifier
+                                .size(40.dp),
+                            tint = Color.Black
+                        )
+                    }
 
                     Icon(
                         painter = painterResource(R.drawable.ic_notification),
