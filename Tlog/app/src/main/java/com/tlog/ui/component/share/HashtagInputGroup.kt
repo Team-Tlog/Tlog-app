@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -63,21 +64,22 @@ fun HashtagInputGroup(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(hashTags) { tag ->
-            val textWidth = 4 * tag.length + 25 // 박스 크기
 
             Surface(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .shadow(3.dp, RoundedCornerShape(50))
+                    .padding(1.dp) // 상하좌우 그림자 짤리기 방지
+                    .shadow(2.dp, RoundedCornerShape(50))
                     .background(Color.White)
             ) {
 
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(Color.White)
                         .height(22.dp)
-                        .width(textWidth.dp),
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
