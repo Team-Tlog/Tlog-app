@@ -136,12 +136,22 @@ class ReviewViewModel @Inject constructor(
         _hashTags.value += hashTag
     }
 
-    fun clearHashTags() {
-        _hashTags.value = emptyList()
-    }
-
     fun addImage(uri: Uri) {
         _imageList.value += uri
+    }
+
+    fun checkInput(): Int {
+        if (_imageList.value.isEmpty())
+            return 1
+        if (_rating.value == 0)
+            return 2
+        if (_review.value.isEmpty())
+            return 3
+        return 0
+    }
+
+    fun clearHashTags() {
+        _hashTags.value = emptyList()
     }
 
     fun clearImages() {

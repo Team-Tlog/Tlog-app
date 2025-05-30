@@ -130,7 +130,8 @@ fun ReviewWritingScreen(
                             .size(20.dp)
                             .clickable { showHelp = true }
                     )
-                }
+                },
+                modifier = Modifier.height(117.dp)
             )
 
             Spacer(modifier = Modifier.height(26.dp))
@@ -174,7 +175,12 @@ fun ReviewWritingScreen(
             MainButton(
                 text = "리뷰 등록하기",
                 onClick = {
-                    viewModel.addReview(context = context, travelId = travelId)
+                    when (viewModel.checkInput()){
+                        0 -> viewModel.addReview(context = context, travelId = travelId)
+                        1 -> Toast.makeText(context, "사진을 한 장 이상 등록해주세요.", Toast.LENGTH_SHORT).show()
+                        2 -> Toast.makeText(context, "별점을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                        3 -> Toast.makeText(context, "리뷰 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    }
                 },
                 modifier = Modifier
                     .height(70.dp)
