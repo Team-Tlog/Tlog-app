@@ -13,6 +13,7 @@ import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.CartScreen
 import com.tlog.ui.screen.share.MainScreen
+import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamNameCreateScreen
@@ -56,8 +57,7 @@ fun NavHost(
             MyTravelingCourseScreen(navController)
         }
         composable("mypage") {
-            // 마이페이지로 수정해야함
-            MyTravelingCourseScreen(navController)
+            MyPageScreen(navController = navController)
         }
         composable("cart") {
             CartScreen(

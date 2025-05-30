@@ -4,6 +4,7 @@ import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.LoginRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface LoginApi {
@@ -11,6 +12,11 @@ interface LoginApi {
     suspend fun ssoLogin(
         @Body loginRequest: LoginRequest
     ): Response<BaseResponse<FirebaseTokenData>>
+
+    @POST("api/auth/logout")
+    suspend fun ssoLogout(
+        @Header("Cookie") cookie: String
+    ): BaseResponse<Unit>
 }
 
 data class FirebaseTokenData(

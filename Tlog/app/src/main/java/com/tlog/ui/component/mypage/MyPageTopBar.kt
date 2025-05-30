@@ -21,7 +21,9 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun MyPageTopBar() {
+fun MyPageTopBar(
+    logoutClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,7 +46,7 @@ fun MyPageTopBar() {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .clickable {
-                    Log.d("log out", "my click!!")
+                    logoutClick()
                 }
         )
     }

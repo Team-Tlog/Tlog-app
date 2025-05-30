@@ -70,17 +70,6 @@ class UserPreferences @Inject constructor(
         return prefs[FIREBASE_CUSTOM_TOKEN]
     }
 
-    // api 실패 시 사용? -> 위에 함수로 해도 될 것 같은데 일단 대기
-    suspend fun updateTokens(accessToken: String, refreshToken: String) {
-        context.dataStore.edit { preferences ->
-            preferences[ACCESS_TOKEN] = accessToken
-            preferences[REFRESH_TOKEN] = refreshToken
-        }
-        tokenProvider.setAccessToken(accessToken)
-        tokenProvider.setRefreshToken(refreshToken)
-    }
-
-
     // JWT 토큰에서 UserId 파싱하는 함수
     fun userIdFromJwt(jwtToken: String): String? {
         return try {
@@ -93,5 +82,16 @@ class UserPreferences @Inject constructor(
         } catch (e: Exception) {
             null
         }
+    }
+
+    suspend fun clearTokens() {
+        context.dataStore.edit { preferences ->
+            preferences.clear()
+        }
+
+        tokenProvider.setUserId(null)
+        tokenProvider.setAccessToken(null)
+        tokenProvider.setRefreshToken(null)
+        tokenProvider.setFirebaseCustomToken(null)
     }
 }

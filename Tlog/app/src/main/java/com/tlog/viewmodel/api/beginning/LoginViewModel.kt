@@ -23,17 +23,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import retrofit2.Response
-import retrofit2.Retrofit
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userPreferences: UserPreferences,
-    retrofit: Retrofit
+    private val loginApi: LoginApi,
 ) : ViewModel() {
-    private val loginApi = retrofit.create(LoginApi::class.java)
-
-
     // Kakao Manager 사용
     fun kakaoLogin(context: Context, navController: NavController) {
         KakaoLoginManager(context) { token ->
