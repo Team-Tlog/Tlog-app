@@ -7,33 +7,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
 import com.tlog.api.TravelApi
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.Location
 import com.tlog.data.model.travel.AddTravelRequest
-import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
-import com.tlog.viewmodel.review.ReviewViewModel
-import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import retrofit2.Retrofit
 import java.util.UUID
 
 @HiltViewModel
 class AddTravelViewModel @Inject constructor(
-    private val repository: AddTravelRepository
+    private val repository: AddTravelRepository,
+    private val userPreferences: UserPreferences
 ): ViewModel() {
 
     private var _travelName = mutableStateOf("")
@@ -74,7 +69,7 @@ class AddTravelViewModel @Inject constructor(
 
     fun initUserId(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = userPreferences.getUserId()
         }
     }
 
@@ -175,8 +170,10 @@ class AddTravelViewModel @Inject constructor(
 @InstallIn(SingletonComponent::class)
 object TravelModule {
     @Provides
-    fun provideTravelApi(): TravelApi {
-        return RetrofitInstance.getInstance().create(TravelApi::class.java)
+    fun provideTravelApi(
+        retrofit: Retrofit
+    ): TravelApi {
+        return retrofit.create(TravelApi::class.java)
     }
 
     @Provides

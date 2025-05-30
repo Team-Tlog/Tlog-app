@@ -41,13 +41,13 @@ class MainActivity : ComponentActivity() {
 
             val loginViewModel: LoginViewModel by viewModels()
 
-            LaunchedEffect(Unit) {
-                userId =
-                    UserPreferences.getUserId(this@MainActivity) ?: "9888b62b-170a-11f0-b854-02520f3d109f"
-                accessToken = UserPreferences.getAccessToken(this@MainActivity)
-                refreshToken = UserPreferences.getRefreshToken(this@MainActivity)
-            }
-            mainViewModel.set(userId, accessToken, refreshToken) // 추후 뷰모델에서 알아서 실행되는걸로 바꾸고 hilt 갑시닷 혹은 이 위에 ㄱㄱ
+//            LaunchedEffect(Unit) {
+//                userId =
+//                    UserPreferences.getUserId(this@MainActivity) ?: "9888b62b-170a-11f0-b854-02520f3d109f"
+//                accessToken = UserPreferences.getAccessToken(this@MainActivity)
+//                refreshToken = UserPreferences.getRefreshToken(this@MainActivity)
+//            }
+//            mainViewModel.set(userId, accessToken, refreshToken) // 추후 뷰모델에서 알아서 실행되는걸로 바꾸고 hilt 갑시닷 혹은 이 위에 ㄱㄱ
 
             // google login
             val context = LocalContext.current
@@ -68,9 +68,9 @@ class MainActivity : ComponentActivity() {
             // google end
 
 
-            val isReady = userId != null && accessToken != null && refreshToken != null
-
-            if (isReady) {
+//            val isReady = userId != null && accessToken != null && refreshToken != null
+//
+//            if (isReady) {
                 NavHost(
                     navController = navController,
                     startScreen = "main",
@@ -79,10 +79,11 @@ class MainActivity : ComponentActivity() {
                     launcher = launcher,
                     googleSignInClient = googleSignInClient
                 )
-            } else {
-                // 로딩 화면 보여주기 (또는 아무것도 안 보여주기) 시작화면 만들어지면 보여주면 될 듯!
-
-            }
+//
+//            } else {
+//                // 로딩 화면 보여주기 (또는 아무것도 안 보여주기) 시작화면 만들어지면 보여주면 될 듯!
+//
+//            }
 
 
 

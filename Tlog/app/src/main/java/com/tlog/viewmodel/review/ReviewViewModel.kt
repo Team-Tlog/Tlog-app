@@ -28,7 +28,8 @@ import kotlinx.coroutines.awaitAll
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    private val repository: ReviewRepository
+    private val repository: ReviewRepository,
+    private val userPreferences: UserPreferences
 ): ViewModel() {
     
     // api 결과에 따른 이벤트 값
@@ -55,7 +56,7 @@ class ReviewViewModel @Inject constructor(
 
     fun initUserId(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = userPreferences.getUserId()
         }
     }
 

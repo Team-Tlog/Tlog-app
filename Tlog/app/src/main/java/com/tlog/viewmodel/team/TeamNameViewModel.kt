@@ -21,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamNameViewModel @Inject constructor(
-    private val repository: TeamNameRepository
+    private val repository: TeamNameRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     sealed class UiEvent {
@@ -36,7 +37,7 @@ class TeamNameViewModel @Inject constructor(
 
     fun initUserId(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = userPreferences.getUserId()
         }
     }
 

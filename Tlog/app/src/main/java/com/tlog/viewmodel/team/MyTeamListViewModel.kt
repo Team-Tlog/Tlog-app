@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.tlog.api.RetrofitInstance
 import com.tlog.api.TeamApi
 import com.tlog.data.api.TeamData
 import com.tlog.data.local.UserPreferences
@@ -19,12 +18,14 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
 import javax.inject.Inject
 
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
     private val myTeamListRepository: MyTeamListRepository,
-    private val teamDeleteRepository: TeamDeleteRepository
+    private val teamDeleteRepository: TeamDeleteRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     sealed class UiEvent {
@@ -42,7 +43,7 @@ class MyTeamListViewModel @Inject constructor(
 
     fun initUserId(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = userPreferences.getUserId()
         }
     }
 
@@ -91,7 +92,9 @@ object MyTeamListModule {
     }
 
     @Provides
-    fun provideTeamApi(): TeamApi {
-        return RetrofitInstance.getInstance().create(TeamApi::class.java)
+    fun provideTeamApi(
+        retrofit: Retrofit
+    ): TeamApi {
+        return retrofit.create(TeamApi::class.java)
     }
 }

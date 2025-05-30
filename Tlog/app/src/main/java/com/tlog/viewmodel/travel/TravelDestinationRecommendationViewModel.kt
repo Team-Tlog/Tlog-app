@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelDestinationRecommendationViewModel @Inject constructor(
-    private val repository: RecommendDestinationRepository
+    private val repository: RecommendDestinationRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow("추천순")
@@ -38,7 +39,7 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
 
     fun initUserId(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = userPreferences.getUserId()
             userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
         }
     }
