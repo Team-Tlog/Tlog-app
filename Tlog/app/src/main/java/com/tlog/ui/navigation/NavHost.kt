@@ -23,7 +23,6 @@ import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.login.LoginViewModel
-import com.tlog.viewmodel.share.CartViewModel
 import com.tlog.viewmodel.share.MainViewModel
 
 @Composable
@@ -35,7 +34,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "searchReview") { //startScreen) {
+    NavHost(navController = navController, startDestination = startScreen) {
         composable("main") {
             MainScreen(navController = navController)
         }
