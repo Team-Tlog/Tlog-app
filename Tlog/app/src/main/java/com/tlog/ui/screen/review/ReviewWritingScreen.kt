@@ -61,7 +61,7 @@ fun ReviewWritingScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context) // user Id 가져오기 -> cart에도 이 방식으로 수정하기 !!
+        viewModel.initUserId(context)
 
         viewModel.eventFlow.collect { event ->
             when (event) {
@@ -120,6 +120,7 @@ fun ReviewWritingScreen(
                 onValueChange = { viewModel.updateReview(it) },
                 placeholderText = "입력해주세요",
                 showHelpPopup = showHelp,
+                singleLine = false,
                 onDismissHelpPopup = { showHelp = false },
                 trailingIcon = {
                     Icon(
