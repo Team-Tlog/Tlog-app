@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
 import com.tlog.data.api.ReviewRequest
-import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.Module
@@ -23,14 +22,20 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 import com.google.firebase.auth.FirebaseAuth
+import com.tlog.api.retrofit.TokenProvider
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     private val repository: ReviewRepository,
-    private val userPreferences: UserPreferences
+    tokenProvider: TokenProvider
 ): ViewModel() {
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
     
     // api 결과에 따른 이벤트 값
     sealed class UiEvent {
@@ -51,14 +56,6 @@ class ReviewViewModel @Inject constructor(
     val hashTags = _hashTags
     private var _imageList = mutableStateOf<List<Uri>>(emptyList())
     val imageList = _imageList
-
-    private var userId: String? = null
-
-    fun initUserId(context: Context) {
-        viewModelScope.launch {
-            userId = userPreferences.getUserId()
-        }
-    }
 
 
     suspend fun imageUpload(context: Context, imageUriList: List<Uri>): List<String> {

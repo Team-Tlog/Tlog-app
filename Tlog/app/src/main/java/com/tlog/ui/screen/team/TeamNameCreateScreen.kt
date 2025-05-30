@@ -35,7 +35,6 @@ fun TeamNameCreateScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context)
 
         viewModel.eventFlow.collect { event ->
             when (event) {

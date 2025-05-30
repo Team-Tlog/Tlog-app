@@ -1,13 +1,11 @@
 package com.tlog.viewmodel.team
 
-import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TeamApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.TeamNameRepository
 import dagger.Module
 import dagger.Provides
@@ -22,8 +20,14 @@ import javax.inject.Inject
 @HiltViewModel
 class TeamNameViewModel @Inject constructor(
     private val repository: TeamNameRepository,
-    private val userPreferences: UserPreferences
+    tokenProvider: TokenProvider
 ) : ViewModel() {
+
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
 
     sealed class UiEvent {
         object ApiSuccess: UiEvent()
@@ -33,13 +37,9 @@ class TeamNameViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var userId: String? = null
 
-    fun initUserId(context: Context) {
-        viewModelScope.launch {
-            userId = userPreferences.getUserId()
-        }
-    }
+
+
 
     var _TeamName = mutableStateOf("")
     val TeamName = _TeamName

@@ -1,12 +1,11 @@
 package com.tlog.viewmodel.share
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.UserApi
-import com.tlog.data.local.UserPreferences
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
 import dagger.Module
@@ -22,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val repository: CartRepository,
-    private val userPreferences: UserPreferences
+    private val tokenProvider: TokenProvider
 ): ViewModel() {
 
 
@@ -40,10 +39,8 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun initUserIdAndCart(context: Context) {
-        viewModelScope.launch {
-            userId = userPreferences.getUserId()?: ""
-        }
+    fun initUserIdAndCart() {
+        userId = tokenProvider.getUserId()?: ""
         fetchCart(userId)
     }
 

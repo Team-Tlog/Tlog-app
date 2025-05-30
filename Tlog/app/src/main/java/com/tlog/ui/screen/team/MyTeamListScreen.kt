@@ -31,7 +31,6 @@ fun MyTeamListScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.initUserId(context)
         viewModel.fetchTeamsFromServer()
 
         viewModel.eventFlow.collect { event ->

@@ -1,13 +1,12 @@
 package com.tlog.viewmodel.team
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.tlog.api.TeamApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TeamData
-import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyTeamListRepository
 import com.tlog.data.repository.TeamDeleteRepository
 import dagger.Module
@@ -25,8 +24,13 @@ import javax.inject.Inject
 class MyTeamListViewModel @Inject constructor(
     private val myTeamListRepository: MyTeamListRepository,
     private val teamDeleteRepository: TeamDeleteRepository,
-    private val userPreferences: UserPreferences
+    tokenProvider: TokenProvider
 ) : ViewModel() {
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
 
     sealed class UiEvent {
         object ApiSuccess : UiEvent()
@@ -39,13 +43,6 @@ class MyTeamListViewModel @Inject constructor(
     private val _teamList = mutableStateOf<List<TeamData>>(emptyList())
     val teamsList: State<List<TeamData>> = _teamList
 
-    private var userId: String? = null
-
-    fun initUserId(context: Context) {
-        viewModelScope.launch {
-            userId = userPreferences.getUserId()
-        }
-    }
 
     fun fetchTeamsFromServer() {
         viewModelScope.launch {

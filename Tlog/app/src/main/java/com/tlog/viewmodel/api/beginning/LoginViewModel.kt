@@ -11,9 +11,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.kakao.sdk.auth.TokenManager
 import com.tlog.api.FirebaseTokenData
 import com.tlog.api.LoginApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.BaseResponse
 import kotlinx.coroutines.launch
 import com.tlog.data.api.LoginRequest
@@ -30,7 +30,6 @@ import retrofit2.Retrofit
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userPreferences: UserPreferences,
-    private val tokenManager: TokenManager,
     retrofit: Retrofit
 ) : ViewModel() {
     private val loginApi = retrofit.create(LoginApi::class.java)

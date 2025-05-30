@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
 import com.tlog.data.model.travel.TravelDetailResponse
-import com.tlog.data.repository.RecommendDestinationRepository
 import com.tlog.data.repository.SearchOneDestinationRepository
 import dagger.Module
 import dagger.Provides
