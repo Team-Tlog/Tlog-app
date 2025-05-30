@@ -36,8 +36,8 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             @OptIn(FlowPreview::class) // debounce 때문에 사용
             _searchText
-                .debounce(500)
-                .filter { it.isNotBlank() && it.length >= 2} // 공백 무시 / 길이 2이상
+                .debounce(500) // 입력 없을 때
+                .filter { it.isNotBlank() && it.length >= 1} // 공백 무시 / 길이 1이상
                 .distinctUntilChanged()
                 .collect { searchTravel(it) }
         }
@@ -50,6 +50,10 @@ class SearchViewModel @Inject constructor(
 
     fun updateSearchText(newSearchText: String) {
         _searchText.value = newSearchText
+    }
+
+    fun checkSearchText(): Boolean {
+        return searchText.value.isNotEmpty()
     }
 }
 

@@ -92,7 +92,7 @@ fun SelectReviewWriteScreen(
             }
 
 
-            if (viewModel.searchResult.value.isEmpty()) {
+            if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
                 Spacer(modifier = Modifier.height(201.dp))
 
                 Box(
@@ -125,6 +125,7 @@ fun SelectReviewWriteScreen(
                     }
                 }
             } else {
+                Spacer(modifier = Modifier.height(20.dp))
                 SearchTravelList(travelList = viewModel.searchResult.value)
             }
         }
