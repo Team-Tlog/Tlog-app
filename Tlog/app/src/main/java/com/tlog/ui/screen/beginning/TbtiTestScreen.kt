@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
@@ -30,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.tbti.TbtiProgressBar
 import com.tlog.ui.component.tbti.TbtiQuestionSection
 import com.tlog.ui.component.tbti.TbtiTestAnswerBox
@@ -46,18 +49,24 @@ fun TbtiTestScreen(viewModel: TbtiTestViewModel = viewModel()) {
             .windowInsetsPadding(WindowInsets.systemBars)
             .background(Color.White)
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 36.dp, start = 24.dp, end = 24.dp),
+                .padding(top = 51.dp, start = (23.5).dp, end = (23.5).dp, bottom = 25.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TbtiProgressBar()
-
-            Spacer(modifier = Modifier.height((70.5).dp))
-
             TbtiQuestionSection()
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            MainButton(
+                text = "다음",
+                enabled = viewModel.selectedIdx.value != null,
+                onClick = { /* TODO: 다음 질문으로 이동 */ },
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+            )
         }
     }
 }
