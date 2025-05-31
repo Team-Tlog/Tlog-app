@@ -39,7 +39,9 @@ fun OtpCodeInput(
         modifier = Modifier.fillMaxSize()
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
         ) {
             Row(
                 modifier = Modifier

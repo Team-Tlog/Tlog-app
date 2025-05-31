@@ -23,9 +23,9 @@ fun TbtiQuestionSection(
     // 선택지 선택 상태 관리
     var selectedIdx by remember { mutableStateOf<Int?>(null) }
 
-    val question = if (questionNumber == 1) "여행을 가기 전날 밤 내 가방의 상태는?" else viewModel.question
-    val chooseText1 = if (questionNumber == 1) "이미 갈 준비 완료! 편하게 자볼까?" else viewModel.answerList[0]
-    val chooseText2 = if (questionNumber == 1) "벌써 내일이야? 빨리 짐 싸자!!" else viewModel.answerList[1]
+    val question = if (questionNumber == 1) "여행을 가기 전날 밤 내 가방의 상태는?" else viewModel.questionList.getOrNull(questionNumber - 1) ?: ""
+    val chooseText1 = if (questionNumber == 1) "이미 갈 준비 완료! 편하게 자볼까?" else viewModel.answerLists.getOrNull(questionNumber - 1)?.getOrNull(0) ?: ""
+    val chooseText2 = if (questionNumber == 1) "벌써 내일이야? 빨리 짐 싸자!!" else viewModel.answerLists.getOrNull(questionNumber - 1)?.getOrNull(1) ?: ""
 
     androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp.dp
     Column(

@@ -3,11 +3,13 @@ package com.tlog.ui.navigation
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tlog.ui.screen.beginning.LoginScreen
+import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
@@ -21,6 +23,7 @@ import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
+import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import com.tlog.viewmodel.share.MainViewModel
 
@@ -33,7 +36,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "tbtiTest") {
+    NavHost(navController = navController, startDestination = "tbtiCodeInput") {
 
         composable("main") {
             MainScreen(navController = navController)
@@ -95,6 +98,12 @@ fun NavHost(
         }
         composable("tbtiTest") {
             TbtiTestScreen()
+        }
+        composable("tbtiCodeInput") {
+            val viewModel: TbtiCodeInputViewModel = hiltViewModel() // 또는 viewModel()
+            TbtiCodeInputScreen(
+                viewModel = viewModel
+            )
         }
     }
 }

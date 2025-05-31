@@ -36,8 +36,8 @@ fun MainButton(
             contentColor = Color.White,
 
             // 비활성화 시 컬러
-            disabledContainerColor = Color(0xFFAAAAAA),
-            disabledContentColor = Color(0xFF7E7E7E)
+            disabledContainerColor = Color(0xFFCECECE),
+            disabledContentColor = Color.White
         )
     ) {
         Text(
