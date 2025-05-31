@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.repository.RecommendDestinationRepository
 import dagger.Module
@@ -21,7 +21,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelDestinationRecommendationViewModel @Inject constructor(
-    private val repository: RecommendDestinationRepository
+    private val repository: RecommendDestinationRepository,
+    private val tokenProvider: TokenProvider
 ) : ViewModel() {
 
     private val _selectedCategory = MutableStateFlow("추천순")
@@ -36,9 +37,9 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         loadDestinations()
     }
 
-    fun initUserId(context: Context) {
+    fun initUserIdAndScrapList(context: Context) {
         viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
+            userId = tokenProvider.getUserId()
             userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
         }
     }

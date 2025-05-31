@@ -7,34 +7,35 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
 import com.tlog.api.TravelApi
-import com.tlog.data.local.UserPreferences
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.Location
 import com.tlog.data.model.travel.AddTravelRequest
-import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
-import com.tlog.viewmodel.review.ReviewViewModel
-import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
+import retrofit2.Retrofit
 import java.util.UUID
 
 @HiltViewModel
 class AddTravelViewModel @Inject constructor(
-    private val repository: AddTravelRepository
+    private val repository: AddTravelRepository,
+    tokenProvider: TokenProvider
 ): ViewModel() {
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
+
 
     private var _travelName = mutableStateOf("")
     val travelName: State<String> = _travelName
@@ -67,16 +68,9 @@ class AddTravelViewModel @Inject constructor(
         data class ApiError(val message: String): UiEvent()
     }
 
-    private val _eventFlow = MutableSharedFlow<AddTravelViewModel.UiEvent>()
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var userId: String? = null
-
-    fun initUserId(context: Context) {
-        viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)
-        }
-    }
 
     suspend fun imageUpload(context: Context, imageUri: Uri, city: String, district: String): String {
         // 이미지 업로드를 병렬로 처리
@@ -111,10 +105,10 @@ class AddTravelViewModel @Inject constructor(
                 )
 
                 when (result.status) {
-                    201 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiSuccess)
-                    409 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("이미 존재하는 여행지 입니다."))
-                    500 -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(AddTravelViewModel.UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
+                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    409 -> _eventFlow.emit(UiEvent.ApiError("이미 존재하는 여행지 입니다."))
+                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
+                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
                 }
             }
             catch (e: Exception) {
@@ -175,8 +169,10 @@ class AddTravelViewModel @Inject constructor(
 @InstallIn(SingletonComponent::class)
 object TravelModule {
     @Provides
-    fun provideTravelApi(): TravelApi {
-        return RetrofitInstance.getInstance().create(TravelApi::class.java)
+    fun provideTravelApi(
+        retrofit: Retrofit
+    ): TravelApi {
+        return retrofit.create(TravelApi::class.java)
     }
 
     @Provides

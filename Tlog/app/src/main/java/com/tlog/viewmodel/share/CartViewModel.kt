@@ -1,13 +1,11 @@
 package com.tlog.viewmodel.share
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
 import com.tlog.api.UserApi
-import com.tlog.data.local.UserPreferences
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
 import dagger.Module
@@ -16,25 +14,24 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
 import javax.inject.Inject
 
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val repository: CartRepository
+    private val repository: CartRepository,
+    private val tokenProvider: TokenProvider
 ): ViewModel() {
 
 
     private var userId: String = ""
 
-//    init {
-//        fetchCart(userId)
-//    }
     private fun fetchCart(userId: String) {
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
-                _cartList.value = result ?: emptyList() // null이면 emptyList
+                _cartList.value = result
             } catch (e: Exception) {
                 // api실패 시
             }
@@ -42,10 +39,8 @@ class CartViewModel @Inject constructor(
     }
 
 
-    fun initUserIdAndCart(context: Context) {
-        viewModelScope.launch {
-            userId = UserPreferences.getUserId(context)?: ""
-        }
+    fun initUserIdAndCart() {
+        userId = tokenProvider.getUserId()?: ""
         fetchCart(userId)
     }
 
@@ -89,7 +84,9 @@ object CartModule {
     }
 
     @Provides
-    fun provideUserApi(): UserApi {
-        return RetrofitInstance.getInstance().create(UserApi::class.java)
+    fun provideUserApi(
+        retrofit: Retrofit
+    ): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 }

@@ -1,6 +1,5 @@
 package com.tlog.ui.component.mypage
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +20,9 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun MyPageTopBar() {
+fun MyPageTopBar(
+    logoutClick: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,7 +45,7 @@ fun MyPageTopBar() {
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .clickable {
-                    Log.d("log out", "my click!!")
+                    logoutClick()
                 }
         )
     }

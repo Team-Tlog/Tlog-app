@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tlog.api.FirebaseTokenData
 import com.tlog.api.LoginApi
-import com.tlog.api.RetrofitInstance
 import com.tlog.data.api.BaseResponse
 import kotlinx.coroutines.launch
 import com.tlog.data.api.LoginRequest
@@ -27,11 +26,10 @@ import retrofit2.Response
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val userPreferences: UserPreferences,
+    private val loginApi: LoginApi,
 ) : ViewModel() {
-    private val loginApi = RetrofitInstance.getInstance().create(LoginApi::class.java)
-
-
     // Kakao Manager 사용
     fun kakaoLogin(context: Context, navController: NavController) {
         KakaoLoginManager(context) { token ->
@@ -99,8 +97,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
-        UserPreferences.saveTokensAndUserId(
-            context = context,
+        userPreferences.saveTokensAndUserId(
             accessToken = accessToken,
             refreshToken = refreshToken,
             firebaseCustomToken = firebaseCustomToken

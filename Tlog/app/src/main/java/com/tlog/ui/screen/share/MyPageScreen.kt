@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.share
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,13 +17,14 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.mypage.BlueCircle
 import com.tlog.ui.component.mypage.MyPageTbtiGroup
 import com.tlog.ui.component.mypage.MyPageTopBar
@@ -30,12 +32,31 @@ import com.tlog.ui.component.mypage.SettingItem
 import com.tlog.ui.component.mypage.UserInfoGroup
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.viewmodel.share.MyPageViewModel
+import com.tlog.viewmodel.share.MyPageViewModel.UiEvent
 
 
-@Preview
 @Composable
-fun MyPageScreen(viewModel: MyPageViewModel = viewModel()) {
-    val navController = rememberNavController()
+fun MyPageScreen(
+    viewModel: MyPageViewModel = hiltViewModel(),
+    navController: NavController
+) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.LogoutSuccess -> {
+                    navController.navigate("login") {
+                        popUpTo(0) { inclusive = true } // 모두 날려버려~
+                    }
+                }
+                is UiEvent.LogoutError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +86,9 @@ fun MyPageScreen(viewModel: MyPageViewModel = viewModel()) {
                             .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        MyPageTopBar()
+                        MyPageTopBar(
+                            logoutClick = { viewModel.logout() }
+                        )
 
                         Spacer(modifier = Modifier.height(24.dp))
 

@@ -4,7 +4,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.RetrofitInstance
 import com.tlog.api.SearchApi
 import com.tlog.data.model.travel.SearchTravel
 import com.tlog.data.repository.SearchRepository
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
 import javax.inject.Inject
 
 
@@ -77,13 +77,15 @@ class SearchViewModel @Inject constructor(
 object SearchModule {
     @Provides
     fun provideSearchRepository(
-        retrofitInstance: SearchApi
+        searchApi: SearchApi
     ): SearchRepository {
-        return SearchRepository(retrofitInstance)
+        return SearchRepository(searchApi)
     }
 
     @Provides
-    fun provideSearchApi(): SearchApi {
-        return RetrofitInstance.getInstance().create(SearchApi::class.java)
+    fun provideSearchApi(
+        retrofit: Retrofit
+    ): SearchApi {
+        return retrofit.create(SearchApi::class.java)
     }
 }
