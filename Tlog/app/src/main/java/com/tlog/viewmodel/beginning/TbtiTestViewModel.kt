@@ -2,6 +2,7 @@ package com.tlog.viewmodel.beginning
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 
 
@@ -24,12 +25,16 @@ class TbtiTestViewModel: ViewModel() {
     private val _answerList = mutableStateOf<List<String>>(listOf())
     val answerList: List<String> get() = _answerLists.getOrNull(_currentQuestionIndex.value) ?: listOf()
 
+    val selectedIdx: MutableState<Int?> = mutableStateOf(null)
+    val selectedIndex: Int? get() = selectedIdx.value
+
     fun setQuestionsAndAnswers(questions: List<String>, answers: List<List<String>>) {
         _questionList.clear()
         _questionList.addAll(questions)
         _answerLists.clear()
         _answerLists.addAll(answers)
         _currentQuestionIndex.value = 0
+        selectedIdx.value = null
     }
 
     fun addList(selectNum: Int) {

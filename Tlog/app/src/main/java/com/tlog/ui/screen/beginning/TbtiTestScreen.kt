@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -31,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.tbti.TbtiProgressBar
 import com.tlog.ui.component.tbti.TbtiQuestionSection
 import com.tlog.ui.component.tbti.TbtiTestAnswerBox
@@ -50,11 +52,22 @@ fun TbtiTestScreen(viewModel: TbtiTestViewModel = viewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 93.dp, start = 24.dp, end = 24.dp), // 1️⃣
+                .padding(top = 93.dp, start = 24.dp, end = 24.dp)
+                .imePadding(),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TbtiQuestionSection()
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            MainButton(
+                text = "다음",
+                enabled = true,
+                onClick = { /* TODO: 다음 질문으로 이동 */ },
+                modifier = Modifier
+                    .padding(horizontal = 20.dp)
+            )
         }
     }
 }
