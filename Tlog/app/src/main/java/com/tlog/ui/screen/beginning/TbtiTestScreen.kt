@@ -52,8 +52,7 @@ fun TbtiTestScreen(viewModel: TbtiTestViewModel = viewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 93.dp, start = 24.dp, end = 24.dp)
-                .imePadding(),
+                .padding(top = 51.dp, start = (23.5).dp, end = (23.5).dp, bottom = 25.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -63,7 +62,7 @@ fun TbtiTestScreen(viewModel: TbtiTestViewModel = viewModel()) {
 
             MainButton(
                 text = "다음",
-                enabled = true,
+                enabled = viewModel.selectedIdx.value != null,
                 onClick = { /* TODO: 다음 질문으로 이동 */ },
                 modifier = Modifier
                     .padding(horizontal = 20.dp)

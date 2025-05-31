@@ -36,7 +36,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "tbtiCodeInput") {
+    NavHost(navController = navController, startDestination = "tbtiTest") {
 
         composable("main") {
             MainScreen(navController = navController)
