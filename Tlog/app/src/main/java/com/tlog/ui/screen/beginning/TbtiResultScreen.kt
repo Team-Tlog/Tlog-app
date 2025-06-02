@@ -112,42 +112,51 @@ fun TbtiResultScreen(
         Text(
             text = description,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            fontFamily = MainFont
+            fontWeight = FontWeight.Normal,
+            fontFamily = MainFont,
+            color = Color(0xFF767676)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         for (i in leftLabels.indices) {
+            val leftScore = tbtiMap[leftLabels[i]] ?: 0f
+            val rightScore = tbtiMap[rightLabels[i]] ?: 0f
+
+            val leftColor = if (leftScore >= rightScore) MainColor else Color.Black
+            val rightColor = if (rightScore > leftScore) MainColor else Color.Black
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 23.dp),
+                    .padding(vertical = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
                     text = leftLabels[i],
-                    modifier = Modifier.padding(end = 6.dp),
+                    modifier = Modifier.padding(end = 10.dp),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = MainFont
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = MainFont,
+                    color = leftColor
                 )
                 LinearProgressIndicator(
                     progress = { progress[i] },
                     modifier = Modifier
-                        .width(236.dp)
-                        .height(12.dp)
+                        .width(260.dp)
+                        .height(6.dp)
                         .clip(RoundedCornerShape(4.dp)),
                     color = MainColor,
                     trackColor = Color(0xFFE0E0E0)
                 )
                 Text(
                     text = rightLabels[i],
-                    modifier = Modifier.padding(start = 6.dp),
+                    modifier = Modifier.padding(start = 10.dp),
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Medium,
-                    fontFamily = MainFont
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = MainFont,
+                    color = rightColor
                 )
             }
         }
@@ -161,7 +170,8 @@ fun TbtiResultScreen(
             lineHeight = 20.sp,
             fontFamily = MainFont,
             modifier = Modifier
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp),
+            color = Color(0xFF767676)
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -182,20 +192,28 @@ fun TbtiResultScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "잘 맞는 TBTI",
-                    style = Body1Regular
+                    text = "최고의 궁합",
+                    style = Body1Regular,
+                    color = Color(0xFF767676)
                     )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Text("RENA", fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp,
+                    color = MainColor
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+
                 Image(
                     painter = painterResource(id = R.drawable.test_image),
-                    contentDescription = "잘 맞는 TBTI",
+                    contentDescription = "최고의 궁합",
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(12.dp)),
                     contentScale = ContentScale.Crop
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("RENA", fontFamily = MainFont)
             }
 
             Column(
@@ -208,31 +226,39 @@ fun TbtiResultScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "안 맞는 TBTI",
-                    style = Body1Regular
+                    text = "최악의 궁합",
+                    style = Body1Regular,
+                    color = Color(0xFF767676)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Text("SALI",
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp,
+                    color = MainColor
+                    )
+
+                Spacer(modifier = Modifier.height(5.dp))
+
                 Image(
                     painter = painterResource(id = R.drawable.test_image),
-                    contentDescription = "안 맞는 TBTI",
+                    contentDescription = "최악의 궁합",
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(12.dp)),
                     contentScale = ContentScale.Crop
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("SALI", fontFamily = MainFont)
             }
         }
 
         Spacer(modifier = Modifier.height(30.dp))
 
         MainButton(
-            text = "Tlog 시작하기",
+            text = "시작하기",
             onClick = { /* 메인 화면 이동 */ },
             modifier = Modifier
-                .padding(start = 30.dp, end = 30.dp)
-                .height(65.dp)
+                .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(29.dp))
