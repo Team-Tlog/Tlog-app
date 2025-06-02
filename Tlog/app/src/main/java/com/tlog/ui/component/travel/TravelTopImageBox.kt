@@ -1,5 +1,7 @@
 package com.tlog.ui.component.travel
 
+import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.tlog.R
@@ -16,19 +19,30 @@ import com.tlog.R
 
 @Composable
 fun TravelTopImageBox(
-    imageUrl: String // 알아서 바꾸기 URL로
+    imageUrl: String
 ) {
     Box( // 상단 이미지 + topbar
         modifier = Modifier
             .fillMaxWidth()
             .height(319.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
     ) {
-        AsyncImage(
-            model = imageUrl,
-            contentDescription = "여행지 사진",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.matchParentSize()
-        )
+        Log.d("imageUrl", imageUrl)
+        if (imageUrl == "NaN") {
+            Image(
+                painter = painterResource(id = R.drawable.tmp_jeju),
+                contentDescription = "",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize()
+            )
+        }
+        else {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "여행지 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize()
+            )
+        }
 
         TravelInfoTopBar(
             iconList = listOf(R.drawable.ic_heart),

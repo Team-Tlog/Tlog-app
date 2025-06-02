@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.travel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
@@ -32,8 +33,13 @@ class TravelInfoViewModel @Inject constructor(
 
     fun loadDestinationById(id: String) {
         viewModelScope.launch {
-            val response = searchOneDestinationRepository.getDestinationById(id)
-            _destinationDetail.value = response
+            try {
+                val response = searchOneDestinationRepository.getDestinationById(id)
+                _destinationDetail.value = response.data
+            }
+            catch (e: Exception) {
+                Log.d("okhttp", e.message.toString())
+            }
         }
     }
 }

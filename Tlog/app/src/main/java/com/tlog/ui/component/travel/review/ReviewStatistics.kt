@@ -24,7 +24,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun ReviewStatistics(
-    avgStarRating: Float,
+    avgStarRating: Double,
     ratingDistribution: Map<String, Int>
 ) {
     val totalReviewCount = ratingDistribution.values.sum()

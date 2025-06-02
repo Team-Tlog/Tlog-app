@@ -11,7 +11,7 @@ data class TravelDetailResponse(
     val petFriendly: Boolean,
     val ratingSum: Int,
     val reviewCount: Int,
-    val averageRating: Float,
+    val averageRating: Double,
     val imageUrl: String,
     val topTags: List<TagCount>,
     val ratingDistribution: Map<String, Int>,
@@ -22,7 +22,9 @@ data class DetailReview(
     val id: String,
     val userId: String,
     val username: String,
+    val userProfileImageUrl: String,
     val rating: Int,
     val content: String,
+    val reviewImageUrl: List<String>,
     val createdAt: String
 )

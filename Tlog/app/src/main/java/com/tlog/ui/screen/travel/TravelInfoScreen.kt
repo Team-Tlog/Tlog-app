@@ -71,7 +71,7 @@ fun TravelInfoScreen(
                         Spacer(modifier = Modifier.height(29.dp))
 
                         ReviewSection(
-                            avgStarRating = destination.averageRating.toFloat(),
+                            avgStarRating = destination.averageRating,
                             ratingDistribution = destination.ratingDistribution,
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount

@@ -31,7 +31,7 @@ interface TravelApi {
     @GET("/api/destinations/{id}")
     suspend fun getDestinationById(
         @Path("id") id: String
-    ): TravelDetailResponse
+    ): BaseResponse<TravelDetailResponse>
 
     @POST("/api/destinations")
     suspend fun addTravel(

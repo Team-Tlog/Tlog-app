@@ -27,7 +27,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun ReviewSection(
-    avgStarRating: Float,
+    avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
     reviewList: List<DetailReview>,
     reviewCnt: Int = Int.MAX_VALUE
