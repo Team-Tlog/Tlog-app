@@ -3,7 +3,6 @@ package com.tlog.data.model.travel
 import com.tlog.data.model.Location
 import com.tlog.data.model.share.Tag
 
-
 // AddTravel
 data class Travel(
     val name: String,
