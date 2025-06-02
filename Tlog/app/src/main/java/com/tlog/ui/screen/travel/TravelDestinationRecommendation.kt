@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,8 +40,6 @@ fun TravelDestinationRecommendation(
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
 
-    val context = LocalContext.current
-
     val scrapList = viewModel.scrapList
 
 
@@ -59,8 +56,6 @@ fun TravelDestinationRecommendation(
 
         }
     }
-
-
 
 
 
@@ -86,13 +81,12 @@ fun TravelDestinationRecommendation(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    //.verticalScroll(rememberScrollState())
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.White)
-                        .padding(16.dp)
+                        .padding(start = 14.dp, end = 14.dp, top = 5.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -109,8 +103,7 @@ fun TravelDestinationRecommendation(
                         Row {
                             Box(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .padding(8.dp)
+                                    .size(40.dp)
                                     .clickable {
                                         //추후 로직 구현
                                         Log.d("검색", "검색아이콘 눌림")
@@ -123,10 +116,11 @@ fun TravelDestinationRecommendation(
                                 )
                             }
 
+                            Spacer(modifier = Modifier.width(5.dp))
+
                             Box(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .padding(8.dp)
+                                    .size(42.dp)
                                     .clickable {
                                         //추후 로직 구현
                                         Log.d("알림창", "알림아이콘 눌림")
@@ -155,7 +149,6 @@ fun TravelDestinationRecommendation(
 
                 Spacer(modifier = Modifier.height(33.dp))
 
-                // Category Selector
                 CategorySelector(
                     categories = listOf("추천순", "인기순", "리뷰순"),
                     selectedCategory = selectedCategory,
