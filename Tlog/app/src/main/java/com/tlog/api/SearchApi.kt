@@ -2,6 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.SearchAndPageResponse
+import com.tlog.data.api.Sort
 import com.tlog.data.model.travel.SearchTravel
 import com.tlog.data.model.travel.TravelDestinationResponse
 import retrofit2.http.GET
@@ -37,7 +38,10 @@ interface SearchApi {
 }
 
 data class Pageable(
-    val page: Int,
-    val size: Int,
-    val sort: List<String>
+    val pageNumber: Int,
+    val pageSize: Int,
+    val sort: Sort,
+    val offset: Int,
+    val sorted: Boolean,
+    val unsorted: Boolean
 )

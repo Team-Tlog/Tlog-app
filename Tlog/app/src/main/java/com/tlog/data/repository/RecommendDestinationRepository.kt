@@ -41,8 +41,8 @@ class RecommendDestinationRepository @Inject constructor(
         return travelRetrofitInstance.getUserScraps(userId)
     }
     
-    suspend fun getSearchToCity(pageable: Pageable, query: String): BaseResponse<SearchAndPageResponse> {
-        return searchRetrofitInstance.getTravelListByCity(page = pageable.page, size = pageable.size, sort = pageable.sort, city = query)
+    suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchAndPageResponse> {
+        return searchRetrofitInstance.getTravelListByCity(page = page, size = size, sort = sort, city = query)
     }
 }
 
