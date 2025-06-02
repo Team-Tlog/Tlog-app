@@ -37,25 +37,12 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
 
     init {
         userId = tokenProvider.getUserId()
-        loadDestinations()
     }
 
 
     fun initUserIdAndScrapList(context: Context) {
         viewModelScope.launch {
             userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
-        }
-    }
-
-    fun loadDestinations() {
-        viewModelScope.launch {
-            try {
-                val response = repository.getDestinations(
-                )
-                _destinations.value = response.content
-            } catch (e: Exception) {
-                // TODO: 에러 처리
-            }
         }
     }
 
@@ -111,13 +98,48 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         }
     }
 
-    fun loadNextPage(city: String) {
+    fun loadDestinations(
+        city: String,
+        sortType: String? = "REVIEW", // 현재는 리뷰 추후 변경 할 것 (api가 리뷰만 돌아감)
+        tbti: String? = null
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getDestinations(
+                    page = page,
+                    size = pageSize,
+                    sort = sort,
+                    city = city,
+                    sortType = sortType,
+                    tbti = tbti
+                )
+                isLastPage = response.data.last
+                _destinations.value = response.data.content
+            } catch (e: Exception) {
+                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+            }
+        }
+    }
+
+    fun loadNextPage(
+        city: String,
+        sortType: String? = "REVIEW",
+        tbti: String? = null
+    ) {
         if (isLastPage == true) return
         page++
         Log.d("okhttp", "ininininininin")
         viewModelScope.launch {
             try {
-                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
+                val response = repository.getDestinations(
+                    page = page,
+                    size = pageSize,
+                    sort = sort,
+                    city = city,
+                    sortType = sortType,
+                    tbti = tbti
+                )
+                isLastPage = response.data.last
                 _destinations.value += response.data.content
             } catch (e: Exception) {
                 Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")

@@ -1,6 +1,7 @@
 package com.tlog.data.api
 
-import com.tlog.api.Pageable
+import com.tlog.data.model.travel.Pageable
+import com.tlog.data.model.travel.Sort
 import com.tlog.data.model.travel.TravelDestinationResponse
 
 data class SearchAndPageResponse(
@@ -17,8 +18,3 @@ data class SearchAndPageResponse(
     val empty: Boolean,
 )
 
-data class Sort(
-    val empty: Boolean,
-    val sorted: Boolean,
-    val unsorted: Boolean
-)

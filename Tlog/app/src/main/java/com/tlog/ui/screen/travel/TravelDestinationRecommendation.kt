@@ -56,9 +56,6 @@ fun TravelDestinationRecommendation(
             if (isLastItemVisible) {
                 if (city != null)
                     viewModel.loadNextPage(city)
-                else {
-                    // 여기는 TBTI 여행 추천 호출하기
-                }
             }
 
         }
@@ -71,11 +68,8 @@ fun TravelDestinationRecommendation(
     LaunchedEffect(Unit) {
         viewModel.initUserIdAndScrapList(context)
         ScrapManager.init(context)
-        if (city == null) {
-            viewModel.loadDestinations()
-        }
-        else {
-            viewModel.searchTravelToCity(city)
+        if (city != null) {
+            viewModel.loadDestinations(city)
         }
     }
 

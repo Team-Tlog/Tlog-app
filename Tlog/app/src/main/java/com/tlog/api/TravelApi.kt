@@ -22,8 +22,11 @@ interface TravelApi {
     suspend fun getDestinations(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): TravelRecommendPagedResponse<TravelDestinationResponse>
+        @Query("sort") sort: List<String>,
+        @Query("city") city: String,
+        @Query("sortType") sortType: String? = null,
+        @Query("tbti") tbti: String? = null
+    ): BaseResponse<TravelRecommendPagedResponse>
 
     @GET("/api/destinations/{id}")
     suspend fun getDestinationById(
