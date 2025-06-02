@@ -15,7 +15,9 @@ interface SearchApi {
 
     @GET("/api/search/destination/by-city") // 여행지 도시 이름으로 검색
     suspend fun getTravelListByCity(
-        @Query("pageable") pageable: Pageable,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String>,
         @Query("city") city: String
     ): BaseResponse<SearchAndPageResponse>
 
@@ -30,6 +32,8 @@ interface SearchApi {
     suspend fun getTravelListByAddress(
         @Query("address") address: String
     ): BaseResponse<List<TravelDestinationResponse>>
+
+
 }
 
 data class Pageable(
