@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.BottomBar
@@ -53,10 +54,12 @@ import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.Essential
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.share.MainViewModel
 
 
 @Composable
 fun MainScreen(
+    viewModel: MainViewModel = hiltViewModel(),
     navController: NavController
 ) {
     Scaffold(
@@ -306,7 +309,9 @@ fun MainScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally,
                                         verticalArrangement = Arrangement.spacedBy(space = 5.dp),
                                         modifier = Modifier
-                                            .clickable {}
+                                            .clickable {
+                                                navController.navigate("recommendDestination/$name 여행지/$name")
+                                            }
                                     ) {
                                         Icon(
                                             painter = painterResource(id = image),

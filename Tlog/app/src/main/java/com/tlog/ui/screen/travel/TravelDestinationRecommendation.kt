@@ -32,19 +32,26 @@ import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 @Composable
 fun TravelDestinationRecommendation(
     viewModel: TravelDestinationRecommendationViewModel = hiltViewModel(),
-    navController: NavHostController) {
+    title: String,
+    city: String? = null,
+    navController: NavHostController
+) {
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
-    val scrollState = rememberScrollState()
 
     val context = LocalContext.current
 
-    // Observe scrapList from ScrapManager's StateFlow
     val scrapList by ScrapManager.scrapList.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.initUserIdAndScrapList(context)
-        ScrapManager.init(context)
+        if (city == null) {
+            viewModel.initUserIdAndScrapList(context)
+            ScrapManager.init(context)
+        }
+        else {
+            viewModel.searchTravelToCity(city)
+            // 도시 ㄱ
+        }
     }
 
     Column(
@@ -62,9 +69,8 @@ fun TravelDestinationRecommendation(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
+                    .verticalScroll(rememberScrollState())
             ) {
-                // Header with Logo and Icons
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -122,7 +128,7 @@ fun TravelDestinationRecommendation(
                 Spacer(modifier = Modifier.height(35.dp))
 
                 Text(
-                    text = "000의 여행지 추천",
+                    text = title,
                     style = BodyTitle,
                     textAlign = TextAlign.Center,
                     modifier = Modifier

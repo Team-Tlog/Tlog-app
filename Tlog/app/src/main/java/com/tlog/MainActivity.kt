@@ -35,7 +35,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val mainViewModel: MainViewModel = viewModel()
             val navController = rememberNavController()
 
             val (isLoading, setIsLoading) = remember { mutableStateOf(true) }
@@ -86,7 +85,6 @@ class MainActivity : ComponentActivity() {
                     navController = navController,
                     startScreen = startScreen,
                     loginViewModel = loginViewModel,
-                    mainViewModel = mainViewModel,
                     launcher = launcher,
                     googleSignInClient = googleSignInClient
                 )

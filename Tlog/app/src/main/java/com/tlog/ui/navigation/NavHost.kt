@@ -33,11 +33,10 @@ fun NavHost(
     navController: NavHostController,
     startScreen: String,
     loginViewModel: LoginViewModel,
-    mainViewModel: MainViewModel,
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "tbtiTest") {
+    NavHost(navController = navController, startDestination = startScreen) {
 
         composable("main") {
             MainScreen(navController = navController)
@@ -86,8 +85,14 @@ fun NavHost(
         composable("createTeam") {
             TeamNameCreateScreen(navController = navController)
         }
-        composable("recommendDestination") {
-            TravelDestinationRecommendation(navController = navController)
+        composable("recommendDestination/{title}/{city}") { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: return@composable
+            val city = backStackEntry.arguments?.getString("city")
+            TravelDestinationRecommendation(
+                title = title,
+                city = city,
+                navController = navController
+            )
         }
         composable("searchReview") {
             SelectReviewWriteScreen(navController = navController)
