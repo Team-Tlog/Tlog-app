@@ -30,7 +30,8 @@ fun ReviewSection(
     avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
     reviewList: List<DetailReview>,
-    reviewCnt: Int = Int.MAX_VALUE
+    reviewCnt: Int = Int.MAX_VALUE,
+    reviewWrite: () -> Unit
 ) {
     Column {
         Column(
@@ -38,7 +39,9 @@ fun ReviewSection(
                 .padding(horizontal = (31.5).dp)
         ) {
             // 후기 리뷰작성 아이콘
-            ReviewHeader()
+            ReviewHeader(
+                reviewWrite = reviewWrite
+            )
 
             Spacer(modifier = Modifier.height(29.dp))
 

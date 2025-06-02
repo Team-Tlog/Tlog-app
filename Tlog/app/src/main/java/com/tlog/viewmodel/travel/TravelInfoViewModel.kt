@@ -35,6 +35,7 @@ class TravelInfoViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = searchOneDestinationRepository.getDestinationById(id)
+                Log.d("okhttp", response.data.toString())
                 _destinationDetail.value = response.data
             }
             catch (e: Exception) {

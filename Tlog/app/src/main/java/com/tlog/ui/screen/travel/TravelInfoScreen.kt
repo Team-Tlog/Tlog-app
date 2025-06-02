@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.travel
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -15,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.travel.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
@@ -24,13 +26,15 @@ import com.tlog.viewmodel.travel.TravelInfoViewModel
 @Composable
 fun TravelInfoScreen(
     id: String,
-    viewModel: TravelInfoViewModel = hiltViewModel()
+    viewModel: TravelInfoViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val detail = viewModel.destinationDetail.collectAsState().value
 
     // 여행지 ID로 API 호출 (최초 1회)
     LaunchedEffect(id) {
         viewModel.loadDestinationById(id)
+        Log.d("okhttp", "TravelInfoScreen: ${detail.toString()}")
     }
 
     Box(
@@ -74,7 +78,10 @@ fun TravelInfoScreen(
                             avgStarRating = destination.averageRating,
                             ratingDistribution = destination.ratingDistribution,
                             reviewList = destination.top2Reviews,
-                            reviewCnt = destination.reviewCount
+                            reviewCnt = destination.reviewCount,
+                            reviewWrite = {
+                                navController.navigate("review/$id/${destination.name}")
+                            }
                         )
 
                         Spacer(modifier = Modifier.height(48.dp))

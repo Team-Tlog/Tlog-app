@@ -16,7 +16,9 @@ import com.tlog.ui.style.BodyTitle
 
 
 @Composable
-fun ReviewHeader() {
+fun ReviewHeader(
+    reviewWrite: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,7 +36,8 @@ fun ReviewHeader() {
             tint = Color.Unspecified,
             modifier = Modifier
                 .clickable {
-                    Log.d("Review Write", "my click!!")
+                    Log.d("ReviewHeader", "후기 쓰기 클릭")
+                    reviewWrite()
                 }
         )
     }

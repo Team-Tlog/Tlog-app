@@ -99,7 +99,7 @@ fun NavHost(
         }
         composable("travelInfo/{id}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(id = travelId)
+            TravelInfoScreen(id = travelId, navController = navController)
         }
         composable("tbtiTest") {
             TbtiTestScreen()
