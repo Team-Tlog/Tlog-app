@@ -45,8 +45,6 @@ class CartViewModel @Inject constructor(
     }
 
 
-
-
     private var _cartList = mutableStateOf<List<Travel>>(emptyList())
     val cartList: State<List<Travel>> = _cartList
 
