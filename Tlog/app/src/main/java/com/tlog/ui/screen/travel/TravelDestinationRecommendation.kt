@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,23 +28,55 @@ import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.data.local.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.snapshotFlow
 
 @Composable
 fun TravelDestinationRecommendation(
     viewModel: TravelDestinationRecommendationViewModel = hiltViewModel(),
-    navController: NavHostController) {
+    title: String,
+    city: String? = null,
+    navController: NavHostController
+) {
+    val listState = rememberLazyListState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
-    val scrollState = rememberScrollState()
 
     val context = LocalContext.current
 
-    // Observe scrapList from ScrapManager's StateFlow
     val scrapList by ScrapManager.scrapList.collectAsState()
+
+
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            val totalItemCount = listState.layoutInfo.totalItemsCount
+            lastVisibleItem?.index == totalItemCount - 2 // 마지막에서 2번째 친구면
+        }.collect { isLastItemVisible ->
+            if (isLastItemVisible) {
+                if (city != null)
+                    viewModel.loadNextPage(city)
+                else {
+                    // 여기는 TBTI 여행 추천 호출하기
+                }
+            }
+
+        }
+    }
+
+
+
+
 
     LaunchedEffect(Unit) {
         viewModel.initUserIdAndScrapList(context)
         ScrapManager.init(context)
+        if (city == null) {
+            viewModel.loadDestinations()
+        }
+        else {
+            viewModel.searchTravelToCity(city)
+        }
     }
 
     Column(
@@ -62,9 +94,8 @@ fun TravelDestinationRecommendation(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(scrollState)
+                    //.verticalScroll(rememberScrollState())
             ) {
-                // Header with Logo and Icons
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -122,7 +153,7 @@ fun TravelDestinationRecommendation(
                 Spacer(modifier = Modifier.height(35.dp))
 
                 Text(
-                    text = "000의 여행지 추천",
+                    text = title,
                     style = BodyTitle,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
@@ -140,13 +171,14 @@ fun TravelDestinationRecommendation(
                 )
 
                 Spacer(modifier = Modifier.height(19.dp))
-                Column(
+                LazyColumn(
+                    state = listState,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 24.dp, end = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    destinations.forEach { destination ->
+                    items(destinations) { destination ->
                         val isFavorite = scrapList.contains(destination.id)
                         DestinationCard(
                             destination = destination,

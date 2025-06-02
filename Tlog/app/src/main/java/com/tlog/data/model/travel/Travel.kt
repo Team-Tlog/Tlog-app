@@ -27,5 +27,3 @@ data class SearchTravel(
     val imageUrl: String?,
     val tagCountList: List<TagCount> = emptyList(),
 )
-
-

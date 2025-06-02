@@ -1,8 +1,10 @@
 package com.tlog.viewmodel.travel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.ScrapManager
@@ -34,12 +36,13 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
     private var userId: String? = null
 
     init {
+        userId = tokenProvider.getUserId()
         loadDestinations()
     }
 
+
     fun initUserIdAndScrapList(context: Context) {
         viewModelScope.launch {
-            userId = tokenProvider.getUserId()
             userId?.let { ScrapManager.refreshScrapList(context, it, repository) }
         }
     }
@@ -87,6 +90,40 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
             }
         }
     }
+
+
+    private var page = 0
+    private val pageSize = 10
+    private val sort = emptyList<String>()
+    private var isLastPage = false
+
+    fun searchTravelToCity(city: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
+                _destinations.value = response.data.content
+                isLastPage = response.data.last
+                Log.d("okhttp", "total page : ${response.data.totalPages}")
+            } catch (e: Exception) {
+                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+                _destinations.value = emptyList()
+            }
+        }
+    }
+
+    fun loadNextPage(city: String) {
+        if (isLastPage == true) return
+        page++
+        Log.d("okhttp", "ininininininin")
+        viewModelScope.launch {
+            try {
+                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
+                _destinations.value += response.data.content
+            } catch (e: Exception) {
+                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+            }
+        }
+    }
 }
 
 @Module
@@ -94,8 +131,12 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
 object RecommendDestinationModule {
     @Provides
     fun provideRecommendDestinationRepository(
-        travelApi: TravelApi
+        travelApi: TravelApi,
+        searchApi: SearchApi
     ): RecommendDestinationRepository {
-        return RecommendDestinationRepository(travelApi)
+        return RecommendDestinationRepository(
+            travelRetrofitInstance = travelApi,
+            searchRetrofitInstance = searchApi
+        )
     }
 }

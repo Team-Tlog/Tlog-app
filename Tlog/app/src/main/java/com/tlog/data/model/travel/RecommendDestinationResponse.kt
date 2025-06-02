@@ -25,6 +25,7 @@ data class TravelDestinationResponse(
     val tagCountList: List<TagCount>
 )
 
+
 data class Location(
     val longitude: String,
     val latitude: String
