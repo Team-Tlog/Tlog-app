@@ -26,7 +26,6 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
-import com.tlog.data.local.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.snapshotFlow
@@ -44,7 +43,7 @@ fun TravelDestinationRecommendation(
 
     val context = LocalContext.current
 
-    val scrapList by ScrapManager.scrapList.collectAsState()
+    val scrapList = viewModel.scrapList
 
 
     LaunchedEffect(listState) {
@@ -66,8 +65,7 @@ fun TravelDestinationRecommendation(
 
 
     LaunchedEffect(Unit) {
-        viewModel.initUserIdAndScrapList(context)
-        ScrapManager.init(context)
+        viewModel.initUserIdAndScrapList()
         if (city != null && viewModel.destinations.value.isEmpty()) {
             viewModel.loadDestinations(city)
         }
@@ -173,12 +171,12 @@ fun TravelDestinationRecommendation(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(destinations) { destination ->
-                        val isFavorite = scrapList.contains(destination.id)
+                        val isFavorite = scrapList.value.contains(destination.id)
                         DestinationCard(
                             destination = destination,
                             isFavorite = isFavorite,
                             onFavoriteToggle = {
-                                viewModel.toggleScrap(context, destination.id)
+                                viewModel.toggleScrap(destination.id)
                             },
                             onClick = {
                                 navController.navigate("travelInfo/${destination.id}")

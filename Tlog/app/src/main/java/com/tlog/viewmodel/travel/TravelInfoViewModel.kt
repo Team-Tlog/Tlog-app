@@ -1,15 +1,18 @@
 package com.tlog.viewmodel.travel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.repository.SearchOneDestinationRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +21,16 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
-    private val searchOneDestinationRepository: SearchOneDestinationRepository
+    private val searchOneDestinationRepository: SearchOneDestinationRepository,
+    @ApplicationContext private val context: Context,
+    tokenProvider: TokenProvider
 ) : ViewModel() {
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
+
 
     private val _destinationDetail = MutableStateFlow<TravelDetailResponse?>(null)
     val destinationDetail: StateFlow<TravelDetailResponse?> = _destinationDetail

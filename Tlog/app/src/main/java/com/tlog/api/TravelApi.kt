@@ -42,22 +42,4 @@ interface TravelApi {
     suspend fun addReview(
         @Body reviewRequest: ReviewRequest
     ): BaseResponse<String?>
-
-    @PUT("/api/scrap/user/{userId}")
-    @Headers("Content-Type: text/plain")
-    suspend fun scrapDestination(
-        @Path("userId") userId: String,
-        @Body travelId: okhttp3.RequestBody
-    ): BaseResponse<Unit>
-
-    @DELETE("/api/scrap/user/{userId}/destination/{destId}")
-    suspend fun deleteScrapDestination(
-        @Path("userId") userId: String,
-        @Path("destId") destinationId: String
-    ): BaseResponse<Unit>
-
-    @GET("/api/scrap/user/{userId}")
-    suspend fun getUserScraps(
-        @Path("userId") userId: String
-    ): BaseResponse<List<ScrapDestinationResponse>>
 }

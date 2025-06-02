@@ -7,9 +7,6 @@ import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.api.SearchAndPageResponse
 import com.tlog.data.model.travel.TravelRecommendPagedResponse
 import jakarta.inject.Inject
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class RecommendDestinationRepository @Inject constructor(
     private val travelRetrofitInstance: TravelApi,
@@ -31,19 +28,6 @@ class RecommendDestinationRepository @Inject constructor(
             sortType = sortType,
             tbti = tbti
         )
-    }
-
-    suspend fun scrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
-        val plainBody: RequestBody = destinationId.toRequestBody("text/plain".toMediaTypeOrNull())
-        return travelRetrofitInstance.scrapDestination(userId, plainBody)
-    }
-
-    suspend fun deleteScrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
-        return travelRetrofitInstance.deleteScrapDestination(userId, destinationId)
-    }
-
-    suspend fun getUserScraps(userId: String): BaseResponse<List<ScrapDestinationResponse>> {
-        return travelRetrofitInstance.getUserScraps(userId)
     }
     
     suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchAndPageResponse> {
