@@ -86,7 +86,7 @@ fun DestinationCard(
                             painter = painterResource(id = R.drawable.ic_filled_heart),
                             contentDescription = "스크랩됨",
                             modifier = Modifier
-                                .size(20.dp)
+                                .size(31.dp)
                                 .clickable {
                                     onFavoriteToggle(destination.id)
                                 },
@@ -97,7 +97,7 @@ fun DestinationCard(
                             painter = painterResource(id = R.drawable.ic_heart),
                             contentDescription = "스크랩 아이콘",
                             modifier = Modifier
-                                .size(24.dp)
+                                .size(31.dp)
                                 .clickable {
                                     onFavoriteToggle(destination.id)
                                 }
