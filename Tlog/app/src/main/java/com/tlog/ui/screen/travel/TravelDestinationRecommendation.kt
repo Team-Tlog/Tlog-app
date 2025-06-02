@@ -68,7 +68,7 @@ fun TravelDestinationRecommendation(
     LaunchedEffect(Unit) {
         viewModel.initUserIdAndScrapList(context)
         ScrapManager.init(context)
-        if (city != null) {
+        if (city != null && viewModel.destinations.value.isEmpty()) {
             viewModel.loadDestinations(city)
         }
     }
