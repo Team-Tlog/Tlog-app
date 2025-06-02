@@ -81,28 +81,16 @@ fun DestinationCard(
                         }
                     }
 
-                    if (isFavorite) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_filled_heart),
-                            contentDescription = "스크랩됨",
-                            modifier = Modifier
-                                .size(31.dp)
-                                .clickable {
-                                    onFavoriteToggle(destination.id)
-                                },
-                            tint = Color.Red
-                        )
-                    } else {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_heart),
-                            contentDescription = "스크랩 아이콘",
-                            modifier = Modifier
-                                .size(31.dp)
-                                .clickable {
-                                    onFavoriteToggle(destination.id)
-                                }
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(if(isFavorite) R.drawable.ic_filled_heart else R.drawable.ic_heart),
+                        contentDescription = "스크랩" + if (isFavorite) "됨" else "버튼",
+                        modifier = Modifier
+                            .size(31.dp)
+                            .clickable {
+                                onFavoriteToggle(destination.id)
+                            },
+                        tint = if (isFavorite) Color.Red else Color.Unspecified,
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(69.dp))
