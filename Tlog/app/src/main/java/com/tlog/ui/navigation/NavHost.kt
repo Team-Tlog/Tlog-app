@@ -26,7 +26,6 @@ import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
-import com.tlog.viewmodel.share.MainViewModel
 
 @Composable
 fun NavHost(
@@ -99,7 +98,7 @@ fun NavHost(
         }
         composable("travelInfo/{id}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(id = travelId, navController = navController)
+            TravelInfoScreen(travelId = travelId, navController = navController)
         }
         composable("tbtiTest") {
             TbtiTestScreen()

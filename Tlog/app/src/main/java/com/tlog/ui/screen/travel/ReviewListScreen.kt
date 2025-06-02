@@ -45,7 +45,7 @@ fun ReviewListScreen(viewModel: TravelInfoViewModel = hiltViewModel()) {
     ) {
         detail?.let {
             Column {
-                TravelInfoTopBar()
+                //TravelInfoTopBar()
 
                 Spacer(modifier = Modifier.height(29.dp))
 

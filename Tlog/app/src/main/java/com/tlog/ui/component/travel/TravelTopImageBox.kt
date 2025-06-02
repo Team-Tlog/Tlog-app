@@ -19,7 +19,9 @@ import com.tlog.R
 
 @Composable
 fun TravelTopImageBox(
-    imageUrl: String
+    imageUrl: String,
+    isScrap: Boolean,
+    clickScrap: () -> Unit
 ) {
     Box( // 상단 이미지 + topbar
         modifier = Modifier
@@ -45,8 +47,10 @@ fun TravelTopImageBox(
         }
 
         TravelInfoTopBar(
-            iconList = listOf(R.drawable.ic_heart),
-            topBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding() // 상단도 그림으로 채워지게 하기 위해서 -> 상단바 크기 자동으로 가져와줌
+            //iconList = listOf(R.drawable.ic_heart),
+            topBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
+            isScrap = isScrap,
+            clickScrap = clickScrap
         )
     }
 }

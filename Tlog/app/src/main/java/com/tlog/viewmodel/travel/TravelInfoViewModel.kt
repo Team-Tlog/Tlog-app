@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.repository.SearchOneDestinationRepository
 import dagger.Module
@@ -22,7 +23,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
     private val searchOneDestinationRepository: SearchOneDestinationRepository,
-    @ApplicationContext private val context: Context,
+    private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
     private var userId: String? = null
@@ -53,6 +54,20 @@ class TravelInfoViewModel @Inject constructor(
                 Log.d("okhttp", e.message.toString())
             }
         }
+    }
+
+    fun toggleScrap(destinationId: String) {
+        viewModelScope.launch {
+            try {
+                scrapManager.toggleScrap(destinationId)
+            } catch (e: Exception) {
+                // TODO: Error handling
+            }
+        }
+    }
+
+    fun isScraped(destinationId: String): Boolean {
+        return scrapManager.isScraped(destinationId)
     }
 }
 

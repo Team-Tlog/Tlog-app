@@ -68,6 +68,10 @@ class ScrapManager @Inject constructor(
         saveScrapList(currentList)
     }
 
+    fun isScraped(travelId: String): Boolean {
+        return _scrapList.value.contains(travelId)
+    }
+
     private suspend fun saveScrapList(list: List<String>) {
         context.dataStore.edit { prefs ->
             prefs[SCRAP_KEY] = list.toSet()

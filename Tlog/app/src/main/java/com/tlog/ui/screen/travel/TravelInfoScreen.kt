@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.tlog.ui.component.travel.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
@@ -25,15 +24,15 @@ import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 @Composable
 fun TravelInfoScreen(
-    id: String,
+    travelId: String,
     viewModel: TravelInfoViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val detail = viewModel.destinationDetail.collectAsState().value
 
     // 여행지 ID로 API 호출 (최초 1회)
-    LaunchedEffect(id) {
-        viewModel.loadDestinationById(id)
+    LaunchedEffect(travelId) {
+        viewModel.loadDestinationById(travelId)
         Log.d("okhttp", "TravelInfoScreen: ${detail.toString()}")
     }
 
@@ -46,7 +45,13 @@ fun TravelInfoScreen(
     ) {
         detail?.let { destination ->
             Column {
-                TravelTopImageBox(imageUrl = destination.imageUrl)
+                TravelTopImageBox(
+                    imageUrl = destination.imageUrl,
+                    isScrap = viewModel.isScraped(travelId),
+                    clickScrap = {
+                        viewModel.toggleScrap(travelId)
+                    }
+                )
 
                 Box(
                     modifier = Modifier
@@ -80,7 +85,7 @@ fun TravelInfoScreen(
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount,
                             reviewWrite = {
-                                navController.navigate("review/$id/${destination.name}")
+                                navController.navigate("review/$travelId/${destination.name}")
                             }
                         )
 
