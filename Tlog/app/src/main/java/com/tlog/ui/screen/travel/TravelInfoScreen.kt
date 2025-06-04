@@ -21,6 +21,7 @@ import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
+import kotlin.math.floor
 
 @Composable
 fun TravelInfoScreen(
@@ -80,7 +81,7 @@ fun TravelInfoScreen(
                         Spacer(modifier = Modifier.height(29.dp))
 
                         ReviewSection(
-                            avgStarRating = destination.averageRating,
+                            avgStarRating = floor(destination.averageRating * 100) / 100, // 소수점 2자리까지 절삭
                             ratingDistribution = destination.ratingDistribution,
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount,
