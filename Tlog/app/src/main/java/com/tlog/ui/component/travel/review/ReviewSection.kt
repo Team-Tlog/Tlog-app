@@ -31,6 +31,7 @@ fun ReviewSection(
     ratingDistribution: Map<String, Int>,
     reviewList: List<DetailReview>,
     reviewCnt: Int = Int.MAX_VALUE,
+    moreReview: () -> Unit,
     reviewWrite: () -> Unit
 ) {
     Column {
@@ -65,7 +66,7 @@ fun ReviewSection(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .clickable {
-                        Log.d("더보기", "my click!!")
+                        moreReview()
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {

@@ -1,9 +1,13 @@
 package com.tlog.api
 
+import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewRequest
+import com.tlog.data.api.ReviewResponse
 import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.AddTravelRequest
+import com.tlog.data.model.travel.DetailReview
+import com.tlog.data.model.travel.Pageable
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.model.travel.TravelRecommendPagedResponse
@@ -38,8 +42,19 @@ interface TravelApi {
         @Body travel: AddTravelRequest
     ): BaseResponse<String?>
 
+
+    // review
     @POST("/api/reviews")
     suspend fun addReview(
         @Body reviewRequest: ReviewRequest
     ): BaseResponse<String?>
+
+    @GET("/api/reviews/{destinationId}")
+    suspend fun getReviewList(
+        @Path("destinationId") destinationId: String,
+        @Query("sortType") sortType: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String>
+    ): BaseListResponse<List<DetailReview>>
 }

@@ -84,6 +84,9 @@ fun TravelInfoScreen(
                             ratingDistribution = destination.ratingDistribution,
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount,
+                            moreReview = {
+                                navController.navigate("reviewList/$travelId/${destination.name}")
+                            },
                             reviewWrite = {
                                 navController.navigate("review/$travelId/${destination.name}")
                             }

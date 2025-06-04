@@ -12,6 +12,7 @@ import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
+import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.CartScreen
@@ -77,6 +78,12 @@ fun NavHost(
             val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
 
             ReviewWritingScreen(navController = navController, travelId = travelId, travelName = travelName)
+        }
+        composable("reviewList/{travelId}/{travelName}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
+            val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
+
+            ReviewListScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
         composable("teamList") {
             MyTeamListScreen(navController = navController)
