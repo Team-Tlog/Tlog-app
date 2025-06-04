@@ -219,7 +219,9 @@ fun MainScreen(
                                             }
                                             "지도에서 보기" -> {}
                                             "내 팀보기" -> {}
-                                            "스크랩" -> {}
+                                            "스크랩" -> {
+                                                navController.navigate("scrapAndCart")
+                                            }
                                             "지도 채우기" -> {}
                                         }
                                     }

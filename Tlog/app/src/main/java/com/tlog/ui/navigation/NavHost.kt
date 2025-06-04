@@ -15,7 +15,7 @@ import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
-import com.tlog.ui.screen.share.CartScreen
+import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -37,8 +37,8 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = "searchScreen") {
 
+    NavHost(navController = navController, startDestination = startScreen) {
         composable("main") {
             MainScreen(navController = navController)
         }
@@ -63,8 +63,8 @@ fun NavHost(
         composable("mypage") {
             MyPageScreen(navController = navController)
         }
-        composable("cart") {
-            CartScreen(
+        composable("scrapAndCart") {
+            ScrapAndCartScreen(
                 navController = navController
             )
         }

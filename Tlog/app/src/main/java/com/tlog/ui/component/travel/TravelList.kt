@@ -9,13 +9,15 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.SearchTravel
+import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.model.travel.Travel
 
 
 @Composable
 fun TravelList(
-    travelList: List<Travel>,
+    travelList: List<ShopCart>,
     listState: LazyListState = rememberLazyListState()
 ) {
     LazyColumn(
@@ -24,6 +26,26 @@ fun TravelList(
         itemsIndexed(travelList) { index, item ->
             TravelItem(travel = item)
             if (index == travelList.lastIndex) {
+                Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
+            } else {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+
+    }
+}
+
+@Composable
+fun ScrapTravelList(
+    scrapTravelList: List<ScrapDestinationResponse>,
+    listState: LazyListState = rememberLazyListState()
+) {
+    LazyColumn(
+        state = listState
+    ) {
+        itemsIndexed(scrapTravelList) { index, item ->
+            ScrapTravelItem(travel = item)
+            if (index == scrapTravelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {
                 Spacer(modifier = Modifier.height(24.dp))

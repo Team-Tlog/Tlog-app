@@ -2,6 +2,7 @@ package com.tlog.ui.component.share
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -27,7 +28,8 @@ fun MainButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(55.dp),
+            .height(55.dp)
+            .padding(horizontal = 24.dp),
         enabled = enabled,
         shape = RoundedCornerShape(20), // 좌우를 둥글게
         colors = ButtonDefaults.buttonColors(
@@ -42,9 +44,9 @@ fun MainButton(
     ) {
         Text(
             text = text,
-            fontSize = 18.sp,
+            fontSize = 15.sp,
             fontFamily = MainFont,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.ExtraBold
         )
     }
 }
