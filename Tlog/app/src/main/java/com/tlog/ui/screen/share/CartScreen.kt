@@ -53,20 +53,39 @@ fun CartScreen(
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
         Column {
-            TopBar(
-                text = "내 장바구니",
-                fontSize = 15.sp,
-                height = 52.dp
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
+            // State to control selected tab
+            val selectedTab = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("내 장바구니") }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 20.dp),
-                horizontalArrangement = Arrangement.End
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "스크랩",
+                        fontSize = 15.sp,
+                        color = if (selectedTab.value == "스크랩") Color.Black else Color.Gray,
+                        modifier = Modifier.clickable {
+                            selectedTab.value = "스크랩"
+                            viewModel.fetchScrapList(viewModel.userId)
+                        }
+                    )
+                    Text(
+                        text = "내 장바구니",
+                        fontSize = 15.sp,
+                        color = if (selectedTab.value == "내 장바구니") Color.Black else Color.Gray,
+                        modifier = Modifier.clickable {
+                            selectedTab.value = "내 장바구니"
+                            viewModel.fetchCart(viewModel.userId)
+                        }
+                    )
+                }
                 Text(
                     text = "전체 선택",
                     modifier = Modifier.clickable {
@@ -80,9 +99,15 @@ fun CartScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            TravelList(
-                travelList = viewModel.cartList.value,
-            )
+            if (selectedTab.value == "스크랩") {
+                TravelList(
+                    travelList = viewModel.scrapList.value
+                )
+            } else {
+                TravelList(
+                    travelList = viewModel.cartList.value
+                )
+            }
         }
 
         AnimatedVisibility( // 애니메이션

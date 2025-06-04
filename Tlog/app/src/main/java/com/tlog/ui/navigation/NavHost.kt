@@ -3,6 +3,7 @@ package com.tlog.ui.navigation
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -36,7 +37,8 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "cart") {
+
 
         composable("main") {
             MainScreen(navController = navController)

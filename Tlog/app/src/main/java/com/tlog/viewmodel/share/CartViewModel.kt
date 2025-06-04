@@ -4,8 +4,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.Travel
 import com.tlog.data.repository.CartRepository
 import dagger.Module
@@ -25,9 +27,9 @@ class CartViewModel @Inject constructor(
 ): ViewModel() {
 
 
-    private var userId: String = ""
+    var userId: String = ""
 
-    private fun fetchCart(userId: String) {
+    fun fetchCart(userId: String) {
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
@@ -38,17 +40,28 @@ class CartViewModel @Inject constructor(
         }
     }
 
-
     fun initUserIdAndCart() {
         userId = tokenProvider.getUserId()?: ""
         fetchCart(userId)
     }
 
 
-
-
     private var _cartList = mutableStateOf<List<Travel>>(emptyList())
     val cartList: State<List<Travel>> = _cartList
+
+    private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>>(emptyList())
+    val scrapList: State<List<ScrapDestinationResponse>> = _scrapList
+
+    fun fetchScrapList(userId: String) {
+        viewModelScope.launch {
+            try {
+                val result = repository.getUserScrap(userId)
+                _scrapList.value = result
+            } catch (e: Exception) {
+                // api실패 시
+            }
+        }
+    }
 
     private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
     val checkedTravelList: State<List<String>> = _checkedTravelList
@@ -78,9 +91,10 @@ class CartViewModel @Inject constructor(
 object CartModule {
     @Provides
     fun provideCartRepository(
-        userApi: UserApi
+        userApi: UserApi,
+        travelApi: TravelApi
     ): CartRepository {
-        return CartRepository(userApi)
+        return CartRepository(userApi, travelApi)
     }
 
     @Provides
@@ -88,5 +102,12 @@ object CartModule {
         retrofit: Retrofit
     ): UserApi {
         return retrofit.create(UserApi::class.java)
+    }
+
+    @Provides
+    fun provideTravelApi(
+        retrofit: Retrofit
+    ): TravelApi {
+        return retrofit.create(TravelApi::class.java)
     }
 }
