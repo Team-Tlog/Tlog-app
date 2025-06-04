@@ -12,9 +12,17 @@ data class Travel(
     val district: String,
     val hasParking: Boolean,
     val petFriendly: Boolean,
-    val imageUri: String,
+    val imageUrl: String,
     val description: String,
     val customTags: List<String>
+)
+
+data class ShopCart(
+    val id: String,
+    val name: String,
+    val imageUrl: String,
+    val description: String,
+    val tagCountList: List<TagCount>
 )
 
 data class SearchTravel(

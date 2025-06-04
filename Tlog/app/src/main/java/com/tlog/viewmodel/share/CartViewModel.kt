@@ -8,7 +8,7 @@ import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.ScrapDestinationResponse
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.repository.CartRepository
 import dagger.Module
 import dagger.Provides
@@ -46,8 +46,8 @@ class CartViewModel @Inject constructor(
     }
 
 
-    private var _cartList = mutableStateOf<List<Travel>>(emptyList())
-    val cartList: State<List<Travel>> = _cartList
+    private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
+    val cartList: State<List<ShopCart>> = _cartList
 
     private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>>(emptyList())
     val scrapList: State<List<ScrapDestinationResponse>> = _scrapList
@@ -77,12 +77,64 @@ class CartViewModel @Inject constructor(
         return _checkedTravelList.value.contains(travelName)
     }
 
-    fun allChecked() {
-        if (_checkedTravelList.value.size != _cartList.value.size)
-            _checkedTravelList.value = _cartList.value.map { it.name }
+    fun clearChecked() {
+        _checkedTravelList.value = emptyList()
+    }
+
+    fun deleteSelectedItems(selectedTab: String) {
+        viewModelScope.launch {
+            try {
+                checkedTravelList.value.forEach { destName ->
+                    if (selectedTab == "스크랩") {
+                        val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                        repository.deleteScrapDestination(userId, destinationId)
+                    } else {
+                        val destinationId = cartList.value.find { it.name == destName }?.id ?: return@forEach
+                        repository.deleteTravelFromCart(userId, destinationId)
+                    }
+                }
+                clearChecked()
+                if (selectedTab == "스크랩") {
+                    fetchScrapList(userId)
+                } else {
+                    fetchCart(userId)
+                }
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+
+    fun addSelectedTravelToCart() {
+        viewModelScope.launch {
+            try {
+                checkedTravelList.value.forEach { destName ->
+                    val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                    repository.addDestinationToCart(userId, destinationId)
+                }
+                clearChecked()
+                fetchCart(userId)
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+
+    fun allChecked(selectedTab: String) {
+        val allItems = if (selectedTab == "스크랩") {
+            scrapList.value.map { it.name }
+        } else {
+            cartList.value.map { it.name }
+        }
+        if (_checkedTravelList.value.size != allItems.size)
+            _checkedTravelList.value = allItems
         else
             _checkedTravelList.value = emptyList()
     }
+
+
 }
 
 
@@ -102,12 +154,5 @@ object CartModule {
         retrofit: Retrofit
     ): UserApi {
         return retrofit.create(UserApi::class.java)
-    }
-
-    @Provides
-    fun provideTravelApi(
-        retrofit: Retrofit
-    ): TravelApi {
-        return retrofit.create(TravelApi::class.java)
     }
 }

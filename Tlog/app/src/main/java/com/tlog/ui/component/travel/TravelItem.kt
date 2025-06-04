@@ -20,14 +20,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.SearchTravel
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.model.travel.ShopCart
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -37,7 +40,7 @@ import com.tlog.viewmodel.share.CartViewModel
 @Composable
 fun TravelItem(
     viewModel: CartViewModel = viewModel(),
-    travel: Travel
+    travel: ShopCart
 ) {
     Row(
         modifier = Modifier
@@ -45,13 +48,13 @@ fun TravelItem(
             .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.test_image),
+        AsyncImage(
+            model = travel.imageUrl,
             contentDescription = "${travel.name} 사진",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp))
-                .background(Color.Gray) // 추후 제거 지금 구분되는거 보려고 잠시 놔둠
         )
 
         Spacer(modifier = Modifier.width(15.dp))
@@ -67,7 +70,7 @@ fun TravelItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = "대충 설명 글",
+                text = travel.description ?: "설명 없음",
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -76,7 +79,7 @@ fun TravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(listOf("단풍", "가을")) // 태그 예시임
+            HashTagsGroup(travel.tagCountList.map { it.tag })
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -85,22 +88,79 @@ fun TravelItem(
             onClick = { viewModel.updateCheckedTravelList(travel.name) },
             modifier = Modifier.fillMaxHeight()
         ) {
-            Spacer(modifier = Modifier.width(25.dp))
-            IconButton(
-                onClick = { viewModel.updateCheckedTravelList(travel.name) },
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                Icon(
-                    painter =
-                        if (viewModel.isChecked(travel.name))
-                            painterResource(R.drawable.ic_checkbox_checked)
-                        else
-                            painterResource(R.drawable.ic_checkbox_unchecked),
-                    contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
-                    tint = Color.Unspecified
-                )
+            Icon(
+                painter =
+                    if (viewModel.isChecked(travel.name))
+                        painterResource(R.drawable.ic_checkbox_checked)
+                    else
+                        painterResource(R.drawable.ic_checkbox_unchecked),
+                contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
 
-            }
+@Composable
+fun ScrapTravelItem(
+    viewModel: CartViewModel = viewModel(),
+    travel: ScrapDestinationResponse
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(101.dp)
+            .padding(horizontal = 20.dp)
+    ) {
+        AsyncImage(
+            model = travel.imageUrl,
+            contentDescription = "${travel.name} 사진",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(99.dp)
+                .clip(RoundedCornerShape(15.dp))
+        )
+
+        Spacer(modifier = Modifier.width(15.dp))
+
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = travel.name,
+                style = Body1Bold
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = travel.description ?: "설명 없음",
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Light,
+                fontSize = 10.sp,
+                modifier = Modifier.height(30.dp)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            HashTagsGroup(travel.tagCountList.map { it.tagName })
+        }
+
+        Spacer(modifier = Modifier.width(25.dp))
+
+        IconButton(
+            onClick = { viewModel.updateCheckedTravelList(travel.name) },
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Icon(
+                painter =
+                    if (viewModel.isChecked(travel.name))
+                        painterResource(R.drawable.ic_checkbox_checked)
+                    else
+                        painterResource(R.drawable.ic_checkbox_unchecked),
+                contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                tint = Color.Unspecified
+            )
         }
     }
 }
