@@ -1,13 +1,16 @@
 package com.tlog.data.model.travel
 
-data class TravelRecommendPagedResponse<T>(
-    val totalElements: Long,
-    val totalPages: Int,
-    val size: Int,
+
+// 전체 여행지 조회
+data class TravelRecommendPagedResponse(
     val content: List<TravelDestinationResponse>,
     val number: Int,
-    val sort: SortInfo,
-    val pageable: PageableInfo,
+    val sort: Sort,
+    val pageable: Pageable,
+    val paged: Boolean,
+    val pageNumber: Int,
+    val pageSize: Int,
+    val unpaged: Boolean,
     val numberOfElements: Int,
     val first: Boolean,
     val last: Boolean,
@@ -20,7 +23,7 @@ data class TravelDestinationResponse(
     val city: String,
     val location: Location,
     val reviewCount: Int,
-    val averageRating: Int,
+    val averageRating: Double,
     val imageUrl: String,
     val tagCountList: List<TagCount>
 )
@@ -36,19 +39,19 @@ data class TagCount(
     val count: Int
 )
 
-data class SortInfo(
-    val empty: Boolean,
+data class Pageable(
+    val pageNumber: Int,
+    val pageSize: Int,
+    val sort: Sort,
+    val offset: Int,
     val sorted: Boolean,
     val unsorted: Boolean
 )
 
-data class PageableInfo(
-    val offset: Int,
-    val sort: SortInfo,
-    val paged: Boolean,
-    val pageNumber: Int,
-    val pageSize: Int,
-    val unpaged: Boolean
+data class Sort(
+    val empty: Boolean,
+    val sorted: Boolean,
+    val unsorted: Boolean
 )
 
 

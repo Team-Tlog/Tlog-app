@@ -1,6 +1,7 @@
 package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -15,38 +16,57 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.model.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun SimilarTravelSpots() {
+fun SimilarTravelSpots(
+    travel: MinimalTravel,
+    clickable: (String) -> Unit
+) {
     Box(
         modifier = Modifier
             .width(150.dp)
+            .clickable { clickable(travel.destinationId) }
     ) {
         Column {
             Box (
                 modifier = Modifier
                     .width(150.dp)
                     .height(158.dp)
-            ){
-                Image(
-                    painter = painterResource(R.drawable.tmp_jeju),
-                    contentDescription = "여행지 사진", // 추후 변경
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(RoundedCornerShape(14))
-                )
+            ) {
+                if (travel.imageUrl == "NaN") {
+                    Image(
+                        painter = painterResource(R.drawable.tmp_jeju),
+                        contentDescription = "여행지 사진", // 추후 변경
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(RoundedCornerShape(14))
+                    )
+                }
+                else {
+                    AsyncImage(
+                        model = travel.imageUrl,
+                        contentDescription = "여행지 사진",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .matchParentSize()
+                            .clip(RoundedCornerShape(14))
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = "여행지 이름",
+                text = travel.name,
                 fontFamily = MainFont,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
@@ -55,10 +75,12 @@ fun SimilarTravelSpots() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Light,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .height(18.dp)
             )
@@ -66,7 +88,7 @@ fun SimilarTravelSpots() {
             Spacer(modifier = Modifier.height(8.dp))
 
             BlueHashTagGroup(
-                hashTags = listOf("해시태그", "해시태그", "해시태그", "해시태그", "해시태그", "해시태그"),
+                hashTags = emptyList(), //travel.customTags.map { it.tag },
                 maxCnt = 2
             )
         }

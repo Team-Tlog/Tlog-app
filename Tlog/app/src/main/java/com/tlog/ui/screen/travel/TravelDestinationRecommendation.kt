@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -26,7 +25,6 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
-import com.tlog.data.local.ScrapManager
 import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.snapshotFlow
@@ -42,9 +40,7 @@ fun TravelDestinationRecommendation(
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
 
-    val context = LocalContext.current
-
-    val scrapList by ScrapManager.scrapList.collectAsState()
+    val scrapList = viewModel.scrapList
 
 
     LaunchedEffect(listState) {
@@ -56,9 +52,6 @@ fun TravelDestinationRecommendation(
             if (isLastItemVisible) {
                 if (city != null)
                     viewModel.loadNextPage(city)
-                else {
-                    // 여기는 TBTI 여행 추천 호출하기
-                }
             }
 
         }
@@ -66,16 +59,10 @@ fun TravelDestinationRecommendation(
 
 
 
-
-
     LaunchedEffect(Unit) {
-        viewModel.initUserIdAndScrapList(context)
-        ScrapManager.init(context)
-        if (city == null) {
-            viewModel.loadDestinations()
-        }
-        else {
-            viewModel.searchTravelToCity(city)
+        viewModel.initUserIdAndScrapList()
+        if (city != null && viewModel.destinations.value.isEmpty()) {
+            viewModel.loadDestinations(city)
         }
     }
 
@@ -94,13 +81,12 @@ fun TravelDestinationRecommendation(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    //.verticalScroll(rememberScrollState())
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.White)
-                        .padding(16.dp)
+                        .padding(start = 14.dp, end = 14.dp, top = 5.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -117,8 +103,7 @@ fun TravelDestinationRecommendation(
                         Row {
                             Box(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .padding(8.dp)
+                                    .size(40.dp)
                                     .clickable {
                                         //추후 로직 구현
                                         Log.d("검색", "검색아이콘 눌림")
@@ -131,10 +116,11 @@ fun TravelDestinationRecommendation(
                                 )
                             }
 
+                            Spacer(modifier = Modifier.width(5.dp))
+
                             Box(
                                 modifier = Modifier
-                                    .size(48.dp)
-                                    .padding(8.dp)
+                                    .size(42.dp)
                                     .clickable {
                                         //추후 로직 구현
                                         Log.d("알림창", "알림아이콘 눌림")
@@ -163,7 +149,6 @@ fun TravelDestinationRecommendation(
 
                 Spacer(modifier = Modifier.height(33.dp))
 
-                // Category Selector
                 CategorySelector(
                     categories = listOf("추천순", "인기순", "리뷰순"),
                     selectedCategory = selectedCategory,
@@ -179,12 +164,12 @@ fun TravelDestinationRecommendation(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(destinations) { destination ->
-                        val isFavorite = scrapList.contains(destination.id)
+                        val isFavorite = scrapList.value.contains(destination.id)
                         DestinationCard(
                             destination = destination,
                             isFavorite = isFavorite,
                             onFavoriteToggle = {
-                                viewModel.toggleScrap(context, destination.id)
+                                viewModel.toggleScrap(destination.id)
                             },
                             onClick = {
                                 navController.navigate("travelInfo/${destination.id}")

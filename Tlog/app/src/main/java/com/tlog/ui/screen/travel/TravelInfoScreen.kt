@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.travel
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -14,23 +15,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.travel.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
+import kotlin.math.floor
 
 @Composable
 fun TravelInfoScreen(
-    id: String,
-    viewModel: TravelInfoViewModel = hiltViewModel()
+    travelId: String,
+    viewModel: TravelInfoViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val detail = viewModel.destinationDetail.collectAsState().value
 
     // 여행지 ID로 API 호출 (최초 1회)
-    LaunchedEffect(id) {
-        viewModel.loadDestinationById(id)
+    LaunchedEffect(travelId) {
+        viewModel.loadDestinationById(travelId)
+        Log.d("okhttp", "TravelInfoScreen: ${detail.toString()}")
     }
 
     Box(
@@ -42,7 +46,13 @@ fun TravelInfoScreen(
     ) {
         detail?.let { destination ->
             Column {
-                TravelTopImageBox(imageUrl = destination.imageUrl)
+                TravelTopImageBox(
+                    imageUrl = destination.imageUrl,
+                    isScrap = viewModel.isScraped(travelId),
+                    clickScrap = {
+                        viewModel.toggleScrap(travelId)
+                    }
+                )
 
                 Box(
                     modifier = Modifier
@@ -71,10 +81,16 @@ fun TravelInfoScreen(
                         Spacer(modifier = Modifier.height(29.dp))
 
                         ReviewSection(
-                            avgStarRating = destination.averageRating.toFloat(),
+                            avgStarRating = floor(destination.averageRating * 100) / 100, // 소수점 2자리까지 절삭
                             ratingDistribution = destination.ratingDistribution,
                             reviewList = destination.top2Reviews,
-                            reviewCnt = destination.reviewCount
+                            reviewCnt = destination.reviewCount,
+                            moreReview = {
+                                navController.navigate("reviewList/$travelId/${destination.name}")
+                            },
+                            reviewWrite = {
+                                navController.navigate("review/$travelId/${destination.name}")
+                            }
                         )
 
                         Spacer(modifier = Modifier.height(48.dp))
@@ -84,7 +100,12 @@ fun TravelInfoScreen(
                                 .fillMaxWidth()
                                 .padding(horizontal = 31.5.dp)
                         ) {
-                            SimilarTravelSection()
+                            SimilarTravelSection(
+                                travelList = destination.relatedDestinations,
+                                clickable = { travelId ->
+                                    navController.navigate("travelInfo/$travelId")
+                                }
+                            )
                         }
                     }
                 }

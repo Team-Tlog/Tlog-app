@@ -1,13 +1,14 @@
 package com.tlog.data.repository
 
 import com.tlog.api.TravelApi
+import com.tlog.data.api.BaseResponse
 import com.tlog.data.model.travel.TravelDetailResponse
 import javax.inject.Inject
 
 class SearchOneDestinationRepository @Inject constructor(
     private val travelApi: TravelApi
 ) {
-    suspend fun getDestinationById(id: String): TravelDetailResponse {
+    suspend fun getDestinationById(id: String): BaseResponse<TravelDetailResponse> {
         return travelApi.getDestinationById(id)
     }
 }

@@ -12,6 +12,7 @@ import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
+import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.CartScreen
@@ -27,7 +28,6 @@ import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
-import com.tlog.viewmodel.share.MainViewModel
 
 @Composable
 fun NavHost(
@@ -80,6 +80,12 @@ fun NavHost(
 
             ReviewWritingScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
+        composable("reviewList/{travelId}/{travelName}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
+            val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
+
+            ReviewListScreen(navController = navController, travelId = travelId, travelName = travelName)
+        }
         composable("teamList") {
             MyTeamListScreen(navController = navController)
         }
@@ -100,7 +106,7 @@ fun NavHost(
         }
         composable("travelInfo/{id}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(id = travelId)
+            TravelInfoScreen(travelId = travelId, navController = navController)
         }
         composable("tbtiTest") {
             TbtiTestScreen()

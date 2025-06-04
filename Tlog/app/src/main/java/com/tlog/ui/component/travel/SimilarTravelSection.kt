@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tlog.data.model.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun SimilarTravelSection() {
-    val tmpList = listOf("", "", "", "", "", "", "") // api 완성 시 수정 할 것 임시로 UI 나오는거 보려고 함
-    
-
+fun SimilarTravelSection(
+    travelList: List<MinimalTravel>,
+    clickable: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -40,8 +41,8 @@ fun SimilarTravelSection() {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                items(tmpList) {
-                    SimilarTravelSpots()
+                items(travelList) { travel ->
+                    SimilarTravelSpots(travel = travel, clickable = clickable)
                 }
             }
         }

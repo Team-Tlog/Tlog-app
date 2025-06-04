@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 
@@ -44,7 +45,7 @@ fun TravelInfoSummary(
                 Icon(
                     painter = painterResource(R.drawable.ic_map_pin),
                     contentDescription = "위치 ${travelInfo.city}",
-                    tint = Color.Unspecified
+                    tint = Color.Black
                 )
 
                 Text(
@@ -74,7 +75,7 @@ fun TravelInfoSummary(
                 )
 
                 Text(
-                    text = "(20)", // 추후 api명세서 나오면 제대로 수정하기
+                    text = "(${travelInfo.reviewCount})", // 추후 api명세서 나오면 제대로 수정하기
                     style = Body2Regular
                 )
             }
@@ -89,6 +90,9 @@ fun TravelInfoSummary(
 
         Spacer(modifier = Modifier.height(57.dp))
 
-        // Removed description Text because it's not present in TravelDetailResponse
+//        Text(
+//            text = travelInfo.description,
+//            style = Body1Regular
+//        )
     }
 }
