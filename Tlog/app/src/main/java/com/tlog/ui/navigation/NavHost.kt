@@ -3,7 +3,6 @@ package com.tlog.ui.navigation
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -16,7 +15,7 @@ import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWritingScreen
 import com.tlog.ui.screen.review.SelectReviewWriteScreen
-import com.tlog.ui.screen.share.CartScreen
+import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -39,7 +38,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
 
-    NavHost(navController = navController, startDestination = "cart") {
+    NavHost(navController = navController, startDestination = startScreen) {
         composable("main") {
             MainScreen(navController = navController)
         }
@@ -64,8 +63,8 @@ fun NavHost(
         composable("mypage") {
             MyPageScreen(navController = navController)
         }
-        composable("cart") {
-            CartScreen(
+        composable("scrapAndCart") {
+            ScrapAndCartScreen(
                 navController = navController
             )
         }

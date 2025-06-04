@@ -42,7 +42,7 @@ import com.tlog.ui.style.Body1Regular
 
 
 @Composable
-fun CartScreen(
+fun ScrapAndCartScreen(
     viewModel: CartViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
