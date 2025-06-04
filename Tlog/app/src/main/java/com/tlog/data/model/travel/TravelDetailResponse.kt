@@ -1,5 +1,7 @@
 package com.tlog.data.model.travel
 
+import com.tlog.data.model.share.Tag
+
 data class TravelDetailResponse(
     val id: String,
     val name: String,
@@ -15,7 +17,16 @@ data class TravelDetailResponse(
     val imageUrl: String,
     val topTags: List<TagCount>,
     val ratingDistribution: Map<String, Int>,
-    val top2Reviews: List<DetailReview>
+    val top2Reviews: List<DetailReview>,
+    val relatedDestinations: List<MinimalTravel>
+)
+
+data class MinimalTravel(
+    val destinationId: String,
+    val name: String,
+    val imageUrl: String,
+    val description: String,
+    val customTags: List<TagCount>
 )
 
 data class DetailReview(

@@ -99,7 +99,12 @@ fun TravelInfoScreen(
                                 .fillMaxWidth()
                                 .padding(horizontal = 31.5.dp)
                         ) {
-                            SimilarTravelSection()
+                            SimilarTravelSection(
+                                travelList = destination.relatedDestinations,
+                                clickable = { travelId ->
+                                    navController.navigate("travelInfo/$travelId")
+                                }
+                            )
                         }
                     }
                 }

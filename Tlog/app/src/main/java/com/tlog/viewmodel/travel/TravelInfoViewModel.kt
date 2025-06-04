@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.travel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,7 +12,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +20,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
-    private val searchOneDestinationRepository: SearchOneDestinationRepository,
+    private val repository: SearchOneDestinationRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
@@ -46,7 +44,7 @@ class TravelInfoViewModel @Inject constructor(
     fun loadDestinationById(id: String) {
         viewModelScope.launch {
             try {
-                val response = searchOneDestinationRepository.getDestinationById(id)
+                val response = repository.getDestinationById(id)
                 Log.d("okhttp", response.data.toString())
                 _destinationDetail.value = response.data
             }
