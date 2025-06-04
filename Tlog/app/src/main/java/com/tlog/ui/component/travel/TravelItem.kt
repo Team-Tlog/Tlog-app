@@ -48,14 +48,26 @@ fun TravelItem(
             .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
-        AsyncImage(
-            model = travel.imageUrl,
-            contentDescription = "${travel.name} 사진",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(99.dp)
-                .clip(RoundedCornerShape(15.dp))
-        )
+        if (travel.imageUrl != "NaN") {
+            AsyncImage(
+                model = travel.imageUrl,
+                contentDescription = "${travel.name} 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+        else {
+            Image( // 사진이 없을 때 이미지
+                painter = painterResource(id = R.drawable.destination_img),
+                contentDescription = "${travel.name} 기본 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
 
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -112,14 +124,26 @@ fun ScrapTravelItem(
             .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
-        AsyncImage(
-            model = travel.imageUrl,
-            contentDescription = "${travel.name} 사진",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(99.dp)
-                .clip(RoundedCornerShape(15.dp))
-        )
+        if (travel.imageUrl != "NaN") {
+            AsyncImage(
+                model = travel.imageUrl,
+                contentDescription = "${travel.name} 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+        else {
+            Image( // 사진이 없을 때 이미지
+                painter = painterResource(id = R.drawable.destination_img),
+                contentDescription = "${travel.name} 기본 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
 
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -175,7 +199,7 @@ fun SearchTravelItem(
             .fillMaxWidth()
             .height(101.dp)
             .padding(horizontal = 20.dp)
-            .clickable{
+            .clickable {
                 onClick(travel.id, travel.name)
             }
     ) {
