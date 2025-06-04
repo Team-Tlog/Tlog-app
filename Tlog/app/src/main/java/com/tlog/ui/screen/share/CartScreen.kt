@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.share
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -32,11 +31,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoMainButtons
 import com.tlog.ui.component.travel.ScrapTravelList
 import com.tlog.ui.component.travel.TravelList
-import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.share.CartViewModel
 import com.tlog.R
@@ -50,7 +47,7 @@ fun CartScreen(
     navController: NavHostController
 ) {
     LaunchedEffect(Unit) {
-        viewModel.initUserIdAndCart()
+        viewModel.initUserIdAndScrapList()
     }
 
 
@@ -60,7 +57,7 @@ fun CartScreen(
             .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        val selectedTab = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("내 장바구니") }
+        val selectedTab = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("스크랩") }
 
         Column {
 

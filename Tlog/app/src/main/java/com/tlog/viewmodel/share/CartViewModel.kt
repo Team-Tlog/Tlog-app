@@ -40,9 +40,9 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun initUserIdAndCart() {
+    fun initUserIdAndScrapList() {
         userId = tokenProvider.getUserId()?: ""
-        fetchCart(userId)
+        fetchScrapList(userId)
     }
 
 
