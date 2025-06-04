@@ -21,6 +21,7 @@ import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
+import com.tlog.ui.screen.travel.SearchScreen
 import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
@@ -36,7 +37,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "searchScreen") {
 
         composable("main") {
             MainScreen(navController = navController)
@@ -109,6 +110,9 @@ fun NavHost(
             TbtiCodeInputScreen(
                 viewModel = viewModel
             )
+        }
+        composable("searchScreen") {
+            SearchScreen()
         }
     }
 }
