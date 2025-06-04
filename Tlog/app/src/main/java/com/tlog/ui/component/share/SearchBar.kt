@@ -1,10 +1,12 @@
 package com.tlog.ui.component.share
 
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -35,29 +37,31 @@ fun SearchBar(
         .fillMaxWidth()
         .height(52.dp)
 
-
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
     ) {
+        // 텍스트필드(플레이스홀더는 그대로, 아이콘 없음)
         TextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = { Text(
-                text = placeholderText,
-                fontSize = 15.sp,
-                fontFamily = MainFont,
-                fontWeight = FontWeight.Normal,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.offset(y = (-2).dp) // 텍스트가 살짝 아래로 치우쳐서 조정해줌
-            ) },
+            placeholder = {
+                Text(
+                    text = placeholderText,
+                    fontSize = 15.sp,
+                    fontFamily = MainFont,
+                    fontWeight = FontWeight.Normal,
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 26.dp)
+                )
+            },
             singleLine = singleLine,
             shape = RoundedCornerShape(45),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,     // 포커스됐을 때 아웃라인 색
-                unfocusedBorderColor = Color.Transparent,  // 포커스 없을 때 아웃라인 색
+                focusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color.Transparent,
                 cursorColor = MainColor
             ),
             textStyle = TextStyle(
@@ -65,8 +69,26 @@ fun SearchBar(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Normal
             ),
-            leadingIcon = leadingIcon,
             modifier = defaultModifier.then(modifier)
+        )
+
+        leadingIcon?.let {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 32.dp)
+            ) {
+                it()
+            }
+        }
+
+        //검색 바의 가장 아래 선
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .width(322.8.dp)
+                .height(1.dp)
+                .background(color = Color(0xFFF0F0F0))
         )
     }
 }

@@ -1,8 +1,11 @@
 package com.tlog.viewmodel.travel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
+import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.repository.SearchOneDestinationRepository
 import dagger.Module
@@ -17,8 +20,16 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
-    private val searchOneDestinationRepository: SearchOneDestinationRepository
+    private val repository: SearchOneDestinationRepository,
+    private val scrapManager: ScrapManager,
+    tokenProvider: TokenProvider
 ) : ViewModel() {
+    private var userId: String? = null
+
+    init {
+        userId = tokenProvider.getUserId()
+    }
+
 
     private val _destinationDetail = MutableStateFlow<TravelDetailResponse?>(null)
     val destinationDetail: StateFlow<TravelDetailResponse?> = _destinationDetail
@@ -32,9 +43,29 @@ class TravelInfoViewModel @Inject constructor(
 
     fun loadDestinationById(id: String) {
         viewModelScope.launch {
-            val response = searchOneDestinationRepository.getDestinationById(id)
-            _destinationDetail.value = response
+            try {
+                val response = repository.getDestinationById(id)
+                Log.d("okhttp", response.data.toString())
+                _destinationDetail.value = response.data
+            }
+            catch (e: Exception) {
+                Log.d("okhttp", e.message.toString())
+            }
         }
+    }
+
+    fun toggleScrap(destinationId: String) {
+        viewModelScope.launch {
+            try {
+                scrapManager.toggleScrap(destinationId)
+            } catch (e: Exception) {
+                // TODO: Error handling
+            }
+        }
+    }
+
+    fun isScraped(destinationId: String): Boolean {
+        return scrapManager.isScraped(destinationId)
     }
 }
 

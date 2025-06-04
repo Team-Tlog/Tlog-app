@@ -80,7 +80,7 @@ fun ReviewItem(
                     )
 
                     ReviewStar(
-                        starCnt = 5,
+                        starCnt = review.rating,
                         spaceBy = 4.dp,
                         size = 12.dp
                     )

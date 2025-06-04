@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 
-
+// 250603 정찬 -> 안쓰는듯? 추후 안쓰면 제거하자~
 @Composable
 fun ReviewListSection(
     avgStarRating: Double,
@@ -19,7 +19,7 @@ fun ReviewListSection(
 ) {
     Column {
         // 후기 리뷰작성 아이콘
-        ReviewHeader()
+        //ReviewHeader()
 
         Spacer(modifier = Modifier.height(29.dp))
 

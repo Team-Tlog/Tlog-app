@@ -1,9 +1,13 @@
 package com.tlog.api
 
+import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewRequest
+import com.tlog.data.api.ReviewResponse
 import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.AddTravelRequest
+import com.tlog.data.model.travel.DetailReview
+import com.tlog.data.model.travel.Pageable
 import com.tlog.data.model.travel.TravelDetailResponse
 import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.model.travel.TravelRecommendPagedResponse
@@ -22,39 +26,35 @@ interface TravelApi {
     suspend fun getDestinations(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("sort") sort: String
-    ): TravelRecommendPagedResponse<TravelDestinationResponse>
+        @Query("sort") sort: List<String>,
+        @Query("city") city: String,
+        @Query("sortType") sortType: String? = null,
+        @Query("tbti") tbti: String? = null
+    ): BaseResponse<TravelRecommendPagedResponse>
 
     @GET("/api/destinations/{id}")
     suspend fun getDestinationById(
         @Path("id") id: String
-    ): TravelDetailResponse
+    ): BaseResponse<TravelDetailResponse>
 
     @POST("/api/destinations")
     suspend fun addTravel(
         @Body travel: AddTravelRequest
     ): BaseResponse<String?>
 
+
+    // review
     @POST("/api/reviews")
     suspend fun addReview(
         @Body reviewRequest: ReviewRequest
     ): BaseResponse<String?>
 
-    @PUT("/api/scrap/user/{userId}")
-    @Headers("Content-Type: text/plain")
-    suspend fun scrapDestination(
-        @Path("userId") userId: String,
-        @Body travelId: okhttp3.RequestBody
-    ): BaseResponse<Unit>
-
-    @DELETE("/api/scrap/user/{userId}/destination/{destId}")
-    suspend fun deleteScrapDestination(
-        @Path("userId") userId: String,
-        @Path("destId") destinationId: String
-    ): BaseResponse<Unit>
-
-    @GET("/api/scrap/user/{userId}")
-    suspend fun getUserScraps(
-        @Path("userId") userId: String
-    ): BaseResponse<List<ScrapDestinationResponse>>
+    @GET("/api/reviews/{destinationId}")
+    suspend fun getReviewList(
+        @Path("destinationId") destinationId: String,
+        @Query("sortType") sortType: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("sort") sort: List<String>
+    ): BaseListResponse<List<DetailReview>>
 }

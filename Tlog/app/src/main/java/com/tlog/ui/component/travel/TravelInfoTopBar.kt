@@ -1,5 +1,6 @@
 package com.tlog.ui.component.travel
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,14 +22,16 @@ import com.tlog.R
 @Composable
 fun TravelInfoTopBar(
     height: Dp = 38.dp,
-    iconList: List<Int> = emptyList(),
-    topBarPadding: Dp = 0.dp // 상단도 그림으로 채워지게 하기 위해서
+    //iconList: List<Int> = emptyList(),
+    topBarPadding: Dp = 0.dp,
+    isScrap: Boolean,
+    clickScrap: () -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(height + topBarPadding)
-            .padding(horizontal = 14.dp)
+            .padding(start = 14.dp, end = 14.dp, top = (6.5).dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -44,13 +47,20 @@ fun TravelInfoTopBar(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            iconList.forEach { icon ->
+
+            Box(
+                modifier = Modifier
+                    .clickable {
+                        clickScrap()
+                    }
+            ) {
                 Icon(
-                    painter = painterResource(icon),
+                    painter = painterResource(if (isScrap) R.drawable.ic_filled_heart else R.drawable.ic_heart),
                     contentDescription = "아이콘",
                     tint = Color.Unspecified
                 )
             }
+
         }
 
     }

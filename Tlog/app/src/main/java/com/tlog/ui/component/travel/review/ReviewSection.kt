@@ -27,10 +27,12 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun ReviewSection(
-    avgStarRating: Float,
+    avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
     reviewList: List<DetailReview>,
-    reviewCnt: Int = Int.MAX_VALUE
+    reviewCnt: Int = Int.MAX_VALUE,
+    moreReview: () -> Unit,
+    reviewWrite: () -> Unit
 ) {
     Column {
         Column(
@@ -38,7 +40,9 @@ fun ReviewSection(
                 .padding(horizontal = (31.5).dp)
         ) {
             // 후기 리뷰작성 아이콘
-            ReviewHeader()
+            ReviewHeader(
+                reviewWrite = reviewWrite
+            )
 
             Spacer(modifier = Modifier.height(29.dp))
 
@@ -62,7 +66,7 @@ fun ReviewSection(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .clickable {
-                        Log.d("더보기", "my click!!")
+                        moreReview()
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
