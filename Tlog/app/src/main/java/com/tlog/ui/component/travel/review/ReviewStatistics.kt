@@ -50,7 +50,11 @@ fun ReviewStatistics(
             for (i in 5 downTo 1) {
                 val reviewCount = ratingDistribution[i.toString()] ?: 0
 
-                Row {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     ReviewStar(
                         starCnt = i,
                         spaceBy = (4.83).dp,
@@ -63,7 +67,8 @@ fun ReviewStatistics(
                         cnt = reviewCount,
                         totalCnt = totalReviewCount,
                         modifier = Modifier
-                            .width(126.dp)
+                            .padding(end = 9.dp)
+                            .weight(1f)
                             .height(6.dp)
                             .border(
                                 width = 1.dp,
@@ -72,7 +77,7 @@ fun ReviewStatistics(
                             )
                     )
 
-                    Spacer(modifier = Modifier.weight(1f))
+                    //Spacer(modifier = Modifier.weight(1f))
 
                     Text(
                         text = "($reviewCount)",
