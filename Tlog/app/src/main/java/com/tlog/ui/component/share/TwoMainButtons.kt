@@ -31,8 +31,8 @@ fun TwoMainButtons(
         Button(
             onClick = onLeftClick,
             modifier = Modifier
-                .width(151.dp)
-                .height(55.dp),
+                .height(55.dp)
+                .weight(1f),
             shape = RoundedCornerShape(20),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF8C8C8C),
@@ -51,8 +51,8 @@ fun TwoMainButtons(
         Button(
             onClick = onRightClick,
             modifier = Modifier
-                .width(151.dp)
-                .height(55.dp),
+                .height(55.dp)
+                .weight(1f),
             shape = RoundedCornerShape(20),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MainColor,
