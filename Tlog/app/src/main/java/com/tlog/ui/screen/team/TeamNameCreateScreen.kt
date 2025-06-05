@@ -85,7 +85,7 @@ fun TeamNameCreateScreen(
                 },
                 modifier = Modifier
                     .height(70.dp)
-                    .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
+                    .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
             )
         }
     }

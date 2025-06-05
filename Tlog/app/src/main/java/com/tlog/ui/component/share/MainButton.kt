@@ -28,13 +28,12 @@ fun MainButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(55.dp)
-            .padding(horizontal = 24.dp),
+            .height(55.dp),
         enabled = enabled,
         shape = RoundedCornerShape(20), // 좌우를 둥글게
         colors = ButtonDefaults.buttonColors(
             // 활성화 시 컬러
-            containerColor = MainColor,
+            containerColor = buttonColor,
             contentColor = Color.White,
 
             // 비활성화 시 컬러
