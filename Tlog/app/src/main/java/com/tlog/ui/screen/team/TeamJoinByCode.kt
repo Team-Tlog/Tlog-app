@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.team
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
