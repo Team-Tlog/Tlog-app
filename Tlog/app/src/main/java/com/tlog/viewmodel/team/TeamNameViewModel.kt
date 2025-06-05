@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.team
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,15 +55,17 @@ class TeamNameViewModel @Inject constructor(
 
             try {
                 val result = repository.createTeam(CreateTeamRequest( //data에 팀아이디가 옴
-                    name = TeamName.value,
-                    creator = safeUserId
+                        name = TeamName.value,
+                        creator = safeUserId
                     )
                 )
                 when (result.status) {
                     201 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
                     else -> _eventFlow.emit(UiEvent.ApiError(result.message))
                 }
             } catch (e: Exception) {
+                Log.d("TeamNameViewModel", "Error creating team: ${e.message}")
                 _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
             }
         }

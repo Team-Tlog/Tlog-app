@@ -2,6 +2,7 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TeamApi
+import com.tlog.api.TeamCreateResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.JoinTeamRequest
@@ -26,7 +27,7 @@ class TeamRepository @Inject constructor(
         return retrofitInstance.joinTeam(JoinTeamRequest(inviteCode = teamCode, userId = userId))
     }
 
-    suspend fun createTeam(request: CreateTeamRequest): BaseResponse<String>{
+    suspend fun createTeam(request: CreateTeamRequest): BaseResponse<TeamCreateResponse>{
         val result = retrofitInstance.createTeam(request)
         Log.d("ReviewRepository", "addReview: $result")
         return result

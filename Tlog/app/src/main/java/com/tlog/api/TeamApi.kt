@@ -21,7 +21,7 @@ interface TeamApi {
     @POST("/api/team")
     suspend fun createTeam(
         @Body request: CreateTeamRequest
-    ): BaseResponse<String>
+    ): BaseResponse<TeamCreateResponse>
 
     @DELETE("/api/team/{teamId}")
     suspend fun deleteTeam(
@@ -38,3 +38,8 @@ interface TeamApi {
         @Body request: JoinTeamRequest
     ): BaseResponse<Unit>
 }
+
+data class TeamCreateResponse(
+    val teamId: String,
+    val chatRoomId: Int
+)
