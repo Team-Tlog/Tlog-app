@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.share
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -45,7 +46,14 @@ class SearchViewModel @Inject constructor(
                 .debounce(500) // 입력 없을 때
                 .filter { it.isNotBlank() && it.length >= 1} // 공백 무시 / 길이 1이상
                 .distinctUntilChanged()
-                .collect { searchTravel(it) }
+                .collect {
+                    try {
+                        searchTravel(it)
+                    }
+                    catch (e: Exception) {
+                        Log.d("SearchViewModel", e.message.toString())
+                    }
+                }
         }
     }
 
