@@ -98,14 +98,13 @@ fun TravelDestinationRecommendation(
                                 .size(36.dp)
                                 .clip(RoundedCornerShape(18.dp))
                                 .background(Color.LightGray)
-                        )  //여기에 로고 생기면 추가해야함
+                        )
 
                         Row {
                             Box(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clickable {
-                                        //추후 로직 구현
                                         Log.d("검색", "검색아이콘 눌림")
                                     }
                             ) {
@@ -122,7 +121,6 @@ fun TravelDestinationRecommendation(
                                 modifier = Modifier
                                     .size(42.dp)
                                     .clickable {
-                                        //추후 로직 구현
                                         Log.d("알림창", "알림아이콘 눌림")
                                     }
                             ) {
