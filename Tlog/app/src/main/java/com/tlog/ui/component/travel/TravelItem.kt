@@ -196,7 +196,6 @@ fun SearchTravelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(101.dp)
             .padding(horizontal = 20.dp)
             .clickable {
                 onClick(travel.id, travel.name)
