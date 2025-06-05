@@ -34,8 +34,6 @@ fun HashTagsGroup(
         horizontalArrangement = Arrangement.spacedBy(space)
     ) {
         items(hashTags) { tag ->
-            //val textWidth = 4 * tag.length + 25 // 박스 크기
-
             Surface(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier
@@ -49,9 +47,7 @@ fun HashTagsGroup(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.White)
-                        .height(22.dp)
                         .padding(horizontal = 10.dp, vertical = 5.dp),
-                        //.width(textWidth.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
