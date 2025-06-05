@@ -1,6 +1,5 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.api.ScrapDestinationResponse

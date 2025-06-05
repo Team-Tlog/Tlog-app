@@ -3,10 +3,8 @@ package com.tlog.data.repository
 import android.util.Log
 import com.tlog.api.GetReviewListResponse
 import com.tlog.api.TravelApi
-import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewRequest
-import com.tlog.data.model.travel.DetailReview
 import jakarta.inject.Inject
 
 class ReviewRepository @Inject constructor(

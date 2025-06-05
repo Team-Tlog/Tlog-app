@@ -59,7 +59,7 @@ fun NavHost(
             TeamTravelingCourseScreen(navController)
         }
         composable("sns") {
-            // 장바구니?화면으로 수정해야함
+            // SNS로 수정 필요
             MyTravelingCourseScreen(navController)
         }
         composable("mypage") {
