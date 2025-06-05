@@ -73,10 +73,13 @@ class SearchViewModel @Inject constructor(
 
     fun updateSearchText(newSearchText: String) {
         _searchText.value = newSearchText
+        if (newSearchText.isBlank()) {
+            _searchResult.value = emptyList()
+        }
     }
 
     fun checkSearchText(): Boolean {
-        return searchText.value.isNotEmpty()
+        return searchText.value.isNotBlank()
     }
 }
 
