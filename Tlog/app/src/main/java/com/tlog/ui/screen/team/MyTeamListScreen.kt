@@ -76,7 +76,9 @@ fun MyTeamListScreen(
 
         MainButton(
             text = "코드 입력해서 팀 합류",
-            onClick = { /* 코드 입력 화면 이동 */ },
+            onClick = {
+                navController.navigate("joinTeam")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp)

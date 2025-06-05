@@ -3,6 +3,7 @@ package com.tlog.api
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.TeamData
 import com.tlog.data.api.CreateTeamRequest
+import com.tlog.data.api.JoinTeamRequest
 import com.tlog.data.api.TeamDetailData
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -31,4 +32,9 @@ interface TeamApi {
     suspend fun getTeamDetails(
         @Path("teamId") teamId: String
     ): BaseResponse<TeamDetailData>
+
+    @POST("/api/team/join")
+    suspend fun joinTeam(
+        @Body request: JoinTeamRequest
+    ): BaseResponse<Unit>
 }

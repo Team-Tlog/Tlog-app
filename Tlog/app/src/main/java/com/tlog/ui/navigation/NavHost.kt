@@ -21,6 +21,7 @@ import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
+import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
@@ -99,6 +100,9 @@ fun NavHost(
         composable("teamDetail/{teamId}") { backStackEntry ->
             val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
             TeamDetailScreen(navController = navController, teamId = teamId)
+        }
+        composable("joinTeam") {
+            TeamJoinByCode(navController = navController)
         }
 
 

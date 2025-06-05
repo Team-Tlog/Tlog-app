@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 fun OtpCodeInput(
     textList: List<MutableState<TextFieldValue>>,
     requesterList: List<FocusRequester>,
+    isNumber: Boolean = true,
     onComplete: (String) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
@@ -62,7 +63,7 @@ fun OtpCodeInput(
                     InputFeild(
                         value = textList[i].value,
                         onValueChange = { newValue ->
-                            val input = newValue.text.filter { it.isDigit() }
+                            val input = if (isNumber) newValue.text.filter { it.isDigit() } else newValue.text
                             val oldText = textList[i].value.text
 
                             // 값이 있다가 사라질 경우 (지워질 경우) 포커스 이동
@@ -103,6 +104,7 @@ fun OtpCodeInput(
                                 }
                             }
                         },
+                        isNumber = isNumber,
                         focusRequester = requester
                     )
                 }
@@ -115,6 +117,7 @@ fun OtpCodeInput(
 fun InputFeild(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
+    isNumber: Boolean = true,
     focusRequester: FocusRequester
 ) {
     BasicTextField(
@@ -135,7 +138,7 @@ fun InputFeild(
             textAlign = TextAlign.Center
         ),
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number,
+            keyboardType = if(isNumber) KeyboardType.Number else KeyboardType.Text,
             imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
