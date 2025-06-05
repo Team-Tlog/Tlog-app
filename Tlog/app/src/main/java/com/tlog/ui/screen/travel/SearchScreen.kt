@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.travel.PopularDestinations
@@ -26,7 +27,8 @@ import com.tlog.viewmodel.share.SearchViewModel
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel = hiltViewModel()
+    viewModel: SearchViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     Box(
         modifier = Modifier.fillMaxSize()
@@ -75,7 +77,7 @@ fun SearchScreen(
                 SearchTravelList(
                     travelList = viewModel.searchResult.value,
                     onClick = { travelId, travelName ->
-                        viewModel.selectTravel(travelId, travelName)
+                        navController.navigate("travelInfo/${travelId}")
                     }
                 )
             }

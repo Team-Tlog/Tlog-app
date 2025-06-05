@@ -133,7 +133,7 @@ fun NavHost(
             )
         }
         composable("search") {
-            SearchScreen()
+            SearchScreen(navController = navController)
         }
 
     }
