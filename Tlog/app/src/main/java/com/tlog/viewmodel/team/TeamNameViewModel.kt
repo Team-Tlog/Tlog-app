@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.TeamApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.repository.TeamNameRepository
+import com.tlog.data.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamNameViewModel @Inject constructor(
-    private val repository: TeamNameRepository,
+    private val repository: TeamRepository,
     tokenProvider: TokenProvider
 ) : ViewModel() {
 
@@ -66,16 +66,5 @@ class TeamNameViewModel @Inject constructor(
                 _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
             }
         }
-    }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object ReviewModule {
-    @Provides
-    fun provideTeamNameRepository(
-        teamApi: TeamApi
-    ): TeamNameRepository {
-        return TeamNameRepository(teamApi)
     }
 }

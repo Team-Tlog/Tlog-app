@@ -8,7 +8,6 @@ import com.tlog.api.TeamApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TeamData
 import com.tlog.data.repository.TeamRepository
-import com.tlog.data.repository.TeamDeleteRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
     private val teamRepository: TeamRepository,
-    private val teamDeleteRepository: TeamDeleteRepository,
     tokenProvider: TokenProvider
 ) : ViewModel() {
     private var userId: String? = null
@@ -64,7 +62,7 @@ class MyTeamListViewModel @Inject constructor(
     fun deleteTeam(teamId: String) {
         viewModelScope.launch {
             try {
-                val result = teamDeleteRepository.deleteTeam(teamId)
+                val result = teamRepository.deleteTeam(teamId)
                 if (result.status == 200) {
                     _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
                     _eventFlow.emit(UiEvent.ApiSuccess)
