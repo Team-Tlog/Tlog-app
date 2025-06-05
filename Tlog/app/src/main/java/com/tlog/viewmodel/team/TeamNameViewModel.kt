@@ -59,7 +59,7 @@ class TeamNameViewModel @Inject constructor(
                     )
                 )
                 when (result.status) {
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
                     else -> _eventFlow.emit(UiEvent.ApiError(result.message))
                 }
             } catch (e: Exception) {
