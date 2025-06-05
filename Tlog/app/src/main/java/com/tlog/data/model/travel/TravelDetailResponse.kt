@@ -1,7 +1,5 @@
 package com.tlog.data.model.travel
 
-import com.tlog.data.model.share.Tag
-
 data class TravelDetailResponse(
     val id: String,
     val name: String,

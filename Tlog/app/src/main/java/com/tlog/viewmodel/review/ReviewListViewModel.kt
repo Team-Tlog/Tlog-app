@@ -13,6 +13,7 @@ import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
 import com.tlog.data.model.travel.DetailReview
+import java.util.Locale
 
 
 @HiltViewModel
@@ -23,6 +24,11 @@ class ReviewListViewModel @Inject constructor(
     private val _reviewList = mutableStateOf<List<DetailReview>>(emptyList())
     val reviewList: State<List<DetailReview>> = _reviewList
 
+    private val _ratingDistribution = mutableStateOf<Map<String, Int>>(emptyMap())
+    val ratingDistribution: State<Map<String, Int>> = _ratingDistribution
+
+    private val _rating = mutableStateOf(0.0)
+    val rating: State<Double> = _rating
 
     private val _sortOption = mutableStateOf("날짜순")
     val sortOption: State<String> = _sortOption
@@ -55,12 +61,31 @@ class ReviewListViewModel @Inject constructor(
                     size = pageSize,
                     sort = sort
                 )
-                Log.d("ReviewListViewModel", response.content.toString())
-                _reviewList.value = response.content
+                _ratingDistribution.value = response.data.ratingDistribution
+                _reviewList.value = response.data.reviews.content
+                getRating(reviewCount = response.data.ratingDistribution)
             }
             catch (e: Exception) {
                 Log.d("ReviewListViewModel", e.message.toString())
             }
+        }
+    }
+
+    private fun getRating(reviewCount: Map<String, Int>) {
+        var sum = 0
+        var totalReviews = 0
+
+        for (i in 1..5) {
+            val key = i.toString()
+            val count = reviewCount[key] ?: 0
+            sum += count * i
+            totalReviews += count
+        }
+
+        _rating.value = if (totalReviews > 0) {
+            String.format(Locale.US, "%.2f", sum.toDouble() / totalReviews).toDouble() // 소숫점 2자리
+        } else {
+            0.0
         }
     }
 
@@ -84,10 +109,11 @@ class ReviewListViewModel @Inject constructor(
                     size = pageSize,
                     sort = sort
                 )
-                Log.d("ReviewListViewModel", response.content.toString())
+                Log.d("ReviewListViewModel", response.data.toString())
 
-                isLastPage = response.last
-                _reviewList.value += response.content
+                isLastPage = response.data.reviews.last
+                _reviewList.value += response.data.reviews.content
+
             } catch (e: Exception) {
                 Log.d("ReviewListViewModel", "에러 로그 : ${e.message}")
             }
@@ -100,7 +126,7 @@ class ReviewListViewModel @Inject constructor(
             try {
                 scrapManager.toggleScrap(destinationId)
             } catch (e: Exception) {
-                // TODO: Error handling
+                Log.d("ReviewListViewModel", "스크랩 에러 로그 : ${e.message}")
             }
         }
     }

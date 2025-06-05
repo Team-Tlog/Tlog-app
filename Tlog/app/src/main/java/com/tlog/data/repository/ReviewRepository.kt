@@ -1,6 +1,7 @@
 package com.tlog.data.repository
 
 import android.util.Log
+import com.tlog.api.GetReviewListResponse
 import com.tlog.api.TravelApi
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
@@ -17,18 +18,13 @@ class ReviewRepository @Inject constructor(
         return result
     }
 
-    private var page = 0
-    private val pageSize = 10
-    private val sort = emptyList<String>()
-    private var isLastPage = false
-
     suspend fun getReviewList(
         travelId: String,
         sortType: String,
         page: Int,
         size: Int,
         sort: List<String>
-    ): BaseListResponse<List<DetailReview>> {
+    ): BaseResponse<GetReviewListResponse> {
         return retrofitInstance.getReviewList(travelId, sortType, page, size, sort)
     }
 }
