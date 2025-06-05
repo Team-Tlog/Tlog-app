@@ -20,6 +20,7 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
+import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
@@ -86,12 +87,22 @@ fun NavHost(
 
             ReviewListScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
+
+
+        // team
         composable("teamList") {
             MyTeamListScreen(navController = navController)
         }
         composable("createTeam") {
             TeamNameCreateScreen(navController = navController)
         }
+        composable("teamDetail/{teamId}") { backStackEntry ->
+            val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
+            TeamDetailScreen(navController = navController, teamId = teamId)
+        }
+
+
+
         composable("recommendDestination/{title}/{city}") { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: return@composable
             val city = backStackEntry.arguments?.getString("city")
@@ -120,5 +131,6 @@ fun NavHost(
         composable("searchScreen") {
             SearchScreen()
         }
+
     }
 }

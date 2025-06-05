@@ -1,6 +1,7 @@
 package com.tlog.ui.component.team
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -20,12 +21,17 @@ import com.tlog.data.api.TeamData
 import com.tlog.R
 
 @Composable
-fun TeamCard(team: TeamData, onDeleteClick: (String) -> Unit) {
+fun TeamCard(
+    team: TeamData,
+    onDeleteClick: (String) -> Unit,
+    onClick: (String) -> Unit
+) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick(team.teamId) }
     ) {
         Row(
             modifier = Modifier

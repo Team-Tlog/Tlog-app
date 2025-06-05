@@ -66,7 +66,8 @@ fun MyTeamListScreen(
             items(teams) { team ->
                 TeamCard(
                     team = team,
-                    onDeleteClick = { viewModel.deleteTeam(it) }
+                    onDeleteClick = { viewModel.deleteTeam(it) },
+                    onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
                 )
             }
         }

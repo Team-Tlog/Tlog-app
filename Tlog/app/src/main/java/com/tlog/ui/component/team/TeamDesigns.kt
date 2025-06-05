@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 //import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.api.TeamDetailData
 import com.tlog.data.model.team.TeamData
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.BodyTitle
@@ -37,7 +38,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun SmallDesign(
-    teamData: TeamData
+    teamData: TeamDetailData
 ) {
     Column(
         modifier = Modifier
@@ -75,7 +76,7 @@ fun SmallDesign(
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
-                        text = teamData.teamTBTI,
+                        text = "TBTI", //teamData.teamTBTI,
                         style = BodyTitle,
                         color = Color.White
                     )
@@ -94,7 +95,7 @@ fun SmallDesign(
 
                 Spacer(modifier = Modifier.height(18.dp))
 
-                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+                TravelDateBox(teamData.startDate, teamData.endDate)
             }
         }
     }
@@ -104,7 +105,10 @@ fun SmallDesign(
 
 @Composable
 fun DefaultDesign(
-    teamData: TeamData
+    teamData: TeamDetailData,
+    showPopup: Boolean,
+    addMemberClick: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -136,7 +140,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI,
+                    text = "TBTI", //teamData.teamTBTI,
                     style = BodyTitle,
                     color = Color.White
                 )
@@ -144,7 +148,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    text = "${teamData.teamStartDate} ~ ${teamData.teamEndDate}",
+                    text = "${teamData.startDate} ~ ${teamData.endDate}",
                     style = Body1Regular,
                     color = Color.White
                 )
@@ -168,8 +172,8 @@ fun DefaultDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     AddMemberBox(
-                        {
-                            Log.d("add member", "my click!!")
+                        onClick = {
+                            addMemberClick()
                         }
                     )
                 }
@@ -177,13 +181,19 @@ fun DefaultDesign(
                 //TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
             }
         }
+
+        if (showPopup)
+            TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
     }
 }
 
 //236
 @Composable
 fun MidiumDesign(
-    teamData: TeamData
+    teamData: TeamDetailData,
+    showPopup: Boolean,
+    addMemberClick: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -218,7 +228,7 @@ fun MidiumDesign(
                     Spacer(modifier = Modifier.width(10.dp))
 
                     Text(
-                        text = teamData.teamTBTI,
+                        text = "TBTI", //teamData.teamTBTI,
                         style = BodyTitle,
                         color = Color.White
                     )
@@ -243,23 +253,28 @@ fun MidiumDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     AddMemberBox(
-                        {
-                            Log.d("add member", "my click!!")
+                        onClick = {
+                            addMemberClick()
                         }
                     )
                 }
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+                TravelDateBox(teamData.startDate, teamData.endDate)
             }
         }
     }
+    if (showPopup)
+        TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
 }
 
 @Composable
 fun BigDesign(
-    teamData: TeamData
+    teamData: TeamDetailData,
+    showPopup: Boolean,
+    addMemberClick: () -> Unit,
+    onDismiss: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -292,7 +307,7 @@ fun BigDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.teamTBTI,
+                    text = "TBTI", //teamData.teamTBTI,
                     style = BodyTitle,
                     color = Color.White
                 )
@@ -341,8 +356,8 @@ fun BigDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     AddMemberBox(
-                        {
-                            Log.d("add member", "my click!!")
+                        onClick = {
+                            addMemberClick()
                         }
                     )
                 }
@@ -350,8 +365,10 @@ fun BigDesign(
                 //Spacer(modifier = Modifier.height(10.dp))
                 Spacer(modifier = Modifier.weight(1f)) // 맨아래 고정시킬지 ? 팀원 목록 아래 띄울지 고민할 것
 
-                TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+                TravelDateBox(teamData.startDate, teamData.endDate)
             }
         }
     }
+    if (showPopup)
+        TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
 }

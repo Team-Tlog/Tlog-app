@@ -24,8 +24,9 @@ fun TeamTravelingCourseScreen(
     var selectedDay by remember { mutableStateOf(1) }
     var selectedTab by remember { mutableStateOf(1) }
 
-    val teamMembers = teamViewModel.teamData.members
-    val memberImageUrls = teamMembers.map { it.imageUrl }
+    // api 적용 할 때 타입 변경으로 주석 처리 (추후 처리할 것)
+//    val teamMembers = teamViewModel.teamData.members
+//    val memberImageUrls = teamMembers.map { it.imageUrl }
 
     Box(
         modifier = Modifier
@@ -45,7 +46,7 @@ fun TeamTravelingCourseScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    TeamMemberImageGroup(memberImageUrls = memberImageUrls)
+                    //TeamMemberImageGroup(memberImageUrls = memberImageUrls)
                 }
             }
         )

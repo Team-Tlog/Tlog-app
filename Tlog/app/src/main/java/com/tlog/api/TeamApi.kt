@@ -3,6 +3,7 @@ package com.tlog.api
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.TeamData
 import com.tlog.data.api.CreateTeamRequest
+import com.tlog.data.api.TeamDetailData
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -25,4 +26,9 @@ interface TeamApi {
     suspend fun deleteTeam(
         @Path("teamId") teamId: String
     ): BaseResponse<String>
+
+    @GET("/api/team/{teamId}/details")
+    suspend fun getTeamDetails(
+        @Path("teamId") teamId: String
+    ): BaseResponse<TeamDetailData>
 }
