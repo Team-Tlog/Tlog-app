@@ -60,7 +60,8 @@ fun MyTeamListScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         LazyColumn(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(teams) { team ->
@@ -69,6 +70,9 @@ fun MyTeamListScreen(
                     onDeleteClick = { viewModel.deleteTeam(it) },
                     onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
                 )
+            }
+            item{
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
 
