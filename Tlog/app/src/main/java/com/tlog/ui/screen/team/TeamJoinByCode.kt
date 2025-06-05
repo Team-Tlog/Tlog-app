@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -75,6 +76,7 @@ fun TeamJoinByCode(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
+                .padding(bottom = (24.5).dp) // 피그마에 없어서 일단 아래 여백을 좀 뒀음
                 .imePadding(), // 키보드 패딩
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -89,13 +91,11 @@ fun TeamJoinByCode(
 
             Text(
                 text = "전달 받으신 팀코드\n 6자리를 입력해주세요.",
-                modifier = Modifier
-                    .width(182.dp)
-                    .height(40.dp),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                color = Color(0xFF767676)
+                color = Color(0xFF767676),
+                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(50.dp))
@@ -116,7 +116,7 @@ fun TeamJoinByCode(
                 }
             )
 
-            Spacer(modifier = Modifier.height(37.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             if (codeError.value) {
                 LaunchedEffect(key1 = codeError.value) {}
@@ -143,7 +143,7 @@ fun TeamJoinByCode(
                         viewModel.joinTeam()
                     },
                     modifier = Modifier
-                        .padding(horizontal = 32.dp)
+                        .padding(horizontal = 24.dp)
                 )
             }
         }

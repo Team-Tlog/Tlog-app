@@ -81,8 +81,11 @@ class TeamJoinViewModel @Inject constructor(
 
     fun checkCodeValid() {
         val code = textList.joinToString(separator = "") { it.value.text }
-        codeError.value = code.length == 6 && codeError.value
-        isCodeValid.value = code.length == 6 && isCodeValid.value
+
+        onCodeEntered(code)
+
+       // codeError.value = code.length == 6 && codeError.value
+        //isCodeValid.value = code.length == 6 && isCodeValid.value
     }
 
     fun validateCode(code: String): Boolean {
@@ -90,7 +93,11 @@ class TeamJoinViewModel @Inject constructor(
     }
 
     fun onCodeEntered(code: String) {
-        if (validateCode(code)) {
+        if (code.isEmpty()) {
+            isCodeValid.value = false
+            codeError.value = false
+        }
+        else if (validateCode(code)) {
             isCodeValid.value = true
             codeError.value = false
         } else {
