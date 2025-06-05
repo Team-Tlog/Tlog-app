@@ -87,7 +87,7 @@ fun MainScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        //navController.navigate("searchReview") -> 추후 search로 변경
+                        navController.navigate("search")
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_search),

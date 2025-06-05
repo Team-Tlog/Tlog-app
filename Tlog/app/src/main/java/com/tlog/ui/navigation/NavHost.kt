@@ -132,7 +132,7 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-        composable("searchScreen") {
+        composable("search") {
             SearchScreen()
         }
 
