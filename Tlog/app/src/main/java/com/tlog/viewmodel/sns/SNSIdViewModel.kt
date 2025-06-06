@@ -1,27 +1,85 @@
 package com.tlog.viewmodel.sns
 
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.viewModelScope
+import com.tlog.api.SnsApi
+import com.tlog.data.repository.SnsRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import javax.inject.Inject
 
-class SNSIdViewModel : ViewModel() {
+@HiltViewModel
+class SNSIdViewModel @Inject constructor(
+    private val repository: SnsRepository
+) : ViewModel() {
 
-    // 입력된 ID
-    private val _id = MutableStateFlow("")
-    val id: StateFlow<String> = _id
-
-    // 중복 여부 (true: 중복됨, false: 사용 가능, null: 아직 입력 안함)
-    private val _isDuplicated = MutableStateFlow<Boolean?>(null)
-    val isDuplicated: StateFlow<Boolean?> = _isDuplicated
-
-    fun updateId(newId: String) {
-        _id.value = newId
-        checkDuplicate(newId)
+    sealed class UiEvent {
+        object ApiSuccess : UiEvent()
+        data class ApiError(val message: String) : UiEvent()
     }
 
-    private fun checkDuplicate(id: String) {
-        // 하드코딩된 중복 리스트 (나중에 서버로 대체 예정)
-        val existingIds = listOf("tlog", "computer")
-        _isDuplicated.value = id in existingIds
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    // 입력된 ID
+    private val _snsId = mutableStateOf("")
+    val snsId: State<String> = _snsId
+
+    // 중복 여부 (true: 중복됨, false: 사용 가능, null: 아직 입력 안함)
+    private val _isDuplicated = mutableStateOf<Boolean>(false)
+    val isDuplicated: State<Boolean?> = _isDuplicated
+
+
+    fun updateSnsId(id: String) {
+        viewModelScope.launch {
+            try {
+                val result = repository.updateSnsId(id)
+
+                when (result.status) {
+                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    404 -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "사용자 정보 없음"))
+                    409 -> {
+                        _eventFlow.emit(UiEvent.ApiError(result.message ?: "중복된 ID"))
+                        _isDuplicated.value = true
+                    }
+
+                    500 -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "서버 오류"))
+                    else -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "알 수 없는 오류"))
+                }
+            }
+            catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ApiError(e.message ?: "알 수 없는 오류"))
+                Log.d("SNSIdViewModel", e.message ?: "알 수 없는 오류")
+            }
+        }
+    }
+
+
+
+
+    fun updateId(newId: String) {
+        _snsId.value = newId
+        _isDuplicated.value = false
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object SnsModule {
+    @Provides
+    fun provideSnsApi(
+        retrofit: Retrofit
+    ): SnsApi {
+        return retrofit.create(SnsApi::class.java)
     }
 }

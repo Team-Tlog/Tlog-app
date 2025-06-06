@@ -18,6 +18,8 @@ import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.sns.SNSIdCreateScreen
+import com.tlog.ui.screen.sns.SNSScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
@@ -58,10 +60,22 @@ fun NavHost(
             //MyTravelingCourse는 어떻게?
             TeamTravelingCourseScreen(navController)
         }
-        composable("sns") {
-            // SNS로 수정 필요
-            MyTravelingCourseScreen(navController)
+
+        //SNS
+        composable("snsMain") {
+            SNSScreen()
         }
+        composable("snsId") {
+            SNSIdCreateScreen(navController = navController)
+        }
+        composable("sns") {
+            // SNS로 수정 필요 -> 임시임 임시 임시 임시 임시 ***
+            SNSIdCreateScreen(navController = navController)
+        }
+
+
+
+
         composable("mypage") {
             MyPageScreen(navController = navController)
         }
@@ -104,6 +118,9 @@ fun NavHost(
         composable("joinTeam") {
             TeamJoinByCode(navController = navController)
         }
+
+
+
 
 
 

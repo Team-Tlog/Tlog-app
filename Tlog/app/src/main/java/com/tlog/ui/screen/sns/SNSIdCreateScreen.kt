@@ -1,29 +1,46 @@
 package com.tlog.ui.screen.sns
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.team.TeamNameInputField
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.SNSIdViewModel
+import com.tlog.viewmodel.sns.SNSIdViewModel.UiEvent
 
-@Preview(showBackground = true)
 @Composable
-fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
-    val id by viewModel.id.collectAsState()
-    val isDuplicated by viewModel.isDuplicated.collectAsState()
+fun SNSIdCreateScreen(
+    viewModel: SNSIdViewModel = hiltViewModel(),
+    navController: NavController
+) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ApiSuccess -> {
+                    navController.navigate("snsMain")
+                }
+                is UiEvent.ApiError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -38,7 +55,7 @@ fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
 
         TeamNameInputField(
             text = "사용할 ID를 정해주세요",
-            value = id,
+            value = viewModel.snsId.value,
             onValueChange = {
                 viewModel.updateId(it)
                 Log.d("SNS ID 입력", it)
@@ -47,9 +64,9 @@ fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
         )
 
         // 중복 여부 메시지 표시
-        when (isDuplicated) {
+        when (viewModel.isDuplicated.value) {
             true -> {
-                if (id.isNotEmpty()) {
+                if (viewModel.snsId.value.isNotEmpty()) {
                     Text(
                         text = "중복된 아이디입니다",
                         color = Color.Red,
@@ -63,22 +80,7 @@ fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
                     )
                 }
             }
-            false -> {
-                if (id.isNotEmpty()) {
-                    Text(
-                        text = "사용 가능한 ID입니다!",
-                        color = Color(0xFF4CAF50),
-                        modifier = Modifier
-                            .padding(top = 43.dp)
-                            .fillMaxWidth(),
-                        fontFamily = MainFont,
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-            null -> {
+            else -> {
                 // 아무 것도 표시하지 않음
             }
         }
@@ -86,16 +88,16 @@ fun SNSIdCreateScreen(viewModel: SNSIdViewModel = viewModel()) {
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 중복이 없고, 값이 있을 때만 버튼 활성화
-        if (id.isNotEmpty() && isDuplicated == false) {
+
+        if (viewModel.snsId.value.isNotEmpty() && viewModel.snsId.value.length >= 3) {
             MainButton(
                 text = "다음",
                 onClick = {
-                    Log.d("SNS ID 생성", "입력한 ID: $id")
-                    // 이후 api 연동
+                    Log.d("SNS ID 생성", "입력한 ID: ${viewModel.snsId.value}")
+                    viewModel.updateSnsId(viewModel.snsId.value)
                 },
                 modifier = Modifier
-                    .height(70.dp)
+                    .height(55.dp)
                     .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
             )
         }

@@ -14,7 +14,7 @@ interface SnsApi {
     @PATCH("/api/users/snsId")
     suspend fun updateSnsId(
         @Body snsId: String
-    )
+    ): BaseResponse<Unit>
 
     // SNS 댓글
     // 댓글에 대댓글 작성
