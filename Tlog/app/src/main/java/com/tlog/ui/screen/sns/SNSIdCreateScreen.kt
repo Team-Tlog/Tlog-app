@@ -97,8 +97,8 @@ fun SNSIdCreateScreen(
                     viewModel.updateSnsId(viewModel.snsId.value)
                 },
                 modifier = Modifier
-                    .height(55.dp)
-                    .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
+                    .height(85.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
             )
         }
     }
