@@ -19,6 +19,8 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
@@ -27,15 +29,22 @@ import com.tlog.ui.component.team.MidiumDesign
 
 enum class PageState { DEFAULT, SMALL, MEDIUM, BIG }
 
-@Preview(showBackground = true)
 @Composable
 fun TeamDetailScreen(
-    cartViewModel: TmpCartViewModel = viewModel(),
-    teamDetailViewModel: TeamDetailViewModel = viewModel()
+    teamDetailViewModel: TeamDetailViewModel = hiltViewModel(),
+    teamId: String,
+    navController: NavController
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
 
     val listState = rememberLazyListState()
+
+    var showPopup by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(Unit) {
+        teamDetailViewModel.getTeamDetail(teamId)
+    }
 
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -102,23 +111,40 @@ fun TeamDetailScreen(
                             }
                     ) {
                         when (sizeState) {
-                            PageState.SMALL -> SmallDesign(teamData = teamDetailViewModel.teamData)
-                            PageState.DEFAULT -> DefaultDesign(teamData = teamDetailViewModel.teamData)
-                            PageState.BIG -> BigDesign(teamData = teamDetailViewModel.teamData)
-                            PageState.MEDIUM -> MidiumDesign(teamData = teamDetailViewModel.teamData)
+                            PageState.SMALL -> SmallDesign(
+                                teamData = teamDetailViewModel.teamData.value
+                            )
+                            PageState.DEFAULT -> DefaultDesign(
+                                teamData = teamDetailViewModel.teamData.value,
+                                showPopup = showPopup,
+                                addMemberClick = { showPopup = true },
+                                onDismiss = { showPopup = false }
+                            )
+                            PageState.BIG -> BigDesign(
+                                teamData = teamDetailViewModel.teamData.value,
+                                showPopup = showPopup,
+                                addMemberClick = { showPopup = true },
+                                onDismiss = { showPopup = false }
+                            )
+                            PageState.MEDIUM -> MidiumDesign(
+                                teamData = teamDetailViewModel.teamData.value,
+                                showPopup = showPopup,
+                                addMemberClick = { showPopup = true },
+                                onDismiss = { showPopup = false }
+                            )
                         }
                     }
                 }
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                TmpTravelList(
-                    travelList = cartViewModel.cartList.value,
-                    setCheckBox = { index, checked ->
-                        cartViewModel.updateChecked(index, checked)
-                    },
-                    listState = listState
-                )
+//                TmpTravelList(
+//                    travelList = cartViewModel.cartList.value,
+//                    setCheckBox = { index, checked ->
+//                        cartViewModel.updateChecked(index, checked)
+//                    },
+//                    listState = listState
+//                )
             }
         }
 

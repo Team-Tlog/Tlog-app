@@ -87,7 +87,7 @@ fun MainScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     IconButton(onClick = {
-                        //navController.navigate("searchReview") -> 추후 search로 변경
+                        navController.navigate("search")
                     }) {
                         Icon(
                             painter = painterResource(R.drawable.ic_search),
@@ -218,7 +218,9 @@ fun MainScreen(
                                                 navController.navigate("searchReview")
                                             }
                                             "지도에서 보기" -> {}
-                                            "내 팀보기" -> {}
+                                            "내 팀보기" -> {
+                                                navController.navigate("teamList")
+                                            }
                                             "스크랩" -> {
                                                 navController.navigate("scrapAndCart")
                                             }

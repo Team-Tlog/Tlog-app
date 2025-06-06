@@ -84,90 +84,96 @@ fun ReviewWritingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp)
                 .verticalScroll(scrollState)
         ) {
-            TopBar(
-                text = "리뷰작성"
-            )
+            Column (
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp)
+            ) {
+                TopBar(
+                    text = "리뷰작성"
+                )
 
-            Spacer(modifier = Modifier.height(31.5.dp))
+                Spacer(modifier = Modifier.height(31.5.dp))
 
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = travelName + (if(hasJongseong(travelName)) "은" else "는") + " 어떠셨나요?",
-                style = BodyTitle,
-                textAlign = TextAlign.Center
-            )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = travelName + (if (hasJongseong(travelName)) "은" else "는") + " 어떠셨나요?",
+                    style = BodyTitle,
+                    textAlign = TextAlign.Center
+                )
 
-            Spacer(modifier = Modifier.height(22.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
-            StarRating(
-                rating = viewModel.rating.value,
-                onStarClicked = {
-                    viewModel.updateRating(it)
-                    Log.d("starCnt", viewModel.rating.value.toString())
-                }
-            )
-
-            Spacer(modifier = Modifier.height(25.dp))
-
-            MainInputField( // 안내 메시지 추가 필요
-                text = "리뷰작성",
-                value = viewModel.review.value,
-                onValueChange = { viewModel.updateReview(it) },
-                placeholderText = "입력해주세요",
-                showHelpPopup = showHelp,
-                singleLine = false,
-                onDismissHelpPopup = { showHelp = false },
-                trailingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_information),
-                        contentDescription = "도움말",
-                        tint = MainColor,
-                        modifier = Modifier
-                            .size(20.dp)
-                            .clickable { showHelp = true }
-                    )
-                },
-                modifier = Modifier.height(117.dp)
-            )
-
-            Spacer(modifier = Modifier.height(26.dp))
-
-            val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
-                contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
-            ) { uri ->
-                uri?.let {
-                    viewModel.addImage(it)
-                }
-            }
-
-            PhotoUploadBox(
-                images = viewModel.imageList.value,
-                onAddClick = {
-                    imagePickerLauncher.launch("image/*")
-                }
-            )
-
-            Spacer(modifier = Modifier.height(25.dp))
-
-            HashtagInputGroup(
-                value = viewModel.hashTag.value,
-                placeholderText = "입력해주세요",
-                hashTags = viewModel.hashTags.value,
-                onValueChange = { viewModel.updateHashTag(it) },
-                onAddHashtag = { viewModel.addHashTag(it) },
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        if (viewModel.hashTag.value.isNotBlank()) {
-                            viewModel.addHashTag(viewModel.hashTag.value.trim())
-                            viewModel.updateHashTag("")
-                        }
+                StarRating(
+                    rating = viewModel.rating.value,
+                    onStarClicked = {
+                        viewModel.updateRating(it)
+                        Log.d("starCnt", viewModel.rating.value.toString())
                     }
                 )
-            )
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                MainInputField( // 안내 메시지 추가 필요
+                    text = "리뷰작성",
+                    value = viewModel.review.value,
+                    onValueChange = { viewModel.updateReview(it) },
+                    placeholderText = "입력해주세요",
+                    showHelpPopup = showHelp,
+                    singleLine = false,
+                    onDismissHelpPopup = { showHelp = false },
+                    trailingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_information),
+                            contentDescription = "도움말",
+                            tint = MainColor,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .clickable { showHelp = true }
+                        )
+                    },
+                    modifier = Modifier.height(117.dp)
+                )
+
+                Spacer(modifier = Modifier.height(26.dp))
+
+                val imagePickerLauncher =
+                    androidx.activity.compose.rememberLauncherForActivityResult(
+                        contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+                    ) { uri ->
+                        uri?.let {
+                            viewModel.addImage(it)
+                        }
+                    }
+
+                PhotoUploadBox(
+                    images = viewModel.imageList.value,
+                    onAddClick = {
+                        imagePickerLauncher.launch("image/*")
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(25.dp))
+
+                HashtagInputGroup(
+                    value = viewModel.hashTag.value,
+                    placeholderText = "입력해주세요",
+                    hashTags = viewModel.hashTags.value,
+                    onValueChange = { viewModel.updateHashTag(it) },
+                    onAddHashtag = { viewModel.addHashTag(it) },
+                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            if (viewModel.hashTag.value.isNotBlank()) {
+                                viewModel.addHashTag(viewModel.hashTag.value.trim())
+                                viewModel.updateHashTag("")
+                            }
+                        }
+                    )
+                )
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 

@@ -69,120 +69,127 @@ fun AddTravelDestinationScreen(
             .fillMaxSize()
             .background(Color.White)
             .verticalScroll(rememberScrollState())
-            .padding(horizontal =  24.dp)
             .windowInsetsPadding(WindowInsets.systemBars)
 
     ) {
-        TopBar(
-            text = "여행지 등록"
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal =  24.dp)
+        ) {
+            TopBar(
+                text = "여행지 등록"
+            )
 
-        Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-        MainInputField(
-            text = "여행지명",
-            value = viewModel.travelName.value,
-            onValueChange = {
-                viewModel.updateTravelName(it)
-                Log.d("travelName", viewModel.travelName.value)
-            },
-            placeholderText = "입력해주세요"
-        )
+            MainInputField(
+                text = "여행지명",
+                value = viewModel.travelName.value,
+                onValueChange = {
+                    viewModel.updateTravelName(it)
+                    Log.d("travelName", viewModel.travelName.value)
+                },
+                placeholderText = "입력해주세요"
+            )
 
-        Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
-        MainInputField(
-            text = "주소",
-            value = viewModel.travelAddress.value,
-            onValueChange = {
-                viewModel.updateTravelAddress(it)
-                Log.d("addressValue", viewModel.travelAddress.value)
-            },
-            placeholderText = "지도로 검색하기",
-            trailingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_add_circle),
-                    tint = MainColor.copy(alpha = 0.3f),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .clickable {
-                            Log.d("addAddress", "my click!!")
-                        }
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(15.dp))
-
-        TwoColumnRadioGroup(
-            title = "주차 가능여부",
-            options = listOf("가능", "불가능"),
-            selectedOption = if (viewModel.hasParking.value) "가능" else "불가능",
-            onOptionSelected = {
-                viewModel.updateHasParking(it == "가능")
-                Log.d("travelOption", viewModel.hasParking.value.toString())
-            }
-        )
-
-        TwoColumnRadioGroup(
-            title = "반려견 가능여부",
-            options = listOf("가능", "불가능"),
-            selectedOption = if (viewModel.isPetFriendly.value) "가능" else "불가능",
-            onOptionSelected = {
-                viewModel.updateIsPetFriendly(it == "가능")
-                Log.d("petFriendOption", viewModel.isPetFriendly.value.toString())
-            }
-        )
-
-        HashtagInputGroup(
-            value = viewModel.hashTag.value,
-            placeholderText = "입력해주세요",
-            hashTags = viewModel.hashTags.value,
-            onValueChange = { viewModel.updateHashTag(it) },
-            onAddHashtag = { viewModel.addHashTag(it) },
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    if (viewModel.hashTag.value.isNotBlank()) {
-                        viewModel.addHashTag(viewModel.hashTag.value.trim())
-                        viewModel.updateHashTag("")
-                    }
+            MainInputField(
+                text = "주소",
+                value = viewModel.travelAddress.value,
+                onValueChange = {
+                    viewModel.updateTravelAddress(it)
+                    Log.d("addressValue", viewModel.travelAddress.value)
+                },
+                placeholderText = "지도로 검색하기",
+                trailingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_add_circle),
+                        tint = MainColor.copy(alpha = 0.3f),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable {
+                                Log.d("addAddress", "my click!!")
+                            }
+                    )
                 }
             )
-        )
 
-        Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
-        MainInputField(
-            text = "설명글",
-            value = viewModel.travelDescription.value,
-            onValueChange = {
-                viewModel.updateTravelDescription(it) // 추후 글자수 제한?
-                Log.d("travelDescription", viewModel.travelDescription.value)
-            },
-            placeholderText = "입력해주세요",
-            singleLine = false,
-            modifier = Modifier.height(130.dp)
-        )
+            TwoColumnRadioGroup(
+                title = "주차 가능여부",
+                options = listOf("가능", "불가능"),
+                selectedOption = if (viewModel.hasParking.value) "가능" else "불가능",
+                onOptionSelected = {
+                    viewModel.updateHasParking(it == "가능")
+                    Log.d("travelOption", viewModel.hasParking.value.toString())
+                }
+            )
 
-        Spacer(modifier = Modifier.height(15.dp))
+            TwoColumnRadioGroup(
+                title = "반려견 가능여부",
+                options = listOf("가능", "불가능"),
+                selectedOption = if (viewModel.isPetFriendly.value) "가능" else "불가능",
+                onOptionSelected = {
+                    viewModel.updateIsPetFriendly(it == "가능")
+                    Log.d("petFriendOption", viewModel.isPetFriendly.value.toString())
+                }
+            )
 
-        //val context = androidx.compose.ui.platform.LocalContext.current
-        val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
-            contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
-        ) { uri ->
-            uri?.let {
-                viewModel.addImage(it)
+            HashtagInputGroup(
+                value = viewModel.hashTag.value,
+                placeholderText = "입력해주세요",
+                hashTags = viewModel.hashTags.value,
+                onValueChange = { viewModel.updateHashTag(it) },
+                onAddHashtag = { viewModel.addHashTag(it) },
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        if (viewModel.hashTag.value.isNotBlank()) {
+                            viewModel.addHashTag(viewModel.hashTag.value.trim())
+                            viewModel.updateHashTag("")
+                        }
+                    }
+                )
+            )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            MainInputField(
+                text = "설명글",
+                value = viewModel.travelDescription.value,
+                onValueChange = {
+                    viewModel.updateTravelDescription(it) // 추후 글자수 제한?
+                    Log.d("travelDescription", viewModel.travelDescription.value)
+                },
+                placeholderText = "입력해주세요",
+                singleLine = false,
+                modifier = Modifier.height(130.dp)
+            )
+
+            Spacer(modifier = Modifier.height(15.dp))
+
+            //val context = androidx.compose.ui.platform.LocalContext.current
+            val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
+                contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+            ) { uri ->
+                uri?.let {
+                    viewModel.addImage(it)
+                }
             }
+
+            PhotoUploadBox(
+                images = if (viewModel.imageUri.value == Uri.EMPTY) emptyList() else listOf(
+                    viewModel.imageUri.value
+                ),
+                maxImageCnt = 1,
+                onAddClick = {
+                    imagePickerLauncher.launch("image/*")
+                }
+            )
         }
-
-        PhotoUploadBox(
-            images = if (viewModel.imageUri.value == Uri.EMPTY) emptyList() else listOf(viewModel.imageUri.value),
-            maxImageCnt = 1,
-            onAddClick = {
-                imagePickerLauncher.launch("image/*")
-            }
-        )
 
         Spacer(modifier = Modifier.weight(1f))
 

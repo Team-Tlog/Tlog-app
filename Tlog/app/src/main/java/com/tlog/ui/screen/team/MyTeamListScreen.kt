@@ -60,14 +60,19 @@ fun MyTeamListScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         LazyColumn(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(teams) { team ->
                 TeamCard(
                     team = team,
-                    onDeleteClick = { viewModel.deleteTeam(it) }
+                    onDeleteClick = { viewModel.deleteTeam(it) },
+                    onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
                 )
+            }
+            item{
+                Spacer(modifier = Modifier.height(10.dp))
             }
         }
 
@@ -75,7 +80,9 @@ fun MyTeamListScreen(
 
         MainButton(
             text = "코드 입력해서 팀 합류",
-            onClick = { /* 코드 입력 화면 이동 */ },
+            onClick = {
+                navController.navigate("joinTeam")
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(55.dp)

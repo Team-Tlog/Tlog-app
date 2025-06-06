@@ -1,7 +1,6 @@
 package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -197,20 +196,31 @@ fun SearchTravelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(101.dp)
             .padding(horizontal = 20.dp)
             .clickable {
                 onClick(travel.id, travel.name)
             }
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.test_image),
-            contentDescription = "${travel.name} 사진",
-            modifier = Modifier
-                .size(99.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(Color.Gray) // 추후 제거 지금 구분되는거 보려고 잠시 놔둠
-        )
+        if (travel.imageUrl == "NaN") {
+            Image(
+                painter = painterResource(id = R.drawable.destination_img),
+                contentDescription = "${travel.name} 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+        else {
+            AsyncImage(
+                model = travel.imageUrl,
+                contentDescription = travel.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
 
         Spacer(modifier = Modifier.width(15.dp))
 

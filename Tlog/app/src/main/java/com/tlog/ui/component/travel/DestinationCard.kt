@@ -1,5 +1,6 @@
 package com.tlog.ui.component.travel
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -31,23 +32,39 @@ fun DestinationCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(188.dp)
             .clip(RoundedCornerShape(20.dp))
-            .clickable { onClick(destination) },
+            .clickable { onClick(destination) }
+            .background(Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AsyncImage(
-                model = destination.imageUrl,
-                contentDescription = destination.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            if (destination.imageUrl == "NaN") {
+                Image(
+                    painter = painterResource(id = R.drawable.destination_img),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp)
+                )
+            }
+            else {
+                AsyncImage(
+                    model = destination.imageUrl,
+                    contentDescription = destination.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp)
+                )
+            }
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.2f))
                     .padding(start = 31.dp, top = 31.dp, end = 31.dp, bottom = 23.dp)
             ) {
                 Row(

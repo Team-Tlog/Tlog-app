@@ -55,9 +55,6 @@ fun LoginScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        modifier = Modifier
-                            .width(120.dp)
-                            .height(100.dp),
                         text = "여행을 \n담다",
                         style = TextStyle(
                             fontFamily = MainFont,

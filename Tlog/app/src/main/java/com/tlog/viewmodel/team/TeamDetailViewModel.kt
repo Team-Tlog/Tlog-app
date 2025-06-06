@@ -1,20 +1,49 @@
 package com.tlog.viewmodel.team
 
+import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.tlog.data.model.team.TeamData
-import com.tlog.data.model.team.TeamMember
+import androidx.lifecycle.viewModelScope
+import com.tlog.data.api.TeamDetailData
+import com.tlog.data.repository.TeamRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TeamDetailViewModel : ViewModel() {
-    val teamData = TeamData(
-        teamName = "팀별명",
-        teamTBTI = "ISTP",
-        teamStartDate = "2025.01.02",
-        teamEndDate = "2025.02.04",
-        members = listOf(
-            TeamMember("홍길동", "ISTP", ""),
-            TeamMember("김여행", "ENFP", ""),
-            TeamMember("이탐험", "INFJ", ""),
-            TeamMember("박바다", "ESTJ", "")
+@HiltViewModel
+class TeamDetailViewModel @Inject constructor(
+    private val repository: TeamRepository
+)  : ViewModel() {
+
+    private val _teamData = mutableStateOf<TeamDetailData>(
+        TeamDetailData(
+            teamId = "",
+            teamName = "",
+            inviteCode = "",
+            startDate = "",
+            endDate = "",
+            members = emptyList(),
+            wishlist = emptyList()
         )
     )
+    val teamData: State<TeamDetailData> = _teamData
+
+
+    // api
+    fun getTeamDetail(teamId: String) {
+        viewModelScope.launch {
+            try {
+                val result = repository.getTeamDetails(teamId)
+                _teamData.value = result.data
+            }
+            catch (e: Exception) {
+                Log.d("TeamDetailViewModel", e.message.toString())
+            }
+        }
+    }
+
+
+
+
 }

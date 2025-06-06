@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -35,7 +33,8 @@ fun SearchBar(
 ) {
     val defaultModifier = Modifier
         .fillMaxWidth()
-        .height(52.dp)
+        .padding(horizontal = 18.dp)
+        //.height(52.dp)
 
     Box(
         modifier = Modifier
@@ -54,13 +53,12 @@ fun SearchBar(
                     textAlign = TextAlign.Start,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 26.dp)
                 )
             },
             singleLine = singleLine,
             shape = RoundedCornerShape(45),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Transparent,
+                focusedBorderColor = MainColor,
                 unfocusedBorderColor = Color.Transparent,
                 cursorColor = MainColor
             ),
@@ -86,7 +84,8 @@ fun SearchBar(
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .width(322.8.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp)
                 .height(1.dp)
                 .background(color = Color(0xFFF0F0F0))
         )

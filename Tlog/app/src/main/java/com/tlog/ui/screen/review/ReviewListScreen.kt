@@ -102,15 +102,8 @@ fun ReviewListScreen(
                         .padding(31.5.dp)
                 ) {
                     ReviewStatistics(
-                        avgStarRating = 0.0,
-                        ratingDistribution = mapOf(
-                            "0" to 0,
-                            "1" to 0,
-                            "2" to 0,
-                            "3" to 0,
-                            "4" to 0,
-                            "5" to 0
-                        )
+                        avgStarRating = viewModel.rating.value,
+                        ratingDistribution = viewModel.ratingDistribution.value
                     )
 
                     Spacer(modifier = Modifier.height(29.dp))

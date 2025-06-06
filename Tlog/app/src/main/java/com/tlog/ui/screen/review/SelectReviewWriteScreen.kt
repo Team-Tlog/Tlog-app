@@ -70,36 +70,20 @@ fun SelectReviewWriteScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp)
-                    .padding(horizontal = 14.dp)
-                    .background(
-                        color = BackgroundBlue,
-                        shape = RoundedCornerShape(size = 15.dp)
+            SearchBar(
+                value = viewModel.searchText.collectAsState().value,
+                onValueChange = {
+                    viewModel.updateSearchText(it)
+                    Log.d("SearchText", viewModel.searchText.value)
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "검색",
+                        tint = Color(0xFF676767)
                     )
-                    .align(Alignment.CenterHorizontally),
-                contentAlignment = Alignment.Center
-            ) {
-                SearchBar(
-                    value = viewModel.searchText.collectAsState().value,
-                    onValueChange = {
-                        viewModel.updateSearchText(it)
-                        Log.d("SearchText", viewModel.searchText.value)
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "검색",
-                            tint = Color(0xFF676767),
-                            modifier = Modifier
-                                .size(20.dp)
-                        )
-                    }
-                )
-
-            }
+                }
+            )
 
 
             if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {

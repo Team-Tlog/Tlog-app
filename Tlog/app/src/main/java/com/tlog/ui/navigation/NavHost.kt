@@ -20,6 +20,8 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
+import com.tlog.ui.screen.team.TeamDetailScreen
+import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
@@ -57,7 +59,7 @@ fun NavHost(
             TeamTravelingCourseScreen(navController)
         }
         composable("sns") {
-            // 장바구니?화면으로 수정해야함
+            // SNS로 수정 필요
             MyTravelingCourseScreen(navController)
         }
         composable("mypage") {
@@ -86,12 +88,25 @@ fun NavHost(
 
             ReviewListScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
+
+
+        // team
         composable("teamList") {
             MyTeamListScreen(navController = navController)
         }
         composable("createTeam") {
             TeamNameCreateScreen(navController = navController)
         }
+        composable("teamDetail/{teamId}") { backStackEntry ->
+            val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
+            TeamDetailScreen(navController = navController, teamId = teamId)
+        }
+        composable("joinTeam") {
+            TeamJoinByCode(navController = navController)
+        }
+
+
+
         composable("recommendDestination/{title}/{city}") { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: return@composable
             val city = backStackEntry.arguments?.getString("city")
@@ -117,8 +132,9 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-        composable("searchScreen") {
-            SearchScreen()
+        composable("search") {
+            SearchScreen(navController = navController)
         }
+
     }
 }

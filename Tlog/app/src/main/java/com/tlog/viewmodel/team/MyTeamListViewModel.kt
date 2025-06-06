@@ -7,8 +7,7 @@ import androidx.compose.runtime.State
 import com.tlog.api.TeamApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TeamData
-import com.tlog.data.repository.MyTeamListRepository
-import com.tlog.data.repository.TeamDeleteRepository
+import com.tlog.data.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,8 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
-    private val myTeamListRepository: MyTeamListRepository,
-    private val teamDeleteRepository: TeamDeleteRepository,
+    private val teamRepository: TeamRepository,
     tokenProvider: TokenProvider
 ) : ViewModel() {
     private var userId: String? = null
@@ -48,7 +46,7 @@ class MyTeamListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val safeUserId = userId ?: return@launch
-                val result = myTeamListRepository.getTeamList(safeUserId)
+                val result = teamRepository.getTeamList(safeUserId)
                 _teamList.value = result.data
                 when (result.status) {
                     200 -> _eventFlow.emit(UiEvent.ApiSuccess)
@@ -64,7 +62,7 @@ class MyTeamListViewModel @Inject constructor(
     fun deleteTeam(teamId: String) {
         viewModelScope.launch {
             try {
-                val result = teamDeleteRepository.deleteTeam(teamId)
+                val result = teamRepository.deleteTeam(teamId)
                 if (result.status == 200) {
                     _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
                     _eventFlow.emit(UiEvent.ApiSuccess)
@@ -84,8 +82,8 @@ object MyTeamListModule {
     @Provides
     fun provideMyTeamListRepository(
         teamApi: TeamApi
-    ): MyTeamListRepository {
-        return MyTeamListRepository(teamApi)
+    ): TeamRepository {
+        return TeamRepository(teamApi)
     }
 
     @Provides
