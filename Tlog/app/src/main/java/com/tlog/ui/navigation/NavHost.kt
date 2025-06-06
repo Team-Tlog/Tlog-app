@@ -43,9 +43,13 @@ fun NavHost(
 ) {
 
     NavHost(navController = navController, startDestination = startScreen) {
+        // Main
         composable("main") {
             MainScreen(navController = navController)
         }
+
+
+        // Login
         composable("login") {
             LoginScreen(
                 viewModel = loginViewModel,
@@ -56,10 +60,7 @@ fun NavHost(
                 navController = navController
             )
         }
-        composable("course") {
-            //MyTravelingCourse는 어떻게?
-            TeamTravelingCourseScreen(navController)
-        }
+
 
         //SNS
         composable("snsMain") {
@@ -74,22 +75,11 @@ fun NavHost(
         }
 
 
-
-
-        composable("mypage") {
-            MyPageScreen(navController = navController)
-        }
-        composable("scrapAndCart") {
-            ScrapAndCartScreen(
-                navController = navController
-            )
-        }
-        composable("addTravel") {
-            AddTravelDestinationScreen(navController = navController)
-        }
         composable("post2") {
             SnsPostWriteDetailScreen()
         }
+
+        // Review
         composable("review/{travelId}/{travelName}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
             val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
@@ -104,7 +94,31 @@ fun NavHost(
         }
 
 
-        // team
+        // Travel
+        composable("scrapAndCart") {
+            ScrapAndCartScreen(
+                navController = navController
+            )
+        }
+        composable("addTravel") {
+            AddTravelDestinationScreen(navController = navController)
+        }
+        composable("recommendDestination/{title}/{city}") { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: return@composable
+            val city = backStackEntry.arguments?.getString("city")
+            TravelDestinationRecommendation(
+                title = title,
+                city = city,
+                navController = navController
+            )
+        }
+        composable("travelInfo/{id}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
+            TravelInfoScreen(travelId = travelId, navController = navController)
+        }
+
+
+        // Team
         composable("teamList") {
             MyTeamListScreen(navController = navController)
         }
@@ -120,26 +134,16 @@ fun NavHost(
         }
 
 
-
-
-
-
-        composable("recommendDestination/{title}/{city}") { backStackEntry ->
-            val title = backStackEntry.arguments?.getString("title") ?: return@composable
-            val city = backStackEntry.arguments?.getString("city")
-            TravelDestinationRecommendation(
-                title = title,
-                city = city,
-                navController = navController
-            )
+        // Search
+        composable("search") {
+            SearchScreen(navController = navController)
         }
         composable("searchReview") {
             SelectReviewWriteScreen(navController = navController)
         }
-        composable("travelInfo/{id}") { backStackEntry ->
-            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(travelId = travelId, navController = navController)
-        }
+
+
+        // TBTI
         composable("tbtiTest") {
             TbtiTestScreen()
         }
@@ -149,9 +153,15 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-        composable("search") {
-            SearchScreen(navController = navController)
-        }
 
+
+
+        composable("course") {
+            //MyTravelingCourse는 어떻게?
+            TeamTravelingCourseScreen(navController)
+        }
+        composable("mypage") {
+            MyPageScreen(navController = navController)
+        }
     }
 }
