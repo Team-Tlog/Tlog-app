@@ -6,6 +6,7 @@ data class TravelDetailResponse(
     val address: String,
     val location: Location,
     val city: String,
+    val description: String,
     val district: String,
     val hasParking: Boolean,
     val petFriendly: Boolean,

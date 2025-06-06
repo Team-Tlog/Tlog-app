@@ -90,9 +90,9 @@ fun TravelInfoSummary(
 
         Spacer(modifier = Modifier.height(57.dp))
 
-//        Text(
-//            text = travelInfo.description,
-//            style = Body1Regular
-//        )
+        Text(
+            text = travelInfo.description,
+            style = Body1Regular
+        )
     }
 }
