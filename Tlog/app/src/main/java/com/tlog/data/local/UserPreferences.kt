@@ -27,9 +27,10 @@ class UserPreferences @Inject constructor(
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
     private val SNS_USER_ID = stringPreferencesKey("snsUserId")
+    private val SNS_ID = stringPreferencesKey("snsId")
 
     suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
-        val userId = userIdFromJwt(accessToken)
+        val (userId, snsId) = userIdFromJwt(accessToken)
 
         if (userId == null) {
             return
@@ -41,6 +42,8 @@ class UserPreferences @Inject constructor(
             preferences[REFRESH_TOKEN] = refreshToken
             if (firebaseCustomToken != null)
                 preferences[FIREBASE_CUSTOM_TOKEN] = firebaseCustomToken
+            if (snsId != null)
+                preferences[SNS_ID] = snsId
         }
 
         tokenProvider.setUserId(userId)
@@ -70,17 +73,23 @@ class UserPreferences @Inject constructor(
         return prefs[FIREBASE_CUSTOM_TOKEN]
     }
 
-    // JWT 토큰에서 UserId 파싱하는 함수
-    fun userIdFromJwt(jwtToken: String): String? {
+    suspend fun getSnsId(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[SNS_ID]
+    }
+
+    fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
         return try {
             val parts = jwtToken.split(".")
-            if (parts.size < 2) return null
+            if (parts.size < 2) return Pair(null, null)
 
             val payloadBytes = Base64.decode(parts[1], Base64.URL_SAFE or Base64.NO_PADDING or Base64.NO_WRAP)
             val payloadJson = JSONObject(String(payloadBytes))
-            payloadJson.getString("sub")
+            val userId = payloadJson.getString("sub")
+            val snsId = if (payloadJson.has("snsId")) payloadJson.getString("snsId") else null
+            Pair(userId, snsId)
         } catch (e: Exception) {
-            null
+            Pair(null, null)
         }
     }
 
@@ -89,6 +98,7 @@ class UserPreferences @Inject constructor(
             preferences.clear()
         }
 
+        tokenProvider.setSnsId(null)
         tokenProvider.setUserId(null)
         tokenProvider.setAccessToken(null)
         tokenProvider.setRefreshToken(null)

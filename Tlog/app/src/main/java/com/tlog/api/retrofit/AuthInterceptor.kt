@@ -29,13 +29,13 @@ class TokenProvider @Inject constructor() {
     private var accessToken: String? = null
     private var refreshToken: String? = null
     private var firebaseCustomToken: String? = null
-    private var snsUserId: String? = null
+    private var snsId: String? = null
 
     fun getUserId(): String? = userId
     fun getAccessToken(): String? = accessToken
     fun getRefreshToken(): String? = refreshToken
     fun getFirebaseCustomToken(): String? = firebaseCustomToken
-    fun getSnsUserId(): String? = snsUserId
+    fun getSnsId(): String? = snsId
 
     fun setUserId(id: String?) {
         userId = id
@@ -53,7 +53,7 @@ class TokenProvider @Inject constructor() {
         firebaseCustomToken = token
     }
 
-    fun setSnsUserId(id: String?) {
-        snsUserId = id
+    fun setSnsId(id: String?) {
+        snsId = id
     }
 }

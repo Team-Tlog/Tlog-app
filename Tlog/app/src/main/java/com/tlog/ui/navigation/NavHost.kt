@@ -1,6 +1,7 @@
 package com.tlog.ui.navigation
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,6 +38,7 @@ import com.tlog.viewmodel.beginning.login.LoginViewModel
 fun NavHost(
     navController: NavHostController,
     startScreen: String,
+    snsId: String? = null,
     loginViewModel: LoginViewModel,
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
@@ -70,8 +72,11 @@ fun NavHost(
             SNSIdCreateScreen(navController = navController)
         }
         composable("sns") {
-            // SNS로 수정 필요 -> 임시임 임시 임시 임시 임시 ***
-            SNSIdCreateScreen(navController = navController)
+            Log.d("sns", "snsId: $snsId")
+            if (snsId == null)
+                SNSIdCreateScreen(navController = navController)
+            else
+                SNSScreen()
         }
 
 

@@ -34,11 +34,13 @@ class MyApplication : Application() {
             val accessToken = userPreferences.getAccessToken()
             val refreshToken = userPreferences.getRefreshToken()
             val firebaseCustomToken = userPreferences.getFirebaseCustomToken()
+            val snsId = userPreferences.getSnsId()
 
             tokenProvider.setUserId(userId)
             tokenProvider.setAccessToken(accessToken)
             tokenProvider.setRefreshToken(refreshToken)
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
+            tokenProvider.setSnsId(snsId)
         }
     }
 }
