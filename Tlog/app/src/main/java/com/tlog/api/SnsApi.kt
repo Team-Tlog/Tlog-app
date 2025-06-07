@@ -13,7 +13,7 @@ interface SnsApi {
     // SNS 유저 명 업데이트
     @PATCH("/api/users/snsId")
     suspend fun updateSnsId(
-        @Body snsId: String
+        @Body request: UpdateSnsIdRequest
     ): BaseResponse<Unit>
 
     // SNS 댓글
@@ -94,6 +94,10 @@ interface SnsApi {
         @Body sort: List<String>
     ): BaseListResponse<List<SnsUser>>
 }
+
+data class UpdateSnsIdRequest(
+    val snsId: String
+)
 
 data class Comment(
     val replyId: String,
