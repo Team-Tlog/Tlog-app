@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.vectormap.KakaoMapSdk
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
 import com.tlog.viewmodel.beginning.login.LoginViewModel
@@ -31,8 +32,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        Log.d("MainActivity onCreate", BuildConfig.KAKAO_NATIVE_APP_KEY)
+
+        // kakao map
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
+        KakaoMapSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
 
         setContent {
             val navController = rememberNavController()
