@@ -22,7 +22,10 @@ data class ShopCart(
     val name: String,
     val imageUrl: String,
     val description: String,
-    val tagCountList: List<TagCount>
+    val tagCountList: List<TagCount>,
+
+    // 추가되어야됨
+    val location: Location
 )
 
 data class SearchTravel(

@@ -9,7 +9,7 @@ import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.ShopCart
-import com.tlog.data.repository.CartRepository
+import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CartViewModel @Inject constructor(
-    private val repository: CartRepository,
+class ScrapAndCartViewModel @Inject constructor(
+    private val repository: ScrapAndCartRepository,
     private val tokenProvider: TokenProvider
 ): ViewModel() {
 
@@ -145,8 +145,8 @@ object CartModule {
     fun provideCartRepository(
         userApi: UserApi,
         travelApi: TravelApi
-    ): CartRepository {
-        return CartRepository(userApi, travelApi)
+    ): ScrapAndCartRepository {
+        return ScrapAndCartRepository(userApi, travelApi)
     }
 
     @Provides

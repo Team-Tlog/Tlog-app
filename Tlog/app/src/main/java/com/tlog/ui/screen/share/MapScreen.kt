@@ -1,33 +1,36 @@
 package com.tlog.ui.screen.share
 
-import android.annotation.SuppressLint
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.MapView
 import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.LabelTextBuilder
+import com.tlog.R
+import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.model.travel.ShopCart
 import com.tlog.ui.component.share.TopBar
+import com.tlog.viewmodel.share.MapViewModel
 import java.lang.Exception
 
 
 @Composable
 fun MapScreen(
-
+    viewModel: MapViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -37,21 +40,22 @@ fun MapScreen(
         TopBar(
             text = "지도에서 보기"
         )
-        KakaoMapView()
+        KakaoMapView(
+            cartList = viewModel.cartList.value,
+            scrapList = viewModel.scrapList.value
+        )
     }
 }
 
 @Composable
-fun KakaoMapView() {
-    val context = LocalContext.current
-    Log.d("KakaoMapView", "KakaoMapView 시작") // 로그 추가
-
+fun KakaoMapView(
+    cartList: List<ShopCart>,
+    scrapList: List<ScrapDestinationResponse>
+) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = { context ->
-            Log.d("KakaoMapView", "AndroidView factory 호출") // 로그 추가
             MapView(context).apply {
-                Log.d("KakaoMapView", "MapView 생성 완료") // 로그 추가
                 start(
                     object : MapLifeCycleCallback() {
                         override fun onMapDestroy() {
@@ -63,13 +67,42 @@ fun KakaoMapView() {
                     },
                     object : KakaoMapReadyCallback() {
                         override fun onMapReady(kakaoMap: KakaoMap) {
-                            Log.d("MapLifeCycleCallback", "지도 준비됨")
                             val seoul = LatLng.from(37.5665, 126.9780)
                             kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(seoul))
+
+                            // 카트랑 스크랩 마커 찍는 부분
+                            cartList.forEach { cart ->
+                                val latitude = cart.location.latitude
+                                val longitude = cart.location.longitude
+                                val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
+
+                                val style = LabelStyles.from(
+                                    LabelStyle.from(R.drawable.map_pin_cart)                                )
+
+                                val options = LabelOptions.from(latLng)
+                                    .setTexts(LabelTextBuilder().setTexts(cart.name))
+                                    .setStyles(style)
+
+                                kakaoMap.labelManager?.layer?.addLabel(options)
+                            }
+
+                            scrapList.forEach { scrap ->
+                                val latitude = scrap.location.latitude
+                                val longitude = scrap.location.longitude
+                                val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
+
+                                val style = LabelStyles.from(
+                                    LabelStyle.from(R.drawable.map_pin_cart)                                )
+
+                                val options = LabelOptions.from(latLng)
+                                    .setTexts(LabelTextBuilder().setTexts(scrap.name))
+                                    .setStyles(style)
+
+                                kakaoMap.labelManager?.layer?.addLabel(options)
+                            }
                         }
                     }
                 )
-                Log.d("KakaoMapView", "MapView start 호출 완료") // 로그 추가
             }
         }
     )

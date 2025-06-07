@@ -33,12 +33,12 @@ import com.tlog.data.model.travel.ShopCart
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.share.ScrapAndCartViewModel
 
 
 @Composable
 fun TravelItem(
-    viewModel: CartViewModel = viewModel(),
+    viewModel: ScrapAndCartViewModel = viewModel(),
     travel: ShopCart
 ) {
     Row(
@@ -114,7 +114,7 @@ fun TravelItem(
 
 @Composable
 fun ScrapTravelItem(
-    viewModel: CartViewModel = viewModel(),
+    viewModel: ScrapAndCartViewModel = viewModel(),
     travel: ScrapDestinationResponse
 ) {
     Row(
