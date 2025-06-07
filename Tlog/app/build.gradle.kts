@@ -140,4 +140,6 @@ dependencies {
     apply(plugin = "com.google.gms.google-services")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    // Kakao map
+    implementation("com.kakao.maps.open:android:2.12.8")
 }

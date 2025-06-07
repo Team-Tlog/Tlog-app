@@ -1,6 +1,7 @@
 package com.tlog
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -13,17 +14,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.sdk.common.KakaoSdk
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
 import com.tlog.viewmodel.beginning.login.LoginViewModel
-import com.tlog.viewmodel.share.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -32,6 +31,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Log.d("MainActivity onCreate", BuildConfig.KAKAO_NATIVE_APP_KEY)
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
 
         setContent {
             val navController = rememberNavController()
@@ -91,7 +92,6 @@ class MainActivity : ComponentActivity() {
                     googleSignInClient = googleSignInClient
                 )
             }
-
         }
     }
 }

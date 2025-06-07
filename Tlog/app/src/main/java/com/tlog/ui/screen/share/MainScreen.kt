@@ -217,7 +217,9 @@ fun MainScreen(
                                             "리뷰 쓰기" -> {
                                                 navController.navigate("searchReview")
                                             }
-                                            "지도에서 보기" -> {}
+                                            "지도에서 보기" -> {
+                                                navController.navigate("map")
+                                            }
                                             "내 팀보기" -> {
                                                 navController.navigate("teamList")
                                             }
