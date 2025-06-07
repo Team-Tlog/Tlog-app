@@ -26,6 +26,7 @@ class UserPreferences @Inject constructor(
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
+    private val SNS_USER_ID = stringPreferencesKey("snsUserId")
 
     suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
         val userId = userIdFromJwt(accessToken)
