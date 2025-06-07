@@ -143,4 +143,7 @@ dependencies {
 
     // Kakao map
     implementation("com.kakao.maps.open:android:2.12.8")
+
+    // GPS
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 }

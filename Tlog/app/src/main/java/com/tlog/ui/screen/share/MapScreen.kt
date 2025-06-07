@@ -32,6 +32,8 @@ import java.lang.Exception
 fun MapScreen(
     viewModel: MapViewModel = hiltViewModel()
 ) {
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,10 +42,12 @@ fun MapScreen(
         TopBar(
             text = "지도에서 보기"
         )
-        KakaoMapView(
-            cartList = viewModel.cartList.value,
-            scrapList = viewModel.scrapList.value
-        )
+        if (viewModel.cartList.value != null && viewModel.scrapList.value != null) {
+            KakaoMapView(
+                cartList = viewModel.cartList.value!!,
+                scrapList = viewModel.scrapList.value!!
+            )
+        }
     }
 }
 
@@ -71,34 +75,38 @@ fun KakaoMapView(
                             kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(seoul))
 
                             // 카트랑 스크랩 마커 찍는 부분
-                            cartList.forEach { cart ->
-                                val latitude = cart.location.latitude
-                                val longitude = cart.location.longitude
-                                val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
-
-                                val style = LabelStyles.from(
-                                    LabelStyle.from(R.drawable.map_pin_cart)                                )
-
-                                val options = LabelOptions.from(latLng)
-                                    .setTexts(LabelTextBuilder().setTexts(cart.name))
-                                    .setStyles(style)
-
-                                kakaoMap.labelManager?.layer?.addLabel(options)
-                            }
-
                             scrapList.forEach { scrap ->
                                 val latitude = scrap.location.latitude
                                 val longitude = scrap.location.longitude
                                 val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
 
                                 val style = LabelStyles.from(
-                                    LabelStyle.from(R.drawable.map_pin_cart)                                )
+                                    LabelStyle.from(R.drawable.scrap_pin)
+                                )
 
                                 val options = LabelOptions.from(latLng)
                                     .setTexts(LabelTextBuilder().setTexts(scrap.name))
                                     .setStyles(style)
 
                                 kakaoMap.labelManager?.layer?.addLabel(options)
+                            }
+
+                            cartList.forEach { cart ->
+                                val latitude = cart.location.latitude
+                                val longitude = cart.location.longitude
+                                val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
+
+
+
+
+                                val style = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.cart_pin)))
+
+                                val options = LabelOptions.from(latLng)
+                                    .setStyles(style)
+
+                                val layer = kakaoMap.labelManager?.getLayer()
+
+                                layer?.addLabel(options);
                             }
                         }
                     }

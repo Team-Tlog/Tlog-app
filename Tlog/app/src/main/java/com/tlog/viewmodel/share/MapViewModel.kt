@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.model.travel.Location
 import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +22,14 @@ class MapViewModel @Inject constructor(
 ): ViewModel() {
     var userId: String = ""
 
-    private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
-    val cartList: State<List<ShopCart>> = _cartList
+    private var _cartList = mutableStateOf<List<ShopCart>?>(null)
+    val cartList: State<List<ShopCart>?> = _cartList
 
-    private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>>(emptyList())
-    val scrapList: State<List<ScrapDestinationResponse>> = _scrapList
+    private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>?>(null)
+    val scrapList: State<List<ScrapDestinationResponse>?> = _scrapList
+
+    private val _currentLocation = mutableStateOf<Location?>(null)
+    val currentLocation: State<Location?> = _currentLocation
 
     init {
         userId = tokenProvider.getUserId() ?: ""
@@ -53,6 +57,10 @@ class MapViewModel @Inject constructor(
                 Log.d("MapViewModel", e.message.toString())
             }
         }
+    }
+
+    fun updateCurrentLocation(latitude: Double, longitude: Double) {
+        _currentLocation.value = Location(latitude = latitude.toString(), longitude = longitude.toString())
     }
 
 }
