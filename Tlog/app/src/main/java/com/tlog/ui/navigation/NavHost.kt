@@ -1,6 +1,7 @@
 package com.tlog.ui.navigation
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -18,6 +19,8 @@ import com.tlog.ui.screen.review.SelectReviewWriteScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.sns.SNSIdCreateScreen
+import com.tlog.ui.screen.sns.SNSScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
@@ -35,15 +38,20 @@ import com.tlog.viewmodel.beginning.login.LoginViewModel
 fun NavHost(
     navController: NavHostController,
     startScreen: String,
+    snsId: String? = null,
     loginViewModel: LoginViewModel,
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
 
     NavHost(navController = navController, startDestination = startScreen) {
+        // Main
         composable("main") {
             MainScreen(navController = navController)
         }
+
+
+        // Login
         composable("login") {
             LoginScreen(
                 viewModel = loginViewModel,
@@ -54,28 +62,29 @@ fun NavHost(
                 navController = navController
             )
         }
-        composable("course") {
-            //MyTravelingCourse는 어떻게?
-            TeamTravelingCourseScreen(navController)
+
+
+        //SNS
+        composable("snsMain") {
+            SNSScreen()
+        }
+        composable("snsId") {
+            SNSIdCreateScreen(navController = navController)
         }
         composable("sns") {
-            // SNS로 수정 필요
-            MyTravelingCourseScreen(navController)
+            Log.d("sns", "snsId: $snsId")
+            if (snsId == null)
+                SNSIdCreateScreen(navController = navController)
+            else
+                SNSScreen()
         }
-        composable("mypage") {
-            MyPageScreen(navController = navController)
-        }
-        composable("scrapAndCart") {
-            ScrapAndCartScreen(
-                navController = navController
-            )
-        }
-        composable("addTravel") {
-            AddTravelDestinationScreen(navController = navController)
-        }
+
+
         composable("post2") {
             SnsPostWriteDetailScreen()
         }
+
+        // Review
         composable("review/{travelId}/{travelName}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
             val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
@@ -90,7 +99,31 @@ fun NavHost(
         }
 
 
-        // team
+        // Travel
+        composable("scrapAndCart") {
+            ScrapAndCartScreen(
+                navController = navController
+            )
+        }
+        composable("addTravel") {
+            AddTravelDestinationScreen(navController = navController)
+        }
+        composable("recommendDestination/{title}/{city}") { backStackEntry ->
+            val title = backStackEntry.arguments?.getString("title") ?: return@composable
+            val city = backStackEntry.arguments?.getString("city")
+            TravelDestinationRecommendation(
+                title = title,
+                city = city,
+                navController = navController
+            )
+        }
+        composable("travelInfo/{id}") { backStackEntry ->
+            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
+            TravelInfoScreen(travelId = travelId, navController = navController)
+        }
+
+
+        // Team
         composable("teamList") {
             MyTeamListScreen(navController = navController)
         }
@@ -106,23 +139,16 @@ fun NavHost(
         }
 
 
-
-        composable("recommendDestination/{title}/{city}") { backStackEntry ->
-            val title = backStackEntry.arguments?.getString("title") ?: return@composable
-            val city = backStackEntry.arguments?.getString("city")
-            TravelDestinationRecommendation(
-                title = title,
-                city = city,
-                navController = navController
-            )
+        // Search
+        composable("search") {
+            SearchScreen(navController = navController)
         }
         composable("searchReview") {
             SelectReviewWriteScreen(navController = navController)
         }
-        composable("travelInfo/{id}") { backStackEntry ->
-            val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(travelId = travelId, navController = navController)
-        }
+
+
+        // TBTI
         composable("tbtiTest") {
             TbtiTestScreen()
         }
@@ -132,9 +158,15 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-        composable("search") {
-            SearchScreen(navController = navController)
-        }
 
+
+
+        composable("course") {
+            //MyTravelingCourse는 어떻게?
+            TeamTravelingCourseScreen(navController)
+        }
+        composable("mypage") {
+            MyPageScreen(navController = navController)
+        }
     }
 }

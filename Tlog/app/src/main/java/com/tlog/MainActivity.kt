@@ -27,8 +27,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var userPreferences: UserPreferences
+    @Inject lateinit var userPreferences: UserPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +40,7 @@ class MainActivity : ComponentActivity() {
             var userId by remember { mutableStateOf<String?>(null) }
             var accessToken by remember { mutableStateOf<String?>(null) }
             var refreshToken by remember { mutableStateOf<String?>(null) }
+            var snsId by remember { mutableStateOf<String?>(null) }
 
             val loginViewModel: LoginViewModel by viewModels()
 
@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
                 userId = userPreferences.getUserId() ?: ""
                 accessToken = userPreferences.getAccessToken()
                 refreshToken = userPreferences.getRefreshToken()
+                snsId = userPreferences.getSnsId()
                 setIsLoading(false)
             }
 
@@ -86,6 +87,7 @@ class MainActivity : ComponentActivity() {
                     startScreen = startScreen,
                     loginViewModel = loginViewModel,
                     launcher = launcher,
+                    snsId = snsId,
                     googleSignInClient = googleSignInClient
                 )
             }
