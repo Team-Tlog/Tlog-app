@@ -21,11 +21,11 @@ import com.tlog.viewmodel.tmp.TmpCartViewModel
 fun AiRecommendCourseResultScreen(
     viewModel: TmpCartViewModel = viewModel()
 ) {
-    val travelList by viewModel.cartList
+    val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
 
     // 도시별로 묶기
-    val cityGrouped = travelList.groupBy { it.travelData.cityName }
+    val cityGrouped = travelList.groupBy { it.city }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -75,7 +75,6 @@ fun AiRecommendCourseResultScreen(
                         city = city,
                         travelItems = list,
                         isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-                        cityIndex = cityIndex,
                         onDeleteClick = { travelItem ->
                             // 여행지 삭제 로직
                         },

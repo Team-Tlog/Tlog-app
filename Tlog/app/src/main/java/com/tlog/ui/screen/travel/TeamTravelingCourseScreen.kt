@@ -8,11 +8,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
-import com.tlog.ui.component.team.TeamMemberImageGroup
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
+import com.tlog.ui.component.travel.TravelingCourse
 
 @Composable
 fun TeamTravelingCourseScreen(
@@ -20,7 +20,7 @@ fun TeamTravelingCourseScreen(
     viewModel: TmpCartViewModel = viewModel(),
     teamViewModel: TeamDetailViewModel = viewModel()
 ) {
-    val travelList by viewModel.cartList
+    val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
     var selectedTab by remember { mutableStateOf(1) }
 

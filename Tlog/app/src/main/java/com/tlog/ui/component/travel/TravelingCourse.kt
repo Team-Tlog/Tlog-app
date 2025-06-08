@@ -1,6 +1,5 @@
-package com.tlog.ui.screen.travel
+package com.tlog.ui.component.travel
 
-import CityTravelList
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -8,19 +7,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
-import com.tlog.data.model.travel.TravelUiData
-import com.tlog.ui.component.travel.DayToggleBar
+import com.tlog.data.model.travel.UserCourseDestination
 import com.tlog.ui.style.Body1Bold
+import CityTravelList
 
 @Composable
 fun TravelingCourse(
-    travelList: List<TravelUiData>,
+    travelList: List<UserCourseDestination>,
     selectedDay: Int,
     onDaySelected: (Int) -> Unit,
     onUpdateChecked: (Int, Boolean) -> Unit,
     topContent: @Composable (() -> Unit)? = null
 ) {
-    val cityGrouped = travelList.groupBy { it.travelData.cityName }
+    val cityGrouped = travelList.groupBy { it.city }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(modifier = Modifier.height(42.dp))
@@ -64,7 +63,6 @@ fun TravelingCourse(
                         city = city,
                         travelItems = list,
                         isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-                        cityIndex = cityIndex,
                         onDeleteClick = { /* 삭제 로직 */ },
                         onUpdateChecked = onUpdateChecked
                     )

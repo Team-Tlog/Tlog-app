@@ -4,7 +4,6 @@ import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
 import com.tlog.data.api.ScrapDestinationResponse
 import com.tlog.data.model.travel.ShopCart
-import com.tlog.data.model.travel.Travel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
