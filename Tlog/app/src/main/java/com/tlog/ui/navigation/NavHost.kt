@@ -29,7 +29,6 @@ import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
-import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
@@ -45,7 +44,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
 
-    NavHost(navController = navController, startDestination = "course") {
+    NavHost(navController = navController, startDestination = "tbtiTest") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -164,8 +163,6 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-
-
 
         composable("course") {
             //TeamTravelingCourse는 어떻게?
