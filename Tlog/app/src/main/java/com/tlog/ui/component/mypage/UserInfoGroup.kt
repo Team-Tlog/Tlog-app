@@ -24,14 +24,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.api.UserInfo
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun UserInfoGroup(
-    userId: Int = 0 // 이것도 바꿔야됨
+    userInfo: UserInfo
 ) {
     Box(
         modifier = Modifier
@@ -55,14 +57,26 @@ fun UserInfoGroup(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(R.drawable.tmp_jeju),
-                    contentDescription = "프로필 사진",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(86.dp)
-                        .clip(RoundedCornerShape(50))
-                )
+                if (userInfo.profileImageUrl != null && userInfo.profileImageUrl != "") {
+                    AsyncImage(
+                        model = userInfo.profileImageUrl,
+                        contentDescription = "프로필 사진",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(86.dp)
+                            .clip(RoundedCornerShape(50))
+                    )
+                }
+                else {
+                    Image(
+                        painter = painterResource(R.drawable.tmp_jeju),
+                        contentDescription = "프로필 사진",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(86.dp)
+                            .clip(RoundedCornerShape(50))
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(25.dp))
 
@@ -74,12 +88,12 @@ fun UserInfoGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "닉네임",
+                            text = userInfo.username,
                             style = Body1Bold
                         )
 
                         Text(
-                            text = "ID 123456",
+                            text = "ID ${userInfo.snsId}",
                             fontFamily = MainFont,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Normal,

@@ -21,32 +21,45 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.api.UserInfo
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun MyPageTbtiGroup(
-    tbti: String = "임시임 이거 로직 완성해야됨"
+    userInfo: UserInfo
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(
-            painter = painterResource(R.drawable.test_image),
-            contentDescription = "tbti 캐릭터",
-            Modifier
-                .size(178.dp)
-                .clip(RoundedCornerShape(50))
-                .background(Color(0xFFD9D9D9))
-        )
+        if ( userInfo.tbtiDescription.imageUrl == null || userInfo.tbtiDescription.imageUrl == "") {
+            Image(
+                painter = painterResource(R.drawable.test_image),
+                contentDescription = "tbti 캐릭터",
+                Modifier
+                    .size(178.dp)
+                    .clip(RoundedCornerShape(50))
+                    .background(Color(0xFFD9D9D9))
+            )
+        }
+        else {
+            AsyncImage(
+                model = userInfo.tbtiDescription.imageUrl,
+                contentDescription = "tbti 캐릭터",
+                modifier = Modifier
+                    .size(178.dp)
+                    .clip(RoundedCornerShape(50))
+            )
+        }
 
         Spacer(modifier = Modifier.height(14.dp))
 
         Text(
-            text = "TBTI",
+            text = userInfo.tbtiDescription.tbtiString,
             fontFamily = MainFont,
             fontWeight = FontWeight.ExtraBold,
             fontSize = 20.sp,
@@ -56,7 +69,7 @@ fun MyPageTbtiGroup(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "한줄 설명글",
+            text = userInfo.tbtiDescription.secondName,
             fontFamily = MainFont,
             fontWeight = FontWeight.Normal,
             fontSize = 12.sp,
