@@ -27,7 +27,8 @@ import com.tlog.R
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
-
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun TmpTravelItem(
@@ -37,7 +38,8 @@ fun TmpTravelItem(
     hashTags: List<String>,
     checked: Boolean = false,
     setCheckBox: (Int, Boolean) -> Unit,
-    showCheckbox: Boolean = true
+    showCheckbox: Boolean = true,
+    travelImageUrl: String
 ) {
     Row(
         modifier = Modifier
@@ -45,13 +47,13 @@ fun TmpTravelItem(
             .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.test_image),
+        AsyncImage(
+            model = travelImageUrl,
             contentDescription = "$travelName 사진",
             modifier = Modifier
                 .size(99.dp)
-                .clip(RoundedCornerShape(15.dp))
-                .background(Color.Gray) // 추후 제거 지금 구분되는거 보려고 잠시 놔둠
+                .clip(RoundedCornerShape(15.dp)),
+            contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.width(15.dp))
@@ -86,21 +88,15 @@ fun TmpTravelItem(
             modifier = Modifier.fillMaxHeight()
         ) {
             if (showCheckbox) {
-                Spacer(modifier = Modifier.width(25.dp))
-                IconButton(
-                    onClick = { setCheckBox(index, !checked) },
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    Icon(
-                        painter =
-                            if (checked)
-                                painterResource(R.drawable.ic_checkbox_checked)
-                            else
-                                painterResource(R.drawable.ic_checkbox_unchecked),
-                        contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
-                        tint = Color.Unspecified
-                    )
-                }
+                Icon(
+                    painter =
+                        if (checked)
+                            painterResource(R.drawable.ic_checkbox_checked)
+                        else
+                            painterResource(R.drawable.ic_checkbox_unchecked),
+                    contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
+                    tint = Color.Unspecified
+                )
             }
         }
     }

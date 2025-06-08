@@ -2,448 +2,104 @@ package com.tlog.viewmodel.tmp
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.tlog.data.model.travel.Review
-import com.tlog.data.model.tmp.TmpTravelData
-import com.tlog.data.model.travel.TravelUiData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import com.tlog.api.CourseApi
+import com.tlog.data.repository.CourseRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
+import retrofit2.Retrofit
+import androidx.lifecycle.viewModelScope
+import com.tlog.data.model.travel.UserCourseDestination
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.State
+import com.tlog.data.local.UserPreferences
 
-class TmpCartViewModel: ViewModel() {
-    //    private var _travelList = mutableStateOf<List<TravelData>>(emptyList())
-    // 추후 api로 리스트 설정 (현재 리스트 삭제)
-    private var _travelList = mutableStateOf(listOf(
-        TravelUiData(
-            TmpTravelData(
-                travelName = "83타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "대구",
-                avgStarRating = 4.5,
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "83타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "대구",
-                avgStarRating = 4.5,
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "광안리 해수욕장",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "부산",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "광안리 해수욕장",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "부산",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        ),
-        TravelUiData(
-            TmpTravelData(
-                travelName = "남산타워",
-                description = "남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요 남산타워는 커요",
-                hashTags = listOf("크다", "높다"),
-                cityName = "서울",
-                starRatings = listOf(
-                    13, 4, 2, 1, 0
-                ),
-                avgStarRating = 4.5,
-                reviewList = listOf(
-                    Review(
-                        author = "정찬",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    ),
-                    Review(
-                        author = "박신욱",
-                        createAt = "2025.04.01",
-                        starRating = 5,
-                        content = "혼자 떠난 첫 제주 여행이었는데, 서귀포는 혼자이기에 더 좋았던 도시였어요.정방폭포에서 시원한 물소리를 들으며 멍하니 앉아 있었고, 올레길 걷다 보니 어느새 마음도 같이 정리되더라고요. 이중섭 거리에서 조용히 전시도 보고, 시장에서는 현지인분들과 소소한 대화도 나눌 수 있어서 외롭지 않았어요." +
-                                "숙소는 바다 뷰 있는 게스트하우스에 묵었는데, 호스트분이 추천해준 쇠소깍 카약 체험은 진짜 최고였어요! 렌터카 없이도 버스랑 도보로 충분히 다닐 수 있어서, 혼자 여행하시는 분들께 강력 추천합니다 :)" +
-                                "서귀포는 조용히 나를 돌보고 싶을 때, 꼭 다시 오고 싶은 도시예요."
-                    )
-                )
-            ),
-            checked = false
-        )
-    ))
-    val cartList = _travelList
+@HiltViewModel
+class TmpCartViewModel @Inject constructor(
+    private val repository: CourseRepository,
+    private val userPreferences: UserPreferences
+) : ViewModel() {
+    private var userId: String = ""
+
+    private var _travelList = mutableStateOf<List<UserCourseDestination>>(emptyList())
+    val travelList: State<List<UserCourseDestination>> get() = _travelList
+
+    private var _checkedList = mutableStateOf<List<Boolean>>(emptyList())
+    val checkedList: State<List<Boolean>> get() = _checkedList
+
     private var _allChecked = mutableStateOf(false)
+    val allChecked: State<Boolean> get() = _allChecked
 
-
-    /*
-    val api 보낼 때 사용할 친구 = travelList.value
-    .filter { it.checked }
-    .map { it.travelData }
-     */
-
-    fun updateTravelList(newTravelList: List<TravelUiData>) {
-        _travelList.value = newTravelList
+    init {
+        fetchUserId()
     }
 
-    fun updateChecked(index: Int, newChecked: Boolean) {
-        val updateList = _travelList.value.toMutableList()
-        val currentItem = updateList[index]
-
-        updateList[index] = currentItem.copy(checked = newChecked)
-        _travelList.value = updateList
-    }
-
-    fun allChecked() {
-        _allChecked.value = !(_allChecked.value)
-        _travelList.value = _travelList.value.map { // 리스트 원소 변환
-            it.copy(checked = _allChecked.value) // copy로 checked만 변경
+    private fun fetchUserId() {
+        viewModelScope.launch {
+            val id = userPreferences.getUserId().orEmpty()
+            if (id.isNotEmpty()) {
+                setUserId(id)
+            }
         }
     }
 
-    fun getCheckedTravelList(): List<TravelUiData> {
-        return _travelList.value.filter { it.checked }
+    fun updateChecked(index: Int, newChecked: Boolean) {
+        val updatedList = _checkedList.value.toMutableList()
+        updatedList[index] = newChecked
+        _checkedList.value = updatedList
+    }
+
+    fun allChecked() {
+        _allChecked.value = !_allChecked.value
+        _checkedList.value = List(_travelList.value.size) { _allChecked.value }
+    }
+
+    fun getCheckedTravelList(): List<UserCourseDestination> {
+        return _travelList.value.filterIndexed { index, _ ->
+            _checkedList.value.getOrNull(index) == true
+        }
+    }
+
+    private fun setUserId(id: String) {
+        userId = id
+        fetchUserCourses()
+    }
+
+    private fun fetchUserCourses() {
+        viewModelScope.launch {
+            try {
+                val response = repository.getUserCourses(userId)
+                val destinations = response.data
+                    ?.flatMap { it.dates }
+                    ?.flatMap { it.destinationGroups }
+                    ?.flatMap { it.destinations }
+                    ?: emptyList()
+                _travelList.value = destinations
+                _checkedList.value = List(destinations.size) { false }
+            } catch (e: Exception) {
+                // TODO: Handle error
+            }
+        }
+    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object CourseModule {
+    @Provides
+    fun provideCourseRepository(
+        courseApi: CourseApi
+    ): CourseRepository {
+        return CourseRepository(courseApi)
+    }
+
+    @Provides
+    fun provideCourseApi(
+        retrofit: Retrofit
+    ): CourseApi {
+        return retrofit.create(CourseApi::class.java)
     }
 }

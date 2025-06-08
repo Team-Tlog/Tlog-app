@@ -4,20 +4,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.viewmodel.tmp.TmpCartViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Alignment
+import com.tlog.ui.component.travel.TravelingCourse
 
 @Composable
 fun MyTravelingCourseScreen(
     navController: NavController,
-    viewModel: TmpCartViewModel = viewModel()
+    viewModel: TmpCartViewModel = hiltViewModel()
 ) {
-    val travelList by viewModel.cartList
+    val travelList by viewModel.travelList
+    val checkedList by viewModel.checkedList
     var selectedDay by remember { mutableStateOf(2) }
 
     Box(
@@ -46,12 +46,4 @@ fun MyTravelingCourseScreen(
             )
         }
     }
-}
-
-// 하단바 미리보기용 추후 삭제 예정
-@Preview(showBackground = true)
-@Composable
-fun PreviewMyTravelingCourseScreen() {
-    val dummyNavController = rememberNavController()
-    MyTravelingCourseScreen(navController = dummyNavController)
 }

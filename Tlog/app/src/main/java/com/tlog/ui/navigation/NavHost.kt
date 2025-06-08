@@ -45,7 +45,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "course") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -168,8 +168,8 @@ fun NavHost(
 
 
         composable("course") {
-            //MyTravelingCourse는 어떻게?
-            TeamTravelingCourseScreen(navController)
+            //TeamTravelingCourse는 어떻게?
+            MyTravelingCourseScreen(navController)
         }
         composable("mypage") {
             MyPageScreen(navController = navController)

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
-import com.tlog.data.model.travel.TravelUiData
+import com.tlog.data.model.travel.UserCourseDestination
 import com.tlog.ui.component.tmp.TmpTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
@@ -26,10 +26,9 @@ import com.tlog.ui.theme.MainColor
 @Composable
 fun CityTravelList(
     city: String,
-    travelItems: List<TravelUiData>,
+    travelItems: List<UserCourseDestination>,
     isLastCity: Boolean,
-    cityIndex: Int,
-    onDeleteClick: (TravelUiData) -> Unit,
+    onDeleteClick: (UserCourseDestination) -> Unit,
     onUpdateChecked: (Int, Boolean) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -39,7 +38,7 @@ fun CityTravelList(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_destination),
-                contentDescription = "지역 아이콘",
+                contentDescription = "화살표 아이콘",
                 tint = MainColor,
                 modifier = Modifier
                     .size(width = 18.dp, height = 22.dp)
@@ -70,14 +69,16 @@ fun CityTravelList(
                     Box(modifier = Modifier.fillMaxWidth()) {
                         TmpTravelItem(
                             index = index,
-                            travelName = item.travelData.travelName,
-                            travelDescription = item.travelData.description,
-                            hashTags = item.travelData.hashTags,
-                            checked = item.checked,
+                            travelName = item.name,
+                            travelDescription = //item.description,
+                                "서버에 연락바랍니다",
+                            hashTags = item.tagCountList.map { it.tag },
+                            checked = false,
                             setCheckBox = { i, checked ->
                                 onUpdateChecked(i, checked)
                             },
-                            showCheckbox = false
+                            showCheckbox = false,
+                            travelImageUrl = item.imageUrl
                         )
                         IconButton(
                             onClick = { onDeleteClick(item) },
