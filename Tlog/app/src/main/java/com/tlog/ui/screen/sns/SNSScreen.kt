@@ -9,27 +9,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.R
 import com.tlog.ui.component.SNS.PostItem
-import com.tlog.viewmodel.sns.SNSViewModel
+import com.tlog.viewmodel.sns.SnsViewModel
 
 
-@Preview
 @Composable
-fun SNSScreen(viewModel: SNSViewModel = viewModel()) {
-    val currentUser by viewModel.currentUser.collectAsState()
-    val posts by viewModel.posts.collectAsState()
-
+fun SNSScreen(viewModel: SnsViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -53,7 +46,7 @@ fun SNSScreen(viewModel: SNSViewModel = viewModel()) {
                         .size(36.dp)
                         .clip(RoundedCornerShape(18.dp))
                         .background(Color.LightGray)
-                )  //여기에 로고 생기면 추가해야함
+                )
 
                 Row {
                     Box(
@@ -95,7 +88,7 @@ fun SNSScreen(viewModel: SNSViewModel = viewModel()) {
                 .fillMaxSize()
                 .background(Color.White)
         ) {
-            items(posts) { post ->
+            items(viewModel.postList.value) { post ->
                 PostItem(post = post, viewModel = viewModel)
 
             }

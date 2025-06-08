@@ -16,6 +16,20 @@ interface SnsApi {
         @Body request: UpdateSnsIdRequest
     ): BaseResponse<Unit>
 
+    // 팔로잉 사용자들의 최근 게시물 조회
+    @GET("/api/posts")
+    suspend fun getFollowingPostList(
+        @Query("lastPostId") lastPostId: String? = null,
+        @Query("size") size: Int
+    ): BaseListResponse<List<SnsPost>>
+
+
+
+
+
+
+
+    // -- 연결 X --
     // SNS 댓글
     // 댓글에 대댓글 작성
     @POST("/api/reply/{replyId}/reply")

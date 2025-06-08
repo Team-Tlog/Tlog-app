@@ -10,7 +10,7 @@ data class BaseResponse<T>(
     val data: T
 )
 
-data class BaseListResponse<T>(
+data class BaseListPage<T> (
     val content: T,
     val pageable: Pageable,
     val offset: Int,
@@ -22,4 +22,10 @@ data class BaseListResponse<T>(
     val numberOfElements: Int,
     val first: Boolean,
     val empty: Boolean,
+)
+
+data class BaseListResponse<T>(
+    val ststus: Int,
+    val message: String,
+    val data: BaseListPage<T>
 )
