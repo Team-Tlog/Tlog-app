@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TbtiApi
+import com.tlog.data.api.TbtiDescriptionResponse
 import com.tlog.data.repository.TbtiRepository
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import javax.inject.Inject
 import com.tlog.data.api.TbtiQuestionItem
+import androidx.compose.runtime.State
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
@@ -28,17 +30,29 @@ class TbtiTestViewModel @Inject constructor(
     private val _currentQuestionIndex = mutableStateOf(0)
     val currentQuestionIndex get() = _currentQuestionIndex
 
+    private val _tbtiDescription = mutableStateOf<TbtiDescriptionResponse?>(null)
+    val tbtiDescription: State<TbtiDescriptionResponse?> = _tbtiDescription
+
     val totalQuestions: Int
         get() = _questions.size
 
     val currentQuestion = mutableStateOf<String?>(null)
     val currentAnswers = mutableStateOf<List<String>>(emptyList())
 
-    init {
-        fetchAllQuestions()  // 앱 시작 시 한 번에 질문 로딩
-    }
+    private val _traitScores = mutableStateOf<Map<String, Int>>(emptyMap())
+    val traitScores: State<Map<String, Int>> = _traitScores
 
-    private fun fetchAllQuestions() {
+    private val _resultCode = mutableStateOf<String?>(null)
+    val resultCode: State<String?> = _resultCode
+
+    // 중복 방지 플래그 추가
+    private var alreadyFetchedQuestions = false
+
+
+    fun fetchAllQuestions() {
+        if (alreadyFetchedQuestions) return  // 중복 방지
+        alreadyFetchedQuestions = true
+
         viewModelScope.launch {
             try {
                 val allQuestions = mutableListOf<TbtiQuestionItem>()
@@ -94,11 +108,17 @@ class TbtiTestViewModel @Inject constructor(
             traitScores[category] = score
         }
 
+        // 로그: 카테고리별 최종 점수
+        Log.d("ResultCode", "카테고리별 최종 점수: $traitScores")
+
         // 2️⃣ 점수 기반으로 알파벳 선택
         val resultCode = getSRResultCode(traitScores, categoryInitial)
 
         // 3️⃣ 로그 출력 (테스트 단계)
-        Log.d("ResultCode", "최종 4자리 알파벳: $resultCode")
+        Log.d("TbtiTestViewModel", "최종 결과: $resultCode")
+
+        _traitScores.value = traitScores
+        _resultCode.value = resultCode
 
         return resultCode
     }
@@ -122,19 +142,40 @@ class TbtiTestViewModel @Inject constructor(
         return resultCode.toString()
     }
 
+    private val _isTestFinished = mutableStateOf(false)
+    val isTestFinished: State<Boolean> get() = _isTestFinished
+
     fun moveToNextQuestion() {
-        val userSelections = mutableMapOf<String, List<Int>>()
-        _questions.groupBy { it.traitCategory }.forEach { (category, questions) ->
-            val selections = questions.mapIndexed { index, _ ->
-                selectedAnswers.getOrNull(index) ?: 0  // 선택하지 않은 경우 기본값 0
+        if (_currentQuestionIndex.value < _questions.size - 1) {
+            _currentQuestionIndex.value++
+            updateCurrentQuestion()
+        } else {
+            // 마지막 질문까지 답변했으면 결과 계산
+            val userSelections = mutableMapOf<String, List<Int>>()
+            _questions.groupBy { it.traitCategory }.forEach { (category, questions) ->
+                val selections = questions.mapIndexed { index, _ ->
+                    selectedAnswers.getOrNull(index) ?: 0
+                }
+                userSelections[category] = selections
             }
-            userSelections[category] = selections
+
+            val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
+            val result = calculateResultCode(userSelections, categoryInitial)
+            fetchTbtiDescription(result)
         }
+    }
 
-        val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
-
-        val result = calculateResultCode(userSelections, categoryInitial)
-        Log.d("TbtiTestViewModel", "최종 결과: $result")
+    fun fetchTbtiDescription(resultCode: String) {
+        viewModelScope.launch {
+            try {
+                val response = tbtiRepository.getTbtiDescription(resultCode)
+                _tbtiDescription.value = response.data
+                _isTestFinished.value = true
+                Log.d("TBTI", "tbtiDescription: ${response.data}")
+            } catch (e: Exception) {
+                Log.e("TbtiTestViewModel", "설명 데이터 요청 실패", e)
+            }
+        }
     }
 
     val selectedIdx = mutableStateOf<Int?>(null)

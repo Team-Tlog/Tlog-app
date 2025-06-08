@@ -6,11 +6,15 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.tlog.data.api.TbtiDescriptionResponse
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
+import com.tlog.ui.screen.beginning.TbtiResultScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewListScreen
@@ -32,6 +36,7 @@ import com.tlog.ui.screen.travel.SearchScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
+import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
@@ -152,10 +157,9 @@ fun NavHost(
             SelectReviewWriteScreen(navController = navController)
         }
 
-
         // TBTI
         composable("tbtiTest") {
-            TbtiTestScreen()
+            TbtiTestScreen(navController)
         }
         composable("tbtiCodeInput") {
             val viewModel: TbtiCodeInputViewModel = hiltViewModel() // 또는 viewModel()
@@ -170,6 +174,23 @@ fun NavHost(
         }
         composable("mypage") {
             MyPageScreen(navController = navController)
+        }
+
+        composable(
+            route = "tbtiResult/{tbtiResultCode}",
+            arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
+            val tbtiTestViewModel: TbtiTestViewModel = hiltViewModel()
+            val traitScoresMap = tbtiTestViewModel.traitScores.value.mapKeys { it.key.first() }.mapValues { it.value.toFloat() }
+            val tbtiDescription = tbtiTestViewModel.tbtiDescription.value
+
+            TbtiResultScreen(
+                tbtiResultCode = tbtiResultCode,
+                viewModel = tbtiTestViewModel,
+                tbtiDescription = tbtiDescription ?: TbtiDescriptionResponse("", "", "", ""),
+                traitScores = traitScoresMap
+            )
         }
     }
 }

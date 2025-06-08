@@ -16,16 +16,31 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.tbti.TbtiQuestionSection
 import com.tlog.viewmodel.beginning.TbtiTestViewModel
+import androidx.compose.runtime.getValue
 
 @Composable
-fun TbtiTestScreen(viewModel: TbtiTestViewModel = hiltViewModel()) {
+fun TbtiTestScreen(navController: NavController,
+                   viewModel: TbtiTestViewModel = hiltViewModel()) {
+    val isTestFinished by viewModel.isTestFinished
 
+    // 최초 화면 진입 시 한 번만 호출
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllQuestions()
+    }
+    LaunchedEffect(isTestFinished, viewModel.tbtiDescription.value) {
+        if (isTestFinished && viewModel.tbtiDescription.value != null) {
+            val resultCode = viewModel.tbtiDescription.value?.tbtiString ?: ""
+            navController.navigate("tbtiResult/$resultCode") {
+                popUpTo("tbtiTest") { inclusive = true }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier

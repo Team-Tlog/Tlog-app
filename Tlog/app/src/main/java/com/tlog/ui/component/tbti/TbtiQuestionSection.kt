@@ -57,8 +57,8 @@ fun TbtiQuestionSection(
             modifier = Modifier
                 .wrapContentHeight()
                 .padding(horizontal = 20.dp)
-                .width(200.dp)
-                .height(65.dp)
+                .width(230.dp)
+                .height(70.dp)
         )
 
         Spacer(modifier = Modifier.height(70.dp))
