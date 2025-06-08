@@ -24,6 +24,7 @@ android {
         //Manifest에서 사용하는 용도
         //카카오 네이티브 앱키
         manifestPlaceholders["KakaoScheme"] = "kakao${project.findProperty("KAKAO_NATIVE_APP_KEY")}"
+        manifestPlaceholders["KakaoNativeAppKey"] = "${project.findProperty("KAKAO_NATIVE_APP_KEY")}"
 
         //실제 코드에서 사용하는 용도
         //구글 클라이언트 ID
@@ -140,4 +141,9 @@ dependencies {
     apply(plugin = "com.google.gms.google-services")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
+    // Kakao map
+    implementation("com.kakao.maps.open:android:2.12.8")
+
+    // GPS
+    implementation("com.google.android.gms:play-services-location:18.0.0")
 }

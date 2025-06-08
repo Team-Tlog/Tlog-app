@@ -35,7 +35,7 @@ import com.tlog.ui.component.share.TwoMainButtons
 import com.tlog.ui.component.travel.ScrapTravelList
 import com.tlog.ui.component.travel.TravelList
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.share.CartViewModel
+import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.Body1Regular
@@ -43,7 +43,7 @@ import com.tlog.ui.style.Body1Regular
 
 @Composable
 fun ScrapAndCartScreen(
-    viewModel: CartViewModel = hiltViewModel(),
+    viewModel: ScrapAndCartViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     LaunchedEffect(Unit) {

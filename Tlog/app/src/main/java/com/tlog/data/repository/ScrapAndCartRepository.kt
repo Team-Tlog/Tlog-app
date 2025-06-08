@@ -9,7 +9,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
-class CartRepository @Inject constructor(
+class ScrapAndCartRepository @Inject constructor(
     private val userApi: UserApi,
     private val travelApi: TravelApi
 ) {

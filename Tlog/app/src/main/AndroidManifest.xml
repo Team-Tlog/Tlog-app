@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
   <application
         android:name=".MyApplication"
@@ -44,6 +46,8 @@
           </intent-filter>
       </activity>
 
+
+
       <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -53,6 +57,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+      <!-- 카카오맵 -->
+      <meta-data
+          android:name="com.kakao.sdk.AppKey"
+          android:value="${KakaoNativeAppKey}" />
+
     </application>
     <!-- 갤러리 접근 권한 -->
     <!-- Android 12 이하 (31) -->
@@ -63,4 +73,10 @@
     <!-- 카메라 사용 -->
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 카카오맵 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
 </manifest>
