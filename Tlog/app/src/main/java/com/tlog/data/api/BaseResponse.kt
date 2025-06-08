@@ -2,7 +2,6 @@ package com.tlog.data.api
 
 import com.tlog.data.model.travel.Pageable
 import com.tlog.data.model.travel.Sort
-import com.tlog.data.model.travel.TravelDestinationResponse
 
 data class BaseResponse<T>(
     val status: Int,
@@ -23,6 +22,14 @@ data class BaseListPage<T> (
     val first: Boolean,
     val empty: Boolean,
 )
+
+data class MinimalListPage<T> (
+    val totalElements: Int,
+    val totalPages: Int,
+    val size: Int,
+    val content: List<T>
+)
+
 
 data class BaseListResponse<T>(
     val ststus: Int,

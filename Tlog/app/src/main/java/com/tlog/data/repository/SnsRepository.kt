@@ -2,6 +2,7 @@ package com.tlog.data.repository
 
 import com.tlog.api.SnsApi
 import com.tlog.api.SnsPost
+import com.tlog.api.SnsUserProfile
 import com.tlog.api.UpdateSnsIdRequest
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
@@ -17,7 +18,13 @@ class SnsRepository @Inject constructor(
     suspend fun getFollowingPostList(
         lastPostId: String? = null,
         size: Int,
-    ) :BaseListResponse<List<SnsPost>> {
+    ): BaseListResponse<List<SnsPost>> {
         return retrofitInstance.getFollowingPostList(lastPostId, size)
+    }
+
+    suspend fun getUserProfile(
+        userId: String
+    ): BaseResponse<SnsUserProfile> {
+        return retrofitInstance.getUserProfile(userId)
     }
 }

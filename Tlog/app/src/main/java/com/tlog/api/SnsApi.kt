@@ -1,7 +1,11 @@
 package com.tlog.api
 
+import com.tlog.data.api.BaseListPage
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.MinimalListPage
+import com.tlog.data.model.travel.Pageable
+import com.tlog.data.model.travel.Sort
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -22,6 +26,12 @@ interface SnsApi {
         @Query("lastPostId") lastPostId: String? = null,
         @Query("size") size: Int
     ): BaseListResponse<List<SnsPost>>
+
+    // 유저 프로필 정보 (마이페이지 SNS)
+    @GET("/api/sns/user/{userId}/profile")
+    suspend fun getUserProfile(
+        @Path("userId") userId: String
+    ): BaseResponse<SnsUserProfile>
 
 
 
@@ -149,4 +159,15 @@ data class StatusMessage(
 data class SnsUser(
     val uuid: String,
     val name: String
+)
+
+
+data class SnsUserProfile(
+    val username: String,
+    val profileImageUrl: String?,
+    val snsDescription: String?,
+    val postCount: Int,
+    val followerCount: Int,
+    val followingCount: Int,
+    val posts: BaseListPage<List<SnsPostPreview>>
 )

@@ -23,6 +23,7 @@ import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 import com.tlog.ui.screen.sns.SNSScreen
+import com.tlog.ui.screen.sns.SnsMyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
@@ -46,7 +47,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "snsMyPage") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -170,6 +171,9 @@ fun NavHost(
 
         composable("course") {
             MyTravelingCourseScreen(navController)
+        }
+        composable("SnsMyPage") {
+            SnsMyPageScreen(navController = navController)
         }
         composable("myPage") {
             MyPageScreen(navController = navController)
