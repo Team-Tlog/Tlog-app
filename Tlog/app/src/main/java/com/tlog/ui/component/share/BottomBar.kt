@@ -19,6 +19,7 @@ import com.tlog.R
 fun BottomBar(
     navController: NavController = rememberNavController(),
     selectedIndex: Int = 0,
+    isSns: Boolean = false
 ) {
     val icons = listOf(
         Pair(R.drawable.ic_main_selected, R.drawable.ic_main),
@@ -51,7 +52,10 @@ fun BottomBar(
                                 0 -> navController.navigate("main")
                                 1 -> navController.navigate("course")
                                 2 -> navController.navigate("sns")
-                                3 -> navController.navigate("mypage")
+                                3 -> navController.navigate("myPage")
+                                else -> navController.navigate("main")
+                                //if (isSns) navController.navigate("snsMyPage") else navController.navigate("myPage")
+
                             }
                         }
                 )

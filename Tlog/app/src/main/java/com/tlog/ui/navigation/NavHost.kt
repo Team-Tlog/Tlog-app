@@ -171,7 +171,7 @@ fun NavHost(
         composable("course") {
             MyTravelingCourseScreen(navController)
         }
-        composable("mypage") {
+        composable("myPage") {
             MyPageScreen(navController = navController)
         }
         composable("notification") {
