@@ -29,6 +29,9 @@ import com.tlog.api.SnsUserProfile
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.sns.SnsMyPageViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.text.TextStyle
+import com.tlog.ui.theme.MainFont
+
 @Composable
 fun SnsMyPageScreen(
     viewModel: SnsMyPageViewModel = hiltViewModel(),
@@ -42,12 +45,13 @@ fun SnsMyPageScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
                 .background(Color.White)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                    .padding(start = 27.dp, end = 14.dp, bottom = 10.dp, top = 10.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -76,7 +80,11 @@ fun SnsMyPageScreen(
 
             ProfileSection(userProfile)
 
+            Spacer(modifier = Modifier.height(15.dp))
+
             ActionButtons()
+
+            Spacer(modifier = Modifier.height(32.dp))
 
             PostsGrid(userProfile.posts.content)
         }
@@ -93,13 +101,12 @@ fun ProfileSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(start = 24.dp, end = 41.dp, top = 10.dp, bottom = 10.dp)
     ) {
 
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -127,7 +134,7 @@ fun ProfileSection(
                 }
             }
 
-            Spacer(modifier = Modifier.width(24.dp))
+            Spacer(modifier = Modifier.width(38.dp))
 
             Row(
                 modifier = Modifier.weight(1f),
@@ -144,7 +151,7 @@ fun ProfileSection(
             text = userProfile.snsDescription ?: "나에 대한 설명글을 입력하세요",
             fontSize = 14.sp,
             color = Color.DarkGray,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(top = 17.dp)
         )
     }
 }
@@ -183,35 +190,63 @@ fun ActionButtons(
         if (isTowButton) {
             Button(
                 onClick = { leftButtonClick() },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("프로필 편집", color = Color.White)
+                Text(
+                    text = "프로필 편집",
+                    color = Color.White,
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(vertical = 15.dp)
+                )
             }
 
             Button(
                 onClick = { rightButtonClick() },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("프로필 공유", color = Color.White)
+                Text(
+                    text = "프로필 공유",
+                    color = Color.White,
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(vertical = 15.dp)
+                )
             }
         }
         else {
             Button(
                 onClick = { buttonClick() },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("팔로우", color = Color.White)
+                Text(
+                    text = "팔로우",
+                    color = Color.White,
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    ),
+                    modifier = Modifier.padding(vertical = 15.dp)
+                )
             }
         }
     }
-
-    Spacer(modifier = Modifier.height(16.dp))
 }
 
 @Composable
