@@ -92,11 +92,13 @@ fun MyPageScreen(
 
                         Spacer(modifier = Modifier.height(24.dp))
 
-                        MyPageTbtiGroup()
+                        if (viewModel.isGetUserApiSuccess.value == true)
+                            MyPageTbtiGroup(userInfo = viewModel.userInfo.value!!)
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        UserInfoGroup()
+                        if (viewModel.isGetUserApiSuccess.value == true)
+                            UserInfoGroup(userInfo = viewModel.userInfo.value!!)
                     }
                 }
             }
