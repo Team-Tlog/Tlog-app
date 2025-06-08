@@ -20,6 +20,7 @@ import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 import com.tlog.ui.screen.sns.SNSScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -72,7 +73,7 @@ fun NavHost(
 
         //SNS
         composable("snsMain") {
-            SNSScreen()
+            SNSScreen(navController = navController)
         }
         composable("snsId") {
             SNSIdCreateScreen(navController = navController)
@@ -82,7 +83,7 @@ fun NavHost(
             if (snsId == null || snsId.isEmpty())
                 SNSIdCreateScreen(navController = navController)
             else
-                SNSScreen()
+                SNSScreen(navController = navController)
         }
 
 
@@ -172,6 +173,12 @@ fun NavHost(
         }
         composable("mypage") {
             MyPageScreen(navController = navController)
+        }
+        composable("notification") {
+            NotificationScreen(
+                navController = navController,
+                previousSelectedIndex = 0 // ?
+            )
         }
     }
 }

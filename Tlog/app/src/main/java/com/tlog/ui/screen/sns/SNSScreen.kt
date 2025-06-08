@@ -16,82 +16,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.SNS.PostItem
+import com.tlog.ui.component.share.BottomBar
+import com.tlog.ui.component.share.MainTopBar
 import com.tlog.viewmodel.sns.SnsViewModel
 
 
 @Composable
-fun SNSScreen(viewModel: SnsViewModel = hiltViewModel()) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .imePadding()
-            .windowInsetsPadding(WindowInsets.systemBars)
-    ) {
+fun SNSScreen(
+    viewModel: SnsViewModel = hiltViewModel(),
+    navController: NavController
+) {
+    Scaffold(
+        topBar = {
+            MainTopBar(
+                searchIconClickable = { navController.navigate("search") },
+                notificationIconClickable = { navController.navigate("notification") }
+            )
+        },
+        bottomBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(
+                        60.dp + WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                    )
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+            ) {
+                BottomBar(
+                    navController = navController,
+                    selectedIndex = 0
+                )
+            }
+        }
+    ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
-                .padding(16.dp)
+                .padding(innerPadding)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.White)
             ) {
-                Box(                                                //상단바 찬이가 만든거 넣어야함
-                    modifier = Modifier
-                        .size(36.dp)
-                        .clip(RoundedCornerShape(18.dp))
-                        .background(Color.LightGray)
-                )
+                items(viewModel.postList.value) { post ->
+                    PostItem(post = post, viewModel = viewModel)
 
-                Row {
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .padding(8.dp)
-                            .clickable {
-                                Log.d("검색 아이콘","검색 아이콘")
-                            }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "검색",
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .size(48.dp)
-                            .padding(8.dp)
-                            .clickable {
-                                Log.d("알림 아이콘","알림 아이콘")
-                            }
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_notification),
-                            contentDescription = "알림",
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
                 }
             }
         }
-
-        // 게시물 표시
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-        ) {
-            items(viewModel.postList.value) { post ->
-                PostItem(post = post, viewModel = viewModel)
-
-            }
-        }
     }
+
 }
