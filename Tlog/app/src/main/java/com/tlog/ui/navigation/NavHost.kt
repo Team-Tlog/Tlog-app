@@ -6,11 +6,14 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
+import com.tlog.ui.screen.beginning.TbtiResultScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
 import com.tlog.ui.screen.review.ReviewListScreen
@@ -29,10 +32,10 @@ import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
-import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
+import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
@@ -44,6 +47,7 @@ fun NavHost(
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
+
 
     NavHost(navController = navController, startDestination = startScreen) {
         // Main
@@ -153,10 +157,9 @@ fun NavHost(
             SelectReviewWriteScreen(navController = navController)
         }
 
-
         // TBTI
         composable("tbtiTest") {
-            TbtiTestScreen()
+            TbtiTestScreen(navController)
         }
         composable("tbtiCodeInput") {
             val viewModel: TbtiCodeInputViewModel = hiltViewModel() // 또는 viewModel()
@@ -165,13 +168,41 @@ fun NavHost(
             )
         }
 
-
-
         composable("course") {
             MyTravelingCourseScreen(navController)
         }
         composable("mypage") {
             MyPageScreen(navController = navController)
         }
+
+        composable(
+            route = "tbtiResult/{tbtiResultCode}/{sValue}/{eValue}/{lValue}/{aValue}",
+            arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
+            val sValue = backStackEntry.arguments?.getString("sValue") ?: "0"
+            val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
+            val lValue = backStackEntry.arguments?.getString("lValue") ?: "0"
+            val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
+
+            Log.d("valuesssss2", "s" + sValue.toString())
+            Log.d("valuesssss2", "e" + eValue.toString())
+            Log.d("valuesssss2", "l" + lValue.toString())
+            Log.d("valuesssss2", "a" + aValue.toString())
+
+            val traitScoresMap = mapOf(
+                "S" to sValue.toInt(),
+                "E" to eValue.toInt(),
+                "L" to lValue.toInt(),
+                "A" to aValue.toInt()
+            )
+            TbtiResultScreen(
+                tbtiResultCode = tbtiResultCode,
+                traitScores = traitScoresMap,
+                navController = navController
+            )
+        }
+
+
     }
 }

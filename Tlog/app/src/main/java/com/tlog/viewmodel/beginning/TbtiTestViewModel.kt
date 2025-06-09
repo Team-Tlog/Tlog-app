@@ -1,44 +1,203 @@
 package com.tlog.viewmodel.beginning
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tlog.api.TbtiApi
+import com.tlog.data.repository.TbtiRepository
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import javax.inject.Inject
+import com.tlog.data.api.TbtiQuestionItem
+import androidx.compose.runtime.State
 
+@HiltViewModel
+class TbtiTestViewModel @Inject constructor(
+    private val tbtiRepository: TbtiRepository
+) : ViewModel() {
 
-class TbtiTestViewModel: ViewModel() {
-    private val _tbtiSelectList = mutableStateListOf<Int>() // 선택한 선택지의 번호를 저장하고 있는 List -> 위에꺼 1 / 아래 꺼 2
-    val tbtiSelectList: List<Int> = _tbtiSelectList
-
-    private val _questionList = mutableStateListOf<String>()
-    val questionList: List<String> get() = _questionList
-
-    private val _answerLists = mutableStateListOf<List<String>>()
-    val answerLists: List<List<String>> get() = _answerLists
+    private val _questions = mutableStateListOf<TbtiQuestionItem>()
 
     private val _currentQuestionIndex = mutableStateOf(0)
-    val currentQuestionIndex: Int get() = _currentQuestionIndex.value
+    val currentQuestionIndex get() = _currentQuestionIndex
 
-    private val _question = mutableStateOf("")
-    val question: String get() = _questionList.getOrNull(_currentQuestionIndex.value) ?: ""
+    val totalQuestions: Int
+        get() = _questions.size
 
-    private val _answerList = mutableStateOf<List<String>>(listOf())
-    val answerList: List<String> get() = _answerLists.getOrNull(_currentQuestionIndex.value) ?: listOf()
+    val currentQuestion = mutableStateOf<String?>(null)
+    val currentAnswers = mutableStateOf<List<String>>(emptyList())
 
-    val selectedIdx: MutableState<Int?> = mutableStateOf(null)
-    val selectedIndex: Int? get() = selectedIdx.value
+    private val _traitScores = mutableStateOf<Map<String, Int>>(emptyMap())
 
-    fun setQuestionsAndAnswers(questions: List<String>, answers: List<List<String>>) {
-        _questionList.clear()
-        _questionList.addAll(questions)
-        _answerLists.clear()
-        _answerLists.addAll(answers)
-        _currentQuestionIndex.value = 0
-        selectedIdx.value = null
+    private var _tbtiResult = mutableStateOf("")
+    val tbtiResult: State<String> = _tbtiResult
+
+    private val _sValue = mutableStateOf(0)
+    val sValue: State<Int> get() = _sValue
+
+    private val _eValue = mutableStateOf(0)
+    val eValue: State<Int> get() = _eValue
+
+    private val _lValue = mutableStateOf(0)
+    val lValue: State<Int> get() = _lValue
+
+    private val _aValue = mutableStateOf(0)
+    val aValue: State<Int> get() = _aValue
+
+    private val _resultCode = mutableStateOf<String?>(null)
+
+    // 중복 방지 플래그 추가
+    private var alreadyFetchedQuestions = false
+
+
+    fun fetchAllQuestions() {
+        if (alreadyFetchedQuestions) return  // 중복 방지
+        alreadyFetchedQuestions = true
+
+        viewModelScope.launch {
+            try {
+                val allQuestions = mutableListOf<TbtiQuestionItem>()
+                for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
+                    val response = tbtiRepository.getTbtiQuestions(category)
+                    response.data?.let { allQuestions.addAll(it) }
+                }
+                _questions.clear()
+                _questions.addAll(allQuestions)
+                updateCurrentQuestion()
+            } catch (e: Exception) {
+                Log.e("TbtiTestViewModel", "질문 전체 로딩 실패", e)
+            }
+        }
     }
 
-    fun addList(selectNum: Int) {
-        _tbtiSelectList.add(selectNum)
+    private fun updateCurrentQuestion() {
+        val index = _currentQuestionIndex.value
+        if (index in _questions.indices) {
+            val questionItem = _questions[index]
+            currentQuestion.value = questionItem.content
+            currentAnswers.value = questionItem.answers.map { it.content }
+        } else {
+            currentQuestion.value = null
+            currentAnswers.value = emptyList()
+        }
     }
 
+    // 선택한 답변 인덱스를 저장
+    val selectedAnswers = mutableListOf<Int?>()
+
+    fun onAnswerSelected(index: Int) {
+        selectedIdx.value = index
+        // 현재 질문 인덱스에 사용자의 선택을 저장
+        if (selectedAnswers.size <= _currentQuestionIndex.value) {
+            selectedAnswers.add(index)
+        } else {
+            selectedAnswers[_currentQuestionIndex.value] = index
+        }
+    }
+
+    fun calculateResultCode(
+        userSelections: Map<String, List<Int>>, // 카테고리별 선택 (왼쪽 0, 오른쪽 1, ... 등)
+        categoryInitial: Map<String, String> // 서버에서 받은 categoryInitial (예: "EI": "E-I")
+    ): String {
+        val traitScores = mutableMapOf<String, Int>()
+        userSelections.forEach { (category, selections) ->
+            val questions = _questions.filter { it.traitCategory == category }
+            var weightedSum = 0.0
+            var totalWeight = 0
+
+            questions.forEachIndexed { index, question ->
+                val selectedIndex = selections.getOrNull(index) ?: 0
+                val selectedPercentage = question.answers.getOrNull(selectedIndex)?.percentage ?: 0
+                weightedSum += question.weight * selectedPercentage
+                totalWeight += question.weight
+            }
+
+            val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
+            traitScores[category] = score
+        }
+
+        val resultCode = getSRResultCode(traitScores, categoryInitial)
+        Log.d("result", categoryInitial.toString() + traitScores)
+
+        _traitScores.value = traitScores
+        _resultCode.value = resultCode
+
+        _sValue.value = traitScores["RISK_TAKING"] ?: 0
+        _eValue.value = traitScores["LOCATION_PREFERENCE"] ?: 0
+        _lValue.value = traitScores["PLANNING_STYLE"] ?: 0
+        _aValue.value = traitScores["ACTIVITY_LEVEL"] ?: 0
+
+        return resultCode
+    }
+
+    fun getSRResultCode(
+        traitScores: Map<String, Int>,
+        categoryInitial: Map<String, String>
+    ): String {
+        val resultCode = StringBuilder()
+
+        traitScores.forEach { (category, score) ->
+            val initials = categoryInitial[category]?.split("-")
+            if (initials != null && initials.size == 2) {
+                val selected = if (score in 0..49) initials[1] else initials[0]
+                resultCode.append(selected)
+            } else {
+                resultCode.append("?")
+            }
+        }
+
+        return resultCode.toString()
+    }
+
+    private val _isTestFinished = mutableStateOf(false)
+    val isTestFinished: State<Boolean> get() = _isTestFinished
+
+    fun moveToNextQuestion() {
+        if (_currentQuestionIndex.value < _questions.size - 1) {
+            _currentQuestionIndex.value++
+            updateCurrentQuestion()
+        } else {
+            // 마지막 질문까지 답변했으면 결과 계산
+            val userSelections = mutableMapOf<String, List<Int>>()
+            _questions.groupBy { it.traitCategory }.forEach { (category, questions) ->
+                val selections = questions.map {question ->
+                val index = _questions.indexOf(question)
+                    selectedAnswers.getOrNull(index) ?: 0
+                }
+                userSelections[category] = selections
+            }
+
+            val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
+            _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
+            _isTestFinished.value = true
+        }
+    }
+
+    val selectedIdx = mutableStateOf<Int?>(null)
+}
+
+
+@Module
+@InstallIn(SingletonComponent::class)
+object TbtiRepositoryModule {
+    @Provides
+    fun provideTbtiRepository(
+        tbtiApi: TbtiApi
+    ): TbtiRepository {
+        return TbtiRepository(tbtiApi)
+    }
+
+    @Provides
+    fun provideTbtiApi(
+        retrofit: Retrofit
+    ): TbtiApi {
+        return retrofit.create(TbtiApi::class.java)
+    }
 }
