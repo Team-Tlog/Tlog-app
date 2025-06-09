@@ -46,8 +46,6 @@ fun RecentSearches(
             repeat(5) { // 하드코딩된 더미 데이터 개수
                 Box(
                     modifier = Modifier
-                        .size(width = 43.dp, height = 22.dp)
-                        .padding(1.dp)
                         .shadow(2.dp, RoundedCornerShape(50))
                         .background(Color.White)
                 ) {
@@ -58,8 +56,8 @@ fun RecentSearches(
                         fontWeight = FontWeight.Normal,
                         color = Color(0xFF3C3C3C),
                         modifier = Modifier
+                            .padding(horizontal = 10.dp, vertical = 5.dp)
                             .align(Alignment.CenterStart)
-                            .padding(start = 10.dp)
                     )
                 }
             }
