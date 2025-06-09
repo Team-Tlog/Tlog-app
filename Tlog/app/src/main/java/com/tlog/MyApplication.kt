@@ -43,8 +43,6 @@ class MyApplication : Application() {
             tokenProvider.setRefreshToken(refreshToken)
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
             tokenProvider.setSnsId(snsId)
-
-            //scrapManager.refreshScrapList()
         }
 
     }
