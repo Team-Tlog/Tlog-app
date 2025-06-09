@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
@@ -51,7 +52,10 @@ fun SnsDetailScreen(
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.systemBars)
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                .fillMaxWidth()
+            ) {
                 PostAuthorInfo(
                     userId = viewModel.post.value!!.authorName,
                     isUserFollowing = false,
@@ -95,7 +99,9 @@ fun SnsDetailScreen(
 @Composable
 fun CommentItem(comment: Comment) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = (23.5).dp, end = 23.5.dp, bottom = 26.dp)
     ) {
         AsyncImage(
             model = comment.authorProfileImageUrl,
