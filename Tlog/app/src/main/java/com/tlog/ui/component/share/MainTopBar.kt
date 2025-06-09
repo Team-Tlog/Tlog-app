@@ -1,5 +1,6 @@
 package com.tlog.ui.component.share
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ fun MainTopBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .background(Color.White)
             .height(42.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
             .windowInsetsPadding(WindowInsets.statusBars)
             .padding(horizontal = 14.dp)
