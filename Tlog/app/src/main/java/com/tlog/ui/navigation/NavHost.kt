@@ -26,13 +26,13 @@ import com.tlog.ui.screen.sns.SNSScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
 import com.tlog.ui.screen.sns.SnsMyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
+import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamNameCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.SearchScreen
-import com.tlog.ui.screen.travel.TeamTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
@@ -48,7 +48,7 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
 
-    NavHost(navController = navController, startDestination = "snsMyPage") {
+    NavHost(navController = navController, startDestination = startScreen) {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -90,6 +90,9 @@ fun NavHost(
         composable("snsPostDetail/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
             SnsDetailScreen(postId = postId)
+        }
+        composable("snsSearch") {
+            SnsSearchScreen(navController = navController)
         }
 
 

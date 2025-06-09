@@ -30,11 +30,25 @@ interface SnsApi {
         @Path("userId") userId: String
     ): BaseResponse<SnsUserProfile>
 
+    // SNS 프로필 한 줄 설명글 변경 (UI 없어서 실제로 사용하진 못함)
+    @POST("/api/sns/profile/sns-description")
+    suspend fun updateSnsDescription(
+        @Body request: SnsDescription
+    ): BaseResponse<Unit>
+
     // 게시물 상세 정보 가져오기
     @GET("/api/post/{postId}")
     suspend fun getPost(
         @Path("postId") postId: String
     ): BaseResponse<SnsPost>
+
+    // SNS 검색 기능
+    @GET("/api/search/post/by-destination-and-content")
+    suspend fun searchPost(
+        @Query("query") query: String,
+        @Query("size") size: Int,
+        @Query("lastPostId") lastPostId: String? = null,
+    ): BaseListResponse<List<SnsPostPreview>>
 
 
 
@@ -122,6 +136,10 @@ interface SnsApi {
 
 data class UpdateSnsIdRequest(
     val snsId: String
+)
+
+data class SnsDescription(
+    val description: String
 )
 
 data class Comment(

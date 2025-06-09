@@ -1,7 +1,9 @@
 package com.tlog.data.repository
 
 import com.tlog.api.SnsApi
+import com.tlog.api.SnsDescription
 import com.tlog.api.SnsPost
+import com.tlog.api.SnsPostPreview
 import com.tlog.api.SnsUserProfile
 import com.tlog.api.UpdateSnsIdRequest
 import com.tlog.data.api.BaseListResponse
@@ -28,9 +30,23 @@ class SnsRepository @Inject constructor(
         return retrofitInstance.getUserProfile(userId)
     }
 
+    suspend fun updateSnsDescription(
+        description: String
+    ): BaseResponse<Unit> {
+        return retrofitInstance.updateSnsDescription(SnsDescription(description))
+    }
+
     suspend fun getPost(
         postId: String
     ): BaseResponse<SnsPost> {
         return retrofitInstance.getPost(postId)
+    }
+
+    suspend fun searchPost(
+        query: String,
+        lastPostId: String? = null,
+        size: Int,
+    ): BaseListResponse<List<SnsPostPreview>> {
+        return retrofitInstance.searchPost(query = query, size = size, lastPostId = lastPostId)
     }
 }

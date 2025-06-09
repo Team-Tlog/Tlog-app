@@ -50,4 +50,16 @@ class SnsMyPageViewModel @Inject constructor(
             }
         }
     }
+
+
+    // 페이지가 없음
+    fun updateSnsDescription(description: String) {
+        viewModelScope.launch {
+            try {
+                val result = repository.updateSnsDescription(description)
+            } catch (e: Exception) {
+                Log.d("updateSnsDescription", e.toString())
+            }
+        }
+    }
 }
