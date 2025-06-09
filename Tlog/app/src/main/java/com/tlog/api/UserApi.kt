@@ -28,4 +28,32 @@ interface UserApi {
         @Path("userId") userId: String,
         @Path("destId") destinationId: String
     ): BaseResponse<Unit>
+
+    // 기본 마이페이지 조회 (SNS 아님)
+    @GET("api/users/my-page")
+    suspend fun getUserInfo(): BaseResponse<UserInfo>
 }
+
+data class UserInfo(
+    val username: String,
+    val snsId: String,
+    val profileImageUrl: String?,
+    val defaultRewardPhrase: String,
+    val userRewards: List<Reward>,
+    val tbtiDescription: Tbti
+)
+
+data class Reward(
+    val rewardId: String,
+    val name: String,
+    val description: String,
+    val iconImageUrl: String,
+    val isDefaultReward: Boolean
+)
+
+data class Tbti(
+    val tbtiString: String,
+    val imageUrl: String?,
+    val secondName: String,
+    val description: String
+)
