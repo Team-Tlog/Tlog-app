@@ -44,7 +44,7 @@ fun PostItem(post: SnsPost, viewModel: SnsViewModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
         // 게시물 작성자 정보
         PostAuthorInfo(
-            userId = post.authorId,
+            userId = post.authorName,
             isUserFollowing = false, // 수정 방안 고안 해볼 것
             onFollowToggle = { userId -> viewModel.toggleFollow(userId) },
         )
