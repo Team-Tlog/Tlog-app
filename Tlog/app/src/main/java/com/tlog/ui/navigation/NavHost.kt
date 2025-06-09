@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
@@ -37,16 +39,18 @@ import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @Composable
 fun NavHost(
     navController: NavHostController,
     startScreen: String,
-    snsId: String? = null,
     loginViewModel: LoginViewModel,
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
+    val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
     NavHost(navController = navController, startDestination = startScreen) {
         // Main
@@ -81,6 +85,7 @@ fun NavHost(
             SNSIdCreateScreen(navController = navController)
         }
         composable("sns") {
+            val snsId = viewModel.tokenProvider.getSnsId()
             Log.d("sns", "snsId: ${snsId}")
             if (snsId == null || snsId.isEmpty())
                 SNSIdCreateScreen(navController = navController)
@@ -200,3 +205,8 @@ fun NavHost(
         }
     }
 }
+
+@HiltViewModel
+class MyNavViewModel @Inject constructor(
+    val tokenProvider: TokenProvider
+) : ViewModel()

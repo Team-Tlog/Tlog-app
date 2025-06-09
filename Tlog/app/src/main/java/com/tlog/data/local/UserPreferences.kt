@@ -51,6 +51,8 @@ class UserPreferences @Inject constructor(
         tokenProvider.setRefreshToken(refreshToken)
         if (firebaseCustomToken != null)
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
+        if (snsId != null)
+            tokenProvider.setSnsId(snsId)
     }
 
     suspend fun getUserId(): String? {
