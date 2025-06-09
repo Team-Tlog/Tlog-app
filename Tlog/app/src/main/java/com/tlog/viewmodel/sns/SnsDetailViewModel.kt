@@ -29,6 +29,9 @@ class SnsDetailViewModel @Inject constructor(
     private var _post = mutableStateOf<SnsPost?>(null)
     val post: State<SnsPost?> = _post
 
+    private var _comment = mutableStateOf<String>("")
+    val comment: State<String> = _comment
+
     fun getPostDetail(postId: String) {
         viewModelScope.launch {
             try {
@@ -39,5 +42,9 @@ class SnsDetailViewModel @Inject constructor(
                 Log.d("SnsDetailViewModel", e.message.toString())
             }
         }
+    }
+
+    fun updateComment(value: String) {
+        _comment.value = value
     }
 }

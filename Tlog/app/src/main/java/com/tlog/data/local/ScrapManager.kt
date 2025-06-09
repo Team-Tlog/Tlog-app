@@ -38,9 +38,11 @@ class ScrapManager @Inject constructor(
     val scrapList: State<List<String>> = _scrapList
 
     private var userId: String? = null
+    init {
+        userId = tokenProvider.getUserId()
+    }
 
     fun init() {
-        userId = tokenProvider.getUserId()
         CoroutineScope(Dispatchers.IO).launch {
             val savedList = loadScrapList()
             _scrapList.value = savedList

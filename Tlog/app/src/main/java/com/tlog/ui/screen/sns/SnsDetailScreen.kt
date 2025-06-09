@@ -2,11 +2,14 @@ package com.tlog.ui.screen.sns
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,18 +17,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.tlog.R
@@ -34,7 +47,9 @@ import com.tlog.ui.component.SNS.PostAuthorInfo
 import com.tlog.ui.component.SNS.PostContentAndInteractions
 import com.tlog.ui.component.SNS.PostImage
 import com.tlog.ui.style.Body1Regular
+import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -48,13 +63,15 @@ fun SnsDetailScreen(
     }
 
     if (viewModel.post.value != null) {
-        Box(modifier = Modifier
-            .fillMaxWidth()
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
         ) {
             Column(
                 modifier = Modifier
-                .fillMaxWidth()
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
             ) {
                 PostAuthorInfo(
                     userId = viewModel.post.value!!.authorName,
@@ -89,6 +106,21 @@ fun SnsDetailScreen(
                 viewModel.post.value!!.replies.forEach { comment ->
                     CommentItem(comment)
                 }
+            }
+
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.White)
+                    .padding(top = 14.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
+            ) {
+                CommentField(
+                    value = viewModel.comment.value,
+                    onValueChange = { comment ->
+                        viewModel.updateComment(comment)
+                    }
+                )
             }
 
 
@@ -133,5 +165,65 @@ fun CommentItem(comment: Comment) {
                 )
             )
         }
+    }
+}
+
+@Composable
+fun CommentField(
+    value: String,
+    onValueChange: (String) -> Unit,
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xFFFBFBFB))
+            .clip(RoundedCornerShape(15.dp)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            placeholder = {
+                Text(
+                    text = "댓글 작성하기",
+                    fontSize = 15.sp,
+                    style = Body1Regular.copy(color = TextSubdued),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            },
+            singleLine = true,
+            shape = RoundedCornerShape(15.dp),
+            textStyle = Body1Regular,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color(0xFFFBFBFB),
+                unfocusedContainerColor = Color(0xFFFBFBFB),
+                unfocusedBorderColor = Color.Transparent,
+                focusedBorderColor = Color.Transparent
+            ),
+            modifier = Modifier
+                .weight(1f)
+        )
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_lock),
+            contentDescription = "", // 아직 뭔지 몰라용
+            tint = Color.Unspecified,
+            modifier = Modifier
+                .size(20.dp)
+        )
+
+        Spacer(modifier = Modifier.width(13.dp))
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_comment_send),
+            contentDescription = "댓글 작성하기",
+            tint = Color.Unspecified,
+            modifier = Modifier
+                .size(24.dp)
+        )
+
+        Spacer(modifier = Modifier.width(15.dp))
+
     }
 }

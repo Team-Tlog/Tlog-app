@@ -44,7 +44,7 @@ class MyApplication : Application() {
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
             tokenProvider.setSnsId(snsId)
 
-            scrapManager.refreshScrapList()
+            //scrapManager.refreshScrapList()
         }
 
     }
