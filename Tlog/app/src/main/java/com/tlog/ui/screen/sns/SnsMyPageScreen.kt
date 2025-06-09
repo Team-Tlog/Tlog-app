@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,8 +36,13 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun SnsMyPageScreen(
     viewModel: SnsMyPageViewModel = hiltViewModel(),
+    userId: String,
     navController: NavController
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.getUserProfile(userId)
+    }
+
     val userProfile = viewModel.userProfileInfo.collectAsState().value
 
     if (userProfile != null) {
@@ -82,7 +88,9 @@ fun SnsMyPageScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            ActionButtons()
+            ActionButtons(
+                isTowButton = userId == viewModel.userId.value,
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 

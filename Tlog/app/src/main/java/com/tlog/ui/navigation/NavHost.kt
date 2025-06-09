@@ -94,6 +94,14 @@ fun NavHost(
         composable("snsSearch") {
             SnsSearchScreen(navController = navController)
         }
+        composable("snsMyPage/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
+
+            SnsMyPageScreen(
+                navController = navController,
+                userId = userId
+            )
+        }
 
 
 
@@ -180,9 +188,6 @@ fun NavHost(
 
         composable("course") {
             MyTravelingCourseScreen(navController)
-        }
-        composable("SnsMyPage") {
-            SnsMyPageScreen(navController = navController)
         }
         composable("myPage") {
             MyPageScreen(navController = navController)

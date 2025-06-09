@@ -1,6 +1,8 @@
 package com.tlog.viewmodel.sns
 
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsUserProfile
@@ -18,12 +20,12 @@ class SnsMyPageViewModel @Inject constructor(
     private val repository: SnsRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    private var userId: String? = ""
+    private val _userId = mutableStateOf<String?>(null)
+    val userId: State<String?> = _userId
 
     init {
-        userId = tokenProvider.getUserId()
+        _userId.value = tokenProvider.getUserId()
 
-        getUserProfile()
     }
 
 
@@ -34,7 +36,7 @@ class SnsMyPageViewModel @Inject constructor(
 
 
 
-    fun getUserProfile() {
+    fun getUserProfile(userId: String) {
         viewModelScope.launch {
             try {
                 val result = repository.getUserProfile(userId!!)

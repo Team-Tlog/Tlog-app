@@ -59,6 +59,9 @@ fun SNSScreen(
                 items(viewModel.postList.value) { post ->
                     PostItem(
                         post = post,
+                        clickUser = { userId ->
+                            navController.navigate("snsMyPage/$userId")
+                        },
                         courseClick = { postId ->
                             navController.navigate("snsPostDetail/$postId")
                         }

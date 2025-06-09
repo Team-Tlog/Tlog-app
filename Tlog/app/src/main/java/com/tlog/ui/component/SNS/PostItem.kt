@@ -18,6 +18,7 @@ import com.tlog.api.SnsPost
 @Composable
 fun PostItem(
     post: SnsPost,
+    clickUser: (String) -> Unit = {},
     courseClick: (String) -> Unit = {}
 ) {
     var selectedImageIndex by remember { mutableStateOf(0) }
@@ -45,6 +46,7 @@ fun PostItem(
         PostAuthorInfo(
             userId = post.authorName,
             isUserFollowing = false, // 수정 방안 고안 해볼 것
+            clickUser = { clickUser(post.authorId) },
             onFollowToggle = {  },
         )
 

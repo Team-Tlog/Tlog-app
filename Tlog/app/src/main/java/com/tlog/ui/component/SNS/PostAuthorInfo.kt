@@ -1,6 +1,7 @@
 package com.tlog.ui.component.SNS
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -33,6 +34,7 @@ import com.tlog.ui.theme.MainFont
 fun PostAuthorInfo(
     userId: String,
     isUserFollowing: Boolean,
+    clickUser: () -> Unit = {},
     onFollowToggle: (String) -> Unit,
     isMyPost: Boolean = false,
     modifier: Modifier = Modifier,
@@ -50,6 +52,7 @@ fun PostAuthorInfo(
                 .size(44.dp)
                 .clip(CircleShape)
                 .background(Color.LightGray)
+                .clickable { clickUser() }
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -57,7 +60,9 @@ fun PostAuthorInfo(
         // 사용자 이름
         Text(
             text = userId,
-            style = Body1Bold
+            style = Body1Bold,
+            modifier = Modifier
+                .clickable { clickUser() }
         )
 
         Spacer(modifier = Modifier.weight(1f))
