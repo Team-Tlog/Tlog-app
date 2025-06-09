@@ -54,6 +54,20 @@ interface SnsApi {
 
 
 
+    // 팔로잉 목록 -> 수정 대기
+    @GET("/api/follow/following/{userId}")
+    suspend fun getFollowingList(
+        @Path("userId") userId: String,
+        @Body page: Int,
+        @Body size: Int,
+        @Body sort: List<String> = emptyList()
+    ): BaseListResponse<List<SnsUser>>
+
+
+
+
+
+
 
 
 
@@ -117,13 +131,7 @@ interface SnsApi {
         @Body to_userId: String
     ): BaseResponse<StatusMessage>
 
-    @GET("/api/follow/following/{userId}")
-    suspend fun getFollowingList(
-        @Path("userId") userId: String,
-        @Body page: Int,
-        @Body size: Int,
-        @Body sort: List<String>
-    ): BaseListResponse<List<SnsUser>>
+
 
     @GET("/api/follow/follower/{userId}")
     suspend fun getFollowerList(
