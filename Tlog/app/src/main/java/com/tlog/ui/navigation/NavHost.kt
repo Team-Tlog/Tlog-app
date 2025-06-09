@@ -11,7 +11,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.tlog.data.api.TbtiDescriptionResponse
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiResultScreen
@@ -177,20 +176,33 @@ fun NavHost(
         }
 
         composable(
-            route = "tbtiResult/{tbtiResultCode}",
+            route = "tbtiResult/{tbtiResultCode}/{sValue}/{eValue}/{lValue}/{aValue}",
             arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
         ) { backStackEntry ->
             val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
-            val tbtiTestViewModel: TbtiTestViewModel = hiltViewModel()
-            val traitScoresMap = tbtiTestViewModel.traitScores.value.mapKeys { it.key.first() }.mapValues { it.value.toFloat() }
-            val tbtiDescription = tbtiTestViewModel.tbtiDescription.value
+            val sValue = backStackEntry.arguments?.getString("sValue") ?: "0"
+            val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
+            val lValue = backStackEntry.arguments?.getString("lValue") ?: "0"
+            val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
 
+            Log.d("valuesssss2", "s" + sValue.toString())
+            Log.d("valuesssss2", "e" + eValue.toString())
+            Log.d("valuesssss2", "l" + lValue.toString())
+            Log.d("valuesssss2", "a" + aValue.toString())
+
+            val traitScoresMap = mapOf(
+                "S" to sValue.toInt(),
+                "E" to eValue.toInt(),
+                "L" to lValue.toInt(),
+                "A" to aValue.toInt()
+            )
             TbtiResultScreen(
                 tbtiResultCode = tbtiResultCode,
-                viewModel = tbtiTestViewModel,
-                tbtiDescription = tbtiDescription ?: TbtiDescriptionResponse("", "", "", ""),
-                traitScores = traitScoresMap
+                traitScores = traitScoresMap,
+                navController = navController
             )
         }
+
+
     }
 }

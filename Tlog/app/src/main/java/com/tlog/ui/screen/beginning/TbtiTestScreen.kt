@@ -25,18 +25,21 @@ import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import androidx.compose.runtime.getValue
 
 @Composable
-fun TbtiTestScreen(navController: NavController,
-                   viewModel: TbtiTestViewModel = hiltViewModel()) {
+fun TbtiTestScreen(
+    navController: NavController,
+   viewModel: TbtiTestViewModel = hiltViewModel()
+) {
     val isTestFinished by viewModel.isTestFinished
 
     // 최초 화면 진입 시 한 번만 호출
     LaunchedEffect(Unit) {
         viewModel.fetchAllQuestions()
     }
-    LaunchedEffect(isTestFinished, viewModel.tbtiDescription.value) {
-        if (isTestFinished && viewModel.tbtiDescription.value != null) {
-            val resultCode = viewModel.tbtiDescription.value?.tbtiString ?: ""
-            navController.navigate("tbtiResult/$resultCode") {
+    LaunchedEffect(isTestFinished) {
+        if (isTestFinished) {
+            val resultCode = viewModel.tbtiResult.value
+            Log.d("TbtiTEst", resultCode)
+            navController.navigate("tbtiResult/$resultCode/${viewModel.sValue.value}/${viewModel.eValue.value}/${viewModel.lValue.value}/${viewModel.aValue.value}") {
                 popUpTo("tbtiTest") { inclusive = true }
             }
         }
@@ -70,6 +73,7 @@ fun TbtiTestScreen(navController: NavController,
                     viewModel.selectedIdx.value?.let { index ->
                         viewModel.onAnswerSelected(index)
                         viewModel.moveToNextQuestion()
+                        //viewModel.selectedIdx.value = null
                     }
                 },
                 modifier = Modifier.padding(horizontal = 20.dp)
