@@ -7,16 +7,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.R
 import com.tlog.api.SnsPost
-import com.tlog.data.model.sns.PostData
-import com.tlog.viewmodel.sns.SnsViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
