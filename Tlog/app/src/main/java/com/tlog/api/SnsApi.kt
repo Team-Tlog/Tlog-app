@@ -50,6 +50,13 @@ interface SnsApi {
         @Query("lastPostId") lastPostId: String? = null,
     ): BaseListResponse<List<SnsPostPreview>>
 
+    // 게시물에 댓글 작성
+    @POST("/api/post/{postId}/reply")
+    suspend fun createComment(
+        @Path("postId") postId: String,
+        @Body request: CreateCommentRequest
+    ): BaseResponse<Comment>
+
 
 
 
@@ -82,12 +89,7 @@ interface SnsApi {
         @Body content: String
     ): BaseResponse<Comment>
 
-    // 게시물에 댓글 작성
-    @POST("/api/post/{postId}/reply")
-    suspend fun createComment(
-        @Body author: String,
-        @Body content: String
-    ): BaseResponse<Comment>
+
 
     // 댓글의 대댓글 조회
     @GET("/api/reply/{replyId}/replys")
@@ -157,6 +159,11 @@ data class Comment(
     val authorId: String,
     val authorName: String,
     val authorProfileImageUrl: String
+)
+
+data class CreateCommentRequest(
+    val author: String,
+    val content: String
 )
 
 data class SnsPost(

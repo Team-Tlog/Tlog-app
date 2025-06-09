@@ -1,5 +1,7 @@
 package com.tlog.data.repository
 
+import com.tlog.api.Comment
+import com.tlog.api.CreateCommentRequest
 import com.tlog.api.SnsApi
 import com.tlog.api.SnsDescription
 import com.tlog.api.SnsPost
@@ -48,5 +50,13 @@ class SnsRepository @Inject constructor(
         size: Int,
     ): BaseListResponse<List<SnsPostPreview>> {
         return retrofitInstance.searchPost(query = query, size = size, lastPostId = lastPostId)
+    }
+
+    suspend fun createComment(
+        postId: String,
+        author: String,
+        content: String
+    ): BaseResponse<Comment>{
+        return retrofitInstance.createComment(postId, CreateCommentRequest(author = author, content = content))
     }
 }

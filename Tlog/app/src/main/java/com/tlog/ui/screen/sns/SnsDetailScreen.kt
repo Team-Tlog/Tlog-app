@@ -3,7 +3,7 @@ package com.tlog.ui.screen.sns
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +22,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -35,7 +34,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
@@ -47,7 +45,6 @@ import com.tlog.ui.component.SNS.PostAuthorInfo
 import com.tlog.ui.component.SNS.PostContentAndInteractions
 import com.tlog.ui.component.SNS.PostImage
 import com.tlog.ui.style.Body1Regular
-import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
@@ -119,6 +116,11 @@ fun SnsDetailScreen(
                     value = viewModel.comment.value,
                     onValueChange = { comment ->
                         viewModel.updateComment(comment)
+                    },
+                    sendClick = {
+                        if (viewModel.comment.value.isNotEmpty()) {
+                            viewModel.addComment()
+                        }
                     }
                 )
             }
@@ -172,6 +174,7 @@ fun CommentItem(comment: Comment) {
 fun CommentField(
     value: String,
     onValueChange: (String) -> Unit,
+    sendClick: () -> Unit
 ) {
     Row (
         modifier = Modifier
@@ -221,6 +224,9 @@ fun CommentField(
             tint = Color.Unspecified,
             modifier = Modifier
                 .size(24.dp)
+                .clickable {
+                    sendClick()
+                }
         )
 
         Spacer(modifier = Modifier.width(15.dp))

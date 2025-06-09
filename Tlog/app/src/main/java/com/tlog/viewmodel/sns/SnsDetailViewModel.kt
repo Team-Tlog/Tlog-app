@@ -44,6 +44,26 @@ class SnsDetailViewModel @Inject constructor(
         }
     }
 
+    fun addComment() {
+        Log.d("okhttp", "hihi")
+        viewModelScope.launch {
+            try {
+                val result = repository.createComment(postId = post.value!!.postId, author = userId!!, content = comment.value)
+                when(result.status) {
+                    200 -> {
+                        _comment.value = ""
+                        getPostDetail(post.value!!.postId)
+                    }
+                    else -> {
+                        Log.d("SnsDetailViewModel", result.message)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("SnsDetailViewModel", e.message.toString())
+            }
+        }
+    }
+
     fun updateComment(value: String) {
         _comment.value = value
     }
