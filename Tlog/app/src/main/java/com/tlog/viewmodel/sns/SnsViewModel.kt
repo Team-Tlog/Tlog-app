@@ -22,8 +22,6 @@ class SnsViewModel @Inject constructor(
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    val followingList: StateFlow<Set<String>> = followManager.followingList
-
     private var userId: String? = ""
     private var lastPostId: String? = null
     private var size = 10
@@ -37,6 +35,7 @@ class SnsViewModel @Inject constructor(
     private var _postList = mutableStateOf(listOf<SnsPost>())
     val postList: State<List<SnsPost>> = _postList
 
+    val followingList: StateFlow<Set<String>> = followManager.followingList
 
     fun getSnsPost() {
         viewModelScope.launch {

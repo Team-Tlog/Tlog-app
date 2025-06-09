@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsPost
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SnsDetailViewModel @Inject constructor(
     private val repository: SnsRepository,
+    private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
 
@@ -66,5 +69,19 @@ class SnsDetailViewModel @Inject constructor(
 
     fun updateComment(value: String) {
         _comment.value = value
+    }
+
+
+    // 팔로우 매니저
+    val followingList: StateFlow<Set<String>> = followManager.followingList
+
+    fun followUser(toUserId: String) {
+        viewModelScope.launch {
+            try {
+                followManager.followUser(toUserId)
+            } catch (e: Exception) {
+                Log.d("SnsViewModel", e.message.toString())
+            }
+        }
     }
 }

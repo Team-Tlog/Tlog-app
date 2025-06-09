@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -59,6 +60,9 @@ fun SnsDetailScreen(
         viewModel.getPostDetail(postId)
     }
 
+    val followingList = viewModel.followingList.collectAsState().value
+
+
     if (viewModel.post.value != null) {
         Column(modifier = Modifier
             .fillMaxSize()
@@ -72,9 +76,11 @@ fun SnsDetailScreen(
             ) {
                 PostAuthorInfo(
                     userId = viewModel.post.value!!.authorName,
-                    isFollowing = false,
+                    isFollowing = followingList.contains(viewModel.post.value!!.authorId),
                     isMyPost = viewModel.userId == viewModel.post.value!!.authorId,
-                    onFollowToggle = { },
+                    onFollowToggle = {
+                        viewModel.followUser(viewModel.post.value!!.authorId)
+                    },
                 )
 
                 PostImage(
