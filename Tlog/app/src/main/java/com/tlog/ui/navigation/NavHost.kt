@@ -23,6 +23,7 @@ import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 import com.tlog.ui.screen.sns.SNSScreen
+import com.tlog.ui.screen.sns.SnsDetailScreen
 import com.tlog.ui.screen.sns.SnsMyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
@@ -86,6 +87,11 @@ fun NavHost(
             else
                 SNSScreen(navController = navController)
         }
+        composable("snsPostDetail/{postId}") { backStackEntry ->
+            val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
+            SnsDetailScreen(postId = postId)
+        }
+
 
 
         composable("post2") {

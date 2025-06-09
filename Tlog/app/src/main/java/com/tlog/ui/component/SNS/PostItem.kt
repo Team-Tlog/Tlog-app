@@ -51,7 +51,6 @@ fun PostItem(post: SnsPost, viewModel: SnsViewModel) {
 
         PostImage(
             images = post.contentImageUrls,
-            iconResId = R.drawable.ic_add_circle,
             pagerState = pagerState,
             onPageChanged = { newIndex ->
                 if (selectedImageIndex != newIndex) {

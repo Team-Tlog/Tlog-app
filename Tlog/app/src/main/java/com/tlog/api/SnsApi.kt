@@ -3,9 +3,6 @@ package com.tlog.api
 import com.tlog.data.api.BaseListPage
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.MinimalListPage
-import com.tlog.data.model.travel.Pageable
-import com.tlog.data.model.travel.Sort
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -32,6 +29,15 @@ interface SnsApi {
     suspend fun getUserProfile(
         @Path("userId") userId: String
     ): BaseResponse<SnsUserProfile>
+
+    // 게시물 상세 정보 가져오기
+    @GET("/api/post/{postId}")
+    suspend fun getPost(
+        @Path("postId") postId: String
+    ): BaseResponse<SnsPost>
+
+
+
 
 
 
@@ -89,11 +95,6 @@ interface SnsApi {
         @Body size: Int,
         @Body sort: List<String>
     ): BaseListResponse<List<SnsPostPreview>>
-
-    @GET("/api/post/{postId}")
-    suspend fun getPost(
-        @Path("postId") postId: String
-    ): BaseResponse<SnsPost>
 
     // 팔로우
     @POST("/api/follow")

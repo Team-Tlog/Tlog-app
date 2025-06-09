@@ -28,10 +28,8 @@ import coil.compose.AsyncImage
 @Composable
 fun PostImage(
     images: List<String>,
-    iconResId: Int,
     modifier: Modifier = Modifier,
     height: Int = 430,
-    iconTint: Color = Color.White,
     activeIndicatorColor: Color = Color.White,
     inactiveIndicatorColor: Color = Color.Gray,
     pagerState: PagerState? = null, // 외부에서 제어할 수 있는 PagerState 추가

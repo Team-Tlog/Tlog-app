@@ -2,6 +2,7 @@ package com.tlog.ui.screen.sns
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -86,7 +87,12 @@ fun SnsMyPageScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            PostsGrid(userProfile.posts.content)
+            PostsGrid(
+                postList = userProfile.posts.content,
+                onClick = { postId ->
+                    navController.navigate("snsPostDetail/$postId")
+                }
+            )
         }
     }
     else {
@@ -251,7 +257,8 @@ fun ActionButtons(
 
 @Composable
 fun PostsGrid(
-    postList: List<SnsPostPreview>
+    postList: List<SnsPostPreview>,
+    onClick: (String) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -265,6 +272,9 @@ fun PostsGrid(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .aspectRatio(1f)
+                        .clickable {
+                            onClick(post.postId)
+                        }
                 )
             }
             else {

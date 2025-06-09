@@ -27,4 +27,10 @@ class SnsRepository @Inject constructor(
     ): BaseResponse<SnsUserProfile> {
         return retrofitInstance.getUserProfile(userId)
     }
+
+    suspend fun getPost(
+        postId: String
+    ): BaseResponse<SnsPost> {
+        return retrofitInstance.getPost(postId)
+    }
 }
