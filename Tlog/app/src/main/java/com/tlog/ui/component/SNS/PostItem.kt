@@ -20,7 +20,10 @@ import com.tlog.viewmodel.sns.SnsViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PostItem(post: SnsPost, viewModel: SnsViewModel) {
+fun PostItem(
+    post: SnsPost,
+    courseClick: (String) -> Unit = {}
+) {
     var selectedImageIndex by remember { mutableStateOf(0) }
 
     // 이미지 페이저 상태 생성
@@ -46,7 +49,7 @@ fun PostItem(post: SnsPost, viewModel: SnsViewModel) {
         PostAuthorInfo(
             userId = post.authorName,
             isUserFollowing = false, // 수정 방안 고안 해볼 것
-            onFollowToggle = { userId -> viewModel.toggleFollow(userId) },
+            onFollowToggle = {  },
         )
 
         PostImage(
@@ -72,7 +75,7 @@ fun PostItem(post: SnsPost, viewModel: SnsViewModel) {
 
         ViewCourseButton(
             onClick = {
-                Log.d("코스보러가기", "코스 보러가기")
+                courseClick(post.postId)
             },
             buttonText = "코스 확인하기"
         )

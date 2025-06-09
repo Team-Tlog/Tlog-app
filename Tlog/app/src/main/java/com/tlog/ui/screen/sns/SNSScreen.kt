@@ -57,7 +57,12 @@ fun SNSScreen(
                     .background(Color.White)
             ) {
                 items(viewModel.postList.value) { post ->
-                    PostItem(post = post, viewModel = viewModel)
+                    PostItem(
+                        post = post,
+                        courseClick = { postId ->
+                            navController.navigate("snsPostDetail/$postId")
+                        }
+                    )
 
                 }
             }
