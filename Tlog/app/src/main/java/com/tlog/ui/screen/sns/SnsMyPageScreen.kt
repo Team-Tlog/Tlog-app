@@ -262,6 +262,7 @@ fun PostsGrid(
                 AsyncImage(
                     model = post.previewImageUrl,
                     contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .aspectRatio(1f)
                 )
