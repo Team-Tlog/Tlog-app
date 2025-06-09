@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.api.Comment
@@ -54,6 +55,7 @@ import com.tlog.viewmodel.sns.SnsDetailViewModel
 @Composable
 fun SnsDetailScreen(
     viewModel: SnsDetailViewModel = hiltViewModel(),
+    navController: NavController,
     postId: String,
 ) {
     LaunchedEffect(Unit) {
@@ -107,7 +109,12 @@ fun SnsDetailScreen(
                 Spacer(modifier = Modifier.height(26.dp))
 
                 viewModel.post.value!!.replies.forEach { comment ->
-                    CommentItem(comment)
+                    CommentItem(
+                        comment = comment,
+                        userClick = { targetUserId ->
+                            navController.navigate("snsMyPage/$targetUserId")
+                        }
+                    )
                 }
             }
 
@@ -130,14 +137,15 @@ fun SnsDetailScreen(
                     }
                 )
             }
-
-
         }
     }
 }
 
 @Composable
-fun CommentItem(comment: Comment) {
+fun CommentItem(
+    comment: Comment,
+    userClick: (String) -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -152,6 +160,9 @@ fun CommentItem(comment: Comment) {
             modifier = Modifier
                 .size(38.dp)
                 .clip(CircleShape)
+                .clickable {
+                    userClick(comment.authorId)
+                }
         )
 
         Spacer(modifier = Modifier.width(17.dp))
@@ -159,7 +170,11 @@ fun CommentItem(comment: Comment) {
         Column {
             Text(
                 text = comment.authorName,
-                style = Body1Regular
+                style = Body1Regular,
+                modifier = Modifier
+                    .clickable {
+                        userClick(comment.authorId)
+                    }
             )
 
             Spacer(modifier = Modifier.height(6.dp))

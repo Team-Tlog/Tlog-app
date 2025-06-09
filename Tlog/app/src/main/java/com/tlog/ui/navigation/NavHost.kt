@@ -89,7 +89,7 @@ fun NavHost(
         }
         composable("snsPostDetail/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
-            SnsDetailScreen(postId = postId)
+            SnsDetailScreen(postId = postId, navController = navController)
         }
         composable("snsSearch") {
             SnsSearchScreen(navController = navController)
