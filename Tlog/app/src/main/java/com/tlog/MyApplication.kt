@@ -4,6 +4,7 @@ import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class MyApplication : Application() {
     @Inject lateinit var userPreferences: UserPreferences
     @Inject lateinit var tokenProvider: TokenProvider
+    @Inject lateinit var scrapManager: ScrapManager
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +43,9 @@ class MyApplication : Application() {
             tokenProvider.setRefreshToken(refreshToken)
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
             tokenProvider.setSnsId(snsId)
+
+            scrapManager.refreshScrapList()
         }
+
     }
 }

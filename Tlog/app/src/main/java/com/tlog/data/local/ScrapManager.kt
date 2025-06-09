@@ -90,7 +90,7 @@ class ScrapManager @Inject constructor(
         }
     }
 
-    suspend fun refreshScrapList(userId: String) {
+    suspend fun refreshScrapList(userId: String = this.userId!!) {
         try {
             val response = repository.getUserScraps(userId)
             val destinationIds = response.data?.map { it.id } ?: emptyList()
