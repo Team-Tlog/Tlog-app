@@ -18,8 +18,7 @@ import com.tlog.R
 @Composable
 fun BottomBar(
     navController: NavController = rememberNavController(),
-    selectedIndex: Int = 0,
-    isSns: Boolean = false
+    selectedIndex: Int = 0
 ) {
     val icons = listOf(
         Pair(R.drawable.ic_main_selected, R.drawable.ic_main),
@@ -48,14 +47,19 @@ fun BottomBar(
                     modifier = Modifier
                         .size(24.dp)
                         .clickable {
-                            when (index) {
-                                0 -> navController.navigate("main")
-                                1 -> navController.navigate("course")
-                                2 -> navController.navigate("sns")
-                                3 -> navController.navigate("myPage")
-                                else -> navController.navigate("main")
-                                //if (isSns) navController.navigate("snsMyPage") else navController.navigate("myPage")
-
+                            val route = when (index) {
+                                0 -> "main"
+                                1 -> "course"
+                                2 -> "sns"
+                                3 -> "myPage"
+                                else -> "main"
+                            }
+                            navController.navigate(route) { // 바텀바에서 스택이 쌓이는 버그 수정하기 위한 코드
+                                popUpTo(navController.graph.startDestinationId) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
                         }
                 )
