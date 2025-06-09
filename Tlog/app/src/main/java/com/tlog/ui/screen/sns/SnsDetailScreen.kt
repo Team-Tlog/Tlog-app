@@ -72,7 +72,7 @@ fun SnsDetailScreen(
             ) {
                 PostAuthorInfo(
                     userId = viewModel.post.value!!.authorName,
-                    isUserFollowing = false,
+                    isFollowing = false,
                     isMyPost = viewModel.userId == viewModel.post.value!!.authorId,
                     onFollowToggle = { },
                 )

@@ -3,6 +3,7 @@ package com.tlog.api
 import com.tlog.data.api.BaseListPage
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
+import com.tlog.ui.screen.team.PageState
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -57,19 +58,17 @@ interface SnsApi {
         @Body request: CreateCommentRequest
     ): BaseResponse<Comment>
 
-
-
-
-
-    // 팔로잉 목록 -> 수정 대기
+    // 팔로잉 목록
     @GET("/api/follow/following/{userId}")
     suspend fun getFollowingList(
-        @Path("userId") userId: String,
-        @Body page: Int,
-        @Body size: Int,
-        @Body sort: List<String> = emptyList()
-    ): BaseListResponse<List<SnsUser>>
+        @Path("userId") userId: String
+    ): BaseResponse<List<SnsUser>>
 
+    // 팔로우 걸기 취소
+    @POST("/api/follow")
+    suspend fun followUser(
+        @Body request: FollowRequest
+    ): BaseResponse<StatusMessage>
 
 
 
@@ -126,12 +125,7 @@ interface SnsApi {
         @Body sort: List<String>
     ): BaseListResponse<List<SnsPostPreview>>
 
-    // 팔로우
-    @POST("/api/follow")
-    suspend fun followUser(
-        @Body from_userId: String,
-        @Body to_userId: String
-    ): BaseResponse<StatusMessage>
+
 
 
 
@@ -192,7 +186,10 @@ data class StatusMessage(
 
 data class SnsUser(
     val uuid: String,
-    val name: String
+    val name: String,
+    val snsName: String,
+    val profileImageUrl: String,
+    val tbtiValue: Int
 )
 
 
@@ -204,4 +201,9 @@ data class SnsUserProfile(
     val followerCount: Int,
     val followingCount: Int,
     val posts: BaseListPage<List<SnsPostPreview>>
+)
+
+data class FollowRequest(
+    val from_userId: String,
+    val to_userId: String
 )

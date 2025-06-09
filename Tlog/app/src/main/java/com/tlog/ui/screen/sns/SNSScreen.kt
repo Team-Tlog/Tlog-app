@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,8 @@ fun SNSScreen(
     viewModel: SnsViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val followingList = viewModel.followingList.collectAsState().value
+
     Scaffold(
         topBar = {
             MainTopBar(
@@ -59,11 +62,15 @@ fun SNSScreen(
                 items(viewModel.postList.value) { post ->
                     PostItem(
                         post = post,
+                        isFollowing = followingList.contains(post.authorId),
                         clickUser = { userId ->
                             navController.navigate("snsMyPage/$userId")
                         },
                         courseClick = { postId ->
                             navController.navigate("snsPostDetail/$postId")
+                        },
+                        followClick = {
+                            viewModel.followUser(post.authorId)
                         }
                     )
 

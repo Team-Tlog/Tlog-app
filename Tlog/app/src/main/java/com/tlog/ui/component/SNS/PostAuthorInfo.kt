@@ -33,9 +33,9 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun PostAuthorInfo(
     userId: String,
-    isUserFollowing: Boolean,
+    isFollowing: Boolean,
     clickUser: () -> Unit = {},
-    onFollowToggle: (String) -> Unit,
+    onFollowToggle: () -> Unit,
     isMyPost: Boolean = false,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(16.dp)
@@ -70,7 +70,7 @@ fun PostAuthorInfo(
         // 팔로우 버튼
         if (isMyPost == false) {
             Button(
-                onClick = { onFollowToggle(userId) },
+                onClick = { onFollowToggle() },
                 modifier = Modifier
                     .width(72.dp)
                     .height(32.dp),
@@ -79,7 +79,7 @@ fun PostAuthorInfo(
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor)
             ) {
                 Text(
-                    text = if (isUserFollowing) "팔로잉" else "팔로우",
+                    text = if (isFollowing) "팔로잉" else "팔로우",
                     fontFamily = MainFont,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,

@@ -18,8 +18,10 @@ import com.tlog.api.SnsPost
 @Composable
 fun PostItem(
     post: SnsPost,
+    isFollowing: Boolean,
     clickUser: (String) -> Unit = {},
-    courseClick: (String) -> Unit = {}
+    courseClick: (String) -> Unit = {},
+    followClick: () -> Unit = {}
 ) {
     var selectedImageIndex by remember { mutableStateOf(0) }
 
@@ -45,9 +47,9 @@ fun PostItem(
         // 게시물 작성자 정보
         PostAuthorInfo(
             userId = post.authorName,
-            isUserFollowing = false, // 수정 방안 고안 해볼 것
+            isFollowing = isFollowing, // 수정 방안 고안 해볼 것
             clickUser = { clickUser(post.authorId) },
-            onFollowToggle = {  },
+            onFollowToggle = followClick,
         )
 
         PostImage(

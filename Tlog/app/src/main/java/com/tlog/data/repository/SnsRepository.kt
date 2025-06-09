@@ -2,11 +2,14 @@ package com.tlog.data.repository
 
 import com.tlog.api.Comment
 import com.tlog.api.CreateCommentRequest
+import com.tlog.api.FollowRequest
 import com.tlog.api.SnsApi
 import com.tlog.api.SnsDescription
 import com.tlog.api.SnsPost
 import com.tlog.api.SnsPostPreview
+import com.tlog.api.SnsUser
 import com.tlog.api.SnsUserProfile
+import com.tlog.api.StatusMessage
 import com.tlog.api.UpdateSnsIdRequest
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
@@ -58,5 +61,13 @@ class SnsRepository @Inject constructor(
         content: String
     ): BaseResponse<Comment>{
         return retrofitInstance.createComment(postId, CreateCommentRequest(author = author, content = content))
+    }
+
+    suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUser>> {
+        return retrofitInstance.getFollowingList(userId)
+    }
+
+    suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessage> {
+        return retrofitInstance.followUser(FollowRequest(from_userId = userId, to_userId = toUserId))
     }
 }
