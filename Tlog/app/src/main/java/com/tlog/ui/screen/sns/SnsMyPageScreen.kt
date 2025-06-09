@@ -39,6 +39,8 @@ fun SnsMyPageScreen(
     userId: String,
     navController: NavController
 ) {
+    val followingList = viewModel.followingList.collectAsState().value
+
     LaunchedEffect(Unit) {
         viewModel.getUserProfile(userId)
     }
@@ -46,8 +48,6 @@ fun SnsMyPageScreen(
     val userProfile = viewModel.userProfileInfo.collectAsState().value
 
     if (userProfile != null) {
-
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -88,9 +88,18 @@ fun SnsMyPageScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            ActionButtons(
-                isTowButton = userId == viewModel.userId.value,
-            )
+            if (userId == viewModel.userId.value) {
+                ActionButtons()
+            }
+            else {
+                ActionButtons(
+                    isTowButton = false,
+                    isFollowing = followingList.contains(userId),
+                    buttonClick = {
+                        viewModel.followUser(userId)
+                    }
+                )
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -190,6 +199,7 @@ fun StatItem(count: String, label: String) {
 @Composable
 fun ActionButtons(
     isTowButton: Boolean = true,
+    isFollowing: Boolean = false,
     leftButtonClick: () -> Unit = {},
     rightButtonClick: () -> Unit = {},
     buttonClick: () -> Unit = {}
@@ -248,7 +258,7 @@ fun ActionButtons(
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
-                    text = "팔로우",
+                    text = if (isFollowing) "팔로잉" else "팔로우",
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
