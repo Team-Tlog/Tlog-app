@@ -86,7 +86,13 @@ class UserPreferences @Inject constructor(
         return prefs[SNS_ID]
     }
 
-    fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
+    suspend fun getFcmToken(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[FCM_TOKEN]
+    }
+
+
+        fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
         return try {
             val parts = jwtToken.split(".")
             if (parts.size < 2) return Pair(null, null)

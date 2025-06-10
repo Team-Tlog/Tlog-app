@@ -17,8 +17,18 @@ interface LoginApi {
     suspend fun ssoLogout(
         @Header("Cookie") cookie: String
     ): BaseResponse<Unit>
+
+    @POST("/api/notify")
+    suspend fun setFcmToken(
+        @Body fcmTokenBody: FcmTokenBody
+    ): BaseResponse<Unit>
 }
 
 data class FirebaseTokenData(
     val firebaseCustomToken: String
+)
+
+data class FcmTokenBody(
+    val userId: String,
+    val firebaseToken: String
 )

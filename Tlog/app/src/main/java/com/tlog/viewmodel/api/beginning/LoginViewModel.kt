@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.tlog.api.FcmTokenBody
 import com.tlog.api.FirebaseTokenData
 import com.tlog.api.LoginApi
 import com.tlog.data.api.BaseResponse
@@ -77,9 +78,14 @@ class LoginViewModel @Inject constructor(
 
                     if (authorizationHeader != null && setCookieHeader != null && firebaseCustomToken != null) {
                         saveTokens(authorizationHeader, setCookieHeader, firebaseCustomToken)
+                        val fcmToken = userPreferences.getFcmToken()
+                        val userId = userPreferences.getUserId()
+                        Log.d("FCM Token in viewmodel", fcmToken ?: "")
 //                        Log.d("Debug Tokens", "authorizationHeader : ${authorizationHeader}")
 //                        Log.d("Debug Tokens", "setCookieHeader : ${setCookieHeader}")
 //                        Log.d("Debug Tokens", "firebaseCustomToken : ${firebaseCustomToken}")
+                        if (userId != null && fcmToken != null)
+                            loginApi.setFcmToken(FcmTokenBody(userId = userId, firebaseToken = fcmToken))
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
                         }
