@@ -1,5 +1,7 @@
 package com.tlog
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,6 +16,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.rememberNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,7 +32,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject lateinit var userPreferences: UserPreferences
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -38,6 +41,32 @@ class MainActivity : ComponentActivity() {
         KakaoMapSdk.init(this, BuildConfig.KAKAO_NATIVE_APP_KEY)
 
         setContent {
+
+            val context = LocalContext.current
+
+            // 알림 권한 요청
+//            val notificationPermissionLauncher = rememberLauncherForActivityResult(
+//                contract = ActivityResultContracts.RequestPermission()
+//            ) { isGranted ->
+//                if (isGranted) {
+//                    Log.d("Permission", "알림 권한 허용됨")
+//                } else {
+//                    Log.d("Permission", "알림 권한 거부됨")
+//                }
+//            }
+//
+//            LaunchedEffect(Unit) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                    if (ContextCompat.checkSelfPermission(
+//                            context,
+//                            android.Manifest.permission.POST_NOTIFICATIONS
+//                        ) != PackageManager.PERMISSION_GRANTED
+//                    ) {
+//                        notificationPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+//                    }
+//                }
+//            }
+
             val navController = rememberNavController()
 
             val (isLoading, setIsLoading) = remember { mutableStateOf(true) }
@@ -55,7 +84,6 @@ class MainActivity : ComponentActivity() {
             }
 
             // google login
-            val context = LocalContext.current
             val googleSignInClient = remember {
                 GoogleSignIn.getClient(
                     context,
