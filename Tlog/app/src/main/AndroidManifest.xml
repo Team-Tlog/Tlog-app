@@ -63,6 +63,15 @@
           android:name="com.kakao.sdk.AppKey"
           android:value="${KakaoNativeAppKey}" />
 
+      <!-- firebase FCM -->
+      <service
+          android:name=".data.remote.FcmService"
+          android:exported="false">
+          <intent-filter>
+              <action android:name="com.google.firebase.MESSAGING_EVENT" />
+          </intent-filter>
+      </service>
+
     </application>
     <!-- 갤러리 접근 권한 -->
     <!-- Android 12 이하 (31) -->

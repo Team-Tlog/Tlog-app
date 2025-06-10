@@ -26,7 +26,7 @@ class UserPreferences @Inject constructor(
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
-    private val SNS_USER_ID = stringPreferencesKey("snsUserId")
+    private val FCM_TOKEN = stringPreferencesKey("fcmToken")
     private val SNS_ID = stringPreferencesKey("snsId")
 
     suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
@@ -53,6 +53,12 @@ class UserPreferences @Inject constructor(
             tokenProvider.setFirebaseCustomToken(firebaseCustomToken)
         if (snsId != null)
             tokenProvider.setSnsId(snsId)
+    }
+
+    suspend fun setFcmToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[FCM_TOKEN] = token
+        }
     }
 
     suspend fun getUserId(): String? {
