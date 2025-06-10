@@ -2,6 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.LoginRequest
+import com.tlog.data.api.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
@@ -21,6 +22,11 @@ interface LoginApi {
     @POST("/api/notify")
     suspend fun setFcmToken(
         @Body fcmTokenBody: FcmTokenBody
+    ): BaseResponse<Unit>
+
+    @POST("/api/auth/register/user")
+    suspend fun ssoRegister(
+        @Body request: RegisterRequest
     ): BaseResponse<Unit>
 }
 

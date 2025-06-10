@@ -30,6 +30,9 @@ class UserPreferences @Inject constructor(
     private val FCM_TOKEN = stringPreferencesKey("fcmToken")
     private val SNS_ID = stringPreferencesKey("snsId")
 
+    private val TMP_SOCIAL_ACCESS_TOKEN = stringPreferencesKey("tmpSocialAccessToken")
+    private val TMP_SOCIAL_TYPE = stringPreferencesKey("tmpSocialType")
+
     suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
         val (userId, snsId) = userIdFromJwt(accessToken)
 
@@ -90,6 +93,28 @@ class UserPreferences @Inject constructor(
     suspend fun getFcmToken(): String? {
         val prefs = context.dataStore.data.first()
         return prefs[FCM_TOKEN]
+    }
+
+    suspend fun saveTmpSocialAccessToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[TMP_SOCIAL_ACCESS_TOKEN] = token
+        }
+    }
+
+    suspend fun getTmpSocialAccessToken(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[TMP_SOCIAL_ACCESS_TOKEN]
+    }
+
+    suspend fun saveTmpSocialType(type: String) {
+        context.dataStore.edit { preferences ->
+            preferences[TMP_SOCIAL_TYPE] = type
+        }
+    }
+
+    suspend fun getTmpSocialType(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[TMP_SOCIAL_TYPE]
     }
 
 
