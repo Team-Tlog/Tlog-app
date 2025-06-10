@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import android.util.Base64
+import android.util.Log
 import com.tlog.api.retrofit.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
@@ -103,6 +104,7 @@ class UserPreferences @Inject constructor(
             val snsId = if (payloadJson.has("snsId")) payloadJson.getString("snsId") else null
             Pair(userId, snsId)
         } catch (e: Exception) {
+            Log.d("UserPreferences userIdFromJwt", "${e.message}")
             Pair(null, null)
         }
     }
