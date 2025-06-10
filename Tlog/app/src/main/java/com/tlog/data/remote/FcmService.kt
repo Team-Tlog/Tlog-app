@@ -4,12 +4,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.firebase.messaging.remoteMessage
 import com.tlog.MainActivity
 import com.tlog.R
 import com.tlog.data.local.UserPreferences
@@ -39,16 +37,72 @@ class FcmService: FirebaseMessagingService() {
 
         Log.d("FCM Message", message.data.toString())
         val messageType = message.data["tlog-message-type"]
-        val content = message.data["content"]
 
         when (messageType) {
-            "1" -> sendNotification(content)
+            "1" ->  {
+                val content = message.data["content"]
+
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("type", "1")
+                    putExtra("content", content)
+                }
+
+                sendNotification(content, intent)
+            }
+            "2" -> {
+                val content = message.data["content"]
+                val linkType = message.data["link-type"]
+                val linkAddress = message.data["link-address"]
+
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("type", "2")
+                    putExtra("linkType", linkType)
+                    putExtra("linkAddress", linkAddress)
+                    putExtra("content", content)
+                }
+
+                sendNotification(content, intent)
+            }
+            "10" -> {
+                val content = message.data["content"]
+                val actorId = message.data["actor-id"]
+                val actorImage = message.data["actor-image"]
+                val objectId = message.data["object-id"]
+                val objectImage = message.data["object-image"]
+
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("type", "10")
+                    putExtra("objectId", objectId)
+                    putExtra("objectImage", objectImage)
+                    putExtra("actorId", actorId)
+                    putExtra("actorImage", actorImage)
+                    putExtra("content", content)
+                }
+
+                sendNotification(content, intent)
+            }
+            "11" -> {
+                val content = message.data["content"]
+                val actorId = message.data["actor-id"]
+                val actorImage = message.data["actor-image"]
+                val isFollowing = message.data["is-following"]
+
+                val intent = Intent(this, MainActivity::class.java).apply {
+                    putExtra("type", "11")
+                    putExtra("actorId", actorId)
+                    putExtra("actorImage", actorImage)
+                    putExtra("isFollowing", isFollowing)
+                    putExtra("content", content)
+                }
+
+                sendNotification(content, intent)
+            }
             else -> Log.d("FCM Message", "타입 에러")
         }
     }
 
 
-    private fun sendNotification(content: String?) {
+    private fun sendNotification(content: String?, intent: Intent?) {
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(
             "default",
@@ -59,9 +113,6 @@ class FcmService: FirebaseMessagingService() {
         }
         notificationManager.createNotificationChannel(channel)
 
-        val intent = Intent(this, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }
         val pendingIntent = PendingIntent.getActivity(
             this,
             0,
