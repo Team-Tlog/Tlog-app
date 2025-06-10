@@ -38,7 +38,7 @@ fun MyPageTbtiGroup(
     ) {
         if ( userInfo.tbtiDescription.imageUrl == null || userInfo.tbtiDescription.imageUrl == "") {
             Image(
-                painter = painterResource(R.drawable.test_image),
+                painter = painterResource(R.drawable.rena),
                 contentDescription = "tbti 캐릭터",
                 Modifier
                     .size(178.dp)
