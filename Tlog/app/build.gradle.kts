@@ -133,6 +133,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+    // firebase messaging service
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging:23.0.3")
 
     // await (콜백 -> 비동기)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")

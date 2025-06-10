@@ -6,6 +6,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.first
 import android.util.Base64
+import android.util.Log
 import com.tlog.api.retrofit.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.json.JSONObject
@@ -26,7 +27,7 @@ class UserPreferences @Inject constructor(
     private val ACCESS_TOKEN = stringPreferencesKey("accessToken")
     private val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
     private val FIREBASE_CUSTOM_TOKEN = stringPreferencesKey("firebaseCustomToken")
-    private val SNS_USER_ID = stringPreferencesKey("snsUserId")
+    private val FCM_TOKEN = stringPreferencesKey("fcmToken")
     private val SNS_ID = stringPreferencesKey("snsId")
 
     suspend fun saveTokensAndUserId(accessToken: String, refreshToken: String, firebaseCustomToken: String? = null) {
@@ -55,6 +56,12 @@ class UserPreferences @Inject constructor(
             tokenProvider.setSnsId(snsId)
     }
 
+    suspend fun setFcmToken(token: String) {
+        context.dataStore.edit { preferences ->
+            preferences[FCM_TOKEN] = token
+        }
+    }
+
     suspend fun getUserId(): String? {
         val prefs = context.dataStore.data.first()
         return prefs[USER_ID]
@@ -80,6 +87,12 @@ class UserPreferences @Inject constructor(
         return prefs[SNS_ID]
     }
 
+    suspend fun getFcmToken(): String? {
+        val prefs = context.dataStore.data.first()
+        return prefs[FCM_TOKEN]
+    }
+
+
     fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
         return try {
             val parts = jwtToken.split(".")
@@ -91,13 +104,18 @@ class UserPreferences @Inject constructor(
             val snsId = if (payloadJson.has("snsId")) payloadJson.getString("snsId") else null
             Pair(userId, snsId)
         } catch (e: Exception) {
+            Log.d("UserPreferences userIdFromJwt", "${e.message}")
             Pair(null, null)
         }
     }
 
     suspend fun clearTokens() {
         context.dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(USER_ID)
+            preferences.remove(ACCESS_TOKEN)
+            preferences.remove(REFRESH_TOKEN)
+            preferences.remove(FIREBASE_CUSTOM_TOKEN)
+            preferences.remove(SNS_ID)
         }
 
         tokenProvider.setSnsId(null)
