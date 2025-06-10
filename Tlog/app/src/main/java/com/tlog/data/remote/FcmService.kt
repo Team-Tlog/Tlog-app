@@ -2,12 +2,15 @@ package com.tlog.data.remote
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.remoteMessage
+import com.tlog.MainActivity
 import com.tlog.R
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,11 +59,22 @@ class FcmService: FirebaseMessagingService() {
         }
         notificationManager.createNotificationChannel(channel)
 
+        val intent = Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val builder = NotificationCompat.Builder(this, "default")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Tlog")
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
             .setAutoCancel(true)
 
         notificationManager.notify(System.currentTimeMillis().toInt(), builder.build())
