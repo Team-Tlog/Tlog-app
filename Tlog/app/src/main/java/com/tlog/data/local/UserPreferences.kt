@@ -92,7 +92,7 @@ class UserPreferences @Inject constructor(
     }
 
 
-        fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
+    fun userIdFromJwt(jwtToken: String): Pair<String?, String?> {
         return try {
             val parts = jwtToken.split(".")
             if (parts.size < 2) return Pair(null, null)
@@ -109,7 +109,11 @@ class UserPreferences @Inject constructor(
 
     suspend fun clearTokens() {
         context.dataStore.edit { preferences ->
-            preferences.clear()
+            preferences.remove(USER_ID)
+            preferences.remove(ACCESS_TOKEN)
+            preferences.remove(REFRESH_TOKEN)
+            preferences.remove(FIREBASE_CUSTOM_TOKEN)
+            preferences.remove(SNS_ID)
         }
 
         tokenProvider.setSnsId(null)
