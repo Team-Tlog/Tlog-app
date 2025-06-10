@@ -1,6 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.model.travel.Travel
 import retrofit2.http.GET
@@ -9,6 +10,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.DELETE
+import retrofit2.http.POST
 
 interface UserApi {
     @GET("api/shopcart/user/{userId}")
@@ -32,6 +34,12 @@ interface UserApi {
     // 기본 마이페이지 조회 (SNS 아님)
     @GET("api/users/my-page")
     suspend fun getUserInfo(): BaseResponse<UserInfo>
+
+    //마이페이지에서 프로필사진 업로드
+    @POST("/api/users/profile-image")
+    suspend fun updateProfileImage(
+        @Body request: ProfileImageRequest
+    ): BaseResponse<String>
 }
 
 data class UserInfo(

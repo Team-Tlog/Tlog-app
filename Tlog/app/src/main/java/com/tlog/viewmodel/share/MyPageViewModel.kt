@@ -1,5 +1,7 @@
 package com.tlog.viewmodel.share
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -12,16 +14,20 @@ import com.tlog.api.UserInfo
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
+import com.tlog.data.util.FirebaseImageUploader
 import com.tlog.viewmodel.share.MyPageViewModel.UiEvent.LogoutSuccess
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.toString
 
@@ -94,6 +100,14 @@ class MyPageViewModel @Inject constructor(
 
     fun changeNotification() {
         _notification.value = !_notification.value
+    }
+
+    suspend fun imageUpload(context: Context, imageUri: Uri): String {
+        return FirebaseImageUploader.uploadWebpImage(
+            context,
+            imageUri,
+            "images/profileimage/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
+        )
     }
 }
 

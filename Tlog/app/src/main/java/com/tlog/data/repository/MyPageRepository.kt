@@ -18,4 +18,8 @@ class MyPageRepository @Inject constructor(
     suspend fun getUserInfo(): BaseResponse<UserInfo> {
         return userRetrofitInstance.getUserInfo()
     }
+
+    suspend fun updateProgileImage(): BaseResponse<String?>{
+
+    }
 }

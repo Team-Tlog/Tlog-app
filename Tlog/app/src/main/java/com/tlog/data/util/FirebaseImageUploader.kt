@@ -24,7 +24,7 @@ object FirebaseImageUploader {
     suspend fun uploadWebpImage(
         context: Context,
         uri: Uri,
-        path: String = "images/review/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
+        path: String //= "images/review/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
     ): String = withContext(Dispatchers.IO) {
 
         // URI → Bitmap으로 변환 -> 크다면 리사이즈
