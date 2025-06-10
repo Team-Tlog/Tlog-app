@@ -33,6 +33,7 @@ fun PostContentAndInteractions(
     onLikeClick: () -> Unit,
     onShareClick: () -> Unit,
     onReportClick: () -> Unit,
+    isSingleLine: Boolean = true,
     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
     interactionsPadding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
     modifier: Modifier = Modifier
@@ -50,12 +51,8 @@ fun PostContentAndInteractions(
                 Text(
                     text = content,
                     style = Body2Regular,
-                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    onTextLayout = { textLayoutResult ->
-                        // 텍스트가 잘렸는지 확인
-                        isTextTruncated = textLayoutResult.hasVisualOverflow
-                    },
+                    maxLines = if (isSingleLine == true) 1 else Int.MAX_VALUE, // 맘에 안들긴해.. 일단 패스
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = if (isTextTruncated) 0.dp else 16.dp)

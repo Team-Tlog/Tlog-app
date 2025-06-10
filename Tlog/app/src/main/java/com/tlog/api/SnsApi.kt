@@ -1,7 +1,9 @@
 package com.tlog.api
 
+import com.tlog.data.api.BaseListPage
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
+import com.tlog.ui.screen.team.PageState
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -16,6 +18,68 @@ interface SnsApi {
         @Body request: UpdateSnsIdRequest
     ): BaseResponse<Unit>
 
+    // 팔로잉 사용자들의 최근 게시물 조회
+    @GET("/api/posts")
+    suspend fun getFollowingPostList(
+        @Query("lastPostId") lastPostId: String? = null,
+        @Query("size") size: Int
+    ): BaseListResponse<List<SnsPost>>
+
+    // 유저 프로필 정보 (마이페이지 SNS)
+    @GET("/api/sns/user/{userId}/profile")
+    suspend fun getUserProfile(
+        @Path("userId") userId: String
+    ): BaseResponse<SnsUserProfile>
+
+    // SNS 프로필 한 줄 설명글 변경 (UI 없어서 실제로 사용하진 못함)
+    @POST("/api/sns/profile/sns-description")
+    suspend fun updateSnsDescription(
+        @Body request: SnsDescription
+    ): BaseResponse<Unit>
+
+    // 게시물 상세 정보 가져오기
+    @GET("/api/post/{postId}")
+    suspend fun getPost(
+        @Path("postId") postId: String
+    ): BaseResponse<SnsPost>
+
+    // SNS 검색 기능
+    @GET("/api/search/post/by-destination-and-content")
+    suspend fun searchPost(
+        @Query("query") query: String,
+        @Query("size") size: Int,
+        @Query("lastPostId") lastPostId: String? = null,
+    ): BaseListResponse<List<SnsPostPreview>>
+
+    // 게시물에 댓글 작성
+    @POST("/api/post/{postId}/reply")
+    suspend fun createComment(
+        @Path("postId") postId: String,
+        @Body request: CreateCommentRequest
+    ): BaseResponse<Comment>
+
+    // 팔로잉 목록
+    @GET("/api/follow/following/{userId}")
+    suspend fun getFollowingList(
+        @Path("userId") userId: String
+    ): BaseResponse<List<SnsUser>>
+
+    // 팔로우 걸기 취소
+    @POST("/api/follow")
+    suspend fun followUser(
+        @Body request: FollowRequest
+    ): BaseResponse<StatusMessage>
+
+
+
+
+
+
+
+
+
+
+    // -- 연결 X --
     // SNS 댓글
     // 댓글에 대댓글 작성
     @POST("/api/reply/{replyId}/reply")
@@ -24,12 +88,7 @@ interface SnsApi {
         @Body content: String
     ): BaseResponse<Comment>
 
-    // 게시물에 댓글 작성
-    @POST("/api/post/{postId}/reply")
-    suspend fun createComment(
-        @Body author: String,
-        @Body content: String
-    ): BaseResponse<Comment>
+
 
     // 댓글의 대댓글 조회
     @GET("/api/reply/{replyId}/replys")
@@ -66,25 +125,9 @@ interface SnsApi {
         @Body sort: List<String>
     ): BaseListResponse<List<SnsPostPreview>>
 
-    @GET("/api/post/{postId}")
-    suspend fun getPost(
-        @Path("postId") postId: String
-    ): BaseResponse<SnsPost>
 
-    // 팔로우
-    @POST("/api/follow")
-    suspend fun followUser(
-        @Body from_userId: String,
-        @Body to_userId: String
-    ): BaseResponse<StatusMessage>
 
-    @GET("/api/follow/following/{userId}")
-    suspend fun getFollowingList(
-        @Path("userId") userId: String,
-        @Body page: Int,
-        @Body size: Int,
-        @Body sort: List<String>
-    ): BaseListResponse<List<SnsUser>>
+
 
     @GET("/api/follow/follower/{userId}")
     suspend fun getFollowerList(
@@ -99,6 +142,10 @@ data class UpdateSnsIdRequest(
     val snsId: String
 )
 
+data class SnsDescription(
+    val description: String
+)
+
 data class Comment(
     val replyId: String,
     val content: String,
@@ -106,6 +153,11 @@ data class Comment(
     val authorId: String,
     val authorName: String,
     val authorProfileImageUrl: String
+)
+
+data class CreateCommentRequest(
+    val author: String,
+    val content: String
 )
 
 data class SnsPost(
@@ -134,5 +186,24 @@ data class StatusMessage(
 
 data class SnsUser(
     val uuid: String,
-    val name: String
+    val name: String,
+    val snsName: String,
+    val profileImageUrl: String,
+    val tbtiValue: Int
+)
+
+
+data class SnsUserProfile(
+    val username: String,
+    val profileImageUrl: String?,
+    val snsDescription: String?,
+    val postCount: Int,
+    val followerCount: Int,
+    val followingCount: Int,
+    val posts: BaseListPage<List<SnsPostPreview>>
+)
+
+data class FollowRequest(
+    val from_userId: String,
+    val to_userId: String
 )

@@ -1,6 +1,7 @@
 package com.tlog.ui.component.SNS
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,8 +33,10 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun PostAuthorInfo(
     userId: String,
-    isUserFollowing: Boolean,
-    onFollowToggle: (String) -> Unit,
+    isFollowing: Boolean,
+    clickUser: () -> Unit = {},
+    onFollowToggle: () -> Unit,
+    isMyPost: Boolean = false,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(16.dp)
 ) {
@@ -49,6 +52,7 @@ fun PostAuthorInfo(
                 .size(44.dp)
                 .clip(CircleShape)
                 .background(Color.LightGray)
+                .clickable { clickUser() }
         )
 
         Spacer(modifier = Modifier.width(16.dp))
@@ -56,30 +60,34 @@ fun PostAuthorInfo(
         // 사용자 이름
         Text(
             text = userId,
-            style = Body1Bold
+            style = Body1Bold,
+            modifier = Modifier
+                .clickable { clickUser() }
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         // 팔로우 버튼
-        Button(
-            onClick = { onFollowToggle(userId) },
-            modifier = Modifier
-                .width(72.dp)
-                .height(32.dp),
-            shape = MaterialTheme.shapes.medium,
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = MainColor)
-        ) {
-            Text(
-                text = if (isUserFollowing) "팔로잉" else "팔로우",
-                fontFamily = MainFont,
-                fontSize = 12.sp,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Visible
-            )
+        if (isMyPost == false) {
+            Button(
+                onClick = { onFollowToggle() },
+                modifier = Modifier
+                    .width(72.dp)
+                    .height(32.dp),
+                shape = MaterialTheme.shapes.medium,
+                contentPadding = PaddingValues(horizontal = 8.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = MainColor)
+            ) {
+                Text(
+                    text = if (isFollowing) "팔로잉" else "팔로우",
+                    fontFamily = MainFont,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Visible
+                )
+            }
         }
     }
 }

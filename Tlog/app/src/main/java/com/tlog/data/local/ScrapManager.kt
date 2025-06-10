@@ -38,9 +38,11 @@ class ScrapManager @Inject constructor(
     val scrapList: State<List<String>> = _scrapList
 
     private var userId: String? = null
+    init {
+        userId = tokenProvider.getUserId()
+    }
 
     fun init() {
-        userId = tokenProvider.getUserId()
         CoroutineScope(Dispatchers.IO).launch {
             val savedList = loadScrapList()
             _scrapList.value = savedList
@@ -90,7 +92,7 @@ class ScrapManager @Inject constructor(
         }
     }
 
-    suspend fun refreshScrapList(userId: String) {
+    suspend fun refreshScrapList(userId: String = this.userId!!) {
         try {
             val response = repository.getUserScraps(userId)
             val destinationIds = response.data?.map { it.id } ?: emptyList()

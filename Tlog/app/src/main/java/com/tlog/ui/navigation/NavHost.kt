@@ -5,12 +5,14 @@ import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiResultScreen
@@ -23,9 +25,13 @@ import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
+import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SNSIdCreateScreen
 import com.tlog.ui.screen.sns.SNSScreen
+import com.tlog.ui.screen.sns.SnsDetailScreen
+import com.tlog.ui.screen.sns.SnsMyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
+import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
@@ -37,16 +43,18 @@ import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @Composable
 fun NavHost(
     navController: NavHostController,
     startScreen: String,
-    snsId: String? = null,
     loginViewModel: LoginViewModel,
     launcher: ActivityResultLauncher<Intent>,
     googleSignInClient: GoogleSignInClient
 ) {
+    val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
     NavHost(navController = navController, startDestination = startScreen) {
@@ -76,18 +84,35 @@ fun NavHost(
 
         //SNS
         composable("snsMain") {
-            SNSScreen()
+            SNSScreen(navController = navController)
         }
         composable("snsId") {
             SNSIdCreateScreen(navController = navController)
         }
         composable("sns") {
+            val snsId = viewModel.tokenProvider.getSnsId()
             Log.d("sns", "snsId: ${snsId}")
             if (snsId == null || snsId.isEmpty())
                 SNSIdCreateScreen(navController = navController)
             else
-                SNSScreen()
+                SNSScreen(navController = navController)
         }
+        composable("snsPostDetail/{postId}") { backStackEntry ->
+            val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
+            SnsDetailScreen(postId = postId, navController = navController)
+        }
+        composable("snsSearch") {
+            SnsSearchScreen(navController = navController)
+        }
+        composable("snsMyPage/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
+
+            SnsMyPageScreen(
+                navController = navController,
+                userId = userId
+            )
+        }
+
 
 
         composable("post2") {
@@ -171,9 +196,16 @@ fun NavHost(
         composable("course") {
             MyTravelingCourseScreen(navController)
         }
-        composable("mypage") {
+        composable("myPage") {
             MyPageScreen(navController = navController)
         }
+        composable("notification") {
+            NotificationScreen(
+                navController = navController,
+                previousSelectedIndex = 0 // ?
+            )
+        }
+
 
         composable(
             route = "tbtiResult/{tbtiResultCode}/{sValue}/{eValue}/{lValue}/{aValue}",
@@ -202,7 +234,10 @@ fun NavHost(
                 navController = navController
             )
         }
-
-
     }
 }
+
+@HiltViewModel
+class MyNavViewModel @Inject constructor(
+    val tokenProvider: TokenProvider
+) : ViewModel()

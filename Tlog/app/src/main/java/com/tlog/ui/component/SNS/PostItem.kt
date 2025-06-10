@@ -7,25 +7,26 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.R
-import com.tlog.data.model.sns.PostData
-import com.tlog.viewmodel.sns.SNSViewModel
+import com.tlog.api.SnsPost
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PostItem(post: PostData, viewModel: SNSViewModel) {
-    val displayedComments by viewModel.getDisplayedComments(post.id).collectAsState()
-    val hasMoreComments by viewModel.hasMoreComments(post.id).collectAsState()
+fun PostItem(
+    post: SnsPost,
+    isFollowing: Boolean,
+    clickUser: (String) -> Unit = {},
+    courseClick: (String) -> Unit = {},
+    followClick: () -> Unit = {}
+) {
     var selectedImageIndex by remember { mutableStateOf(0) }
 
     // 이미지 페이저 상태 생성
-    val pagerState = rememberPagerState(pageCount = { post.images.size })
+    val pagerState = rememberPagerState(pageCount = { post.contentImageUrls.size })
 
     // 페이저 상태와 선택된 이미지 인덱스 간의 동기화
     LaunchedEffect(selectedImageIndex) {
@@ -45,14 +46,14 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
     Column(modifier = Modifier.fillMaxWidth()) {
         // 게시물 작성자 정보
         PostAuthorInfo(
-            userId = post.userId,
-            isUserFollowing = post.isUserFollowing,
-            onFollowToggle = { userId -> viewModel.toggleFollow(userId) },
+            userId = post.authorName,
+            isFollowing = isFollowing, // 수정 방안 고안 해볼 것
+            clickUser = { clickUser(post.authorId) },
+            onFollowToggle = followClick,
         )
 
         PostImage(
-            images = post.images,
-            iconResId = R.drawable.ic_add_circle,
+            images = post.contentImageUrls,
             pagerState = pagerState,
             onPageChanged = { newIndex ->
                 if (selectedImageIndex != newIndex) {
@@ -61,20 +62,20 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
             }
         )
 
-        StepCourseBar(
-            courseTitles = post.courseTitles,
-            activeStepIndex = selectedImageIndex,
-            onStepClicked = { newIndex ->
-                // 클릭한 코스 인덱스가 이미지 범위 내에 있는지 확인
-                if (newIndex < post.images.size && selectedImageIndex != newIndex) {
-                    selectedImageIndex = newIndex
-                }
-            }
-        )
+//        StepCourseBar(
+//            courseTitles = post.courseTitles,
+//            activeStepIndex = selectedImageIndex,
+//            onStepClicked = { newIndex ->
+//                // 클릭한 코스 인덱스가 이미지 범위 내에 있는지 확인
+//                if (newIndex < post.images.size && selectedImageIndex != newIndex) {
+//                    selectedImageIndex = newIndex
+//                }
+//            }
+//        )
 
         ViewCourseButton(
             onClick = {
-                Log.d("코스보러가기", "코스 보러가기")
+                courseClick(post.postId)
             },
             buttonText = "코스 확인하기"
         )
@@ -82,21 +83,21 @@ fun PostItem(post: PostData, viewModel: SNSViewModel) {
         // 게시물 내용 추가
         PostContentAndInteractions(
             content = post.content,
-            isLiked = post.isLiked,
-            onLikeClick = { viewModel.toggleLike(post.id) },
+            isLiked = false, //post.isLiked,
+            onLikeClick = {
+                // 좋아요
+            },
             onShareClick = {
                 Log.d("공유 아이콘", "공유 아이콘")
                 // 추가 공유 로직
             },
             onReportClick = {
                 Log.d("신고하기", "신고하기")
-                // 추가 신고 로직
             }
-            // 기본 패딩 사용 - 파라미터 생략
         )
 
         // 현재 표시된 댓글 목록
-        displayedComments.forEach { comment ->
+        post.replies.forEachIndexed { index, comment ->
             CommentItem(comment = comment)
         }
     }
