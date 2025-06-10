@@ -1,9 +1,11 @@
 package com.tlog.data.repository
 
+import android.util.Log
 import com.tlog.api.LoginApi
 import com.tlog.api.UserApi
 import com.tlog.api.UserInfo
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ProfileImageRequest
 import javax.inject.Inject
 
 class MyPageRepository @Inject constructor(
@@ -19,7 +21,9 @@ class MyPageRepository @Inject constructor(
         return userRetrofitInstance.getUserInfo()
     }
 
-    suspend fun updateProgileImage(): BaseResponse<String?>{
-
+    suspend fun updateProfileImage(image : ProfileImageRequest): BaseResponse<String>{
+        val result = userRetrofitInstance.updateProfileImage(image)
+        Log.d("UpdateProfileImage", result.toString())
+        return result
     }
 }

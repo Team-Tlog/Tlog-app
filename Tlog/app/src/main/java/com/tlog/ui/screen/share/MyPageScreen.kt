@@ -1,6 +1,9 @@
 package com.tlog.ui.screen.share
 
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +46,7 @@ fun MyPageScreen(
 
     val context = LocalContext.current
 
+
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
@@ -53,6 +57,10 @@ fun MyPageScreen(
                 }
                 is UiEvent.LogoutError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.ProfileImageUpdated -> {
+                    navController.popBackStack()
+                    navController.navigate("myPage")
                 }
             }
         }
@@ -97,8 +105,22 @@ fun MyPageScreen(
 
                         Spacer(modifier = Modifier.height(8.dp))
 
+                        val imagePickerLauncher = rememberLauncherForActivityResult(
+                            contract = ActivityResultContracts.GetContent()
+                        ) { uri: Uri? ->
+                            uri?.let {
+                                viewModel.imageUri.value = it.toString()
+                                viewModel.updateProfileImage(context)
+                            }
+                        }
+
                         if (viewModel.isGetUserApiSuccess.value == true)
-                            UserInfoGroup(userInfo = viewModel.userInfo.value!!)
+                            UserInfoGroup(
+                                userInfo = viewModel.userInfo.value!!,
+                                onImageClick = {
+                                    imagePickerLauncher.launch("image/*")
+                                }
+                            )
                     }
                 }
             }

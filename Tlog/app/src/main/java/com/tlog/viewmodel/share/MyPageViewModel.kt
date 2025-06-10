@@ -1,7 +1,6 @@
 package com.tlog.viewmodel.share
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -21,8 +20,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -30,6 +27,10 @@ import retrofit2.Retrofit
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.toString
+import android.net.Uri
+import androidx.core.net.toUri
+import com.tlog.data.api.ProfileImageRequest
+import kotlin.String
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
@@ -43,10 +44,14 @@ class MyPageViewModel @Inject constructor(
     private val _userInfo: MutableState<UserInfo?> = mutableStateOf(null)
     val userInfo: State<UserInfo?> = _userInfo
 
+    private val _image = mutableStateOf("")
+    val imageUri = _image
+
 
     sealed class UiEvent {
         object LogoutSuccess: UiEvent()
         data class LogoutError(val message: String): UiEvent()
+        object ProfileImageUpdated: UiEvent()
     }
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -108,6 +113,25 @@ class MyPageViewModel @Inject constructor(
             imageUri,
             "images/profileimage/${System.currentTimeMillis()}_${UUID.randomUUID()}.webp"
         )
+    }
+
+    fun updateProfileImage(context: Context ){
+        viewModelScope.launch {
+            try {
+                val imageUrl = imageUpload(context, imageUri.value.toUri())
+                val response = myPageRepository.updateProfileImage(
+                    ProfileImageRequest(
+                        imageUrl = imageUrl
+                    )
+                )
+                if (response.status == 200){
+                    _eventFlow.emit(UiEvent.ProfileImageUpdated)
+                }
+            }
+            catch(e: Exception){
+                //오류 캐치 추가 필요
+            }
+        }
     }
 }
 
