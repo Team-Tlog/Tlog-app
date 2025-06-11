@@ -41,7 +41,6 @@ import com.tlog.ui.screen.travel.SearchScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
-import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -212,24 +211,34 @@ fun NavHost(
             arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
         ) { backStackEntry ->
             val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
-            val sValue = backStackEntry.arguments?.getString("sValue") ?: "0"
+            val rValue = backStackEntry.arguments?.getString("sValue") ?: "0"
             val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
-            val lValue = backStackEntry.arguments?.getString("lValue") ?: "0"
+            val nValue = backStackEntry.arguments?.getString("lValue") ?: "0"
             val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
+            val resultList = listOf(rValue, eValue, nValue, aValue)
+            var resultCode = ""
 
-            Log.d("valuesssss2", "s" + sValue.toString())
+            resultList.forEach { result ->
+                if (result == "0")
+                    resultCode += "00"
+                else
+                    resultCode += result
+            }
+
+            Log.d("valuesssss2", "r" + rValue.toString())
             Log.d("valuesssss2", "e" + eValue.toString())
-            Log.d("valuesssss2", "l" + lValue.toString())
+            Log.d("valuesssss2", "n" + nValue.toString())
             Log.d("valuesssss2", "a" + aValue.toString())
 
             val traitScoresMap = mapOf(
-                "S" to sValue.toInt(),
+                "R" to rValue.toInt(),
                 "E" to eValue.toInt(),
-                "L" to lValue.toInt(),
+                "N" to nValue.toInt(),
                 "A" to aValue.toInt()
             )
             TbtiResultScreen(
-                tbtiResultCode = tbtiResultCode,
+                tbtiResult = tbtiResultCode,
+                tbtiResultCode = resultCode,
                 traitScores = traitScoresMap,
                 navController = navController
             )

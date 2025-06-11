@@ -53,6 +53,9 @@ class TbtiTestViewModel @Inject constructor(
 
     private val _resultCode = mutableStateOf<String?>(null)
 
+    private val _resultIntCode = mutableStateOf(0)
+    val tbtiIntCode: State<Int> get() = _resultIntCode
+
     // 중복 방지 플래그 추가
     private var alreadyFetchedQuestions = false
 
@@ -125,16 +128,38 @@ class TbtiTestViewModel @Inject constructor(
 
         val resultCode = getSRResultCode(traitScores, categoryInitial)
         Log.d("result", categoryInitial.toString() + traitScores)
+        val resultIntCode = getIntCode()
 
         _traitScores.value = traitScores
         _resultCode.value = resultCode
+        _resultIntCode.value = resultIntCode.toInt()
 
         _sValue.value = traitScores["RISK_TAKING"] ?: 0
         _eValue.value = traitScores["LOCATION_PREFERENCE"] ?: 0
         _lValue.value = traitScores["PLANNING_STYLE"] ?: 0
         _aValue.value = traitScores["ACTIVITY_LEVEL"] ?: 0
 
-        return resultCode
+        val resultList = listOf(_sValue.value.toString(), _eValue.value.toString(), _lValue.value.toString(), _aValue.value.toString())
+        var retResultCode = ""
+
+        resultList.forEachIndexed { idx, result ->
+            val status = result.toInt() > 50
+                when (idx) {
+                    0 -> retResultCode += if (status) "S" else "R"
+                    1 -> retResultCode += if (status) "O" else "E"
+                    2 -> retResultCode += if (status) "L" else "N"
+                    3 -> retResultCode += if (status) "I" else "A"
+                }
+        }
+
+
+        Log.d("helloResultCode", retResultCode)
+
+        return retResultCode
+    }
+
+    fun getIntCode(): Int {
+        return "${_sValue.value}${_eValue.value}${_lValue.value}${_aValue.value}".toInt()
     }
 
     fun getSRResultCode(

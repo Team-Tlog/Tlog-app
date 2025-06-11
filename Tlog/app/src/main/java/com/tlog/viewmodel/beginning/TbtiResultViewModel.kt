@@ -31,6 +31,7 @@ class TbtiResultViewModel @Inject constructor(
     private val _tbtiDescription = mutableStateOf<TbtiDescriptionResponse?>(null)
     val tbtiDescription: State<TbtiDescriptionResponse?> = _tbtiDescription
 
+
     fun fetchTbtiDescription(resultCode: String) {
         viewModelScope.launch {
             try {
