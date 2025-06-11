@@ -219,8 +219,8 @@ fun NavHost(
             var resultCode = ""
 
             resultList.forEach { result ->
-                if (result == "0")
-                    resultCode += "00"
+                if (result.length == 1)
+                    resultCode += "0$result"
                 else
                     resultCode += result
             }

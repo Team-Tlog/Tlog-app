@@ -67,18 +67,21 @@ class TbtiTestViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val allQuestions = mutableListOf<TbtiQuestionItem>()
+
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
                     response.data?.let { allQuestions.addAll(it) }
                 }
                 _questions.clear()
                 _questions.addAll(allQuestions)
+
                 updateCurrentQuestion()
             } catch (e: Exception) {
                 Log.e("TbtiTestViewModel", "질문 전체 로딩 실패", e)
             }
         }
     }
+
 
     private fun updateCurrentQuestion() {
         val index = _currentQuestionIndex.value
@@ -117,13 +120,15 @@ class TbtiTestViewModel @Inject constructor(
 
             questions.forEachIndexed { index, question ->
                 val selectedIndex = selections.getOrNull(index) ?: 0
-                val selectedPercentage = question.answers.getOrNull(selectedIndex)?.percentage ?: 0
-                weightedSum += question.weight * selectedPercentage
+                val selectedPercentage = question.answers.getOrNull(selectedIndex - 1)?.percentage ?: 0
+
+                weightedSum += selectedPercentage.toDouble() * question.weight.toDouble()
                 totalWeight += question.weight
             }
 
             val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
             traitScores[category] = score
+            Log.d("cScore", category + "   " + score.toString())
         }
 
         val resultCode = getSRResultCode(traitScores, categoryInitial)
@@ -171,7 +176,7 @@ class TbtiTestViewModel @Inject constructor(
         traitScores.forEach { (category, score) ->
             val initials = categoryInitial[category]?.split("-")
             if (initials != null && initials.size == 2) {
-                val selected = if (score in 0..49) initials[1] else initials[0]
+                val selected = if (score in 0..49) initials[0] else initials[1]
                 resultCode.append(selected)
             } else {
                 resultCode.append("?")
