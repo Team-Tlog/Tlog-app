@@ -59,6 +59,13 @@ class UserPreferences @Inject constructor(
             tokenProvider.setSnsId(snsId)
     }
 
+    suspend fun setSnsId(snsId: String) {
+        context.dataStore.edit { preferences ->
+            preferences[SNS_ID] = snsId
+        }
+        tokenProvider.setSnsId(snsId)
+    }
+
     suspend fun setFcmToken(token: String) {
         context.dataStore.edit { preferences ->
             preferences[FCM_TOKEN] = token
