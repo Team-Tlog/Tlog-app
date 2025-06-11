@@ -16,7 +16,6 @@ import javax.inject.Inject
 class MyApplication : Application() {
     @Inject lateinit var userPreferences: UserPreferences
     @Inject lateinit var tokenProvider: TokenProvider
-    @Inject lateinit var scrapManager: ScrapManager
 
     override fun onCreate() {
         super.onCreate()

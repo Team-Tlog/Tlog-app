@@ -70,7 +70,7 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
             try {
                 scrapManager.toggleScrap(destinationId)
             } catch (e: Exception) {
-                // TODO: Error handling
+                Log.d("scrap", "스크랩 에러: ${e.message}")
             }
         }
     }

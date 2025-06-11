@@ -1,5 +1,6 @@
 package com.tlog.ui.component.travel
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -104,6 +105,7 @@ fun DestinationCard(
                         modifier = Modifier
                             .size(31.dp)
                             .clickable {
+                                Log.d("스크랩", "hihi")
                                 onFavoriteToggle(destination.id)
                             },
                         tint = if (isFavorite) Color.Red else Color.Unspecified,
