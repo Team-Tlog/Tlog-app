@@ -24,14 +24,16 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
 
 
-@Preview
 @Composable
-fun TbtiIntroScreen() {
+fun TbtiIntroScreen(
+    navController: NavController
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +87,9 @@ fun TbtiIntroScreen() {
 
                 MainButton(
                     text = "테스트 시작",
-                    onClick = {Log.d("TbtiTestStartButton", "my click!!")},
+                    onClick = {
+                        navController.navigate("tbtiTest")
+                    },
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
                         .fillMaxWidth()

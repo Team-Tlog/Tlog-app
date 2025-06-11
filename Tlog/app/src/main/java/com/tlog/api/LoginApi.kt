@@ -27,7 +27,7 @@ interface LoginApi {
     @POST("/api/auth/register/user")
     suspend fun ssoRegister(
         @Body request: RegisterRequest
-    ): BaseResponse<Unit>
+    ): Response<BaseResponse<FirebaseTokenData>>
 }
 
 data class FirebaseTokenData(

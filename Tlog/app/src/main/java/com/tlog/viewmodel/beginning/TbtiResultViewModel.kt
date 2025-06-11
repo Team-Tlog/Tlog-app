@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.google.android.gms.common.api.Response
+import com.tlog.api.FcmTokenBody
 import com.tlog.api.LoginApi
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.RegisterRequest
 import com.tlog.data.api.TbtiDescriptionResponse
@@ -25,7 +27,8 @@ import kotlinx.coroutines.launch
 class TbtiResultViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository,
     private val loginApi: LoginApi,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val tokenProvider: TokenProvider
 ): ViewModel() {
 
     private val _tbtiDescription = mutableStateOf<TbtiDescriptionResponse?>(null)
@@ -64,13 +67,24 @@ class TbtiResultViewModel @Inject constructor(
 
             try {
                 val response = loginApi.ssoRegister(request)
-                if (response.status == 200) {
-                    navController.navigate("main") {
-                        popUpTo("tbtiResult") { inclusive = true }
+                if (response.isSuccessful) {
+                    // 토큰 드가야됨
+                    val authorizationHeader = response.headers()["authorization"]
+                    val setCookieHeader = response.headers()["set-cookie"]
+                    if (authorizationHeader != null && setCookieHeader != null) {
+                        userPreferences.saveTokensAndUserId(
+                            authorizationHeader,
+                            setCookieHeader,
+                            response.body()!!.data.firebaseCustomToken
+                        )
+                        loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
+                        navController.navigate("main") {
+                            popUpTo("tbtiResult") { inclusive = true }
+                        }
+                        Log.d("TbtiResultViewModel", "회원가입 성공 후 메인으로 이동")
                     }
-                    Log.d("TbtiResultViewModel", "회원가입 성공 후 메인으로 이동")
                 } else {
-                    Log.e("TbtiResultViewModel", "회원가입 실패: ${response.status}")
+                    Log.e("TbtiResultViewModel", "회원가입 실패: ${response.body()?.status}")
                 }
             } catch (e: Exception) {
                 Log.e("TbtiResultViewModel", "회원가입 실패", e)
