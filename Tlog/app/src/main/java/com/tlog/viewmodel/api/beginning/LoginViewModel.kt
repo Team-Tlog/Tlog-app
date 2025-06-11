@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -29,7 +30,7 @@ import retrofit2.Response
 class LoginViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userPreferences: UserPreferences,
-    private val loginApi: LoginApi,
+    private val loginApi: LoginApi
 ) : ViewModel() {
     // Kakao Manager 사용
     fun kakaoLogin(context: Context, navController: NavController) {
@@ -72,6 +73,10 @@ class LoginViewModel @Inject constructor(
                 val response: Response<BaseResponse<FirebaseTokenData>> = loginApi.ssoLogin(request)
                 val firebaseCustomToken = response.body()?.data?.firebaseCustomToken
 
+                // 회원가입을 위해 임시로 값 저장 (DataStore)
+                userPreferences.saveTmpSocialAccessToken(socialAccessToken)
+                userPreferences.saveTmpSocialType(type)
+
                 if (response.isSuccessful) {
                     val authorizationHeader = response.headers()["authorization"]
                     val setCookieHeader = response.headers()["set-cookie"]
@@ -81,9 +86,6 @@ class LoginViewModel @Inject constructor(
                         val fcmToken = userPreferences.getFcmToken()
                         val userId = userPreferences.getUserId()
                         Log.d("FCM Token in viewmodel", fcmToken ?: "")
-//                        Log.d("Debug Tokens", "authorizationHeader : ${authorizationHeader}")
-//                        Log.d("Debug Tokens", "setCookieHeader : ${setCookieHeader}")
-//                        Log.d("Debug Tokens", "firebaseCustomToken : ${firebaseCustomToken}")
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(FcmTokenBody(userId = userId, firebaseToken = fcmToken))
                         navController.navigate("main") {
@@ -94,13 +96,21 @@ class LoginViewModel @Inject constructor(
                         Log.d("LoginViewModel", "로그인 성공했지만 토큰 없음") // 디버그
                     }
                 } else {
-                    Log.d("LoginViewModel", "로그인 실패: ${response.code()}") // 디버그
+                    if(response.code() == 404){
+                        Log.d("LoginViewModel", "404 응답 확인 tbti 테스트 시작")
+                        navController.navigate("tbtiTest")
+                    }
+                    else{
+                        Log.d("LoginViewModel", "로그인 실패")
+                    }
                 }
             } catch (e: Exception) {
                 Log.d("LoginViewModel", "로그인 에러: ${e.message}") // 디버그
             }
         }
     }
+
+
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
         userPreferences.saveTokensAndUserId(

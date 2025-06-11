@@ -10,6 +10,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,14 +30,20 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
+import com.tlog.viewmodel.beginning.TbtiTestViewModel
+import com.tlog.viewmodel.beginning.login.LoginViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun TbtiResultScreen(
     tbtiResultCode: String,
     viewModel: TbtiResultViewModel = hiltViewModel(),
+    tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
     navController: NavController
 ) {
+
     val scrollState = rememberScrollState()
     val leftLabels = listOf("S", "E", "L", "A")
     val rightLabels = listOf("R", "O", "N", "I")
@@ -234,13 +241,15 @@ fun TbtiResultScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
+            val tbtiValue = "${traitScores["S"] ?: 0}" +
+                    "${traitScores["E"] ?: 0}" +
+                    "${traitScores["L"] ?: 0}" +
+                    "${traitScores["A"] ?: 0}"
+
             MainButton(
                 text = "시작하기",
                 onClick = {
-                    navController.navigate("main") {
-                        //쌓여있는 이전화면 스택에서 없애기
-                        popUpTo("tbtiResult") { inclusive = true }
-                    }
+                    viewModel.registerUser(navController, tbtiValue)
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)
