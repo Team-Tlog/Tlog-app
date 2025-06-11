@@ -10,7 +10,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,10 +31,10 @@ import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
 import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun TbtiResultScreen(
+    tbtiResult: String,
     tbtiResultCode: String,
     viewModel: TbtiResultViewModel = hiltViewModel(),
     tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
@@ -45,13 +44,17 @@ fun TbtiResultScreen(
 ) {
 
     val scrollState = rememberScrollState()
-    val leftLabels = listOf("S", "E", "L", "A")
-    val rightLabels = listOf("R", "O", "N", "I")
+    val leftLabels = listOf("R", "E", "N", "A")
+    val rightLabels = listOf("S", "O", "L", "I")
     val tbtiDescription = viewModel.tbtiDescription.value
+    val tbtiCodeList = tbtiResultCode.toString().chunked(2)
+    Log.d("resultCode11", tbtiResultCode)
+    Log.d("resultCode11", tbtiCodeList.toString())
+
+
 
     LaunchedEffect(Unit) {
-        viewModel.fetchTbtiDescription(tbtiResultCode)
-
+        viewModel.fetchTbtiDescription(tbtiResult)
     }
 
     if (tbtiDescription != null) {
@@ -98,15 +101,11 @@ fun TbtiResultScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            for (i in leftLabels.indices) {
-                val leftScore = traitScores[leftLabels[i]] ?: 0
-                Log.d("leftScore", traitScores[leftLabels[i]].toString())
-                val rightScore = traitScores[rightLabels[i]] ?: 0
-                Log.d("rightScore", traitScores[rightLabels[i]].toString())
+            tbtiCodeList.forEachIndexed { i, code ->
+                val savedScore = 100 - code.toInt()
 
-                val leftColor = if (leftScore >= 50) MainColor else Color.Black
+                val leftColor = if (savedScore >= 50) MainColor else Color.Black
                 val rightColor = if (leftColor == MainColor) Color.Black else MainColor
-                val higherScore = maxOf(leftScore, rightScore)
 
                 Row(
                         modifier = Modifier
@@ -124,7 +123,7 @@ fun TbtiResultScreen(
                             color = leftColor
                         )
                         LinearProgressIndicator(
-                            progress = higherScore / 100f,
+                            progress = savedScore / 100f,
                             modifier = Modifier
                                 .weight(1f)
                                 .height(6.dp)
@@ -241,9 +240,9 @@ fun TbtiResultScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            val tbtiValue = "${traitScores["S"] ?: 0}" +
+            val tbtiValue = "${traitScores["R"] ?: 0}" +
                     "${traitScores["E"] ?: 0}" +
-                    "${traitScores["L"] ?: 0}" +
+                    "${traitScores["N"] ?: 0}" +
                     "${traitScores["A"] ?: 0}"
 
             MainButton(

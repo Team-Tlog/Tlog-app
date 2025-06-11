@@ -53,6 +53,9 @@ class TbtiTestViewModel @Inject constructor(
 
     private val _resultCode = mutableStateOf<String?>(null)
 
+    private val _resultIntCode = mutableStateOf(0)
+    val tbtiIntCode: State<Int> get() = _resultIntCode
+
     // 중복 방지 플래그 추가
     private var alreadyFetchedQuestions = false
 
@@ -64,18 +67,21 @@ class TbtiTestViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val allQuestions = mutableListOf<TbtiQuestionItem>()
+
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
                     response.data?.let { allQuestions.addAll(it) }
                 }
                 _questions.clear()
                 _questions.addAll(allQuestions)
+
                 updateCurrentQuestion()
             } catch (e: Exception) {
                 Log.e("TbtiTestViewModel", "질문 전체 로딩 실패", e)
             }
         }
     }
+
 
     private fun updateCurrentQuestion() {
         val index = _currentQuestionIndex.value
@@ -114,27 +120,51 @@ class TbtiTestViewModel @Inject constructor(
 
             questions.forEachIndexed { index, question ->
                 val selectedIndex = selections.getOrNull(index) ?: 0
-                val selectedPercentage = question.answers.getOrNull(selectedIndex)?.percentage ?: 0
-                weightedSum += question.weight * selectedPercentage
+                val selectedPercentage = question.answers.getOrNull(selectedIndex - 1)?.percentage ?: 0
+
+                weightedSum += selectedPercentage.toDouble() * question.weight.toDouble()
                 totalWeight += question.weight
             }
 
             val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
             traitScores[category] = score
+            Log.d("cScore", category + "   " + score.toString())
         }
 
         val resultCode = getSRResultCode(traitScores, categoryInitial)
         Log.d("result", categoryInitial.toString() + traitScores)
+        val resultIntCode = getIntCode()
 
         _traitScores.value = traitScores
         _resultCode.value = resultCode
+        _resultIntCode.value = resultIntCode.toInt()
 
         _sValue.value = traitScores["RISK_TAKING"] ?: 0
         _eValue.value = traitScores["LOCATION_PREFERENCE"] ?: 0
         _lValue.value = traitScores["PLANNING_STYLE"] ?: 0
         _aValue.value = traitScores["ACTIVITY_LEVEL"] ?: 0
 
-        return resultCode
+        val resultList = listOf(_sValue.value.toString(), _eValue.value.toString(), _lValue.value.toString(), _aValue.value.toString())
+        var retResultCode = ""
+
+        resultList.forEachIndexed { idx, result ->
+            val status = result.toInt() > 50
+                when (idx) {
+                    0 -> retResultCode += if (status) "S" else "R"
+                    1 -> retResultCode += if (status) "O" else "E"
+                    2 -> retResultCode += if (status) "L" else "N"
+                    3 -> retResultCode += if (status) "I" else "A"
+                }
+        }
+
+
+        Log.d("helloResultCode", retResultCode)
+
+        return retResultCode
+    }
+
+    fun getIntCode(): Int {
+        return "${_sValue.value}${_eValue.value}${_lValue.value}${_aValue.value}".toInt()
     }
 
     fun getSRResultCode(
@@ -146,7 +176,7 @@ class TbtiTestViewModel @Inject constructor(
         traitScores.forEach { (category, score) ->
             val initials = categoryInitial[category]?.split("-")
             if (initials != null && initials.size == 2) {
-                val selected = if (score in 0..49) initials[1] else initials[0]
+                val selected = if (score in 0..49) initials[0] else initials[1]
                 resultCode.append(selected)
             } else {
                 resultCode.append("?")
