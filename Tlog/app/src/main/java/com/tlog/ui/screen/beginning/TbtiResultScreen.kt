@@ -75,7 +75,7 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.test_image else tbtiDescription.imageUrl,
+                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.rena else tbtiDescription.imageUrl,
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -192,7 +192,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.test_image,
+                        model = R.drawable.roli,
                         contentDescription = "최고의 궁합",
                         modifier = Modifier
                             .size(80.dp)
@@ -228,7 +228,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.test_image,
+                        model = R.drawable.roli,
                         contentDescription = "최악의 궁합",
                         modifier = Modifier
                             .size(80.dp)
