@@ -39,7 +39,7 @@ fun TbtiTestScreen(
         if (isTestFinished) {
             val resultCode = viewModel.tbtiResult.value
             Log.d("TbtiTEst", resultCode)
-            navController.navigate("tbtiResult/$resultCode/${viewModel.sValue.value}/${viewModel.eValue.value}/${viewModel.lValue.value}/${viewModel.aValue.value}") {
+            navController.navigate("tbtiResult/$resultCode/${viewModel.rValue.value}/${viewModel.eValue.value}/${viewModel.nValue.value}/${viewModel.aValue.value}") {
                 popUpTo("tbtiTest") { inclusive = true }
             }
         }

@@ -17,6 +17,7 @@ import retrofit2.Retrofit
 import javax.inject.Inject
 import com.tlog.data.api.TbtiQuestionItem
 import androidx.compose.runtime.State
+import androidx.compose.ui.Modifier
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
@@ -39,14 +40,14 @@ class TbtiTestViewModel @Inject constructor(
     private var _tbtiResult = mutableStateOf("")
     val tbtiResult: State<String> = _tbtiResult
 
-    private val _sValue = mutableStateOf(0)
-    val sValue: State<Int> get() = _sValue
+    private val _rValue = mutableStateOf(0)
+    val rValue: State<Int> get() = _rValue
 
     private val _eValue = mutableStateOf(0)
     val eValue: State<Int> get() = _eValue
 
-    private val _lValue = mutableStateOf(0)
-    val lValue: State<Int> get() = _lValue
+    private val _nValue = mutableStateOf(0)
+    val nValue: State<Int> get() = _nValue
 
     private val _aValue = mutableStateOf(0)
     val aValue: State<Int> get() = _aValue
@@ -109,6 +110,7 @@ class TbtiTestViewModel @Inject constructor(
         val traitScores = mutableMapOf<String, Int>()
         userSelections.forEach { (category, selections) ->
             val questions = _questions.filter { it.traitCategory == category }
+            Log.d("questions[$category]", questions.joinToString("\n") { it.toString() })
             var weightedSum = 0.0
             var totalWeight = 0
 
@@ -117,6 +119,8 @@ class TbtiTestViewModel @Inject constructor(
                 val selectedPercentage = question.answers.getOrNull(selectedIndex)?.percentage ?: 0
                 weightedSum += question.weight * selectedPercentage
                 totalWeight += question.weight
+                Log.d("Weight", weightedSum.toString())
+                Log.d("Weighttotal", totalWeight.toString())
             }
 
             val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
@@ -129,10 +133,14 @@ class TbtiTestViewModel @Inject constructor(
         _traitScores.value = traitScores
         _resultCode.value = resultCode
 
-        _sValue.value = traitScores["RISK_TAKING"] ?: 0
+        _rValue.value = traitScores["RISK_TAKING"] ?: 0
         _eValue.value = traitScores["LOCATION_PREFERENCE"] ?: 0
-        _lValue.value = traitScores["PLANNING_STYLE"] ?: 0
+        _nValue.value = traitScores["PLANNING_STYLE"] ?: 0
         _aValue.value = traitScores["ACTIVITY_LEVEL"] ?: 0
+        Log.d("rvalue", _rValue.value.toString())
+        Log.d("evalue", _eValue.value.toString())
+        Log.d("nvalue", _nValue.value.toString())
+        Log.d("avalue", _aValue.value.toString())
 
         return resultCode
     }
@@ -146,7 +154,7 @@ class TbtiTestViewModel @Inject constructor(
         traitScores.forEach { (category, score) ->
             val initials = categoryInitial[category]?.split("-")
             if (initials != null && initials.size == 2) {
-                val selected = if (score in 0..49) initials[1] else initials[0]
+                val selected = if (score in 0..49) initials[0] else initials[1]
                 resultCode.append(selected)
             } else {
                 resultCode.append("?")

@@ -208,24 +208,24 @@ fun NavHost(
 
 
         composable(
-            route = "tbtiResult/{tbtiResultCode}/{sValue}/{eValue}/{lValue}/{aValue}",
+            route = "tbtiResult/{tbtiResultCode}/{rValue}/{eValue}/{nValue}/{aValue}",
             arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
         ) { backStackEntry ->
             val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
-            val sValue = backStackEntry.arguments?.getString("sValue") ?: "0"
+            val rValue = backStackEntry.arguments?.getString("rValue") ?: "0"
             val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
-            val lValue = backStackEntry.arguments?.getString("lValue") ?: "0"
+            val nValue = backStackEntry.arguments?.getString("nValue") ?: "0"
             val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
 
-            Log.d("valuesssss2", "s" + sValue.toString())
+            Log.d("valuesssss2", "r" + rValue.toString())
             Log.d("valuesssss2", "e" + eValue.toString())
-            Log.d("valuesssss2", "l" + lValue.toString())
+            Log.d("valuesssss2", "n" + nValue.toString())
             Log.d("valuesssss2", "a" + aValue.toString())
 
             val traitScoresMap = mapOf(
-                "S" to sValue.toInt(),
+                "R" to rValue.toInt(),
                 "E" to eValue.toInt(),
-                "L" to lValue.toInt(),
+                "N" to nValue.toInt(),
                 "A" to aValue.toInt()
             )
             TbtiResultScreen(

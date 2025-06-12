@@ -73,19 +73,19 @@ fun TbtiQuestionSection(
             answers.getOrNull(0)?.let { answer1 ->
                 TbtiTestAnswerBox(
                     viewModel = viewModel,
-                    selectIdx = 1,
+                    selectIdx = 0,
                     answer = answer1,
-                    selected = selectedIndex == 1,
-                    onClick = { viewModel.onAnswerSelected(1) }
+                    selected = selectedIndex == 0,
+                    onClick = { viewModel.onAnswerSelected(0) }
                 )
             }
             answers.getOrNull(1)?.let { answer2 ->
                 TbtiTestAnswerBox(
                     viewModel = viewModel,
-                    selectIdx = 2,
+                    selectIdx = 1,
                     answer = answer2,
-                    selected = selectedIndex == 2,
-                    onClick = { viewModel.onAnswerSelected(2) }
+                    selected = selectedIndex == 1,
+                    onClick = { viewModel.onAnswerSelected(1) }
                 )
             }
         }

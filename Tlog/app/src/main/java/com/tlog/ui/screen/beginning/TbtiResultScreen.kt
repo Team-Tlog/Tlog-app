@@ -10,7 +10,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,23 +29,18 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
-import com.tlog.viewmodel.beginning.TbtiTestViewModel
-import com.tlog.viewmodel.beginning.login.LoginViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun TbtiResultScreen(
     tbtiResultCode: String,
     viewModel: TbtiResultViewModel = hiltViewModel(),
-    tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
     navController: NavController
 ) {
 
     val scrollState = rememberScrollState()
-    val leftLabels = listOf("S", "E", "L", "A")
-    val rightLabels = listOf("R", "O", "N", "I")
+    val leftLabels = listOf("R", "E", "N", "A")
+    val rightLabels = listOf("S", "O", "L", "I")
     val tbtiDescription = viewModel.tbtiDescription.value
 
     LaunchedEffect(Unit) {
@@ -72,7 +66,7 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.test_image else tbtiDescription.imageUrl,
+                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.rena else tbtiDescription.imageUrl,
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,13 +94,16 @@ fun TbtiResultScreen(
 
             for (i in leftLabels.indices) {
                 val leftScore = traitScores[leftLabels[i]] ?: 0
-                Log.d("leftScore", traitScores[leftLabels[i]].toString())
-                val rightScore = traitScores[rightLabels[i]] ?: 0
-                Log.d("rightScore", traitScores[rightLabels[i]].toString())
+                val calculteLeftScore = 100 -( traitScores[leftLabels[i]] ?: 0)
+                //val rightScore =  traitScores[rightLabels[i]] ?: 0
 
-                val leftColor = if (leftScore >= 50) MainColor else Color.Black
-                val rightColor = if (leftColor == MainColor) Color.Black else MainColor
-                val higherScore = maxOf(leftScore, rightScore)
+                val isLeftHigher = calculteLeftScore >= leftScore
+                val progress = calculteLeftScore / 100f
+
+                val progressColor = if (isLeftHigher) MainColor else Color(0xFFE0E0E0)
+                val trackColor = if (isLeftHigher) Color(0xFFE0E0E0) else MainColor
+                val leftColor = if (isLeftHigher) MainColor else Color.Black
+                val rightColor = if (!isLeftHigher) MainColor else Color.Black
 
                 Row(
                         modifier = Modifier
@@ -123,16 +120,16 @@ fun TbtiResultScreen(
                             fontFamily = MainFont,
                             color = leftColor
                         )
-                        LinearProgressIndicator(
-                            progress = higherScore / 100f,
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(6.dp)
-                                .clip(RoundedCornerShape(4.dp)),
-                            color = if (leftColor == MainColor) MainColor else Color(0xFFE0E0E0),
-                            trackColor = if (leftColor == MainColor) Color(0xFFE0E0E0) else MainColor,
-                            strokeCap = StrokeCap.Round
-                        )
+                    LinearProgressIndicator(
+                    progress = { progress },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(6.dp)
+                        .clip(RoundedCornerShape(4.dp)),
+                    color = progressColor,
+                    trackColor = trackColor,
+                    strokeCap = StrokeCap.Round,
+                    )
                         Text(
                             text = rightLabels[i],
                             modifier = Modifier.padding(start = 10.dp),
