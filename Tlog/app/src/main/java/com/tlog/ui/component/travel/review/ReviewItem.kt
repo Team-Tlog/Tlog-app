@@ -29,15 +29,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.travel.DetailReview
-import com.tlog.data.model.travel.Review
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
+
+
+
+// 시간 파싱 추후 뷰모델로 옮길 것
+import java.time.*
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 @Composable
 fun ReviewItem(
     review: DetailReview
 ) {
+    val instant = Instant.parse(review.createdAt)
+
+    val koreaZone = ZoneId.of("Asia/Seoul")
+    val koreaTime = instant.atZone(koreaZone)
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val time = koreaTime.format(formatter)
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -93,7 +108,7 @@ fun ReviewItem(
                         .fillMaxHeight(),
                 ) {
                     Text(
-                        text = review.createdAt,
+                        text = time,
                         fontFamily = MainFont,
                         fontSize = 8.sp,
                         fontWeight = FontWeight.Light,
