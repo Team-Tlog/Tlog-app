@@ -2,6 +2,7 @@ package com.tlog.ui.component.mypage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,8 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun MyPageTbtiGroup(
-    userInfo: UserInfo
+    userInfo: UserInfo,
+    tbtiTestClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -86,6 +88,7 @@ fun MyPageTbtiGroup(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
+                    .clickable { tbtiTestClick() }
             ) {
                 Text(
                     text = "검사 다시하기",

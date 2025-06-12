@@ -88,6 +88,7 @@ fun TbtiIntroScreen(
                 MainButton(
                     text = "테스트 시작",
                     onClick = {
+                        navController.popBackStack()
                         navController.navigate("tbtiTest")
                     },
                     modifier = Modifier

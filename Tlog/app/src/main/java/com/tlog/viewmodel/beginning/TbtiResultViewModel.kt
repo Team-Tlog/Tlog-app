@@ -34,6 +34,21 @@ class TbtiResultViewModel @Inject constructor(
     private val _tbtiDescription = mutableStateOf<TbtiDescriptionResponse?>(null)
     val tbtiDescription: State<TbtiDescriptionResponse?> = _tbtiDescription
 
+    private var userId = ""
+
+    init {
+        userId = tokenProvider.getUserId() ?: ""
+    }
+
+    fun isUserId(): Boolean {
+        return userId != ""
+    }
+
+    fun updateTbti(tbtiValue: String) {
+        viewModelScope.launch {
+            tbtiRepository.updateTbti(tbtiValue)
+        }
+    }
 
     fun fetchTbtiDescription(resultCode: String) {
         viewModelScope.launch {

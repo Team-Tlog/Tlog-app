@@ -27,7 +27,7 @@ import androidx.compose.runtime.getValue
 @Composable
 fun TbtiTestScreen(
     navController: NavController,
-   viewModel: TbtiTestViewModel = hiltViewModel()
+    viewModel: TbtiTestViewModel = hiltViewModel()
 ) {
     val isTestFinished by viewModel.isTestFinished
 
