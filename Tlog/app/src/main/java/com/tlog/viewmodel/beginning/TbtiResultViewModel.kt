@@ -94,7 +94,8 @@ class TbtiResultViewModel @Inject constructor(
                         )
                         loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
                         navController.navigate("main") {
-                            popUpTo("tbtiResult") { inclusive = true }
+                            popUpTo(0)
+                            launchSingleTop = true
                         }
                         Log.d("TbtiResultViewModel", "회원가입 성공 후 메인으로 이동")
                     }

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
@@ -35,6 +36,7 @@ fun DestinationCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .clickable { onClick(destination) }
+            .heightIn(max = 200.dp)
             .background(Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -49,7 +51,6 @@ fun DestinationCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 200.dp)
                 )
             }
             else {
@@ -59,7 +60,6 @@ fun DestinationCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 200.dp)
                 )
             }
 
@@ -73,13 +73,17 @@ fun DestinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Column {
+                    Column (
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Text(
                             text = destination.name,
                             color = Color.White,
                             fontSize = 22.sp,
                             fontFamily = MainFont,
-                            fontWeight = FontWeight.Bold
+                            maxLines = 1,
+                            overflow = TextOverflow.Clip,
+                            fontWeight = FontWeight.Bold,
                         )
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
