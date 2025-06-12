@@ -41,7 +41,6 @@ import com.tlog.ui.screen.travel.SearchScreen
 import com.tlog.ui.screen.travel.TravelDestinationRecommendation
 import com.tlog.ui.screen.travel.TravelInfoScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
-import com.tlog.viewmodel.beginning.TbtiTestViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -57,7 +56,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = "login") {
+    NavHost(navController = navController, startDestination = startScreen) {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -216,6 +215,15 @@ fun NavHost(
             val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
             val nValue = backStackEntry.arguments?.getString("nValue") ?: "0"
             val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
+            val resultList = listOf(rValue, eValue, nValue, aValue)
+            var resultCode = ""
+
+            resultList.forEach { result ->
+                if (result.length == 1)
+                    resultCode += "0$result"
+                else
+                    resultCode += result
+            }
 
             Log.d("valuesssss2", "r" + rValue.toString())
             Log.d("valuesssss2", "e" + eValue.toString())
@@ -229,7 +237,8 @@ fun NavHost(
                 "A" to aValue.toInt()
             )
             TbtiResultScreen(
-                tbtiResultCode = tbtiResultCode,
+                tbtiResult = tbtiResultCode,
+                tbtiResultCode = resultCode,
                 traitScores = traitScoresMap,
                 navController = navController
             )

@@ -29,7 +29,7 @@ private val Context.dataStore by preferencesDataStore(name = "scrap_prefs")
 @Singleton
 class ScrapManager @Inject constructor(
     private val repository: ScrapRepository,
-    private val tokenProvider: TokenProvider,
+    tokenProvider: TokenProvider,
     @ApplicationContext private val context: Context
 ){
     private val SCRAP_KEY = stringSetPreferencesKey("scrap_list")

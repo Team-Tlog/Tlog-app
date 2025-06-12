@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsApi
+import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.SnsRepository
 import dagger.Module
 import dagger.Provides
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SNSIdViewModel @Inject constructor(
-    private val repository: SnsRepository
+    private val repository: SnsRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     sealed class UiEvent {
@@ -46,7 +48,10 @@ class SNSIdViewModel @Inject constructor(
                 val result = repository.updateSnsId(id)
 
                 when (result.status) {
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
+                    200 -> {
+                        _eventFlow.emit(UiEvent.ApiSuccess)
+                        userPreferences.setSnsId(id)
+                    }
                     404 -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "사용자 정보 없음"))
                     409 -> {
                         _eventFlow.emit(UiEvent.ApiError(result.message ?: "중복된 ID"))

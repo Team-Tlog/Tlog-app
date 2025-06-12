@@ -29,9 +29,12 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
+import com.tlog.viewmodel.beginning.TbtiTestViewModel
+import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
 fun TbtiResultScreen(
+    tbtiResult: String,
     tbtiResultCode: String,
     viewModel: TbtiResultViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
@@ -42,10 +45,14 @@ fun TbtiResultScreen(
     val leftLabels = listOf("R", "E", "N", "A")
     val rightLabels = listOf("S", "O", "L", "I")
     val tbtiDescription = viewModel.tbtiDescription.value
+    val tbtiCodeList = tbtiResultCode.toString().chunked(2)
+    Log.d("resultCode11", tbtiResultCode)
+    Log.d("resultCode11", tbtiCodeList.toString())
+
+
 
     LaunchedEffect(Unit) {
-        viewModel.fetchTbtiDescription(tbtiResultCode)
-
+        viewModel.fetchTbtiDescription(tbtiResult)
     }
 
     if (tbtiDescription != null) {
@@ -239,9 +246,9 @@ fun TbtiResultScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            val tbtiValue = "${traitScores["S"] ?: 0}" +
+            val tbtiValue = "${traitScores["R"] ?: 0}" +
                     "${traitScores["E"] ?: 0}" +
-                    "${traitScores["L"] ?: 0}" +
+                    "${traitScores["N"] ?: 0}" +
                     "${traitScores["A"] ?: 0}"
 
             MainButton(
