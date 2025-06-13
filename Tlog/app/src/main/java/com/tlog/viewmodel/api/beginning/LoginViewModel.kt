@@ -98,7 +98,7 @@ class LoginViewModel @Inject constructor(
                 } else {
                     if(response.code() == 404){
                         Log.d("LoginViewModel", "404 응답 확인 tbti 테스트 시작")
-                        navController.navigate("tbtiTest")
+                        navController.navigate("tbtiIntro")
                     }
                     else{
                         Log.d("LoginViewModel", "로그인 실패")

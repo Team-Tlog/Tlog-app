@@ -27,17 +27,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.travel.DetailReview
-import com.tlog.data.model.travel.Review
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 
+
+
+// 시간 파싱 추후 뷰모델로 옮길 것
+import java.time.*
+import java.time.format.DateTimeFormatter
+
 @Composable
 fun ReviewItem(
-    review: DetailReview
+    review: DetailReview,
+    onClick: (String) -> Unit
 ) {
+    val instant = Instant.parse(review.createdAt)
+
+    val koreaZone = ZoneId.of("Asia/Seoul")
+    val koreaTime = instant.atZone(koreaZone)
+
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val time = koreaTime.format(formatter)
+
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -53,16 +69,17 @@ fun ReviewItem(
                     .fillMaxSize()
                     .padding(horizontal = 3.dp)
             ) {
-                Image(
-                    painter = painterResource(R.drawable.tmp_jeju), // 유저 이미지로 변경할 것
+                AsyncImage(
+                    model = review.userProfileImageUrl,
                     contentDescription = "프로필 사진",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(36.dp)
                         .clip(RoundedCornerShape(100))
                         .clickable {
-                            Log.d("user", "my click!!")
-                        }
+                            onClick(review.userId)
+                        },
+                    error = painterResource(id = R.drawable.tmp_jeju)
                 )
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -75,7 +92,7 @@ fun ReviewItem(
                         style = Body1Bold,
                         modifier = Modifier
                             .clickable {
-                                Log.d("user", "my click!!")
+                                onClick(review.userId)
                             }
                     )
 
@@ -93,7 +110,7 @@ fun ReviewItem(
                         .fillMaxHeight(),
                 ) {
                     Text(
-                        text = review.createdAt,
+                        text = time,
                         fontFamily = MainFont,
                         fontSize = 8.sp,
                         fontWeight = FontWeight.Light,
@@ -110,5 +127,19 @@ fun ReviewItem(
             fontSize = 12.sp,
             fontWeight = FontWeight.Light
         )
+
+        Spacer(modifier = Modifier.height(11.dp))
+
+        review.reviewImageUrl.forEach { imageUrl ->
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(70.dp)
+                    .clip(RoundedCornerShape(5.dp)),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.tmp_jeju)
+            )
+        }
     }
 }

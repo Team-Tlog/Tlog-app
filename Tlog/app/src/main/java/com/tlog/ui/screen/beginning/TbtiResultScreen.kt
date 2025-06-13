@@ -34,11 +34,11 @@ import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
 fun TbtiResultScreen(
-    tbtiResult: String,
-    tbtiResultCode: String,
+    tbtiResult: String, // ex) RENA
+    tbtiResultCode: String, // ex) 10230203
     viewModel: TbtiResultViewModel = hiltViewModel(),
-    tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel = hiltViewModel(),
+    //tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
+    //loginViewModel: LoginViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
     navController: NavController
 ) {
@@ -75,7 +75,7 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.test_image else tbtiDescription.imageUrl,
+                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.rena else tbtiDescription.imageUrl,
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -192,7 +192,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.test_image,
+                        model = R.drawable.roli,
                         contentDescription = "최고의 궁합",
                         modifier = Modifier
                             .size(80.dp)
@@ -228,7 +228,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.test_image,
+                        model = R.drawable.roli,
                         contentDescription = "최악의 궁합",
                         modifier = Modifier
                             .size(80.dp)
@@ -246,9 +246,16 @@ fun TbtiResultScreen(
                     "${traitScores["A"] ?: 0}"
 
             MainButton(
-                text = "시작하기",
+                text = if (viewModel.isUserId()) "변경하기" else "시작하기",
                 onClick = {
-                    viewModel.registerUser(navController, tbtiValue)
+                    if (viewModel.isUserId()) {
+                        viewModel.updateTbti(tbtiValue)
+                        navController.popBackStack()
+                        navController.popBackStack()
+                        navController.navigate("myPage")
+                    }
+                    else
+                        viewModel.registerUser(navController, tbtiValue)
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)

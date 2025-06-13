@@ -27,7 +27,7 @@ import androidx.compose.runtime.getValue
 @Composable
 fun TbtiTestScreen(
     navController: NavController,
-   viewModel: TbtiTestViewModel = hiltViewModel()
+    viewModel: TbtiTestViewModel = hiltViewModel()
 ) {
     val isTestFinished by viewModel.isTestFinished
 
@@ -73,7 +73,7 @@ fun TbtiTestScreen(
                     viewModel.selectedIdx.value?.let { index ->
                         viewModel.onAnswerSelected(index)
                         viewModel.moveToNextQuestion()
-                        //viewModel.selectedIdx.value = null
+                        viewModel.selectedIdx.value = null
                     }
                 },
                 modifier = Modifier.padding(horizontal = 20.dp)

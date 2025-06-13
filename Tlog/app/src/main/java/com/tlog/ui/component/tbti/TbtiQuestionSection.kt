@@ -58,7 +58,6 @@ fun TbtiQuestionSection(
                 .wrapContentHeight()
                 .padding(horizontal = 20.dp)
                 .width(230.dp)
-                .height(70.dp)
         )
 
         Spacer(modifier = Modifier.height(70.dp))
@@ -66,7 +65,7 @@ fun TbtiQuestionSection(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 51.dp, start = (23.5).dp, end = (23.5).dp, bottom = 25.dp),
+                .padding(start = (23.5).dp, end = (23.5).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {

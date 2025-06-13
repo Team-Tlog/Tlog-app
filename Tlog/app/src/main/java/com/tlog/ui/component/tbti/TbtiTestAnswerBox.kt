@@ -33,8 +33,7 @@ fun TbtiTestAnswerBox(
 
     Box(
         modifier = Modifier
-            .width(313.dp)
-            .height(80.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(if (selected) selectedBg else defaultBg)
             .then(
@@ -48,7 +47,6 @@ fun TbtiTestAnswerBox(
             )
             .clickable {
                 onClick()
-                // Example interaction with ViewModel if needed
                 viewModel.onAnswerSelected(selectIdx)
             }
             .padding(20.dp),

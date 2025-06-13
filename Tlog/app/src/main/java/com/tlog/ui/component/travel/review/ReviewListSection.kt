@@ -33,9 +33,9 @@ fun ReviewListSection(
         Spacer(modifier = Modifier.height(29.dp))
 
 
-        ReviewList(
-            reviewList = reviewList,
-            maxCnt = reviewCnt
-        )
+//        ReviewList(
+//            reviewList = reviewList,
+//            maxCnt = reviewCnt
+//        )
     }
 }

@@ -219,9 +219,9 @@ class TbtiTestViewModel @Inject constructor(
 object TbtiRepositoryModule {
     @Provides
     fun provideTbtiRepository(
-        tbtiApi: TbtiApi
+        retrofitInstance: TbtiApi
     ): TbtiRepository {
-        return TbtiRepository(tbtiApi)
+        return TbtiRepository(retrofitInstance)
     }
 
     @Provides

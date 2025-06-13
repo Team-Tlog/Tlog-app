@@ -128,7 +128,10 @@ fun ReviewListScreen(
                     Spacer(modifier = Modifier.height(29.dp))
 
                     ReviewList(
-                        reviewList = viewModel.reviewList.value
+                        reviewList = viewModel.reviewList.value,
+                        onClick = { userId ->
+                            navController.navigate("snsMyPage/$userId")
+                        }
                     )
                 }
             }

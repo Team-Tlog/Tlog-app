@@ -15,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
+import com.tlog.ui.screen.beginning.TbtiIntroScreen
 import com.tlog.ui.screen.beginning.TbtiResultScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelDestinationScreen
@@ -44,6 +45,7 @@ import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+
 
 @Composable
 fun NavHost(
@@ -191,21 +193,9 @@ fun NavHost(
                 viewModel = viewModel
             )
         }
-
-        composable("course") {
-            MyTravelingCourseScreen(navController)
+        composable(route = "tbtiIntro") {
+            TbtiIntroScreen(navController = navController)
         }
-        composable("myPage") {
-            MyPageScreen(navController = navController)
-        }
-        composable("notification") {
-            NotificationScreen(
-                navController = navController,
-                previousSelectedIndex = 0 // ?
-            )
-        }
-
-
         composable(
             route = "tbtiResult/{tbtiResultCode}/{sValue}/{eValue}/{lValue}/{aValue}",
             arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
@@ -243,6 +233,22 @@ fun NavHost(
                 navController = navController
             )
         }
+
+        composable("course") {
+            MyTravelingCourseScreen(navController)
+        }
+        composable("myPage") {
+            MyPageScreen(navController = navController)
+        }
+        composable("notification") {
+            NotificationScreen(
+                navController = navController,
+                previousSelectedIndex = 0 // ?
+            )
+        }
+
+
+
     }
 }
 

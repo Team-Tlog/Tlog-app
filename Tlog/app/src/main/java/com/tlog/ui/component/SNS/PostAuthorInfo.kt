@@ -2,7 +2,6 @@ package com.tlog.ui.component.SNS
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,11 +20,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.tlog.R
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
@@ -33,6 +35,7 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun PostAuthorInfo(
     userId: String,
+    userProfileImageUrl: String,
     isFollowing: Boolean,
     clickUser: () -> Unit = {},
     onFollowToggle: () -> Unit,
@@ -47,7 +50,10 @@ fun PostAuthorInfo(
         verticalAlignment = Alignment.CenterVertically
     ) {
         // 프로필 사진
-        Box(
+        AsyncImage(
+            model = userProfileImageUrl,
+            contentDescription = null,
+            error = painterResource(id = R.drawable.tmp_jeju),
             modifier = Modifier
                 .size(44.dp)
                 .clip(CircleShape)

@@ -101,7 +101,12 @@ fun MyPageScreen(
                         Spacer(modifier = Modifier.height(24.dp))
 
                         if (viewModel.isGetUserApiSuccess.value == true)
-                            MyPageTbtiGroup(userInfo = viewModel.userInfo.value!!)
+                            MyPageTbtiGroup(
+                                userInfo = viewModel.userInfo.value!!,
+                                tbtiTestClick = {
+                                    navController.navigate("tbtiIntro")
+                                }
+                            )
 
                         Spacer(modifier = Modifier.height(8.dp))
 

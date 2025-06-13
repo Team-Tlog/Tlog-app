@@ -72,7 +72,7 @@ fun CityTravelList(
                             travelName = item.name,
                             travelDescription = //item.description,
                                 "서버에 연락바랍니다",
-                            hashTags = item.tagCountList.map { it.tag },
+                            hashTags = item.tagCountList.map { it.tagName },
                             checked = false,
                             setCheckBox = { i, checked ->
                                 onUpdateChecked(i, checked)

@@ -4,6 +4,7 @@ import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.TbtiDescriptionResponse
 import com.tlog.data.api.TbtiQuestionItem
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface TbtiApi {
@@ -16,4 +17,16 @@ interface TbtiApi {
     suspend fun getTbtiDescription(
         @Query("tbti") tbti: String
     ): BaseResponse<TbtiDescriptionResponse>
+
+    @POST("/api/users/tbti")
+    suspend fun updateTbti(
+        @Query("tbti") tbti: Int
+    ): BaseResponse<UpdateTbtiResponse>
 }
+
+data class UpdateTbtiResponse(
+    val tbtiString: String,
+    val imageUrl: String,
+    val secondName: String,
+    val description: String
+)
