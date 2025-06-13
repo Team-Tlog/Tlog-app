@@ -50,6 +50,7 @@ fun PostItem(
             isFollowing = isFollowing, // 수정 방안 고안 해볼 것
             clickUser = { clickUser(post.authorId) },
             onFollowToggle = followClick,
+            userProfileImageUrl = post.authorProfileImageUrl
         )
 
         PostImage(

@@ -78,11 +78,15 @@ fun SnsDetailScreen(
             ) {
                 PostAuthorInfo(
                     userId = viewModel.post.value!!.authorName,
+                    userProfileImageUrl = viewModel.post.value!!.authorProfileImageUrl,
                     isFollowing = followingList.contains(viewModel.post.value!!.authorId),
                     isMyPost = viewModel.userId == viewModel.post.value!!.authorId,
                     onFollowToggle = {
                         viewModel.followUser(viewModel.post.value!!.authorId)
                     },
+                    clickUser = {
+                        navController.navigate("snsMyPage/${viewModel.post.value!!.authorId}")
+                    }
                 )
 
                 PostImage(
