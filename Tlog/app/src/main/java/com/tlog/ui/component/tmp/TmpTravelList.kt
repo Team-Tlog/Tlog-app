@@ -27,7 +27,7 @@ fun TmpTravelList(
                 index = index,
                 travelName = item.name,
                 travelDescription = "설명 없음",
-                hashTags = item.tagCountList.map { it.tag },
+                hashTags = item.tagCountList.map { it.tagName },
                 checked = checkedList.getOrElse(index) { false },
                 setCheckBox = setCheckBox,
                 travelImageUrl = item.imageUrl

@@ -45,7 +45,6 @@ fun TravelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
         if (travel.imageUrl != "NaN") {
@@ -105,7 +104,7 @@ fun TravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(travel.tagCountList.map { it.tag })
+            HashTagsGroup(travel.tagCountList.map { it.tagName })
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -136,7 +135,6 @@ fun ScrapTravelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(101.dp)
             .padding(horizontal = 20.dp)
     ) {
         if (travel.imageUrl != "NaN") {

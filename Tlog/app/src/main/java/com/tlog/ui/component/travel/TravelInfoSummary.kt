@@ -84,7 +84,7 @@ fun TravelInfoSummary(
         Spacer(modifier = Modifier.height(26.dp))
 
         HashTagsGroup(
-            hashTags = travelInfo.topTags.map { it.tag },
+            hashTags = travelInfo.topTags.map { it.tagName },
             space = 4.dp
         )
 
