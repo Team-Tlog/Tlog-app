@@ -24,8 +24,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -60,8 +63,6 @@ fun ScrapAndCartScreen(
         val selectedTab = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("스크랩") }
 
         Column {
-
-            // 상단 탭 Row
             if (viewModel.checkedTravelList.value.isNotEmpty()) {
                 Box(
                     modifier = Modifier
@@ -98,7 +99,6 @@ fun ScrapAndCartScreen(
                     )
                 }
             } else {
-                // 스크랩/내 장바구니 선택 Row (아이템이 선택되지 않은 경우만 표시)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,31 +106,60 @@ fun ScrapAndCartScreen(
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = "스크랩",
-                        fontSize = 15.sp,
-                        color = if (selectedTab.value == "스크랩") Color.Black else Color.Gray,
+                    Box(
                         modifier = Modifier
+                            .drawBehind {
+                                val strokeWidth = 2.dp.toPx()
+                                val y = size.height - strokeWidth / 2
+                                drawLine(
+                                    color = if (selectedTab.value == "스크랩") MainColor else Color.Transparent,
+                                    start = Offset(0f, y),
+                                    end = Offset(size.width, y),
+                                    strokeWidth = strokeWidth
+                                )
+                            }
                             .clickable {
                                 selectedTab.value = "스크랩"
                                 viewModel.fetchScrapList(viewModel.userId)
                             }
-                    )
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text(
-                        text = "내 장바구니",
-                        fontSize = 15.sp,
-                        color = if (selectedTab.value == "내 장바구니") Color.Black else Color.Gray,
+                    ) {
+                        Text(
+                            text = "스크랩",
+                            fontSize = 15.sp,
+                            color = if (selectedTab.value == "스크랩") Color.Black else Color.Gray,
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp, vertical = (11.5).dp)
+                        )
+                    }
+
+                    Box(
                         modifier = Modifier
+                            .drawBehind {
+                                val strokeWidth = 2.dp.toPx()
+                                val y = size.height - strokeWidth / 2
+                                drawLine(
+                                    color = if (selectedTab.value == "내 장바구니") MainColor else Color.Transparent,
+                                    start = Offset(0f, y),
+                                    end = Offset(size.width, y),
+                                    strokeWidth = strokeWidth
+                                )
+                            }
                             .clickable {
                                 selectedTab.value = "내 장바구니"
                                 viewModel.fetchCart(viewModel.userId)
                             }
-                    )
+                    ) {
+                        Text(
+                            text = "내 장바구니",
+                            fontSize = 15.sp,
+                            color = if (selectedTab.value == "내 장바구니") Color.Black else Color.Gray,
+                            modifier = Modifier
+                                .padding(horizontal = 10.dp, vertical = (11.5).dp)
+                        )
+                    }
                 }
             }
 
-            // Row for 전체 선택
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -169,8 +198,6 @@ fun ScrapAndCartScreen(
             }
         }
 
-
-        // 버튼 조건 분기
         AnimatedVisibility(
             visible = viewModel.checkedTravelList.value.isNotEmpty(),
             enter = fadeIn(),
