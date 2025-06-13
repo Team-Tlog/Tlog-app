@@ -70,7 +70,7 @@ fun TravelDestinationRecommendation(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .imePadding()
+            //.imePadding()
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
         Box(
