@@ -90,6 +90,9 @@ fun TravelInfoScreen(
                             },
                             reviewWrite = {
                                 navController.navigate("review/$travelId/${destination.name}")
+                            },
+                            onClick = { userId ->
+                                navController.navigate("snsMyPage/$userId")
                             }
                         )
 

@@ -12,7 +12,8 @@ import com.tlog.data.model.travel.Review
 @Composable
 fun ReviewList(
     reviewList: List<DetailReview>,
-    maxCnt: Int = Int.MAX_VALUE
+    maxCnt: Int = Int.MAX_VALUE,
+    onClick: (String) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(29.dp)
@@ -23,7 +24,10 @@ fun ReviewList(
 
             val review = reviewList[i]
 
-            ReviewItem(review = review)
+            ReviewItem(
+                review = review,
+                onClick = onClick
+            )
         }
     }
 

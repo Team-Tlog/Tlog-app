@@ -32,7 +32,8 @@ fun ReviewSection(
     reviewList: List<DetailReview>,
     reviewCnt: Int = Int.MAX_VALUE,
     moreReview: () -> Unit,
-    reviewWrite: () -> Unit
+    reviewWrite: () -> Unit,
+    onClick: (String) -> Unit
 ) {
     Column {
         Column(
@@ -96,7 +97,8 @@ fun ReviewSection(
         ) {
             ReviewList(
                 reviewList = reviewList,
-                maxCnt = reviewCnt
+                maxCnt = reviewCnt,
+                onClick = onClick
             )
         }
     }
