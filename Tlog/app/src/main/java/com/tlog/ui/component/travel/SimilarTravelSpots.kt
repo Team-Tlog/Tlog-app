@@ -88,7 +88,7 @@ fun SimilarTravelSpots(
             Spacer(modifier = Modifier.height(8.dp))
 
             BlueHashTagGroup(
-                hashTags = emptyList(), //travel.customTags.map { it.tag },
+                hashTags = travel.customTags?.map { it.tagName } ?: emptyList(),
                 maxCnt = 2
             )
         }

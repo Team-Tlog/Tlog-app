@@ -272,7 +272,7 @@ fun SearchTravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(listOf("단풍", "가을")) // 태그 예시임
+            HashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))

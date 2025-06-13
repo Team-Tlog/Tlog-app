@@ -25,7 +25,7 @@ data class MinimalTravel(
     val name: String,
     val imageUrl: String,
     val description: String,
-    val customTags: List<TagCount>
+    val customTags: List<TagCount>? = emptyList()
 )
 
 data class DetailReview(
