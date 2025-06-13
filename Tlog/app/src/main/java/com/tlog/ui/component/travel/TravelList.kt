@@ -18,13 +18,17 @@ import com.tlog.data.model.travel.Travel
 @Composable
 fun TravelList(
     travelList: List<ShopCart>,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
+    onClick: (String) -> Unit
 ) {
     LazyColumn(
         state = listState
     ) {
         itemsIndexed(travelList) { index, item ->
-            TravelItem(travel = item)
+            TravelItem(
+                travel = item,
+                onClick = onClick
+            )
             if (index == travelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {
@@ -38,13 +42,17 @@ fun TravelList(
 @Composable
 fun ScrapTravelList(
     scrapTravelList: List<ScrapDestinationResponse>,
-    listState: LazyListState = rememberLazyListState()
+    listState: LazyListState = rememberLazyListState(),
+    onClick: (String) -> Unit
 ) {
     LazyColumn(
         state = listState
     ) {
         itemsIndexed(scrapTravelList) { index, item ->
-            ScrapTravelItem(travel = item)
+            ScrapTravelItem(
+                travel = item,
+                onClick = onClick
+            )
             if (index == scrapTravelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {

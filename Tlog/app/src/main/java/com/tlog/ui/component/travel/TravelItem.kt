@@ -39,7 +39,8 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 @Composable
 fun TravelItem(
     viewModel: ScrapAndCartViewModel = viewModel(),
-    travel: ShopCart
+    travel: ShopCart,
+    onClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -55,6 +56,9 @@ fun TravelItem(
                 modifier = Modifier
                     .size(99.dp)
                     .clip(RoundedCornerShape(15.dp))
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
         }
         else {
@@ -65,6 +69,9 @@ fun TravelItem(
                 modifier = Modifier
                     .size(99.dp)
                     .clip(RoundedCornerShape(15.dp))
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
         }
 
@@ -75,7 +82,11 @@ fun TravelItem(
         ) {
             Text(
                 text = travel.name,
-                style = Body1Bold
+                style = Body1Bold,
+                modifier = Modifier
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -85,7 +96,11 @@ fun TravelItem(
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
-                modifier = Modifier.height(30.dp)
+                modifier = Modifier
+                    .height(30.dp)
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -115,7 +130,8 @@ fun TravelItem(
 @Composable
 fun ScrapTravelItem(
     viewModel: ScrapAndCartViewModel = viewModel(),
-    travel: ScrapDestinationResponse
+    travel: ScrapDestinationResponse,
+    onClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -131,6 +147,9 @@ fun ScrapTravelItem(
                 modifier = Modifier
                     .size(99.dp)
                     .clip(RoundedCornerShape(15.dp))
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
         }
         else {
@@ -141,6 +160,9 @@ fun ScrapTravelItem(
                 modifier = Modifier
                     .size(99.dp)
                     .clip(RoundedCornerShape(15.dp))
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
         }
 
@@ -151,7 +173,11 @@ fun ScrapTravelItem(
         ) {
             Text(
                 text = travel.name,
-                style = Body1Bold
+                style = Body1Bold,
+                modifier = Modifier
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -161,7 +187,11 @@ fun ScrapTravelItem(
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
-                modifier = Modifier.height(30.dp)
+                modifier = Modifier
+                    .height(30.dp)
+                    .clickable {
+                        onClick(travel.id)
+                    }
             )
 
             Spacer(modifier = Modifier.height(5.dp))

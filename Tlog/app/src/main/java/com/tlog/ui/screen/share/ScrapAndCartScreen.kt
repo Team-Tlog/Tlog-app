@@ -154,11 +154,17 @@ fun ScrapAndCartScreen(
 
             if (selectedTab.value == "스크랩") {
                 ScrapTravelList(
-                    scrapTravelList = viewModel.scrapList.value
+                    scrapTravelList = viewModel.scrapList.value,
+                    onClick = { travelId ->
+                        navController.navigate("travelInfo/$travelId")
+                    }
                 )
             } else {
                 TravelList(
-                    travelList = viewModel.cartList.value
+                    travelList = viewModel.cartList.value,
+                    onClick = { travelId ->
+                        navController.navigate("travelInfo/$travelId")
+                    }
                 )
             }
         }
