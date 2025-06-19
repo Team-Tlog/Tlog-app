@@ -82,21 +82,3 @@ class SearchViewModel @Inject constructor(
         return searchText.value.isNotBlank()
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object SearchModule {
-    @Provides
-    fun provideSearchRepository(
-        searchApi: SearchApi
-    ): SearchRepository {
-        return SearchRepository(searchApi)
-    }
-
-    @Provides
-    fun provideSearchApi(
-        retrofit: Retrofit
-    ): SearchApi {
-        return retrofit.create(SearchApi::class.java)
-    }
-}

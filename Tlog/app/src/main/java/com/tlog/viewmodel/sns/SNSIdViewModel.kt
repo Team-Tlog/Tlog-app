@@ -77,14 +77,3 @@ class SNSIdViewModel @Inject constructor(
         _isDuplicated.value = false
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object SnsModule {
-    @Provides
-    fun provideSnsApi(
-        retrofit: Retrofit
-    ): SnsApi {
-        return retrofit.create(SnsApi::class.java)
-    }
-}

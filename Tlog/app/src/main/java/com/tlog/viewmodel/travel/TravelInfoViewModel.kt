@@ -68,14 +68,3 @@ class TravelInfoViewModel @Inject constructor(
         return scrapManager.isScraped(destinationId)
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object SearchOneDestinationModule {
-    @Provides
-    fun provideSearchOneDestinationRepository(
-        travelApi: TravelApi
-    ): SearchOneDestinationRepository {
-        return SearchOneDestinationRepository(travelApi)
-    }
-}

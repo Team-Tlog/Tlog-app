@@ -212,22 +212,3 @@ class TbtiTestViewModel @Inject constructor(
 
     val selectedIdx = mutableStateOf<Int?>(null)
 }
-
-
-@Module
-@InstallIn(SingletonComponent::class)
-object TbtiRepositoryModule {
-    @Provides
-    fun provideTbtiRepository(
-        retrofitInstance: TbtiApi
-    ): TbtiRepository {
-        return TbtiRepository(retrofitInstance)
-    }
-
-    @Provides
-    fun provideTbtiApi(
-        retrofit: Retrofit
-    ): TbtiApi {
-        return retrofit.create(TbtiApi::class.java)
-    }
-}

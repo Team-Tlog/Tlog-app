@@ -164,21 +164,3 @@ class AddTravelViewModel @Inject constructor(
         return true
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object TravelModule {
-    @Provides
-    fun provideTravelApi(
-        retrofit: Retrofit
-    ): TravelApi {
-        return retrofit.create(TravelApi::class.java)
-    }
-
-    @Provides
-    fun provideAddTravelRepository(
-        travelApi: TravelApi
-    ): AddTravelRepository {
-        return AddTravelRepository(travelApi)
-    }
-}

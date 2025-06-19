@@ -134,22 +134,3 @@ class MyPageViewModel @Inject constructor(
         }
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object MyPageRepositoryModule {
-    @Provides
-    fun provideMyPageRepository(
-        loginApi: LoginApi,
-        userApi: UserApi
-    ): MyPageRepository {
-        return MyPageRepository(loginApi, userApi)
-    }
-
-    @Provides
-    fun provideLoginApi(
-        retrofit: Retrofit
-    ): LoginApi {
-        return retrofit.create(LoginApi::class.java)
-    }
-}

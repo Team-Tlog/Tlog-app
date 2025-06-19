@@ -76,20 +76,4 @@ class MyTeamListViewModel @Inject constructor(
     }
 }
 
-@Module
-@InstallIn(SingletonComponent::class)
-object MyTeamListModule {
-    @Provides
-    fun provideMyTeamListRepository(
-        teamApi: TeamApi
-    ): TeamRepository {
-        return TeamRepository(teamApi)
-    }
 
-    @Provides
-    fun provideTeamApi(
-        retrofit: Retrofit
-    ): TeamApi {
-        return retrofit.create(TeamApi::class.java)
-    }
-}

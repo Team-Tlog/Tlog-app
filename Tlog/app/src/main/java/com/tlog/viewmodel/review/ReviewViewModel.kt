@@ -156,14 +156,3 @@ class ReviewViewModel @Inject constructor(
         _imageList.value = emptyList()
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object ReviewModule {
-    @Provides
-    fun provideReviewRepository(
-        travelApi: TravelApi
-    ): ReviewRepository {
-        return ReviewRepository(travelApi)
-    }
-}

@@ -144,18 +144,3 @@ class TravelDestinationRecommendationViewModel @Inject constructor(
         }
     }
 }
-
-@Module
-@InstallIn(SingletonComponent::class)
-object RecommendDestinationModule {
-    @Provides
-    fun provideRecommendDestinationRepository(
-        travelApi: TravelApi,
-        searchApi: SearchApi
-    ): RecommendDestinationRepository {
-        return RecommendDestinationRepository(
-            travelRetrofitInstance = travelApi,
-            searchRetrofitInstance = searchApi
-        )
-    }
-}

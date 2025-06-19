@@ -138,21 +138,3 @@ class ScrapAndCartViewModel @Inject constructor(
 }
 
 
-@Module
-@InstallIn(SingletonComponent::class)
-object CartModule {
-    @Provides
-    fun provideCartRepository(
-        userApi: UserApi,
-        travelApi: TravelApi
-    ): ScrapAndCartRepository {
-        return ScrapAndCartRepository(userApi, travelApi)
-    }
-
-    @Provides
-    fun provideUserApi(
-        retrofit: Retrofit
-    ): UserApi {
-        return retrofit.create(UserApi::class.java)
-    }
-}
