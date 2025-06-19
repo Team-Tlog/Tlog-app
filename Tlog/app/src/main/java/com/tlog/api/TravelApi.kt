@@ -4,9 +4,9 @@ import com.tlog.data.api.AddTravelRequest
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ReviewListResponse
 import com.tlog.data.api.ReviewRequest
-import com.tlog.data.api.ScrapData
 import com.tlog.data.api.TravelDetailResponse
 import com.tlog.data.api.TravelRecommendPagedResponse
+import com.tlog.data.model.travel.Scrap
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -61,5 +61,5 @@ interface TravelApi {
     @GET("/api/scrap/user/{userId}")
     suspend fun getUserScraps(
         @Path("userId") userId: String
-    ): BaseResponse<List<ScrapData>>
+    ): BaseResponse<List<Scrap>>
 }
