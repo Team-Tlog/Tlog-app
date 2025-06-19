@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -72,7 +72,7 @@ fun TravelInfoScreen(
 
                             Spacer(modifier = Modifier.height(89.dp))
 
-                            Divider(
+                            HorizontalDivider(
                                 color = Color(0xFFE3E3E3),
                                 thickness = 1.dp
                             )
