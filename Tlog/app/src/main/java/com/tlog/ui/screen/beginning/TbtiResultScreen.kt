@@ -79,8 +79,9 @@ fun TbtiResultScreen(
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
+                    .size(200.dp)
                     .height(200.dp),
-                contentScale = ContentScale.Crop
+                //4contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.height(24.dp))
