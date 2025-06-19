@@ -81,7 +81,7 @@ fun DropDown(
 
             // 드롭다운 펼쳐졌을 때
             if (expanded) {
-                Divider(
+                HorizontalDivider(
                     color = Color(0xFFE8E8E8),
                     thickness = 0.5.dp,
                     modifier = Modifier
