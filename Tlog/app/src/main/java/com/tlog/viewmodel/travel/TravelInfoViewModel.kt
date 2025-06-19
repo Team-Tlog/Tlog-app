@@ -3,16 +3,11 @@ package com.tlog.viewmodel.travel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.SearchOneDestinationRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,6 +19,7 @@ class TravelInfoViewModel @Inject constructor(
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+
     private var userId: String? = null
 
     init {
@@ -41,15 +37,14 @@ class TravelInfoViewModel @Inject constructor(
         _sortOption.value = newOption
     }
 
-    fun loadDestinationById(id: String) {
+    fun getTravelInfo(id: String) {
         viewModelScope.launch {
             try {
                 val response = repository.getDestinationById(id)
-                Log.d("okhttp", response.data.toString())
                 _destinationDetail.value = response.data
             }
             catch (e: Exception) {
-                Log.d("okhttp", e.message.toString())
+                Log.d("TravelInfoViewModel", e.message.toString())
             }
         }
     }
@@ -59,7 +54,7 @@ class TravelInfoViewModel @Inject constructor(
             try {
                 scrapManager.toggleScrap(destinationId)
             } catch (e: Exception) {
-                // TODO: Error handling
+                Log.d("TravelInfoViewModel", e.message.toString())
             }
         }
     }

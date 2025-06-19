@@ -1,13 +1,11 @@
 package com.tlog.ui.screen.travel
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,12 +27,11 @@ fun TravelDetailScreen(
     viewModel: TravelInfoViewModel = hiltViewModel(),
     navController: NavController
 ) {
-    val detail = viewModel.destinationDetail.collectAsState().value
+    val travel = viewModel.destinationDetail.collectAsState().value
 
     // 여행지 ID로 API 호출 (최초 1회)
     LaunchedEffect(travelId) {
-        viewModel.loadDestinationById(travelId)
-        Log.d("okhttp", "TravelInfoScreen: ${detail.toString()}")
+        viewModel.getTravelInfo(travelId)
     }
 
     Box(
@@ -44,7 +41,7 @@ fun TravelDetailScreen(
             .verticalScroll(rememberScrollState())
             .windowInsetsPadding(WindowInsets.navigationBars)
     ) {
-        detail?.let { destination ->
+        travel?.let { destination ->
             Column {
                 TravelTopImageBox(
                     imageUrl = destination.imageUrl,
@@ -114,14 +111,7 @@ fun TravelDetailScreen(
                 }
             }
         } ?: run {
-            // 로딩 또는 데이터 없음 처리
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 100.dp),
-            ) {
-                Text("여행지를 불러오는 중입니다...")
-            }
+            // api 로딩 중일 때
         }
     }
 }
