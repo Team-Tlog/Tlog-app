@@ -41,7 +41,7 @@ import com.tlog.viewmodel.travel.AddTravelViewModel
 
 //@Preview
 @Composable
-fun AddTravelDestinationScreen(
+fun AddTravelScreen(
     viewModel: AddTravelViewModel = hiltViewModel(),
     navController: NavHostController
 ) {

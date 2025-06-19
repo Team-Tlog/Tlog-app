@@ -23,7 +23,7 @@ import com.tlog.viewmodel.sns.SNSIdViewModel
 import com.tlog.viewmodel.sns.SNSIdViewModel.UiEvent
 
 @Composable
-fun SNSIdCreateScreen(
+fun SnsIdCreateScreen(
     viewModel: SNSIdViewModel = hiltViewModel(),
     navController: NavController
 ) {

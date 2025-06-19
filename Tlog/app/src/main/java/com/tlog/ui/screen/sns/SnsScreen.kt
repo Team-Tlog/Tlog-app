@@ -19,7 +19,7 @@ import com.tlog.viewmodel.sns.SnsViewModel
 
 
 @Composable
-fun SNSScreen(
+fun SnsScreen(
     viewModel: SnsViewModel = hiltViewModel(),
     navController: NavController
 ) {

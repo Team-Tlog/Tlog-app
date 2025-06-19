@@ -28,7 +28,7 @@ import com.tlog.viewmodel.team.TeamNameViewModel
 
 
 @Composable
-fun TeamNameCreateScreen(
+fun TeamCreateScreen(
     viewModel: TeamNameViewModel = hiltViewModel(),
     navController: NavHostController
 ) {

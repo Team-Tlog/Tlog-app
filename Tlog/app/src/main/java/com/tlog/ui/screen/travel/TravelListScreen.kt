@@ -25,13 +25,13 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
-import com.tlog.viewmodel.travel.TravelDestinationRecommendationViewModel
+import com.tlog.viewmodel.travel.TravelListViewModel
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.snapshotFlow
 
 @Composable
-fun TravelDestinationRecommendation(
-    viewModel: TravelDestinationRecommendationViewModel = hiltViewModel(),
+fun TravelListScreen(
+    viewModel: TravelListViewModel = hiltViewModel(),
     title: String,
     city: String? = null,
     navController: NavHostController

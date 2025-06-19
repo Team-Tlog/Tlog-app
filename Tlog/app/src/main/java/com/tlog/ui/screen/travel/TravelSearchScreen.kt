@@ -25,7 +25,7 @@ import com.tlog.ui.component.travel.TravelCategoryGrid
 import com.tlog.viewmodel.share.SearchViewModel
 
 @Composable
-fun SearchScreen(
+fun TravelSearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavController
 ) {

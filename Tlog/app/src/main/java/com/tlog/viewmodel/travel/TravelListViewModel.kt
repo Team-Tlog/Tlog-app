@@ -4,17 +4,11 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.SearchApi
-import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.RecommendDestinationRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class TravelDestinationRecommendationViewModel @Inject constructor(
+class TravelListViewModel @Inject constructor(
     private val repository: RecommendDestinationRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider

@@ -24,7 +24,7 @@ import com.tlog.viewmodel.travel.TravelInfoViewModel
 import kotlin.math.floor
 
 @Composable
-fun TravelInfoScreen(
+fun TravelDetailScreen(
     travelId: String,
     viewModel: TravelInfoViewModel = hiltViewModel(),
     navController: NavController

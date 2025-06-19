@@ -6,15 +6,10 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TravelApi
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -27,7 +22,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 @HiltViewModel
-class ReviewViewModel @Inject constructor(
+class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
