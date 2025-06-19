@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.data.repository.RecommendDestinationRepository
 import dagger.Module
 import dagger.Provides

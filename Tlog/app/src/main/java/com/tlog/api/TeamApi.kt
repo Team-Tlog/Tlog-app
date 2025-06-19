@@ -1,10 +1,11 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.TeamData
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.JoinTeamRequest
-import com.tlog.data.api.TeamDetailData
+import com.tlog.data.api.TeamCreateResponse
+import com.tlog.data.model.team.DetailTeam
+import com.tlog.data.model.team.Team
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ interface TeamApi {
     @GET("/api/team")
     suspend fun getTeamList(
         @Query("userId") userId: String
-    ): BaseResponse<List<TeamData>>
+    ): BaseResponse<List<Team>>
 
     @POST("/api/team")
     suspend fun createTeam(
@@ -31,15 +32,10 @@ interface TeamApi {
     @GET("/api/team/{teamId}/details")
     suspend fun getTeamDetails(
         @Path("teamId") teamId: String
-    ): BaseResponse<TeamDetailData>
+    ): BaseResponse<DetailTeam>
 
     @POST("/api/team/join")
     suspend fun joinTeam(
         @Body request: JoinTeamRequest
     ): BaseResponse<Unit>
 }
-
-data class TeamCreateResponse(
-    val teamId: String,
-    val chatRoomId: Int
-)

@@ -15,15 +15,15 @@ import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import javax.inject.Inject
-import com.tlog.data.api.TbtiQuestionItem
 import androidx.compose.runtime.State
+import com.tlog.data.model.tbti.TbtiQuestion
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
 ) : ViewModel() {
 
-    private val _questions = mutableStateListOf<TbtiQuestionItem>()
+    private val _questions = mutableStateListOf<TbtiQuestion>()
 
     private val _currentQuestionIndex = mutableStateOf(0)
     val currentQuestionIndex get() = _currentQuestionIndex
@@ -66,7 +66,7 @@ class TbtiTestViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val allQuestions = mutableListOf<TbtiQuestionItem>()
+                val allQuestions = mutableListOf<TbtiQuestion>()
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)

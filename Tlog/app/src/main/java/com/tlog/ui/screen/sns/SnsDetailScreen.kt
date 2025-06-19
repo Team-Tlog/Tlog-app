@@ -42,10 +42,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.api.Comment
-import com.tlog.ui.component.SNS.PostAuthorInfo
-import com.tlog.ui.component.SNS.PostContentAndInteractions
-import com.tlog.ui.component.SNS.PostImage
+import com.tlog.data.model.sns.Comment
+import com.tlog.ui.component.sns.PostAuthorInfo
+import com.tlog.ui.component.sns.PostContentAndInteractions
+import com.tlog.ui.component.sns.PostImage
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued

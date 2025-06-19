@@ -17,12 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
-import com.tlog.data.api.TeamData
 import com.tlog.R
+import com.tlog.data.model.team.Team
 
 @Composable
 fun TeamCard(
-    team: TeamData,
+    team: Team,
     onDeleteClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {

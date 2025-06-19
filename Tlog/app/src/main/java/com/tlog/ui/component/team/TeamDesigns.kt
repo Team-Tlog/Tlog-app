@@ -1,6 +1,5 @@
 package com.tlog.ui.component.team
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,11 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-//import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.api.TeamDetailData
-import com.tlog.data.model.team.TeamData
+import com.tlog.data.model.team.DetailTeam
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
@@ -38,7 +34,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun SmallDesign(
-    teamData: TeamDetailData
+    teamData: DetailTeam
 ) {
     Column(
         modifier = Modifier
@@ -105,7 +101,7 @@ fun SmallDesign(
 
 @Composable
 fun DefaultDesign(
-    teamData: TeamDetailData,
+    teamData: DetailTeam,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit
@@ -190,7 +186,7 @@ fun DefaultDesign(
 //236
 @Composable
 fun MidiumDesign(
-    teamData: TeamDetailData,
+    teamData: DetailTeam,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit
@@ -271,7 +267,7 @@ fun MidiumDesign(
 
 @Composable
 fun BigDesign(
-    teamData: TeamDetailData,
+    teamData: DetailTeam,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit

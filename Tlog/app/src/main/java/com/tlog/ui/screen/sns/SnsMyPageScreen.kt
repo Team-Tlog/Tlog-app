@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -25,12 +24,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.api.SnsPostPreview
-import com.tlog.api.SnsUserProfile
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.sns.SnsMyPageViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.TextStyle
+import com.tlog.data.api.SnsPostPreview
+import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.theme.MainFont
 
 @Composable
@@ -281,30 +280,32 @@ fun PostsGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.fillMaxWidth()
     ) {
-        items(postList) { post ->
-            if (post.previewImageUrl != null && post.previewImageUrl != "") { // 정상적인 상황에선 있을 수 없음 무조건 이미지 url이 정상 하지만 테스트를 위해
-                AsyncImage(
-                    model = post.previewImageUrl,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .clickable {
-                            onClick(post.postId)
-                        }
-                )
-            }
-            else {
-                Box(
-                    modifier = Modifier
-                        .aspectRatio(1f)
-                        .background(Color.Gray)
-                ) {
-                    Text(
-                        text = "XXX",
-                        color = Color.White,
-                        modifier = Modifier.align(Alignment.Center)
+        postList.forEach { post ->
+            item {
+                if (post.previewImageUrl != null && post.previewImageUrl != "") { // 정상적인 상황에선 있을 수 없음 무조건 이미지 url이 정상 하지만 테스트를 위해
+                    AsyncImage(
+                        model = post.previewImageUrl,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .clickable {
+                                onClick(post.postId)
+                            }
                     )
+                }
+                else {
+                    Box(
+                        modifier = Modifier
+                            .aspectRatio(1f)
+                            .background(Color.Gray)
+                    ) {
+                        Text(
+                            text = "XXX",
+                            color = Color.White,
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
                 }
             }
         }

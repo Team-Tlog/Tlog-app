@@ -3,21 +3,17 @@ package com.tlog.viewmodel.beginning
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.google.android.gms.common.api.Response
-import com.tlog.api.FcmTokenBody
 import com.tlog.api.LoginApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.FcmTokenBody
 import com.tlog.data.api.RegisterRequest
-import com.tlog.data.api.TbtiDescriptionResponse
 import com.tlog.data.api.UserProfileDto
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.share.Tbti
 import com.tlog.data.repository.TbtiRepository
-import com.tlog.viewmodel.beginning.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -31,8 +27,8 @@ class TbtiResultViewModel @Inject constructor(
     private val tokenProvider: TokenProvider
 ): ViewModel() {
 
-    private val _tbtiDescription = mutableStateOf<TbtiDescriptionResponse?>(null)
-    val tbtiDescription: State<TbtiDescriptionResponse?> = _tbtiDescription
+    private val _tbtiDescription = mutableStateOf<Tbti?>(null)
+    val tbtiDescription: State<Tbti?> = _tbtiDescription
 
     private var userId = ""
 

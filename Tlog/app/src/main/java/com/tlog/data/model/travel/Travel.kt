@@ -1,9 +1,8 @@
 package com.tlog.data.model.travel
 
-import com.tlog.data.model.Location
-import com.tlog.data.model.share.Tag
+import com.tlog.data.model.share.Location
 
-// AddTravel
+
 data class Travel(
     val name: String,
     val address: String,
@@ -17,24 +16,4 @@ data class Travel(
     val customTags: List<String>
 )
 
-data class ShopCart(
-    val id: String,
-    val name: String,
-    val imageUrl: String,
-    val description: String,
-    val tagCountList: List<TagCount>,
 
-    // 추가되어야됨
-    val location: Location
-)
-
-data class SearchTravel(
-    val id: String,
-    val name: String,
-    val city: String,
-    val location: Location,
-    val reviewCount: Int,
-    val averageRating: Double,
-    val imageUrl: String?,
-    val tagCountList: List<TagCount> = emptyList(),
-)

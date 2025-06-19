@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.tlog.api.TeamApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.TeamData
+import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
@@ -38,8 +38,8 @@ class MyTeamListViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _teamList = mutableStateOf<List<TeamData>>(emptyList())
-    val teamsList: State<List<TeamData>> = _teamList
+    private val _teamList = mutableStateOf<List<Team>>(emptyList())
+    val teamsList: State<List<Team>> = _teamList
 
 
     fun fetchTeamsFromServer() {

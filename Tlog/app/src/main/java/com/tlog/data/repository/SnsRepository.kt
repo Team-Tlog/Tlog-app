@@ -1,18 +1,18 @@
 package com.tlog.data.repository
 
-import com.tlog.api.Comment
-import com.tlog.api.CreateCommentRequest
-import com.tlog.api.FollowRequest
 import com.tlog.api.SnsApi
-import com.tlog.api.SnsDescription
-import com.tlog.api.SnsPost
-import com.tlog.api.SnsPostPreview
-import com.tlog.api.SnsUser
-import com.tlog.api.SnsUserProfile
-import com.tlog.api.StatusMessage
-import com.tlog.api.UpdateSnsIdRequest
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.CreateCommentRequest
+import com.tlog.data.api.FollowRequest
+import com.tlog.data.api.SnsDescription
+import com.tlog.data.api.SnsPost
+import com.tlog.data.api.SnsPostPreview
+import com.tlog.data.api.SnsUser
+import com.tlog.data.api.SnsUserProfile
+import com.tlog.data.api.StatusMessage
+import com.tlog.data.api.UpdateSnsIdRequest
+import com.tlog.data.model.sns.Comment
 import javax.inject.Inject
 
 class SnsRepository @Inject constructor(

@@ -1,14 +1,12 @@
 package com.tlog.api
 
+import com.tlog.data.api.AddTravelRequest
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ReviewListResponse
 import com.tlog.data.api.ReviewRequest
-import com.tlog.data.api.ScrapDestinationResponse
-import com.tlog.data.model.travel.AddTravelRequest
-import com.tlog.data.model.travel.DetailReview
-import com.tlog.data.model.travel.Pageable
-import com.tlog.data.model.travel.Sort
-import com.tlog.data.model.travel.TravelDetailResponse
-import com.tlog.data.model.travel.TravelRecommendPagedResponse
+import com.tlog.data.api.ScrapData
+import com.tlog.data.api.TravelDetailResponse
+import com.tlog.data.api.TravelRecommendPagedResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -52,7 +50,7 @@ interface TravelApi {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: List<String>
-    ): BaseResponse<GetReviewListResponse>
+    ): BaseResponse<ReviewListResponse>
 
     @DELETE("/api/scrap/user/{userId}/destination/{destId}")
     suspend fun deleteScrapDestination(
@@ -63,22 +61,5 @@ interface TravelApi {
     @GET("/api/scrap/user/{userId}")
     suspend fun getUserScraps(
         @Path("userId") userId: String
-    ): BaseResponse<List<ScrapDestinationResponse>>
+    ): BaseResponse<List<ScrapData>>
 }
-
-data class GetReviewListResponse(
-    val ratingDistribution: Map<String, Int>,
-    val reviews: Reviews
-)
-
-data class Reviews(
-    val content: List<DetailReview>,
-    val pageable: Pageable,
-    val size: Int,
-    val number: Int,
-    val sort: Sort,
-    val numberOfElements: Int,
-    val first: Boolean,
-    val last: Boolean,
-    val empty: Boolean
-)

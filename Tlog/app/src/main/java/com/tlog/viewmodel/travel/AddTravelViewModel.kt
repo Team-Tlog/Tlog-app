@@ -9,8 +9,8 @@ import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.Location
-import com.tlog.data.model.travel.AddTravelRequest
+import com.tlog.data.api.AddTravelRequest
+import com.tlog.data.model.share.Location
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.Module

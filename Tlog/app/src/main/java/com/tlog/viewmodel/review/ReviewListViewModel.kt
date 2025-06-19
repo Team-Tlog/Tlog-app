@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.api.ReviewResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
-import com.tlog.data.model.travel.DetailReview
+import com.tlog.data.model.travel.Review
 import java.util.Locale
 
 
@@ -21,8 +20,8 @@ class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
 ): ViewModel() {
-    private val _reviewList = mutableStateOf<List<DetailReview>>(emptyList())
-    val reviewList: State<List<DetailReview>> = _reviewList
+    private val _reviewList = mutableStateOf<List<Review>>(emptyList())
+    val reviewList: State<List<Review>> = _reviewList
 
     private val _ratingDistribution = mutableStateOf<Map<String, Int>>(emptyMap())
     val ratingDistribution: State<Map<String, Int>> = _ratingDistribution

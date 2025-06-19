@@ -10,13 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.tmp.TmpTravelList
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel

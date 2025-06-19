@@ -1,4 +1,4 @@
-package com.tlog.ui.component.SNS
+package com.tlog.ui.component.sns
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.api.Comment
+import com.tlog.data.model.sns.Comment
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 

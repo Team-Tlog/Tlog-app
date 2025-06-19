@@ -1,7 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.api.ScrapData
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -26,5 +26,5 @@ interface ScrapApi {
     @GET("/api/scrap/user/{userId}")
     suspend fun getUserScraps(
         @Path("userId") userId: String
-    ): BaseResponse<List<ScrapDestinationResponse>>
+    ): BaseResponse<List<ScrapData>>
 }

@@ -2,7 +2,6 @@ package com.tlog.ui.screen.review
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,7 +34,6 @@ import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.travel.SearchTravelList
-import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
 

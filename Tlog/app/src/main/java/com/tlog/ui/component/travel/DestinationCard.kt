@@ -19,10 +19,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.travel.TravelDestinationResponse
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
+import com.tlog.data.api.TravelDestinationResponse
 
 @Composable
 fun DestinationCard(

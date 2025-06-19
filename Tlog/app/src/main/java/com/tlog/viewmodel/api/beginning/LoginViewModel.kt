@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -12,10 +11,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tlog.api.FcmTokenBody
-import com.tlog.api.FirebaseTokenData
 import com.tlog.api.LoginApi
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.FcmTokenBody
+import com.tlog.data.api.FirebaseTokenData
 import kotlinx.coroutines.launch
 import com.tlog.data.api.LoginRequest
 import com.tlog.data.local.UserPreferences

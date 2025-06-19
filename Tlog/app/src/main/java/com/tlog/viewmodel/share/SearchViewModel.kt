@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SearchApi
-import com.tlog.data.model.travel.SearchTravel
+import com.tlog.data.api.SearchTravel
 import com.tlog.data.repository.SearchRepository
 import dagger.Module
 import dagger.Provides

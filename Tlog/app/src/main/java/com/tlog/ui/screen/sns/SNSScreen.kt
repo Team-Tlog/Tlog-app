@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.tlog.ui.component.SNS.PostItem
+import com.tlog.ui.component.sns.PostItem
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.viewmodel.sns.SnsViewModel

@@ -3,9 +3,8 @@ package com.tlog.data.repository
 import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ScrapDestinationResponse
-import com.tlog.data.api.SearchAndPageResponse
-import com.tlog.data.model.travel.TravelRecommendPagedResponse
+import com.tlog.data.api.SearchResponse
+import com.tlog.data.api.TravelRecommendPagedResponse
 import jakarta.inject.Inject
 
 class RecommendDestinationRepository @Inject constructor(
@@ -30,7 +29,7 @@ class RecommendDestinationRepository @Inject constructor(
         )
     }
     
-    suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchAndPageResponse> {
+    suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchResponse> {
         return searchRetrofitInstance.getTravelListByCity(
             page = page,
             size = size,

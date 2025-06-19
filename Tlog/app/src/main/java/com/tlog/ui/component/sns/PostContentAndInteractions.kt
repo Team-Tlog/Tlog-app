@@ -1,4 +1,4 @@
-package com.tlog.ui.component.SNS
+package com.tlog.ui.component.sns
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

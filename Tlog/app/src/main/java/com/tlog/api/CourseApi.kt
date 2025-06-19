@@ -1,7 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.model.travel.UserCourseResponse
+import com.tlog.data.api.UserCourseResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

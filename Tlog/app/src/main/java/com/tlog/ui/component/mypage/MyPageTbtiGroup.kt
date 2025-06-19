@@ -24,13 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.api.UserInfo
+import com.tlog.data.model.user.User
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun MyPageTbtiGroup(
-    userInfo: UserInfo,
+    userInfo: User,
     tbtiTestClick: () -> Unit
 ) {
     Column(

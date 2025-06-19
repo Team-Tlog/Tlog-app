@@ -27,14 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.api.UserInfo
+import com.tlog.data.model.user.User
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun UserInfoGroup(
-    userInfo: UserInfo,
+    userInfo: User,
     onImageClick:()-> Unit
 ) {
     Box(

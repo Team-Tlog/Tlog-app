@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.api.TeamDetailData
+import com.tlog.data.model.team.DetailTeam
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class TeamDetailViewModel @Inject constructor(
     private val repository: TeamRepository
 )  : ViewModel() {
 
-    private val _teamData = mutableStateOf<TeamDetailData>(
-        TeamDetailData(
+    private val _teamData = mutableStateOf<DetailTeam>(
+        DetailTeam(
             teamId = "",
             teamName = "",
             inviteCode = "",
@@ -27,7 +27,7 @@ class TeamDetailViewModel @Inject constructor(
             wishlist = emptyList()
         )
     )
-    val teamData: State<TeamDetailData> = _teamData
+    val teamData: State<DetailTeam> = _teamData
 
 
     // api

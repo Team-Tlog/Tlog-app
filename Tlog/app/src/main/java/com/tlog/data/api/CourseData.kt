@@ -1,5 +1,7 @@
-package com.tlog.data.model.travel
+package com.tlog.data.api
 
+import com.tlog.data.model.share.Location
+import com.tlog.data.model.share.TagCount
 
 data class UserCourseResponse(
     val id: String,
@@ -7,6 +9,9 @@ data class UserCourseResponse(
     val endDate: String,
     val dates: List<DateGroup>
 )
+
+
+
 
 data class DateGroup(
     val destinationGroups: List<DestinationGroup>

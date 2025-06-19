@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.api.ScrapData
 import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.Module
@@ -49,8 +49,8 @@ class ScrapAndCartViewModel @Inject constructor(
     private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
     val cartList: State<List<ShopCart>> = _cartList
 
-    private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>>(emptyList())
-    val scrapList: State<List<ScrapDestinationResponse>> = _scrapList
+    private var _scrapList = mutableStateOf<List<ScrapData>>(emptyList())
+    val scrapList: State<List<ScrapData>> = _scrapList
 
     fun fetchScrapList(userId: String) {
         viewModelScope.launch {

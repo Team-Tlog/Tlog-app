@@ -1,6 +1,5 @@
 package com.tlog.ui.component.travel.review
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.theme.MainFont
 
@@ -29,7 +27,7 @@ import com.tlog.ui.theme.MainFont
 fun ReviewSection(
     avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
-    reviewList: List<DetailReview>,
+    reviewList: List<Review>,
     reviewCnt: Int = Int.MAX_VALUE,
     moreReview: () -> Unit,
     reviewWrite: () -> Unit,

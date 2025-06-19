@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.LoginApi
 import com.tlog.api.UserApi
-import com.tlog.api.UserInfo
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
@@ -30,6 +29,7 @@ import kotlin.toString
 import android.net.Uri
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.user.User
 import kotlin.String
 
 @HiltViewModel
@@ -41,8 +41,8 @@ class MyPageViewModel @Inject constructor(
     private val _notification = mutableStateOf(true)
     val notification: State<Boolean> = _notification
 
-    private val _userInfo: MutableState<UserInfo?> = mutableStateOf(null)
-    val userInfo: State<UserInfo?> = _userInfo
+    private val _userInfo: MutableState<User?> = mutableStateOf(null)
+    val userInfo: State<User?> = _userInfo
 
     private val _image = mutableStateOf("")
     val imageUri = _image

@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.model.travel.UserCourseDestination
+import com.tlog.data.api.UserCourseDestination
 
 
 @Composable

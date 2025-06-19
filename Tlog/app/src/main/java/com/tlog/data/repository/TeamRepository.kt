@@ -2,24 +2,24 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TeamApi
-import com.tlog.api.TeamCreateResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.JoinTeamRequest
-import com.tlog.data.api.TeamData
-import com.tlog.data.api.TeamDetailData
+import com.tlog.data.api.TeamCreateResponse
+import com.tlog.data.model.team.DetailTeam
+import com.tlog.data.model.team.Team
 import jakarta.inject.Inject
 
 class TeamRepository @Inject constructor(
     private val retrofitInstance: TeamApi
 ) {
-    suspend fun getTeamList(userId: String): BaseResponse<List<TeamData>>{
+    suspend fun getTeamList(userId: String): BaseResponse<List<Team>>{
         val result = retrofitInstance.getTeamList(userId)
         Log.d("MyTeamListRepository", "addReview: $result")
         return result
     }
 
-    suspend fun getTeamDetails(teamId: String): BaseResponse<TeamDetailData> {
+    suspend fun getTeamDetails(teamId: String): BaseResponse<DetailTeam> {
         return retrofitInstance.getTeamDetails(teamId)
     }
 
