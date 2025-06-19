@@ -154,24 +154,26 @@ fun TravelListScreen(
                 }
             }
         }
-        destinations.forEach { destination ->
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
-                ) {
-                    val isFavorite = viewModel.scrapList.value.contains(destination.id)
-                    DestinationCard(
-                        destination = destination,
-                        isFavorite = isFavorite,
-                        onFavoriteToggle = {
-                            viewModel.toggleScrap(destination.id)
-                        },
-                        onClick = {
-                            navController.navigate("travelInfo/${destination.id}")
-                        }
-                    )
+        destinations.let { destinations ->
+            destinations.forEach { destination ->
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
+                    ) {
+                        val isFavorite = viewModel.scrapList.value.contains(destination.id)
+                        DestinationCard(
+                            destination = destination,
+                            isFavorite = isFavorite,
+                            onFavoriteToggle = {
+                                viewModel.toggleScrap(destination.id)
+                            },
+                            onClick = {
+                                navController.navigate("travelInfo/${destination.id}")
+                            }
+                        )
+                    }
                 }
             }
         }
