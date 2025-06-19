@@ -9,6 +9,6 @@ class CourseRepository @Inject constructor(
     private val courseApi: CourseApi
 ) {
     suspend fun getUserCourses(userId: String): BaseResponse<List<UserCourseResponse>> {
-        return courseApi.getUserCourses(userId)
+        return courseApi.getUserCourseList(userId)
     }
 }

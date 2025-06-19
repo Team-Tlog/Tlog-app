@@ -8,7 +8,7 @@ import retrofit2.http.Path
 interface CourseApi {
 
     @GET("/api/course/user/{userId}")
-    suspend fun getUserCourses(
+    suspend fun getUserCourseList(
         @Path("userId") userId: String
     ): BaseResponse<List<UserCourseResponse>>
 

@@ -30,7 +30,7 @@ class RecommendDestinationRepository @Inject constructor(
     }
     
     suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchResponse> {
-        return searchRetrofitInstance.getTravelListByCity(
+        return searchRetrofitInstance.searchTravelListByCity(
             page = page,
             size = size,
             sort = sort,

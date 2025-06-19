@@ -61,7 +61,7 @@ interface SnsApi {
 
     // 게시물에 댓글 작성
     @POST("/api/post/{postId}/reply")
-    suspend fun createComment(
+    suspend fun addComment(
         @Path("postId") postId: String,
         @Body request: CreateCommentRequest
     ): BaseResponse<Comment>
@@ -72,7 +72,7 @@ interface SnsApi {
         @Path("userId") userId: String
     ): BaseResponse<List<SnsUser>>
 
-    // 팔로우 걸기 취소
+    // 팔로우 걸기 and 취소
     @POST("/api/follow")
     suspend fun followUser(
         @Body request: FollowRequest

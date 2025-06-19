@@ -8,7 +8,7 @@ class SearchRepository(
     private val retrofitInstance: SearchApi
 ) {
     suspend fun searchTravel(searchText: String): BaseResponse<List<SearchTravel>> {
-        return retrofitInstance.getTravelListByName(searchText)
+        return retrofitInstance.searchTravelListByName(searchText)
     }
 
 }

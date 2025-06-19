@@ -60,7 +60,7 @@ class SnsRepository @Inject constructor(
         author: String,
         content: String
     ): BaseResponse<Comment>{
-        return retrofitInstance.createComment(postId, CreateCommentRequest(author = author, content = content))
+        return retrofitInstance.addComment(postId, CreateCommentRequest(author = author, content = content))
     }
 
     suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUser>> {

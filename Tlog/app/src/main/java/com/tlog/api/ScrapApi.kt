@@ -2,6 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ScrapData
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -14,7 +15,7 @@ interface ScrapApi {
     @Headers("Content-Type: text/plain")
     suspend fun scrapDestination(
         @Path("userId") userId: String,
-        @Body travelId: okhttp3.RequestBody
+        @Body travelId: RequestBody
     ): BaseResponse<Unit>
 
     @DELETE("/api/scrap/user/{userId}/destination/{destId}")
