@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.repository.RecommendDestinationRepository
+import com.tlog.data.repository.TravelListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelListViewModel @Inject constructor(
-    private val repository: RecommendDestinationRepository,
+    private val repository: TravelListRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
@@ -27,7 +27,6 @@ class TravelListViewModel @Inject constructor(
 
     private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
     val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
-
 
     val scrapList: State<List<String>> = scrapManager.scrapList
 
@@ -75,28 +74,16 @@ class TravelListViewModel @Inject constructor(
     private val sort = emptyList<String>()
     private var isLastPage = false
 
-    fun searchTravelToCity(city: String) {
-        viewModelScope.launch {
-            try {
-                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
-                _destinations.value = response.data.content
-                isLastPage = response.data.last
-                Log.d("okhttp", "total page : ${response.data.totalPages}")
-            } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
-                _destinations.value = emptyList()
-            }
-        }
-    }
 
-    fun loadDestinations(
+
+    fun getTravelList(
         city: String,
         sortType: String? = "REVIEW", // 현재는 리뷰 추후 변경 할 것 (api가 리뷰만 돌아감)
         tbti: String? = null
     ) {
         viewModelScope.launch {
             try {
-                val response = repository.getDestinations(
+                val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
                     sort = sort,
@@ -112,17 +99,16 @@ class TravelListViewModel @Inject constructor(
         }
     }
 
-    fun loadNextPage(
+    fun getNextPage(
         city: String,
         sortType: String? = "REVIEW",
         tbti: String? = null
     ) {
         if (isLastPage == true) return
         page++
-        Log.d("okhttp", "ininininininin")
         viewModelScope.launch {
             try {
-                val response = repository.getDestinations(
+                val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
                     sort = sort,
@@ -134,6 +120,21 @@ class TravelListViewModel @Inject constructor(
                 _destinations.value += response.data.content
             } catch (e: Exception) {
                 Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+            }
+        }
+    }
+
+
+
+    fun searchTravelToCity(city: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
+                _destinations.value = response.data.content
+                isLastPage = response.data.last
+            } catch (e: Exception) {
+                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+                _destinations.value = emptyList()
             }
         }
     }

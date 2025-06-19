@@ -26,7 +26,6 @@ import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelListViewModel
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.snapshotFlow
 
 @Composable
@@ -40,8 +39,6 @@ fun TravelListScreen(
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
 
-    val scrapList = viewModel.scrapList
-
 
     LaunchedEffect(listState) {
         snapshotFlow {
@@ -51,129 +48,130 @@ fun TravelListScreen(
         }.collect { isLastItemVisible ->
             if (isLastItemVisible) {
                 if (city != null)
-                    viewModel.loadNextPage(city)
+                    viewModel.getNextPage(city)
             }
 
         }
     }
 
-
-
     LaunchedEffect(Unit) {
         viewModel.initUserIdAndScrapList()
         if (city != null && viewModel.destinations.value.isEmpty()) {
-            viewModel.loadDestinations(city)
+            viewModel.getTravelList(city)
         }
     }
 
-    Column(
+    LazyColumn(
+        state = listState,
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            //.imePadding()
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-        ) {
-            Column(
+        item {
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Color.White)
             ) {
-                Box(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.White)
-                        .padding(start = 14.dp, end = 14.dp, top = 5.dp)
+                        .fillMaxSize()
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.White)
+                            .padding(start = 14.dp, end = 14.dp, top = 5.dp)
                     ) {
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clip(RoundedCornerShape(18.dp))
-                                .background(Color.LightGray)
-                        )
-
-                        Row {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Box(
                                 modifier = Modifier
-                                    .size(40.dp)
-                                    .clickable {
-                                        Log.d("검색", "검색아이콘 눌림")
-                                    }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_search),
-                                    contentDescription = "검색",
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
-                            }
+                                    .size(36.dp)
+                                    .clip(RoundedCornerShape(18.dp))
+                                    .background(Color.LightGray)
+                            )
 
-                            Spacer(modifier = Modifier.width(5.dp))
+                            Row {
+                                Box(
+                                    modifier = Modifier
+                                        .size(40.dp)
+                                        .clickable {
+                                            Log.d("검색", "검색아이콘 눌림")
+                                        }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_search),
+                                        contentDescription = "검색",
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
 
-                            Box(
-                                modifier = Modifier
-                                    .size(42.dp)
-                                    .clickable {
-                                        Log.d("알림창", "알림아이콘 눌림")
-                                    }
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.ic_notification),
-                                    contentDescription = "알림",
-                                    modifier = Modifier.align(Alignment.Center)
-                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                Box(
+                                    modifier = Modifier
+                                        .size(42.dp)
+                                        .clickable {
+                                            Log.d("알림창", "알림아이콘 눌림")
+                                        }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.ic_notification),
+                                        contentDescription = "알림",
+                                        modifier = Modifier.align(Alignment.Center)
+                                    )
+                                }
                             }
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(35.dp))
+
+                    Text(
+                        text = title,
+                        style = BodyTitle,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(33.dp))
+
+                    CategorySelector(
+                        categories = listOf("추천순", "인기순", "리뷰순"),
+                        selectedCategory = selectedCategory,
+                        onCategorySelected = { viewModel.setCategory(it) }
+                    )
+
+                    Spacer(modifier = Modifier.height(19.dp))
+
                 }
-
-                Spacer(modifier = Modifier.height(35.dp))
-
-                Text(
-                    text = title,
-                    style = BodyTitle,
-                    textAlign = TextAlign.Center,
+            }
+        }
+        destinations.forEach { destination ->
+            item {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                )
-
-                Spacer(modifier = Modifier.height(33.dp))
-
-                CategorySelector(
-                    categories = listOf("추천순", "인기순", "리뷰순"),
-                    selectedCategory = selectedCategory,
-                    onCategorySelected = { viewModel.setCategory(it) }
-                )
-
-                Spacer(modifier = Modifier.height(19.dp))
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 24.dp, end = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                        .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                 ) {
-                    items(destinations) { destination ->
-                        val isFavorite = scrapList.value.contains(destination.id)
-                        DestinationCard(
-                            destination = destination,
-                            isFavorite = isFavorite,
-                            onFavoriteToggle = {
-                                viewModel.toggleScrap(destination.id)
-                            },
-                            onClick = {
-                                navController.navigate("travelInfo/${destination.id}")
-                            }
-                        )
-                    }
+                    val isFavorite = viewModel.scrapList.value.contains(destination.id)
+                    DestinationCard(
+                        destination = destination,
+                        isFavorite = isFavorite,
+                        onFavoriteToggle = {
+                            viewModel.toggleScrap(destination.id)
+                        },
+                        onClick = {
+                            navController.navigate("travelInfo/${destination.id}")
+                        }
+                    )
                 }
             }
         }
