@@ -51,7 +51,6 @@ class TbtiResultViewModel @Inject constructor(
             try {
                 val response = tbtiRepository.getTbtiDescription(resultCode)
                 _tbtiDescription.value = response.data
-                Log.d("TBTI", "tbtiDescription !!!! : ${_tbtiDescription.value}")
             } catch (e: Exception) {
                 Log.e("TbtiTestViewModel", "설명 데이터 요청 실패", e)
             }
@@ -66,7 +65,6 @@ class TbtiResultViewModel @Inject constructor(
             val socialType = userPreferences.getTmpSocialType()
 
             if (socialAccessToken.isNullOrEmpty()) {
-                Log.e("TbtiResultViewModel", "AccessToken이 없습니다!")
                 return@launch
             }
 
@@ -79,7 +77,6 @@ class TbtiResultViewModel @Inject constructor(
             try {
                 val response = loginApi.ssoRegister(request)
                 if (response.isSuccessful) {
-                    // 토큰 드가야됨
                     val authorizationHeader = response.headers()["authorization"]
                     val setCookieHeader = response.headers()["set-cookie"]
                     if (authorizationHeader != null && setCookieHeader != null) {
