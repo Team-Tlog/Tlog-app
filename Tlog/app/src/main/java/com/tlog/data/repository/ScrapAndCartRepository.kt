@@ -2,7 +2,7 @@ package com.tlog.data.repository
 
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
-import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.ShopCart
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -17,7 +17,7 @@ class ScrapAndCartRepository @Inject constructor(
         return userApi.getUserCart(userId).data
     }
 
-    suspend fun getUserScrap(userId: String): List<ScrapDestinationResponse> {
+    suspend fun getUserScrap(userId: String): List<Scrap> {
         return travelApi.getUserScraps(userId).data
     }
 

@@ -1,35 +1,32 @@
 package com.tlog.viewmodel.share
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TravelApi
-import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.ShopCart
 import com.tlog.data.repository.ScrapAndCartRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 
 @HiltViewModel
 class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
-    private val tokenProvider: TokenProvider
+    tokenProvider: TokenProvider
 ): ViewModel() {
+    private var userId: String = ""
 
+    init {
+        userId = tokenProvider.getUserId()?: ""
+        fetchScrapList()
+    }
 
-    var userId: String = ""
-
-    fun fetchCart(userId: String) {
+    fun fetchCart() {
         viewModelScope.launch {
             try {
                 val result = repository.getUserCart(userId)
@@ -40,25 +37,20 @@ class ScrapAndCartViewModel @Inject constructor(
         }
     }
 
-    fun initUserIdAndScrapList() {
-        userId = tokenProvider.getUserId()?: ""
-        fetchScrapList(userId)
-    }
-
 
     private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
     val cartList: State<List<ShopCart>> = _cartList
 
-    private var _scrapList = mutableStateOf<List<ScrapDestinationResponse>>(emptyList())
-    val scrapList: State<List<ScrapDestinationResponse>> = _scrapList
+    private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
+    val scrapList: State<List<Scrap>> = _scrapList
 
-    fun fetchScrapList(userId: String) {
+    fun fetchScrapList() {
         viewModelScope.launch {
             try {
                 val result = repository.getUserScrap(userId)
                 _scrapList.value = result
             } catch (e: Exception) {
-                // api실패 시
+                Log.d("ScrapAndCartViewModel", e.message.toString())
             }
         }
     }
@@ -95,12 +87,13 @@ class ScrapAndCartViewModel @Inject constructor(
                 }
                 clearChecked()
                 if (selectedTab == "스크랩") {
-                    fetchScrapList(userId)
+                    fetchScrapList()
                 } else {
-                    fetchCart(userId)
+                    fetchCart()
                 }
             } catch (e: Exception) {
-                // Handle error
+                Log.d("ScrapAndCartViewModel", e.message.toString())
+
             }
         }
     }
@@ -114,9 +107,9 @@ class ScrapAndCartViewModel @Inject constructor(
                     repository.addDestinationToCart(userId, destinationId)
                 }
                 clearChecked()
-                fetchCart(userId)
+                fetchCart()
             } catch (e: Exception) {
-                // Handle error
+                Log.d("ScrapAndCartViewModel", e.message.toString())
             }
         }
     }
@@ -138,21 +131,3 @@ class ScrapAndCartViewModel @Inject constructor(
 }
 
 
-@Module
-@InstallIn(SingletonComponent::class)
-object CartModule {
-    @Provides
-    fun provideCartRepository(
-        userApi: UserApi,
-        travelApi: TravelApi
-    ): ScrapAndCartRepository {
-        return ScrapAndCartRepository(userApi, travelApi)
-    }
-
-    @Provides
-    fun provideUserApi(
-        retrofit: Retrofit
-    ): UserApi {
-        return retrofit.create(UserApi::class.java)
-    }
-}

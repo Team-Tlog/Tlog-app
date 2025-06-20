@@ -2,7 +2,7 @@ package com.tlog.data.repository
 
 import com.tlog.api.ScrapApi
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ScrapDestinationResponse
+import com.tlog.data.model.travel.Scrap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -20,7 +20,7 @@ class ScrapRepository @Inject constructor(
         return retrofitInstance.deleteScrapDestination(userId, destinationId)
     }
 
-    suspend fun getUserScraps(userId: String): BaseResponse<List<ScrapDestinationResponse>> {
+    suspend fun getUserScraps(userId: String): BaseResponse<List<Scrap>> {
         return retrofitInstance.getUserScraps(userId)
     }
 }

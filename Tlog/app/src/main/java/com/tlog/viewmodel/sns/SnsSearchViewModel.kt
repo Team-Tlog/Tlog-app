@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.SnsPostPreview
+import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -35,7 +35,7 @@ class SnsSearchViewModel @Inject constructor(
             @OptIn(FlowPreview::class)
             _searchText
                 .debounce(500)
-                .filter { it.isNotBlank() && it.length >= 1}
+                .filter { it.isNotBlank() && it.isNotEmpty()}
                 .distinctUntilChanged()
                 .collect {
                     try {

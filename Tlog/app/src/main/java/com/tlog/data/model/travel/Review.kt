@@ -1,8 +1,12 @@
 package com.tlog.data.model.travel
 
 data class Review(
-    val author: String,
-    val createAt: String,
-    val starRating: Int,
-    val content: String
+    val id: String,
+    val userId: String,
+    val username: String,
+    val userProfileImageUrl: String,
+    val rating: Int,
+    val content: String,
+    val reviewImageUrl: List<String>,
+    val createdAt: String
 )

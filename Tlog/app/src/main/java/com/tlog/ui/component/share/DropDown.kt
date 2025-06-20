@@ -14,6 +14,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,7 +81,7 @@ fun DropDown(
 
             // 드롭다운 펼쳐졌을 때
             if (expanded) {
-                Divider(
+                HorizontalDivider(
                     color = Color(0xFFE8E8E8),
                     thickness = 0.5.dp,
                     modifier = Modifier
@@ -112,7 +113,7 @@ fun DropDown(
                             )
 
 
-                            Divider(
+                            HorizontalDivider(
                                 color = Color(if (index < options.lastIndex) 0xFFE8E8E8 else 0xFFFFFFFF),
                                 thickness = 0.5.dp,
                             )
@@ -120,7 +121,7 @@ fun DropDown(
 
                             }
                             else
-                                Divider(
+                                HorizontalDivider(
                                     color = Color.White,
                                     thickness = 0.5.dp,
                                 )

@@ -7,22 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.Location
-import com.tlog.data.model.travel.AddTravelRequest
+import com.tlog.data.api.AddTravelRequest
+import com.tlog.data.model.share.Location
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import java.util.UUID
 
 @HiltViewModel
@@ -162,23 +156,5 @@ class AddTravelViewModel @Inject constructor(
         if (travelName.value.isEmpty() || travelAddress.value.isEmpty() || travelDescription.value.isEmpty())
             return false
         return true
-    }
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object TravelModule {
-    @Provides
-    fun provideTravelApi(
-        retrofit: Retrofit
-    ): TravelApi {
-        return retrofit.create(TravelApi::class.java)
-    }
-
-    @Provides
-    fun provideAddTravelRepository(
-        travelApi: TravelApi
-    ): AddTravelRepository {
-        return AddTravelRepository(travelApi)
     }
 }

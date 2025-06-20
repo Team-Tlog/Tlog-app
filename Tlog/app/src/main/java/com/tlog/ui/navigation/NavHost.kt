@@ -18,17 +18,17 @@ import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiIntroScreen
 import com.tlog.ui.screen.beginning.TbtiResultScreen
 import com.tlog.ui.screen.beginning.TbtiTestScreen
-import com.tlog.ui.screen.review.AddTravelDestinationScreen
+import com.tlog.ui.screen.review.AddTravelScreen
 import com.tlog.ui.screen.review.ReviewListScreen
-import com.tlog.ui.screen.review.ReviewWritingScreen
-import com.tlog.ui.screen.review.SelectReviewWriteScreen
+import com.tlog.ui.screen.review.ReviewWriteScreen
+import com.tlog.ui.screen.review.ReviewSearchScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
-import com.tlog.ui.screen.sns.SNSIdCreateScreen
-import com.tlog.ui.screen.sns.SNSScreen
+import com.tlog.ui.screen.sns.SnsIdCreateScreen
+import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
 import com.tlog.ui.screen.sns.SnsMyPageScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
@@ -36,11 +36,11 @@ import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
-import com.tlog.ui.screen.team.TeamNameCreateScreen
+import com.tlog.ui.screen.team.TeamCreateScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
-import com.tlog.ui.screen.travel.SearchScreen
-import com.tlog.ui.screen.travel.TravelDestinationRecommendation
-import com.tlog.ui.screen.travel.TravelInfoScreen
+import com.tlog.ui.screen.travel.TravelSearchScreen
+import com.tlog.ui.screen.travel.TravelListScreen
+import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -85,18 +85,18 @@ fun NavHost(
 
         //SNS
         composable("snsMain") {
-            SNSScreen(navController = navController)
+            SnsScreen(navController = navController)
         }
         composable("snsId") {
-            SNSIdCreateScreen(navController = navController)
+            SnsIdCreateScreen(navController = navController)
         }
         composable("sns") {
             val snsId = viewModel.tokenProvider.getSnsId()
             Log.d("sns", "snsId: ${snsId}")
             if (snsId == null || snsId.isEmpty())
-                SNSIdCreateScreen(navController = navController)
+                SnsIdCreateScreen(navController = navController)
             else
-                SNSScreen(navController = navController)
+                SnsScreen(navController = navController)
         }
         composable("snsPostDetail/{postId}") { backStackEntry ->
             val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
@@ -125,7 +125,7 @@ fun NavHost(
             val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
             val travelName = backStackEntry.arguments?.getString("travelName") ?: return@composable
 
-            ReviewWritingScreen(navController = navController, travelId = travelId, travelName = travelName)
+            ReviewWriteScreen(navController = navController, travelId = travelId, travelName = travelName)
         }
         composable("reviewList/{travelId}/{travelName}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("travelId") ?: return@composable
@@ -142,12 +142,12 @@ fun NavHost(
             )
         }
         composable("addTravel") {
-            AddTravelDestinationScreen(navController = navController)
+            AddTravelScreen(navController = navController)
         }
         composable("recommendDestination/{title}/{city}") { backStackEntry ->
             val title = backStackEntry.arguments?.getString("title") ?: return@composable
             val city = backStackEntry.arguments?.getString("city")
-            TravelDestinationRecommendation(
+            TravelListScreen(
                 title = title,
                 city = city,
                 navController = navController
@@ -155,7 +155,7 @@ fun NavHost(
         }
         composable("travelInfo/{id}") { backStackEntry ->
             val travelId = backStackEntry.arguments?.getString("id") ?: return@composable
-            TravelInfoScreen(travelId = travelId, navController = navController)
+            TravelDetailScreen(travelId = travelId, navController = navController)
         }
 
 
@@ -164,11 +164,11 @@ fun NavHost(
             MyTeamListScreen(navController = navController)
         }
         composable("createTeam") {
-            TeamNameCreateScreen(navController = navController)
+            TeamCreateScreen(navController = navController)
         }
         composable("teamDetail/{teamId}") { backStackEntry ->
             val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
-            TeamDetailScreen(navController = navController, teamId = teamId)
+            TeamDetailScreen(teamId = teamId)
         }
         composable("joinTeam") {
             TeamJoinByCode(navController = navController)
@@ -177,10 +177,10 @@ fun NavHost(
 
         // Search
         composable("search") {
-            SearchScreen(navController = navController)
+            TravelSearchScreen(navController = navController)
         }
         composable("searchReview") {
-            SelectReviewWriteScreen(navController = navController)
+            ReviewSearchScreen(navController = navController)
         }
 
         // TBTI

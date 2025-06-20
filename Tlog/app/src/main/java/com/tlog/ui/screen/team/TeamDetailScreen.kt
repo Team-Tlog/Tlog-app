@@ -10,17 +10,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.tmp.TmpTravelList
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
@@ -31,19 +26,17 @@ enum class PageState { DEFAULT, SMALL, MEDIUM, BIG }
 
 @Composable
 fun TeamDetailScreen(
-    teamDetailViewModel: TeamDetailViewModel = hiltViewModel(),
+    viewModel: TeamDetailViewModel = hiltViewModel(),
     teamId: String,
-    navController: NavController
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
-
     val listState = rememberLazyListState()
-
     var showPopup by remember { mutableStateOf(false) }
+    val teamDataState = viewModel.teamData.collectAsState()
 
 
     LaunchedEffect(Unit) {
-        teamDetailViewModel.getTeamDetail(teamId)
+        viewModel.getTeamDetail(teamId)
     }
 
     LaunchedEffect(listState) {
@@ -85,58 +78,64 @@ fun TeamDetailScreen(
                 .align(Alignment.TopCenter)
         )
 
-        Column {
-            Column(
-                modifier = Modifier
-                    .windowInsetsPadding(WindowInsets.systemBars)
-                    .fillMaxSize()
-            ) {
+        teamDataState.value?.let { teamData ->
+            Column {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height)
+                        .windowInsetsPadding(WindowInsets.systemBars)
+                        .fillMaxSize()
                 ) {
-                    Box(
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                when(sizeState) {
-                                    PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
-                                    PageState.DEFAULT -> sizeState =
-                                        PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                    PageState.SMALL -> sizeState =
-                                        PageState.MEDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                    PageState.MEDIUM -> sizeState = PageState.SMALL
-                                }
-                            }
+                            .height(height)
                     ) {
-                        when (sizeState) {
-                            PageState.SMALL -> SmallDesign(
-                                teamData = teamDetailViewModel.teamData.value
-                            )
-                            PageState.DEFAULT -> DefaultDesign(
-                                teamData = teamDetailViewModel.teamData.value,
-                                showPopup = showPopup,
-                                addMemberClick = { showPopup = true },
-                                onDismiss = { showPopup = false }
-                            )
-                            PageState.BIG -> BigDesign(
-                                teamData = teamDetailViewModel.teamData.value,
-                                showPopup = showPopup,
-                                addMemberClick = { showPopup = true },
-                                onDismiss = { showPopup = false }
-                            )
-                            PageState.MEDIUM -> MidiumDesign(
-                                teamData = teamDetailViewModel.teamData.value,
-                                showPopup = showPopup,
-                                addMemberClick = { showPopup = true },
-                                onDismiss = { showPopup = false }
-                            )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    when (sizeState) {
+                                        PageState.BIG -> sizeState =
+                                            if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
+
+                                        PageState.DEFAULT -> sizeState =
+                                            PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                        PageState.SMALL -> sizeState =
+                                            PageState.MEDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                        PageState.MEDIUM -> sizeState = PageState.SMALL
+                                    }
+                                }
+                        ) {
+                            when (sizeState) {
+                                PageState.SMALL -> SmallDesign(
+                                    teamData = teamData
+                                )
+
+                                PageState.DEFAULT -> DefaultDesign(
+                                    teamData = teamData,
+                                    showPopup = showPopup,
+                                    addMemberClick = { showPopup = true },
+                                    onDismiss = { showPopup = false }
+                                )
+
+                                PageState.BIG -> BigDesign(
+                                    teamData = teamData,
+                                    showPopup = showPopup,
+                                    addMemberClick = { showPopup = true },
+                                    onDismiss = { showPopup = false }
+                                )
+
+                                PageState.MEDIUM -> MidiumDesign(
+                                    teamData = teamData,
+                                    showPopup = showPopup,
+                                    addMemberClick = { showPopup = true },
+                                    onDismiss = { showPopup = false }
+                                )
+                            }
                         }
                     }
-                }
 
-                Spacer(modifier = Modifier.height(28.dp))
+                    Spacer(modifier = Modifier.height(28.dp))
 
 //                TmpTravelList(
 //                    travelList = cartViewModel.cartList.value,
@@ -145,7 +144,10 @@ fun TeamDetailScreen(
 //                    },
 //                    listState = listState
 //                )
+                }
             }
+        } ?: {
+
         }
 
         Box(
@@ -163,7 +165,7 @@ fun TeamDetailScreen(
                     .height(55.dp)
             )
         }
-
     }
+
 }
 

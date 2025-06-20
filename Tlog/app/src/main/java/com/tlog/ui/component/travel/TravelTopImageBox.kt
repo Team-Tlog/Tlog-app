@@ -23,28 +23,18 @@ fun TravelTopImageBox(
     isScrap: Boolean,
     clickScrap: () -> Unit
 ) {
-    Box( // 상단 이미지 + topbar
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(319.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
     ) {
-        Log.d("imageUrl", imageUrl)
-        if (imageUrl == "NaN") {
-            Image(
-                painter = painterResource(id = R.drawable.tmp_jeju),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
-        }
-        else {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = "여행지 사진",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
-        }
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "여행지 사진",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.matchParentSize(),
+            error = painterResource(id = R.drawable.tmp_jeju)
+        )
 
         TravelInfoTopBar(
             //iconList = listOf(R.drawable.ic_heart),

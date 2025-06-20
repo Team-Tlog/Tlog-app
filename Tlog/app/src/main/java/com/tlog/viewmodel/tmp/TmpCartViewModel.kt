@@ -12,9 +12,9 @@ import dagger.hilt.components.SingletonComponent
 import javax.inject.Inject
 import retrofit2.Retrofit
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.model.travel.UserCourseDestination
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.State
+import com.tlog.data.api.UserCourseDestination
 import com.tlog.data.local.UserPreferences
 
 @HiltViewModel

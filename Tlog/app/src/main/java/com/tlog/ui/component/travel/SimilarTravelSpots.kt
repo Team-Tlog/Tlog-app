@@ -1,11 +1,9 @@
 package com.tlog.ui.component.travel
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -41,26 +39,16 @@ fun SimilarTravelSpots(
                     .width(150.dp)
                     .height(158.dp)
             ) {
-                if (travel.imageUrl == "NaN") {
-                    Image(
-                        painter = painterResource(R.drawable.tmp_jeju),
-                        contentDescription = "여행지 사진", // 추후 변경
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(14))
-                    )
-                }
-                else {
-                    AsyncImage(
-                        model = travel.imageUrl,
-                        contentDescription = "여행지 사진",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .matchParentSize()
-                            .clip(RoundedCornerShape(14))
-                    )
-                }
+
+                AsyncImage(
+                    model = travel.imageUrl,
+                    contentDescription = "여행지 사진",
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.tmp_jeju),
+                    modifier = Modifier
+                        .matchParentSize()
+                        .clip(RoundedCornerShape(14))
+                )
             }
 
             Spacer(modifier = Modifier.height(14.dp))

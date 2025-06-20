@@ -1,10 +1,10 @@
 package com.tlog.data.repository
 
 import com.tlog.api.TbtiApi
-import com.tlog.api.UpdateTbtiResponse
 import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.TbtiDescriptionResponse
-import com.tlog.data.api.TbtiQuestionItem
+import com.tlog.data.api.UpdateTbtiResponse
+import com.tlog.data.model.share.Tbti
+import com.tlog.data.model.tbti.TbtiQuestion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -12,13 +12,13 @@ import javax.inject.Inject
 class TbtiRepository @Inject constructor(
     private val retrofitInstance: TbtiApi
 ) {
-    suspend fun getTbtiQuestions(categories: String? = null): BaseResponse<List<TbtiQuestionItem>> {
+    suspend fun getTbtiQuestions(categories: String? = null): BaseResponse<List<TbtiQuestion>> {
         return withContext(Dispatchers.IO) {
             retrofitInstance.getTbtiQuestions(categories.toString())
         }
     }
     
-    suspend fun getTbtiDescription(tbti: String): BaseResponse<TbtiDescriptionResponse> {
+    suspend fun getTbtiDescription(tbti: String): BaseResponse<Tbti> {
         return withContext(Dispatchers.IO) {
             retrofitInstance.getTbtiDescription(tbti)
         }

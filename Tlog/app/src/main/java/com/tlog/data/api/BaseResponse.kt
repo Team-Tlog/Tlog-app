@@ -1,7 +1,5 @@
 package com.tlog.data.api
 
-import com.tlog.data.model.travel.Pageable
-import com.tlog.data.model.travel.Sort
 
 data class BaseResponse<T>(
     val status: Int,

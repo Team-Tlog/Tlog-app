@@ -5,27 +5,22 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TbtiApi
 import com.tlog.data.repository.TbtiRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
-import com.tlog.data.api.TbtiQuestionItem
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
+import com.tlog.data.model.tbti.TbtiQuestion
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
 ) : ViewModel() {
 
-    private val _questions = mutableStateListOf<TbtiQuestionItem>()
+    private val _questions = mutableStateListOf<TbtiQuestion>()
 
-    private val _currentQuestionIndex = mutableStateOf(0)
+    private val _currentQuestionIndex = mutableIntStateOf(0)
     val currentQuestionIndex get() = _currentQuestionIndex
 
     val totalQuestions: Int
@@ -39,21 +34,21 @@ class TbtiTestViewModel @Inject constructor(
     private var _tbtiResult = mutableStateOf("")
     val tbtiResult: State<String> = _tbtiResult
 
-    private val _sValue = mutableStateOf(0)
-    val sValue: State<Int> get() = _sValue
+    private val _sValue = mutableIntStateOf(0)
+    val sValue: State<Int> = _sValue
 
-    private val _eValue = mutableStateOf(0)
+    private val _eValue = mutableIntStateOf(0)
     val eValue: State<Int> get() = _eValue
 
-    private val _lValue = mutableStateOf(0)
+    private val _lValue = mutableIntStateOf(0)
     val lValue: State<Int> get() = _lValue
 
-    private val _aValue = mutableStateOf(0)
+    private val _aValue = mutableIntStateOf(0)
     val aValue: State<Int> get() = _aValue
 
     private val _resultCode = mutableStateOf<String?>(null)
 
-    private val _resultIntCode = mutableStateOf(0)
+    private val _resultIntCode = mutableIntStateOf(0)
     val tbtiIntCode: State<Int> get() = _resultIntCode
 
     // 중복 방지 플래그 추가
@@ -66,7 +61,7 @@ class TbtiTestViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val allQuestions = mutableListOf<TbtiQuestionItem>()
+                val allQuestions = mutableListOf<TbtiQuestion>()
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
@@ -84,7 +79,7 @@ class TbtiTestViewModel @Inject constructor(
 
 
     private fun updateCurrentQuestion() {
-        val index = _currentQuestionIndex.value
+        val index = _currentQuestionIndex.intValue
         if (index in _questions.indices) {
             val questionItem = _questions[index]
             currentQuestion.value = questionItem.content
@@ -101,10 +96,10 @@ class TbtiTestViewModel @Inject constructor(
     fun onAnswerSelected(index: Int) {
         selectedIdx.value = index
         // 현재 질문 인덱스에 사용자의 선택을 저장
-        if (selectedAnswers.size <= _currentQuestionIndex.value) {
+        if (selectedAnswers.size <= _currentQuestionIndex.intValue) {
             selectedAnswers.add(index)
         } else {
-            selectedAnswers[_currentQuestionIndex.value] = index
+            selectedAnswers[_currentQuestionIndex.intValue] = index
         }
     }
 
@@ -137,14 +132,14 @@ class TbtiTestViewModel @Inject constructor(
 
         _traitScores.value = traitScores
         _resultCode.value = resultCode
-        _resultIntCode.value = resultIntCode.toInt()
+        _resultIntCode.intValue = resultIntCode.toInt()
 
-        _sValue.value = traitScores["RISK_TAKING"] ?: 0
-        _eValue.value = traitScores["LOCATION_PREFERENCE"] ?: 0
-        _lValue.value = traitScores["PLANNING_STYLE"] ?: 0
-        _aValue.value = traitScores["ACTIVITY_LEVEL"] ?: 0
+        _sValue.intValue = traitScores["RISK_TAKING"] ?: 0
+        _eValue.intValue = traitScores["LOCATION_PREFERENCE"] ?: 0
+        _lValue.intValue = traitScores["PLANNING_STYLE"] ?: 0
+        _aValue.intValue = traitScores["ACTIVITY_LEVEL"] ?: 0
 
-        val resultList = listOf(_sValue.value.toString(), _eValue.value.toString(), _lValue.value.toString(), _aValue.value.toString())
+        val resultList = listOf(_sValue.intValue.toString(), _eValue.intValue.toString(), _lValue.intValue.toString(), _aValue.intValue.toString())
         var retResultCode = ""
 
         resultList.forEachIndexed { idx, result ->
@@ -164,7 +159,7 @@ class TbtiTestViewModel @Inject constructor(
     }
 
     fun getIntCode(): Int {
-        return "${_sValue.value}${_eValue.value}${_lValue.value}${_aValue.value}".toInt()
+        return "${_sValue.intValue}${_eValue.intValue}${_lValue.intValue}${_aValue.intValue}".toInt()
     }
 
     fun getSRResultCode(
@@ -190,8 +185,8 @@ class TbtiTestViewModel @Inject constructor(
     val isTestFinished: State<Boolean> get() = _isTestFinished
 
     fun moveToNextQuestion() {
-        if (_currentQuestionIndex.value < _questions.size - 1) {
-            _currentQuestionIndex.value++
+        if (_currentQuestionIndex.intValue < _questions.size - 1) {
+            _currentQuestionIndex.intValue++
             updateCurrentQuestion()
         } else {
             // 마지막 질문까지 답변했으면 결과 계산
@@ -211,23 +206,4 @@ class TbtiTestViewModel @Inject constructor(
     }
 
     val selectedIdx = mutableStateOf<Int?>(null)
-}
-
-
-@Module
-@InstallIn(SingletonComponent::class)
-object TbtiRepositoryModule {
-    @Provides
-    fun provideTbtiRepository(
-        retrofitInstance: TbtiApi
-    ): TbtiRepository {
-        return TbtiRepository(retrofitInstance)
-    }
-
-    @Provides
-    fun provideTbtiApi(
-        retrofit: Retrofit
-    ): TbtiApi {
-        return retrofit.create(TbtiApi::class.java)
-    }
 }

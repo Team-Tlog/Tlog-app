@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.model.travel.DetailReview
 import com.tlog.data.model.travel.Review
 
 // 250603 정찬 -> 안쓰는듯? 추후 안쓰면 제거하자~
@@ -14,7 +13,7 @@ import com.tlog.data.model.travel.Review
 fun ReviewListSection(
     avgStarRating: Double,
     starRatings: List<Int>,
-    reviewList: List<DetailReview>,
+    reviewList: List<Review>,
     reviewCnt: Int = Int.MAX_VALUE
 ) {
     Column {

@@ -42,10 +42,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.api.Comment
-import com.tlog.ui.component.SNS.PostAuthorInfo
-import com.tlog.ui.component.SNS.PostContentAndInteractions
-import com.tlog.ui.component.SNS.PostImage
+import com.tlog.data.model.sns.Comment
+import com.tlog.ui.component.sns.PostAuthorInfo
+import com.tlog.ui.component.sns.PostContentAndInteractions
+import com.tlog.ui.component.sns.PostImage
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
@@ -63,9 +63,9 @@ fun SnsDetailScreen(
     }
 
     val followingList = viewModel.followingList.collectAsState().value
+    val post = viewModel.post.collectAsState()
 
 
-    if (viewModel.post.value != null) {
         Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
@@ -76,52 +76,52 @@ fun SnsDetailScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                PostAuthorInfo(
-                    userId = viewModel.post.value!!.authorName,
-                    userProfileImageUrl = viewModel.post.value!!.authorProfileImageUrl,
-                    isFollowing = followingList.contains(viewModel.post.value!!.authorId),
-                    isMyPost = viewModel.userId == viewModel.post.value!!.authorId,
-                    onFollowToggle = {
-                        viewModel.followUser(viewModel.post.value!!.authorId)
-                    },
-                    clickUser = {
-                        navController.navigate("snsMyPage/${viewModel.post.value!!.authorId}")
-                    }
-                )
-
-                PostImage(
-                    images = viewModel.post.value!!.contentImageUrls
-                )
-
-                Spacer(modifier = Modifier.height(26.dp))
-
-                PostContentAndInteractions(
-                    content = viewModel.post.value!!.content,
-                    isLiked = false,
-                    onLikeClick = {
-                        // 좋아요
-                    },
-                    onShareClick = {
-                        Log.d("공유 아이콘", "공유 아이콘")
-                    },
-                    onReportClick = {
-                        Log.d("신고하기", "신고하기")
-                    },
-                    isSingleLine = false
-                )
-
-                Spacer(modifier = Modifier.height(26.dp))
-
-                viewModel.post.value!!.replies.forEach { comment ->
-                    CommentItem(
-                        comment = comment,
-                        userClick = { targetUserId ->
-                            navController.navigate("snsMyPage/$targetUserId")
+                post.value?.let { post ->
+                    PostAuthorInfo(
+                        userId = post.authorName,
+                        userProfileImageUrl = post.authorProfileImageUrl,
+                        isFollowing = followingList.contains(post.authorId),
+                        isMyPost = viewModel.userId == post.authorId,
+                        onFollowToggle = {
+                            viewModel.followUser(viewModel.post.value!!.authorId)
+                        },
+                        clickUser = {
+                            navController.navigate("snsMyPage/${viewModel.post.value!!.authorId}")
                         }
                     )
-                }
-            }
 
+                    PostImage(
+                        images = post.contentImageUrls
+                    )
+
+                    Spacer(modifier = Modifier.height(26.dp))
+
+                    PostContentAndInteractions(
+                        content = post.content,
+                        isLiked = false,
+                        onLikeClick = {
+                            // 좋아요
+                        },
+                        onShareClick = {
+                            Log.d("공유 아이콘", "공유 아이콘")
+                        },
+                        onReportClick = {
+                            Log.d("신고하기", "신고하기")
+                        },
+                        isSingleLine = false
+                    )
+
+                    Spacer(modifier = Modifier.height(26.dp))
+
+                    post.replies.forEach { comment ->
+                        CommentItem(
+                            comment = comment,
+                            userClick = { targetUserId ->
+                                navController.navigate("snsMyPage/$targetUserId")
+                            }
+                        )
+                    }
+                }
 
             Box(
                 modifier = Modifier

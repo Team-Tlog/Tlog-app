@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.api.ReviewResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,7 +11,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
-import com.tlog.data.model.travel.DetailReview
+import androidx.compose.runtime.mutableDoubleStateOf
+import com.tlog.data.model.travel.Review
 import java.util.Locale
 
 
@@ -21,13 +21,13 @@ class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
 ): ViewModel() {
-    private val _reviewList = mutableStateOf<List<DetailReview>>(emptyList())
-    val reviewList: State<List<DetailReview>> = _reviewList
+    private val _reviewList = mutableStateOf<List<Review>>(emptyList())
+    val reviewList: State<List<Review>> = _reviewList
 
     private val _ratingDistribution = mutableStateOf<Map<String, Int>>(emptyMap())
     val ratingDistribution: State<Map<String, Int>> = _ratingDistribution
 
-    private val _rating = mutableStateOf(0.0)
+    private val _rating = mutableDoubleStateOf(0.0)
     val rating: State<Double> = _rating
 
     private val _sortOption = mutableStateOf("날짜순")
@@ -43,7 +43,7 @@ class ReviewListViewModel @Inject constructor(
     private val sort = emptyList<String>()
     private var isLastPage = false
 
-    fun loadReviewList(
+    fun getReviewList(
         id: String,
         sortType: String = when (sortOption.value) {
             "날짜순" -> "RECENT"
@@ -82,14 +82,14 @@ class ReviewListViewModel @Inject constructor(
             totalReviews += count
         }
 
-        _rating.value = if (totalReviews > 0) {
+        _rating.doubleValue = if (totalReviews > 0) {
             String.format(Locale.US, "%.2f", sum.toDouble() / totalReviews).toDouble() // 소숫점 2자리
         } else {
             0.0
         }
     }
 
-    fun loadNextPage(
+    fun getNextPage(
         id: String,
         sortType: String = when (sortOption.value) {
             "날짜순" -> "RECENT"
@@ -120,7 +120,6 @@ class ReviewListViewModel @Inject constructor(
         }
     }
 
-    // scrap
     fun toggleScrap(destinationId: String) {
         viewModelScope.launch {
             try {

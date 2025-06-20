@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.api.ScrapDestinationResponse
-import com.tlog.data.model.travel.SearchTravel
+import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.ShopCart
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
@@ -129,7 +129,7 @@ fun TravelItem(
 @Composable
 fun ScrapTravelItem(
     viewModel: ScrapAndCartViewModel = viewModel(),
-    travel: ScrapDestinationResponse,
+    travel: Scrap,
     onClick: (String) -> Unit
 ) {
     Row(

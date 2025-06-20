@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -73,7 +72,7 @@ fun DropDownCheckBox(
 
             // 드롭다운 펼쳐졌을 때
             if (expanded) {
-                Divider(
+                HorizontalDivider(
                     color = Color(0xFFE8E8E8),
                     thickness = 0.5.dp,
                     modifier = Modifier
@@ -126,7 +125,7 @@ fun DropDownCheckBox(
                                 }
                             }
                             if (index < options.lastIndex) {
-                                Divider(
+                                HorizontalDivider(
                                     color = Color(0xFFE8E8E8),
                                     thickness = 0.5.dp,
                                 )

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
-import com.tlog.data.model.travel.UserCourseDestination
+import com.tlog.data.api.UserCourseDestination
 import com.tlog.ui.component.tmp.TmpTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor

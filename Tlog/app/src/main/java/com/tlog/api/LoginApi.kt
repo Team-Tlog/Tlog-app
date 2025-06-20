@@ -1,6 +1,8 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.FcmTokenBody
+import com.tlog.data.api.FirebaseTokenData
 import com.tlog.data.api.LoginRequest
 import com.tlog.data.api.RegisterRequest
 import retrofit2.Response
@@ -29,12 +31,3 @@ interface LoginApi {
         @Body request: RegisterRequest
     ): Response<BaseResponse<FirebaseTokenData>>
 }
-
-data class FirebaseTokenData(
-    val firebaseCustomToken: String
-)
-
-data class FcmTokenBody(
-    val userId: String,
-    val firebaseToken: String
-)

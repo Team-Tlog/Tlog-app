@@ -35,7 +35,7 @@ import com.tlog.ui.component.share.MainInputField
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.StarRating
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.review.ReviewViewModel
+import com.tlog.viewmodel.review.ReviewWriteViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -45,13 +45,12 @@ import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
-import com.tlog.viewmodel.review.ReviewViewModel.UiEvent
+import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
 
 
-//@Preview
 @Composable
-fun ReviewWritingScreen(
-    viewModel: ReviewViewModel = hiltViewModel(),
+fun ReviewWriteScreen(
+    viewModel: ReviewWriteViewModel = hiltViewModel(),
     travelId: String,
     travelName: String, // id로 api 호출하기엔 이름만 필요해서 이렇게 하고 등록할 때 id 이용해서 등록하는게 좋을 것 같습니다
     navController: NavHostController
@@ -99,7 +98,7 @@ fun ReviewWritingScreen(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = travelName + (if (hasJongseong(travelName)) "은" else "는") + " 어떠셨나요?",
+                    text = travelName + (if (checkLastChar(travelName)) "은" else "는") + " 어떠셨나요?",
                     style = BodyTitle,
                     textAlign = TextAlign.Center
                 )
@@ -195,7 +194,7 @@ fun ReviewWritingScreen(
     }
 }
 
-fun hasJongseong(text: String): Boolean {
+fun checkLastChar(text: String): Boolean {
     if (text.isEmpty()) return false
 
     val lastChar = if (text.last() == ')' && text.length >= 2) text[text.length - 2] else text.last()

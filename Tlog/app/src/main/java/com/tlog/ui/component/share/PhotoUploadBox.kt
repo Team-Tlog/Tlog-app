@@ -73,19 +73,21 @@ fun PhotoUploadBox(
             )
         }
         item {
-            Box(
-                modifier = Modifier
-                    .size(80.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, Color(0xFFDCDCDC), RoundedCornerShape(16.dp))
-                    .clickable { onAddClick() },
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_add_circle),
-                    contentDescription = "사진 추가",
-                    tint = MainColor.copy(alpha = 0.3f)
-                )
+            if (images.size < maxImageCnt) {
+                Box(
+                    modifier = Modifier
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .border(1.dp, Color(0xFFDCDCDC), RoundedCornerShape(16.dp))
+                        .clickable { onAddClick() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_add_circle),
+                        contentDescription = "사진 추가",
+                        tint = MainColor.copy(alpha = 0.3f)
+                    )
+                }
             }
         }
     }

@@ -3,7 +3,7 @@ package com.tlog.api
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.travel.ShopCart
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.model.user.User
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.PUT
@@ -33,7 +33,7 @@ interface UserApi {
 
     // 기본 마이페이지 조회 (SNS 아님)
     @GET("api/users/my-page")
-    suspend fun getUserInfo(): BaseResponse<UserInfo>
+    suspend fun getUserInfo(): BaseResponse<User>
 
     //마이페이지에서 프로필사진 업로드
     @POST("/api/users/profile-image")
@@ -42,26 +42,4 @@ interface UserApi {
     ): BaseResponse<String>
 }
 
-data class UserInfo(
-    val username: String,
-    val snsId: String,
-    val profileImageUrl: String?,
-    val defaultRewardPhrase: String,
-    val userRewards: List<Reward>,
-    val tbtiDescription: Tbti
-)
 
-data class Reward(
-    val rewardId: String,
-    val name: String,
-    val description: String,
-    val iconImageUrl: String,
-    val isDefaultReward: Boolean
-)
-
-data class Tbti(
-    val tbtiString: String,
-    val imageUrl: String?,
-    val secondName: String,
-    val description: String
-)
