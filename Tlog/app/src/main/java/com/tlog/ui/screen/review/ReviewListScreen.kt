@@ -15,16 +15,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -34,7 +30,6 @@ import com.tlog.ui.component.travel.review.ReviewHeader
 import com.tlog.ui.component.travel.review.ReviewList
 import com.tlog.ui.component.travel.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
-import com.tlog.viewmodel.travel.TravelInfoViewModel
 
 
 @Composable
@@ -47,7 +42,7 @@ fun ReviewListScreen(
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadReviewList(id = travelId)
+        viewModel.getReviewList(id = travelId)
     }
 
     LaunchedEffect(listState) {
@@ -57,12 +52,12 @@ fun ReviewListScreen(
             lastVisibleItem?.index == totalItemCount - 2 // 마지막에서 2번째 친구면
         }.collect { isLastItemVisible ->
             if (isLastItemVisible) {
-                viewModel.loadNextPage(travelId)
+                viewModel.getNextPage(travelId)
             }
         }
     }
     LaunchedEffect(viewModel.sortOption.value) {
-        viewModel.loadReviewList(id = travelId)
+        viewModel.getReviewList(id = travelId)
     }
 
 
