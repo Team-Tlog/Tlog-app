@@ -1,22 +1,17 @@
 package com.tlog.viewmodel.team
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.tlog.api.TeamApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,6 +50,7 @@ class MyTeamListViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+                Log.d("MyTeamListViewModel", e.message.toString())
             }
         }
     }
@@ -71,6 +67,7 @@ class MyTeamListViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+                Log.d("MyTeamListViewModel", e.message.toString())
             }
         }
     }

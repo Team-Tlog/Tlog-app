@@ -27,7 +27,6 @@ fun MyTeamListScreen(
     viewModel: MyTeamListViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val teams by viewModel.teamsList
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -45,6 +44,8 @@ fun MyTeamListScreen(
             }
         }
     }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -64,14 +65,12 @@ fun MyTeamListScreen(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(teams) { team ->
+            items(viewModel.teamsList.value) { team ->
                 TeamCard(
                     team = team,
                     onDeleteClick = { viewModel.deleteTeam(it) },
                     onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
                 )
-            }
-            item{
                 Spacer(modifier = Modifier.height(10.dp))
             }
         }
