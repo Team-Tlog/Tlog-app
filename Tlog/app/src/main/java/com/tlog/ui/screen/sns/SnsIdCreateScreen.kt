@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.team.TeamNameInputField
+import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.SNSIdViewModel
@@ -53,7 +53,7 @@ fun SnsIdCreateScreen(
 
         Spacer(modifier = Modifier.height(35.dp))
 
-        TeamNameInputField(
+        TitleInputField(
             text = "사용할 ID를 정해주세요",
             value = viewModel.snsId.value,
             onValueChange = {

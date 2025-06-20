@@ -35,13 +35,11 @@ class TeamNameViewModel @Inject constructor(
 
 
 
+    var _teamName = mutableStateOf("")
+    val teamName = _teamName
 
-
-    var _TeamName = mutableStateOf("")
-    val TeamName = _TeamName
-
-    fun updateTeamName(NewTeamName: String) {
-        _TeamName.value = NewTeamName
+    fun updateTeamName(newTeamName: String) {
+        _teamName.value = newTeamName
     }
 
     fun createTeam() {
@@ -50,7 +48,7 @@ class TeamNameViewModel @Inject constructor(
 
             try {
                 val result = repository.createTeam(CreateTeamRequest( //data에 팀아이디가 옴
-                        name = TeamName.value,
+                        name = teamName.value,
                         creator = safeUserId
                     )
                 )

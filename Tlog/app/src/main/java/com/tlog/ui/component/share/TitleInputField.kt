@@ -1,4 +1,4 @@
-package com.tlog.ui.component.team
+package com.tlog.ui.component.share
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -25,22 +25,15 @@ import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun TeamNameInputField (
+fun TitleInputField (
     text: String,
     value: String,
-    onValueChange: (String) -> Unit, // 갑 변경 시 수행
-    placeholderText: String, // hint
+    onValueChange: (String) -> Unit,
+    placeholderText: String,
     singleLine: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    val defaultModifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 24.dp)
-        .shadow(4.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
-        .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
-        .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
-
     Text(
         modifier = Modifier.fillMaxWidth(),
         text = text,
@@ -49,7 +42,6 @@ fun TeamNameInputField (
     )
 
     Spacer(modifier = Modifier.height(25.dp))
-
 
     TextField(
         value = value,
@@ -72,6 +64,11 @@ fun TeamNameInputField (
             fontWeight = FontWeight.Thin
         ),
         trailingIcon = trailingIcon,
-        modifier = defaultModifier.then(modifier)
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp)
+            .shadow(4.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
+            .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
+            .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
     )
 }

@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.team
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.team.TeamNameInputField
+import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
@@ -62,22 +61,18 @@ fun TeamCreateScreen(
 
         Spacer(modifier = Modifier.height(35.dp))
 
-        TeamNameInputField(
+        TitleInputField(
             text = "팀 이름을 정해주세요!",
-            value = viewModel.TeamName.value,
+            value = viewModel.teamName.value,
             onValueChange = {
                 viewModel.updateTeamName(it)
-                Log.d("TeamNameValue", viewModel.TeamName.value)
             },
             placeholderText = "입력해주세요",
-
         )
-
 
         Spacer(modifier = Modifier.weight(1f))
 
-        // 입력값이 있을 때만 버튼 표시
-        if (viewModel.TeamName.value.isNotEmpty()) {
+        if (viewModel.teamName.value.isNotBlank() && viewModel.teamName.value.length >= 2) {
             MainButton(
                 text = "팀 생성하기",
                 onClick = {
