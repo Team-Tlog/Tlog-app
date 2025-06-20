@@ -3,6 +3,8 @@ package com.tlog.viewmodel.review
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,16 +43,16 @@ class ReviewWriteViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private var _rating = mutableStateOf(0)
-    val rating = _rating
+    private var _rating = mutableIntStateOf(0)
+    val rating: State<Int> = _rating
     private var _review = mutableStateOf("")
-    val review = _review
+    val review: State<String> = _review
     private var _hashTag = mutableStateOf("")
-    val hashTag = _hashTag
+    val hashTag: State<String> = _hashTag
     private var _hashTags = mutableStateOf<List<String>>(emptyList()) // 테스트용 2개 추후 로직 생성 시 삭제할 것
-    val hashTags = _hashTags
+    val hashTags: State<List<String>> = _hashTags
     private var _imageList = mutableStateOf<List<Uri>>(emptyList())
-    val imageList = _imageList
+    val imageList: State<List<Uri>> = _imageList
 
 
     suspend fun imageUpload(context: Context, imageUriList: List<Uri>): List<String> {
@@ -114,7 +116,7 @@ class ReviewWriteViewModel @Inject constructor(
 
 
     fun updateRating(newRating: Int) {
-        _rating.value = newRating
+        _rating.intValue = newRating
     }
 
     fun updateReview(newReview: String) {

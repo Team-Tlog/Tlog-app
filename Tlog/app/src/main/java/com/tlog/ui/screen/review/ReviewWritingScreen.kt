@@ -48,7 +48,6 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
 
 
-//@Preview
 @Composable
 fun ReviewWriteScreen(
     viewModel: ReviewWriteViewModel = hiltViewModel(),
@@ -99,7 +98,7 @@ fun ReviewWriteScreen(
 
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = travelName + (if (hasJongseong(travelName)) "은" else "는") + " 어떠셨나요?",
+                    text = travelName + (if (checkLastChar(travelName)) "은" else "는") + " 어떠셨나요?",
                     style = BodyTitle,
                     textAlign = TextAlign.Center
                 )
@@ -195,7 +194,7 @@ fun ReviewWriteScreen(
     }
 }
 
-fun hasJongseong(text: String): Boolean {
+fun checkLastChar(text: String): Boolean {
     if (text.isEmpty()) return false
 
     val lastChar = if (text.last() == ')' && text.length >= 2) text[text.length - 2] else text.last()
