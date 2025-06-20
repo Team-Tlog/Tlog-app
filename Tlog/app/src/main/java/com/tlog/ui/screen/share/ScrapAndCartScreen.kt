@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -49,10 +50,6 @@ fun ScrapAndCartScreen(
     viewModel: ScrapAndCartViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.initUserIdAndScrapList()
-    }
-
 
     Box(
         modifier = Modifier
@@ -60,7 +57,7 @@ fun ScrapAndCartScreen(
             .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        val selectedTab = androidx.compose.runtime.remember { androidx.compose.runtime.mutableStateOf("스크랩") }
+        val selectedTab = remember { androidx.compose.runtime.mutableStateOf("스크랩") }
 
         Column {
             if (viewModel.checkedTravelList.value.isNotEmpty()) {
@@ -120,7 +117,7 @@ fun ScrapAndCartScreen(
                             }
                             .clickable {
                                 selectedTab.value = "스크랩"
-                                viewModel.fetchScrapList(viewModel.userId)
+                                viewModel.fetchScrapList()
                             }
                     ) {
                         Text(
@@ -146,7 +143,7 @@ fun ScrapAndCartScreen(
                             }
                             .clickable {
                                 selectedTab.value = "내 장바구니"
-                                viewModel.fetchCart(viewModel.userId)
+                                viewModel.fetchCart()
                             }
                     ) {
                         Text(
@@ -221,7 +218,9 @@ fun ScrapAndCartScreen(
                     text = "코스 짜기",
                     onClick = {
 
-                    }
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp, vertical = 15.dp)
                 )
             }
         }
