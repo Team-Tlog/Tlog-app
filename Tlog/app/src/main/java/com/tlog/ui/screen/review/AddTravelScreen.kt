@@ -39,7 +39,6 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.travel.AddTravelViewModel
 
 
-//@Preview
 @Composable
 fun AddTravelScreen(
     viewModel: AddTravelViewModel = hiltViewModel(),
@@ -54,6 +53,7 @@ fun AddTravelScreen(
                     navController.navigate("main") {
                         viewModel.clearImages()
                         viewModel.clearHashTags()
+                        Toast.makeText(context, "여행지 등록 성공", Toast.LENGTH_SHORT).show()
                         popUpTo("main") { inclusive = false }
                     }
                 }
@@ -88,7 +88,6 @@ fun AddTravelScreen(
                 value = viewModel.travelName.value,
                 onValueChange = {
                     viewModel.updateTravelName(it)
-                    Log.d("travelName", viewModel.travelName.value)
                 },
                 placeholderText = "입력해주세요"
             )
@@ -124,7 +123,6 @@ fun AddTravelScreen(
                 selectedOption = if (viewModel.hasParking.value) "가능" else "불가능",
                 onOptionSelected = {
                     viewModel.updateHasParking(it == "가능")
-                    Log.d("travelOption", viewModel.hasParking.value.toString())
                 }
             )
 
@@ -134,7 +132,6 @@ fun AddTravelScreen(
                 selectedOption = if (viewModel.isPetFriendly.value) "가능" else "불가능",
                 onOptionSelected = {
                     viewModel.updateIsPetFriendly(it == "가능")
-                    Log.d("petFriendOption", viewModel.isPetFriendly.value.toString())
                 }
             )
 
@@ -162,7 +159,6 @@ fun AddTravelScreen(
                 value = viewModel.travelDescription.value,
                 onValueChange = {
                     viewModel.updateTravelDescription(it) // 추후 글자수 제한?
-                    Log.d("travelDescription", viewModel.travelDescription.value)
                 },
                 placeholderText = "입력해주세요",
                 singleLine = false,
@@ -171,7 +167,6 @@ fun AddTravelScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            //val context = androidx.compose.ui.platform.LocalContext.current
             val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
                 contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
             ) { uri ->

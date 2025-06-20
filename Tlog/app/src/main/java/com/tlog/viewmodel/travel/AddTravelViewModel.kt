@@ -7,22 +7,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.TravelApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.AddTravelRequest
 import com.tlog.data.model.share.Location
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import java.util.UUID
 
 @HiltViewModel
