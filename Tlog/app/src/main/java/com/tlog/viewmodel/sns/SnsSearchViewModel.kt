@@ -35,7 +35,7 @@ class SnsSearchViewModel @Inject constructor(
             @OptIn(FlowPreview::class)
             _searchText
                 .debounce(500)
-                .filter { it.isNotBlank() && it.length >= 1}
+                .filter { it.isNotBlank() && it.isNotEmpty()}
                 .distinctUntilChanged()
                 .collect {
                     try {
