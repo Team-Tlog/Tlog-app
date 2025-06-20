@@ -11,6 +11,7 @@ import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,8 +24,14 @@ class SnsViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ): ViewModel() {
     private var userId: String? = ""
+
     private var lastPostId: String? = null
     private var size = 10
+
+    private var _postList = MutableStateFlow(listOf<SnsPost>())
+    val postList: StateFlow<List<SnsPost>> = _postList
+
+    val followingList: StateFlow<Set<String>> = followManager.followingList
 
     init {
         userId = tokenProvider.getUserId()
@@ -32,10 +39,7 @@ class SnsViewModel @Inject constructor(
     }
 
 
-    private var _postList = mutableStateOf(listOf<SnsPost>())
-    val postList: State<List<SnsPost>> = _postList
 
-    val followingList: StateFlow<Set<String>> = followManager.followingList
 
     fun getSnsPost() {
         viewModelScope.launch {

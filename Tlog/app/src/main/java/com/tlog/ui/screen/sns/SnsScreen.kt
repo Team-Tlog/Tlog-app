@@ -24,6 +24,7 @@ fun SnsScreen(
     navController: NavController
 ) {
     val followingList = viewModel.followingList.collectAsState().value
+    val postList = viewModel.postList.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -54,26 +55,28 @@ fun SnsScreen(
                 .fillMaxWidth()
                 .padding(innerPadding)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White)
-            ) {
-                items(viewModel.postList.value) { post ->
-                    PostItem(
-                        post = post,
-                        isFollowing = followingList.contains(post.authorId),
-                        clickUser = { userId ->
-                            navController.navigate("snsMyPage/$userId")
-                        },
-                        courseClick = { postId ->
-                            navController.navigate("snsPostDetail/$postId")
-                        },
-                        followClick = {
-                            viewModel.followUser(post.authorId)
-                        }
-                    )
+            postList.let { postList ->
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.White)
+                ) {
+                    items(postList) { post ->
+                        PostItem(
+                            post = post,
+                            isFollowing = followingList.contains(post.authorId),
+                            clickUser = { userId ->
+                                navController.navigate("snsMyPage/$userId")
+                            },
+                            courseClick = { postId ->
+                                navController.navigate("snsPostDetail/$postId")
+                            },
+                            followClick = {
+                                viewModel.followUser(post.authorId)
+                            }
+                        )
 
+                    }
                 }
             }
         }
