@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -43,7 +42,11 @@ fun TeamJoinByCode(
     navController: NavController
 ) {
     val context = LocalContext.current
-
+    val focusManager = LocalFocusManager.current
+    val codeError = viewModel.codeError
+    val isCodeValid = viewModel.isCodeValid
+    val textList = viewModel.textList
+    val requesterList = viewModel.requesterList
 
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
@@ -59,12 +62,6 @@ fun TeamJoinByCode(
     }
 
 
-
-    val focusManager = LocalFocusManager.current
-    val codeError = viewModel.codeError
-    val isCodeValid = viewModel.isCodeValid
-    val textList = viewModel.textList
-    val requesterList = viewModel.requesterList
 
     Surface(
         modifier = Modifier
