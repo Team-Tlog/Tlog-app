@@ -7,26 +7,20 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.LoginApi
-import com.tlog.api.UserApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.data.util.FirebaseImageUploader
 import com.tlog.viewmodel.share.MyPageViewModel.UiEvent.LogoutSuccess
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.toString
 import android.net.Uri
+import android.widget.Toast
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.user.User
@@ -38,6 +32,7 @@ class MyPageViewModel @Inject constructor(
     private val tokenProvider: TokenProvider,
     private val userPreferences: UserPreferences
 ): ViewModel() {
+
     private val _notification = mutableStateOf(true)
     val notification: State<Boolean> = _notification
 
@@ -126,10 +121,11 @@ class MyPageViewModel @Inject constructor(
                 )
                 if (response.status == 200){
                     _eventFlow.emit(UiEvent.ProfileImageUpdated)
+                    Toast.makeText(context, "프로필 사진 변경 성공", Toast.LENGTH_SHORT).show()
                 }
             }
             catch(e: Exception){
-                //오류 캐치 추가 필요
+                Log.d("MyPageViewModel", e.message.toString())
             }
         }
     }
