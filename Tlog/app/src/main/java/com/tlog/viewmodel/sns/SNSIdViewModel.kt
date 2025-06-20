@@ -5,18 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.SnsApi
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.SnsRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +51,6 @@ class SNSIdViewModel @Inject constructor(
                         _eventFlow.emit(UiEvent.ApiError(result.message ?: "중복된 ID"))
                         _isDuplicated.value = true
                     }
-
                     500 -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "서버 오류"))
                     else -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "알 수 없는 오류"))
                 }
@@ -68,8 +61,6 @@ class SNSIdViewModel @Inject constructor(
             }
         }
     }
-
-
 
 
     fun updateId(newId: String) {
