@@ -27,7 +27,6 @@ class SnsMyPageViewModel @Inject constructor(
 
     init {
         _userId.value = tokenProvider.getUserId()
-
     }
 
 

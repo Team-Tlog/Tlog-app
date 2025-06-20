@@ -44,15 +44,15 @@ fun SnsMyPageScreen(
         viewModel.getUserProfile(userId)
     }
 
-    val userProfile = viewModel.userProfileInfo.collectAsState().value
+    val userProfile = viewModel.userProfileInfo.collectAsState()
 
-    if (userProfile != null) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars)
-                .background(Color.White)
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
+            .background(Color.White)
+    ) {
+        userProfile.value?.let { profile ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -61,7 +61,7 @@ fun SnsMyPageScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = userProfile.username,
+                    text = profile.username,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -83,14 +83,13 @@ fun SnsMyPageScreen(
                 }
             }
 
-            ProfileSection(userProfile)
+            ProfileSection(profile)
 
             Spacer(modifier = Modifier.height(15.dp))
 
             if (userId == viewModel.userId.value) {
                 ActionButtons()
-            }
-            else {
+            } else {
                 ActionButtons(
                     isTowButton = false,
                     isFollowing = followingList.contains(userId),
@@ -103,15 +102,12 @@ fun SnsMyPageScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             PostsGrid(
-                postList = userProfile.posts.content,
+                postList = profile.posts.content,
                 onClick = { postId ->
                     navController.navigate("snsPostDetail/$postId")
                 }
             )
         }
-    }
-    else {
-        // 로딩 중
     }
 }
 
