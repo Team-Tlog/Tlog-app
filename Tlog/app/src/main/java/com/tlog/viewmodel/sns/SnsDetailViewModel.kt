@@ -10,6 +10,7 @@ import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,8 +30,8 @@ class SnsDetailViewModel @Inject constructor(
     }
 
 
-    private var _post = mutableStateOf<SnsPost?>(null)
-    val post: State<SnsPost?> = _post
+    private var _post = MutableStateFlow<SnsPost?>(null)
+    val post: StateFlow<SnsPost?> = _post
 
     private var _comment = mutableStateOf<String>("")
     val comment: State<String> = _comment
