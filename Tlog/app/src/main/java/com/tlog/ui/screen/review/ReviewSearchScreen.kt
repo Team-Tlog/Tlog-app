@@ -39,19 +39,10 @@ import com.tlog.viewmodel.share.SearchViewModel
 
 
 @Composable
-fun SelectReviewWriteScreen(
+fun ReviewSearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val selectedItemState = viewModel.selectTravel.collectAsState(initial = null)
-    val selectedItem = selectedItemState.value
-    selectedItem?.let { (travelId, travelName) ->
-        LaunchedEffect(selectedItem) {
-            navController.navigate("review/$travelId/$travelName")
-            viewModel.clearSelectTravel()
-        }
-    }
-
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -117,10 +108,11 @@ fun SelectReviewWriteScreen(
                 }
             } else {
                 Spacer(modifier = Modifier.height(20.dp))
+
                 SearchTravelList(
                     travelList = viewModel.searchResult.value,
                     onClick = { travelId, travelName ->
-                        viewModel.selectTravel(travelId, travelName)
+                        navController.navigate("review/$travelId/$travelName")
                     }
                 )
             }

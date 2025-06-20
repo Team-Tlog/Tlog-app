@@ -21,7 +21,7 @@ import com.tlog.ui.screen.beginning.TbtiTestScreen
 import com.tlog.ui.screen.review.AddTravelScreen
 import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWriteScreen
-import com.tlog.ui.screen.review.SelectReviewWriteScreen
+import com.tlog.ui.screen.review.ReviewSearchScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
@@ -180,7 +180,7 @@ fun NavHost(
             TravelSearchScreen(navController = navController)
         }
         composable("searchReview") {
-            SelectReviewWriteScreen(navController = navController)
+            ReviewSearchScreen(navController = navController)
         }
 
         // TBTI

@@ -29,16 +29,12 @@ class SearchViewModel @Inject constructor(
     private var _searchText = MutableStateFlow("")
     val searchText = _searchText
 
-    // 클릭 시 선택
-    private val _selectTravel = MutableStateFlow<Pair<String, String>?>(null)
-    val selectTravel: StateFlow<Pair<String, String>?> = _selectTravel
-
     init {
         viewModelScope.launch {
             @OptIn(FlowPreview::class) // debounce 때문에 사용
             _searchText
                 .debounce(500) // 입력 없을 때
-                .filter { it.isNotBlank() && it.length >= 1} // 공백 무시 / 길이 1이상
+                .filter { it.isNotBlank() && it.isNotEmpty()} // 공백 무시 / 길이 1이상
                 .distinctUntilChanged()
                 .collect {
                     try {
@@ -51,14 +47,6 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-
-    fun selectTravel(id: String, name: String) {
-        _selectTravel.value = id to name
-    }
-
-    fun clearSelectTravel() {
-        _selectTravel.value = null
-    }
 
     suspend fun searchTravel(searchText: String) {
         val response = repository.searchTravel(searchText)
