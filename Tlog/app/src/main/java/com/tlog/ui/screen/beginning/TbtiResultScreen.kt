@@ -241,10 +241,11 @@ fun TbtiResultScreen(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            val tbtiValue = "${traitScores["R"] ?: 0}" +
-                    "${traitScores["E"] ?: 0}" +
-                    "${traitScores["N"] ?: 0}" +
-                    "${traitScores["A"] ?: 0}"
+            val tbtiValue = if (traitScores["R"] != 0) traitScores["R"].toString() else {"00"} +
+                    if (traitScores["E"] != 0) traitScores["E"].toString() else {"00"} +
+                    if (traitScores["N"] != 0) traitScores["N"].toString() else {"00"} +
+                    if (traitScores["A"] != 0) traitScores["A"].toString() else "00"
+
 
             MainButton(
                 text = if (viewModel.isUserId()) "변경하기" else "시작하기",

@@ -201,10 +201,10 @@ fun NavHost(
             arguments = listOf(navArgument("tbtiResultCode") { type = NavType.StringType })
         ) { backStackEntry ->
             val tbtiResultCode = backStackEntry.arguments?.getString("tbtiResultCode") ?: ""
-            val rValue = backStackEntry.arguments?.getString("sValue") ?: "0"
-            val eValue = backStackEntry.arguments?.getString("eValue") ?: "0"
-            val nValue = backStackEntry.arguments?.getString("lValue") ?: "0"
-            val aValue = backStackEntry.arguments?.getString("aValue") ?: "0"
+            val rValue = backStackEntry.arguments?.getString("sValue") ?: "00"
+            val eValue = backStackEntry.arguments?.getString("eValue") ?: "00"
+            val nValue = backStackEntry.arguments?.getString("lValue") ?: "00"
+            val aValue = backStackEntry.arguments?.getString("aValue") ?: "00"
             val resultList = listOf(rValue, eValue, nValue, aValue)
             var resultCode = ""
 
