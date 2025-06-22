@@ -89,7 +89,7 @@ fun ReviewSearchScreen(
                             }
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_add_travel),
+                            painter = painterResource(id = R.drawable.ic_add),
                             contentDescription = "여행지 등록",
                             modifier = Modifier
                                 .size(64.dp)
