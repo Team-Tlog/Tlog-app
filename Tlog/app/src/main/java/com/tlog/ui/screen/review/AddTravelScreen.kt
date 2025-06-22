@@ -1,10 +1,10 @@
 package com.tlog.ui.screen.review
 
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,24 +18,27 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.R
+import com.tlog.ui.component.share.BottomLineInputField
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.MainInputField
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoColumnRadioGroup
-import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.AddTravelViewModel
 
 
@@ -81,36 +84,43 @@ fun AddTravelScreen(
                 text = "여행지 등록"
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(41.dp))
 
-            MainInputField(
+
+            Text(
                 text = "여행지명",
-                value = viewModel.travelName.value,
-                onValueChange = {
-                    viewModel.updateTravelName(it)
-                },
-                placeholderText = "입력해주세요"
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
             )
 
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            MainInputField(
+            BottomLineInputField(
+                value = viewModel.travelName.value,
+                onValueChange = { viewModel.updateTravelName(it) },
+                placeholder = "입력해주세요",
+                singleLine = true,
+            )
+
+            Spacer(modifier = Modifier.height(35.dp))
+
+            Text(
                 text = "주소",
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
+            )
+            BottomLineInputField(
                 value = viewModel.travelAddress.value,
-                onValueChange = {
-                    viewModel.updateTravelAddress(it)
-                    Log.d("addressValue", viewModel.travelAddress.value)
-                },
-                placeholderText = "지도로 검색하기",
-                trailingIcon = {
+                onValueChange = { viewModel.updateTravelAddress(it) },
+                placeholder = "검색어를 입력하세요",
+                singleLine = true,
+                icon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_add_circle),
-                        tint = MainColor.copy(alpha = 0.3f),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .clickable {
-                                Log.d("addAddress", "my click!!")
-                            }
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "",
+                        tint = Color(0xFF676767)
                     )
                 }
             )
@@ -140,7 +150,6 @@ fun AddTravelScreen(
                 placeholderText = "입력해주세요",
                 hashTags = viewModel.hashTags.value,
                 onValueChange = { viewModel.updateHashTag(it) },
-                onAddHashtag = { viewModel.addHashTag(it) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
@@ -154,21 +163,28 @@ fun AddTravelScreen(
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            MainInputField(
+            Text(
                 text = "설명글",
-                value = viewModel.travelDescription.value,
-                onValueChange = {
-                    viewModel.updateTravelDescription(it) // 추후 글자수 제한?
-                },
-                placeholderText = "입력해주세요",
-                singleLine = false,
-                modifier = Modifier.height(130.dp)
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
             )
 
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            val imagePickerLauncher = androidx.activity.compose.rememberLauncherForActivityResult(
-                contract = androidx.activity.result.contract.ActivityResultContracts.GetContent()
+            BottomLineInputField(
+                value = viewModel.travelDescription.value,
+                onValueChange = { viewModel.updateTravelDescription(it) },
+                placeholder = "입력해주세요",
+                singleLine = false,
+                modifier = Modifier
+                    .height(117.dp)
+            )
+
+            Spacer(modifier = Modifier.height(35.dp))
+
+            val imagePickerLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.GetContent()
             ) { uri ->
                 uri?.let {
                     viewModel.addImage(it)
@@ -186,7 +202,7 @@ fun AddTravelScreen(
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Spacer(modifier = Modifier.height(26.dp))
 
         MainButton(
             text = "여행지 등록하기",
