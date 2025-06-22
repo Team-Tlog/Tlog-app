@@ -114,6 +114,14 @@ class ReviewWriteViewModel @Inject constructor(
         }
     }
 
+    fun inputCheck(): Int {
+        if (_rating.intValue == 0)
+            return 1
+        if (_review.value.isEmpty() || _review.value.isBlank())
+            return 2
+        return 0
+    }
+
 
     fun updateRating(newRating: Int) {
         _rating.intValue = newRating

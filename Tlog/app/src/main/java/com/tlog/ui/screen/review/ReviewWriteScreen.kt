@@ -3,7 +3,9 @@ package com.tlog.ui.screen.review
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.OutLineMainInputField
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.StarRating
 import com.tlog.ui.component.share.TopBar
@@ -40,11 +41,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.R
+import com.tlog.ui.component.review.ReviewNoticeDialog
+import com.tlog.ui.component.share.BottomLineInputField
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
 
 
@@ -63,6 +69,8 @@ fun ReviewWriteScreen(
         viewModel.eventFlow.collect { event ->
             when (event) {
                 is UiEvent.ReviewSuccess -> {
+                    viewModel.clearImages()
+                    viewModel.clearHashTags()
                     navController.navigate("main") {
                         popUpTo("main") { inclusive = false } // 메인 화면을 제외하고 모두 제거
                     }
@@ -115,25 +123,38 @@ fun ReviewWriteScreen(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                OutLineMainInputField( // 안내 메시지 추가 필요
-                    text = "리뷰작성",
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "리뷰작성",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 15.sp,
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_information),
+                        contentDescription = "도움말",
+                        tint = MainColor,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable { showHelp = true }
+                    )
+                }
+
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                BottomLineInputField(
                     value = viewModel.review.value,
                     onValueChange = { viewModel.updateReview(it) },
-                    placeholderText = "입력해주세요",
-                    showHelpPopup = showHelp,
+                    placeholder = "이번 여행은 어땠나요?",
                     singleLine = false,
-                    onDismissHelpPopup = { showHelp = false },
-                    trailingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_information),
-                            contentDescription = "도움말",
-                            tint = MainColor,
-                            modifier = Modifier
-                                .size(20.dp)
-                                .clickable { showHelp = true }
-                        )
-                    },
-                    modifier = Modifier.height(117.dp)
+                    modifier = Modifier.height(190.dp)
                 )
 
                 Spacer(modifier = Modifier.height(26.dp))
@@ -185,10 +206,15 @@ fun ReviewWriteScreen(
                         3 -> Toast.makeText(context, "리뷰 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
                     }
                 },
+                enabled = viewModel.inputCheck() == 0,
                 modifier = Modifier
                     .height(70.dp)
                     .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
             )
+        }
+
+        if (showHelp) {
+            ReviewNoticeDialog(onDismiss = { showHelp = false })
         }
     }
 }
