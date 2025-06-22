@@ -41,6 +41,7 @@ class TbtiResultViewModel @Inject constructor(
     }
 
     fun updateTbti(tbtiValue: String) {
+        Log.d("hellosResultCode1", tbtiValue)
         viewModelScope.launch {
             tbtiRepository.updateTbti(tbtiValue)
         }
@@ -67,6 +68,7 @@ class TbtiResultViewModel @Inject constructor(
             if (socialAccessToken.isNullOrEmpty()) {
                 return@launch
             }
+
 
             val request = RegisterRequest(
                 type = socialType.toString(),

@@ -229,26 +229,15 @@ fun SearchTravelItem(
                 onClick(travel.id, travel.name)
             }
     ) {
-        if (travel.imageUrl == "NaN") {
-            Image(
-                painter = painterResource(id = R.drawable.destination_img),
-                contentDescription = "${travel.name} 사진",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(99.dp)
-                    .clip(RoundedCornerShape(15.dp))
-            )
-        }
-        else {
-            AsyncImage(
-                model = travel.imageUrl,
-                contentDescription = travel.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(99.dp)
-                    .clip(RoundedCornerShape(15.dp))
-            )
-        }
+        AsyncImage(
+            model = travel.imageUrl,
+            contentDescription = travel.name,
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.destination_img),
+            modifier = Modifier
+                .size(99.dp)
+                .clip(RoundedCornerShape(15.dp))
+        )
 
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -257,20 +246,22 @@ fun SearchTravelItem(
         ) {
             Text(
                 text = travel.name,
-                style = Body1Bold
+                style = Body1Bold,
+                modifier = Modifier
+                    .padding(top = 5.dp)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "대충 설명 글",
+                text = "대충 설명 글\n대충 설명 글",
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
                 modifier = Modifier.height(30.dp)
             )
 
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(11.dp))
 
             HashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
         }

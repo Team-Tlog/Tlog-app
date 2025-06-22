@@ -143,7 +143,7 @@ class TbtiTestViewModel @Inject constructor(
         var retResultCode = ""
 
         resultList.forEachIndexed { idx, result ->
-            val status = result.toInt() > 50
+            val status = result.toInt() >= 50
                 when (idx) {
                     0 -> retResultCode += if (status) "S" else "R"
                     1 -> retResultCode += if (status) "O" else "E"

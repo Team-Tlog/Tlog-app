@@ -18,7 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -90,7 +89,7 @@ fun ReviewSearchScreen(
                             }
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.ic_registration),
+                            painter = painterResource(id = R.drawable.ic_add_travel),
                             contentDescription = "여행지 등록",
                             modifier = Modifier
                                 .size(64.dp)
