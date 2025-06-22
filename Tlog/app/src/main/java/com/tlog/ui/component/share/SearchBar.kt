@@ -1,9 +1,7 @@
 package com.tlog.ui.component.share
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -59,7 +57,7 @@ fun SearchBar(
             shape = RoundedCornerShape(45),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MainColor,
-                unfocusedBorderColor = Color.Transparent,
+                unfocusedBorderColor = Color(0xFFF0F0F0),
                 cursorColor = MainColor
             ),
             textStyle = TextStyle(
@@ -79,15 +77,5 @@ fun SearchBar(
                 it()
             }
         }
-
-        //검색 바의 가장 아래 선
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .fillMaxWidth()
-                .padding(horizontal = 18.dp)
-                .height(1.dp)
-                .background(color = Color(0xFFF0F0F0))
-        )
     }
 }
