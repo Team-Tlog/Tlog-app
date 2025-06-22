@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,8 @@ fun BottomLineInputField(
     onValueChange: (String) -> Unit,
     placeholder: String = "입력해주세요",
     singleLine: Boolean = true,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     icon: (@Composable () -> Unit)? = null
 ) {
     Box(
@@ -46,6 +50,8 @@ fun BottomLineInputField(
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal
                 ),
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
                 decorationBox = { innerTextField ->
                     if (value.isEmpty()) {
                         Text(
