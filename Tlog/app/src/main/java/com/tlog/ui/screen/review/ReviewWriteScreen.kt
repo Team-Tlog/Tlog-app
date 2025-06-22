@@ -49,7 +49,6 @@ import com.tlog.R
 import com.tlog.ui.component.review.ReviewNoticeDialog
 import com.tlog.ui.component.share.BottomLineInputField
 import com.tlog.ui.style.BodyTitle
-import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
 
