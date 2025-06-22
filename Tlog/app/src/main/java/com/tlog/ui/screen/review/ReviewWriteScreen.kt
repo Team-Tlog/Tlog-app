@@ -33,10 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
-<<<<<<< HEAD:Tlog/app/src/main/java/com/tlog/ui/screen/review/ReviewWriteScreen.kt
-=======
-import com.tlog.ui.component.share.OutLineMainInputField
->>>>>>> develop:Tlog/app/src/main/java/com/tlog/ui/screen/review/ReviewWritingScreen.kt
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.StarRating
 import com.tlog.ui.component.share.TopBar
@@ -127,7 +123,6 @@ fun ReviewWriteScreen(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-<<<<<<< HEAD:Tlog/app/src/main/java/com/tlog/ui/screen/review/ReviewWriteScreen.kt
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
@@ -155,10 +150,6 @@ fun ReviewWriteScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 BottomLineInputField(
-=======
-                OutLineMainInputField( // 안내 메시지 추가 필요
-                    text = "리뷰작성",
->>>>>>> develop:Tlog/app/src/main/java/com/tlog/ui/screen/review/ReviewWritingScreen.kt
                     value = viewModel.review.value,
                     onValueChange = { viewModel.updateReview(it) },
                     placeholder = "이번 여행은 어땠나요?",
