@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.MainInputField
+import com.tlog.ui.component.share.OutLineMainInputField
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.style.BodyTitle
@@ -71,7 +71,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 Spacer(modifier = Modifier.height(38.dp))
                 
-                MainInputField(
+                OutLineMainInputField(
                     text = "닉네임",
                     value = viewModel.nickname.value,
                     onValueChange = {
