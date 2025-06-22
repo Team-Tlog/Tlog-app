@@ -19,32 +19,35 @@ fun NoticeItem(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically) {
+            verticalAlignment = Alignment.Top) {
             Text(
-                text = "✅",
-                fontSize = 14.sp,
+                text = "•",
+                fontSize = 15.sp,
                 modifier = Modifier.padding(end = 6.dp)
             )
-            Text(
-                text = title,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = MainFont,
-                textAlign = TextAlign.Center,
-                color = Color.Black
-            )
+
+            Column {
+                Text(
+                    text = title,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    fontFamily = MainFont,
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF676767)
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = body,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Light,
+                    fontFamily = MainFont,
+                    color = Color(0xFFADADAD),
+                )
+            }
+
+
         }
-
-        Spacer(modifier = Modifier.height(4.dp))
-
-        Text(
-            text = body,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Light,
-            fontFamily = MainFont,
-            color = Color.Black,
-        )
-
-        Spacer(modifier = Modifier.height(14.dp))
     }
 }

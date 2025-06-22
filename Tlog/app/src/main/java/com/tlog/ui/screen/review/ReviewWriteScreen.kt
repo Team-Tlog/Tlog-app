@@ -137,9 +137,9 @@ fun ReviewWriteScreen(
                     Spacer(modifier = Modifier.weight(1f))
 
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_information),
+                        painter = painterResource(id = R.drawable.ic_infomation_blue),
                         contentDescription = "도움말",
-                        tint = MainColor,
+                        tint = Color.Unspecified,
                         modifier = Modifier
                             .size(20.dp)
                             .clickable { showHelp = true }
@@ -212,10 +212,9 @@ fun ReviewWriteScreen(
                     .padding(start = 10.dp, end = 10.dp, bottom = 15.dp)
             )
         }
-
-        if (showHelp) {
-            ReviewNoticeDialog(onDismiss = { showHelp = false })
-        }
+    }
+    if (showHelp) {
+        ReviewNoticeDialog(onDismiss = { showHelp = false })
     }
 }
 
