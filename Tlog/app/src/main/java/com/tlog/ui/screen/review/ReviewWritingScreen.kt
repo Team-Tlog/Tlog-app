@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.tlog.ui.component.share.HashtagInputGroup
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.MainInputField
+import com.tlog.ui.component.share.OutLineMainInputField
 import com.tlog.ui.component.share.PhotoUploadBox
 import com.tlog.ui.component.share.StarRating
 import com.tlog.ui.component.share.TopBar
@@ -115,7 +115,7 @@ fun ReviewWriteScreen(
 
                 Spacer(modifier = Modifier.height(25.dp))
 
-                MainInputField( // 안내 메시지 추가 필요
+                OutLineMainInputField( // 안내 메시지 추가 필요
                     text = "리뷰작성",
                     value = viewModel.review.value,
                     onValueChange = { viewModel.updateReview(it) },
@@ -161,7 +161,6 @@ fun ReviewWriteScreen(
                     placeholderText = "입력해주세요",
                     hashTags = viewModel.hashTags.value,
                     onValueChange = { viewModel.updateHashTag(it) },
-                    onAddHashtag = { viewModel.addHashTag(it) },
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
                         onDone = {

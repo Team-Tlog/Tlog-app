@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -42,7 +43,7 @@ fun PhotoUploadBox(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(bottom = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -66,6 +67,7 @@ fun PhotoUploadBox(
             Image(
                 painter = rememberAsyncImagePainter(imageUri),
                 contentDescription = null,
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(83.dp)
                     .clip(RoundedCornerShape(16.dp))
@@ -78,14 +80,15 @@ fun PhotoUploadBox(
                     modifier = Modifier
                         .size(80.dp)
                         .clip(RoundedCornerShape(16.dp))
-                        .border(1.dp, Color(0xFFDCDCDC), RoundedCornerShape(16.dp))
+                        .background(Color(0xFFF4F4F4))
                         .clickable { onAddClick() },
                     contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_add_circle),
+                        painter = painterResource(R.drawable.ic_add),
                         contentDescription = "사진 추가",
-                        tint = MainColor.copy(alpha = 0.3f)
+                        tint = Color(0xFFADADAD),
+                        modifier = Modifier.size(42.dp)
                     )
                 }
             }

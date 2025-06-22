@@ -9,14 +9,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tlog.R
 import com.tlog.ui.theme.MainFont
 
 @Composable
@@ -55,15 +59,16 @@ fun TwoColumnRadioGroup(
                             ),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        MainRadioButton(
-                            selected = (text == selectedOption),
-                            onClick = {onOptionSelected(text)}
+                        Icon(
+                            painter = if (text == selectedOption) painterResource(R.drawable.ic_selected_radio) else painterResource(R.drawable.ic_radio),
+                            contentDescription = "",
+                            tint = Color.Unspecified
                         )
 
                         Text(
                             text = text,
                             fontFamily = MainFont,
-                            modifier = Modifier.padding(start = 10.dp)
+                            modifier = Modifier.padding(start = 16.dp)
                         )
 
                         Spacer(modifier = Modifier.width(30.dp))

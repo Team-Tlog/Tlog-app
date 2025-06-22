@@ -20,7 +20,7 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun MainInputField(
+fun OutLineMainInputField(
     text: String,
     value: String,
     onValueChange: (String) -> Unit,

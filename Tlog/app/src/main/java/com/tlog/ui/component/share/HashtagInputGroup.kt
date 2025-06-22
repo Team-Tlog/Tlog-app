@@ -40,17 +40,10 @@ fun HashtagInputGroup(
     placeholderText: String,
     hashTags: List<String>,
     onValueChange: (String) -> Unit,
-    onAddHashtag: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     modifier: Modifier = Modifier
 ) {
-    val defaultModifier = Modifier
-        .fillMaxWidth()
-        .shadow(3.dp, shape = RoundedCornerShape(24.dp))
-        .clip(RoundedCornerShape(24.dp))
-        .background(Color.White)
-
     Text(
         text = text,
         fontFamily = MainFont,
@@ -94,32 +87,16 @@ fun HashtagInputGroup(
         }
     }
 
+    Spacer(modifier = Modifier.height(12.dp))
 
-    Spacer(modifier = Modifier.height(20.dp))
-
-    TextField(
+    BottomLineInputField(
         value = value,
         onValueChange = onValueChange,
-        placeholder = { Text(
-            text = placeholderText,
-            fontSize = 13.sp,
-            fontFamily = MainFont,
-            fontWeight = FontWeight.Thin
-        ) },
+        placeholder = placeholderText,
         singleLine = singleLine,
-        shape = RoundedCornerShape(45),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            cursorColor = MainColor
-        ),
-        textStyle = TextStyle(
-            fontFamily = MainFont,
-            fontWeight = FontWeight.Thin
-        ),
-        modifier = defaultModifier.then(modifier),
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        modifier = modifier
     )
 
 
