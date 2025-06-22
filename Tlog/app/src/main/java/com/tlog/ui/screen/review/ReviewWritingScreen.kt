@@ -161,7 +161,6 @@ fun ReviewWriteScreen(
                     placeholderText = "입력해주세요",
                     hashTags = viewModel.hashTags.value,
                     onValueChange = { viewModel.updateHashTag(it) },
-                    onAddHashtag = { viewModel.addHashTag(it) },
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
                         onDone = {
