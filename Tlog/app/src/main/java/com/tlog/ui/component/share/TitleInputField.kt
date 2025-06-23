@@ -26,16 +26,17 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TitleInputField (
+    modifier: Modifier = Modifier,
     text: String,
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: String,
     singleLine: Boolean = true,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     Text(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         text = text,
         style = BodyTitle,
         textAlign = TextAlign.Center
@@ -43,32 +44,11 @@ fun TitleInputField (
 
     Spacer(modifier = Modifier.height(25.dp))
 
-    TextField(
+
+    BottomLineInputField(
         value = value,
         onValueChange = onValueChange,
-        placeholder = { Text(
-            text = placeholderText,
-            fontSize = 13.sp,
-            fontFamily = MainFont,
-            fontWeight = FontWeight.Thin
-        ) },
+        placeholder = placeholderText,
         singleLine = singleLine,
-        shape = RoundedCornerShape(20),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Transparent,     // 포커스됐을 때 아웃라인 색
-            unfocusedBorderColor = Color.Transparent,  // 포커스 없을 때 아웃라인 색
-            cursorColor = MainColor
-        ),
-        textStyle = TextStyle(
-            fontFamily = MainFont,
-            fontWeight = FontWeight.Thin
-        ),
-        trailingIcon = trailingIcon,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 24.dp)
-            .shadow(4.dp, shape = RoundedCornerShape(24.dp)) // 그림자 만들고
-            .clip(RoundedCornerShape(24.dp)) // 크기에 맞게 짜름
-            .background(Color.White) // 백그라운드가 있어야 그림자가 알맞은 위치에 보임
     )
 }
