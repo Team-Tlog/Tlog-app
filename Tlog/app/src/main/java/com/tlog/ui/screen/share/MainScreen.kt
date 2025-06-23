@@ -153,12 +153,12 @@ fun MainScreen(
 
                 // 아이콘 배너
                 val iconList = mapOf(
-                    "AI 추천 코스" to R.drawable.ai,
-                    "리뷰 쓰기" to R.drawable.review_write,
-                    "지도에서 보기" to R.drawable.looking_map,
-                    "내 팀보기" to R.drawable.my_team,
+                    "AI 추천 코스" to R.drawable.main_ic_ai,
+                    "리뷰 쓰기" to R.drawable.main_ic_review_write,
+                    "지도에서 보기" to R.drawable.main_ic_map,
+                    "내 팀보기" to R.drawable.main_ic_team,
                     "스크랩" to R.drawable.scrap,
-                    "지도 채우기" to R.drawable.fill_map
+                    "지도 채우기" to R.drawable.main_ic_fill_map
                 )
 
                 LazyRow(
@@ -224,22 +224,22 @@ fun MainScreen(
 
                 // 지역 별 여행지
                 val cityMap = mapOf(
-                    "서울" to R.drawable.google_login_icon,
-                    "경기" to R.drawable.google_login_icon,
-                    "인천" to R.drawable.google_login_icon,
-                    "부산" to R.drawable.google_login_icon,
-                    "대구" to R.drawable.google_login_icon,
-                    "대전" to R.drawable.google_login_icon,
-                    "광주" to R.drawable.google_login_icon,
-                    "울산" to R.drawable.google_login_icon,
-                    "충북" to R.drawable.google_login_icon,
-                    "충남" to R.drawable.google_login_icon,
-                    "경북" to R.drawable.google_login_icon,
-                    "경남" to R.drawable.google_login_icon,
-                    "전북" to R.drawable.google_login_icon,
-                    "전남" to R.drawable.google_login_icon,
-                    "강원" to R.drawable.google_login_icon,
-                    "제주" to R.drawable.google_login_icon
+                    "서울" to R.drawable.login_ic_google,
+                    "경기" to R.drawable.login_ic_google,
+                    "인천" to R.drawable.login_ic_google,
+                    "부산" to R.drawable.login_ic_google,
+                    "대구" to R.drawable.login_ic_google,
+                    "대전" to R.drawable.login_ic_google,
+                    "광주" to R.drawable.login_ic_google,
+                    "울산" to R.drawable.login_ic_google,
+                    "충북" to R.drawable.login_ic_google,
+                    "충남" to R.drawable.login_ic_google,
+                    "경북" to R.drawable.login_ic_google,
+                    "경남" to R.drawable.login_ic_google,
+                    "전북" to R.drawable.login_ic_google,
+                    "전남" to R.drawable.login_ic_google,
+                    "강원" to R.drawable.login_ic_google,
+                    "제주" to R.drawable.login_ic_google
                     // 세종 어카지?
                 )
                 Column(
@@ -659,7 +659,7 @@ fun MainScreen(
                                                     Spacer(modifier = Modifier.weight(1f))
 
                                                     Icon(
-                                                        painter = painterResource(R.drawable.ic_right_arrow),
+                                                        painter = painterResource(R.drawable.ic_arrow_right),
                                                         contentDescription = travel.title,
                                                         tint = Color.Black,
                                                         modifier = Modifier
@@ -827,7 +827,7 @@ fun MainScreen(
                         )
 
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_right_arrow),
+                            painter = painterResource(id = R.drawable.ic_arrow_right),
                             contentDescription = "right_arrow",
                             tint = Essential,
                             modifier = Modifier

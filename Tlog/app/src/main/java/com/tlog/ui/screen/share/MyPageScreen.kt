@@ -225,7 +225,7 @@ fun MyPageScreen(
                         Spacer(modifier = Modifier.weight(1f))
 
                         Icon(
-                            painter = painterResource(R.drawable.ic_right_arrow),
+                            painter = painterResource(R.drawable.ic_arrow_right),
                             contentDescription = text,
                             tint = Color.Black
                         )

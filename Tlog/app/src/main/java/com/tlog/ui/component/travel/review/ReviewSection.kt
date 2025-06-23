@@ -78,7 +78,7 @@ fun ReviewSection(
                 )
 
                 Icon(
-                    painter = painterResource(R.drawable.ic_right_arrow),
+                    painter = painterResource(R.drawable.ic_arrow_right),
                     contentDescription = "리뷰 더보기",
                     tint = Color.Unspecified
                 )

@@ -77,13 +77,13 @@ fun LoginScreen(
                 horizontalArrangement = Arrangement.spacedBy(35.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                LoginIcon(R.drawable.google_login_icon, "구글", 50.dp) {
+                LoginIcon(R.drawable.login_ic_google, "구글", 50.dp) {
                     onGoogleLoginClick()
                 }
-                LoginIcon(R.drawable.naver_login_icon, "네이버", 50.dp) {
+                LoginIcon(R.drawable.login_ic_naver, "네이버", 50.dp) {
                     viewModel.naverLogin(context, navController)
                 }
-                LoginIcon(R.drawable.kakao_login_icon, "카카오", 50.dp) {
+                LoginIcon(R.drawable.login_ic_kakao, "카카오", 50.dp) {
                     viewModel.kakaoLogin(context, navController)
                 }
             }

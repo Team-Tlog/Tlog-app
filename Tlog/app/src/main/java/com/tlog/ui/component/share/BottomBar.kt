@@ -21,10 +21,10 @@ fun BottomBar(
     selectedIndex: Int = 0
 ) {
     val icons = listOf(
-        Pair(R.drawable.ic_main_selected, R.drawable.ic_main),
-        Pair(R.drawable.ic_course_selected, R.drawable.ic_course),
-        Pair(R.drawable.ic_sns_selected, R.drawable.ic_sns),
-        Pair(R.drawable.ic_mypage_selected, R.drawable.ic_mypage)
+        Pair(R.drawable.bottom_ic_main_selected, R.drawable.bottom_ic_main),
+        Pair(R.drawable.bottom_ic_course_selected, R.drawable.bottom_ic_course),
+        Pair(R.drawable.bottom_ic_sns_selected, R.drawable.bottom_ic_sns),
+        Pair(R.drawable.bottom_ic_mypage_selected, R.drawable.bottom_ic_mypage)
     )
 
     Box(
