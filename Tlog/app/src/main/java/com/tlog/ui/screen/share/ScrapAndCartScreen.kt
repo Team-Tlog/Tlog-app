@@ -15,13 +15,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +28,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -43,6 +44,7 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.Body1Regular
+import com.tlog.ui.theme.MainFont
 
 
 @Composable
@@ -57,14 +59,12 @@ fun ScrapAndCartScreen(
             .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        val selectedTab = remember { androidx.compose.runtime.mutableStateOf("스크랩") }
-
         Column {
             if (viewModel.checkedTravelList.value.isNotEmpty()) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 10.dp)
+                        .padding(horizontal = 24.dp, vertical = (13.5).dp)
                 ) {
                     Row(
                         modifier = Modifier.align(Alignment.CenterStart),
@@ -80,8 +80,12 @@ fun ScrapAndCartScreen(
                         )
                     }
                     Text(
-                        text = selectedTab.value,
-                        style = Body1Bold,
+                        text = viewModel.selectedTab.value,
+                        style = TextStyle(
+                            fontFamily = MainFont,
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
                         color = Color.Black,
                         modifier = Modifier.align(Alignment.Center)
                     )
@@ -90,8 +94,9 @@ fun ScrapAndCartScreen(
                         contentDescription = "Delete",
                         modifier = Modifier
                             .align(Alignment.CenterEnd)
+                            .size(15.dp)
                             .clickable {
-                                viewModel.deleteSelectedItems(selectedTab.value)
+                                viewModel.deleteSelectedItems(viewModel.selectedTab.value)
                             }
                     )
                 }
@@ -99,7 +104,7 @@ fun ScrapAndCartScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 10.dp),
+                        .padding(top = 6.dp, bottom = 16.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -109,23 +114,28 @@ fun ScrapAndCartScreen(
                                 val strokeWidth = 2.dp.toPx()
                                 val y = size.height - strokeWidth / 2
                                 drawLine(
-                                    color = if (selectedTab.value == "스크랩") MainColor else Color.Transparent,
+                                    color = if (viewModel.selectedTab.value == "스크랩") MainColor else Color.Transparent,
                                     start = Offset(0f, y),
                                     end = Offset(size.width, y),
                                     strokeWidth = strokeWidth
                                 )
                             }
                             .clickable {
-                                selectedTab.value = "스크랩"
+                                viewModel.updateSelectedTab("스크랩")
                                 viewModel.fetchScrapList()
                             }
+                            .weight(1f)
                     ) {
                         Text(
                             text = "스크랩",
-                            fontSize = 15.sp,
-                            color = if (selectedTab.value == "스크랩") Color.Black else Color.Gray,
+                            fontFamily = MainFont,
+                            fontSize = 18.sp,
+                            fontWeight = if (viewModel.selectedTab.value == "스크랩") FontWeight.Bold else FontWeight.Medium,
+                            color = if (viewModel.selectedTab.value == "스크랩") MainColor else Color.Gray,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .padding(horizontal = 10.dp, vertical = (11.5).dp)
+                                .fillMaxWidth()
                         )
                     }
 
@@ -135,23 +145,28 @@ fun ScrapAndCartScreen(
                                 val strokeWidth = 2.dp.toPx()
                                 val y = size.height - strokeWidth / 2
                                 drawLine(
-                                    color = if (selectedTab.value == "내 장바구니") MainColor else Color.Transparent,
+                                    color = if (viewModel.selectedTab.value == "내 장바구니") MainColor else Color.Transparent,
                                     start = Offset(0f, y),
                                     end = Offset(size.width, y),
                                     strokeWidth = strokeWidth
                                 )
                             }
                             .clickable {
-                                selectedTab.value = "내 장바구니"
+                                viewModel.updateSelectedTab("내 장바구니")
                                 viewModel.fetchCart()
                             }
+                            .weight(1f)
                     ) {
                         Text(
                             text = "내 장바구니",
-                            fontSize = 15.sp,
-                            color = if (selectedTab.value == "내 장바구니") Color.Black else Color.Gray,
+                            fontSize = 18.sp,
+                            fontFamily = MainFont,
+                            fontWeight = if (viewModel.selectedTab.value == "내 장바구니") FontWeight.Bold else FontWeight.Medium,
+                            color = if (viewModel.selectedTab.value == "내 장바구니") MainColor else Color.Gray,
+                            textAlign = TextAlign.Center,
                             modifier = Modifier
                                 .padding(horizontal = 10.dp, vertical = (11.5).dp)
+                                .fillMaxWidth()
                         )
                     }
                 }
@@ -167,9 +182,11 @@ fun ScrapAndCartScreen(
                 Text(
                     text = "전체 선택",
                     color = MainColor,
-                    fontSize = 14.sp,
+                    fontFamily = MainFont,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Medium,
                     modifier = Modifier.clickable {
-                        viewModel.allChecked(selectedTab.value)
+                        viewModel.allChecked(viewModel.selectedTab.value)
                     }
                 )
             }
@@ -178,7 +195,7 @@ fun ScrapAndCartScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            if (selectedTab.value == "스크랩") {
+            if (viewModel.selectedTab.value == "스크랩") {
                 ScrapTravelList(
                     scrapTravelList = viewModel.scrapList.value,
                     onClick = { travelId ->
@@ -204,7 +221,7 @@ fun ScrapAndCartScreen(
                 .fillMaxWidth()
                 .padding(bottom = 15.dp)
         ) {
-            if (selectedTab.value == "스크랩") {
+            if (viewModel.selectedTab.value == "스크랩") {
                 TwoMainButtons(
                     onLeftClick = {
                         viewModel.addSelectedTravelToCart()

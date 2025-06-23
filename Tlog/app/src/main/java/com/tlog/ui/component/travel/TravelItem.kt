@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -135,34 +136,21 @@ fun ScrapTravelItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        if (travel.imageUrl != "NaN") {
-            AsyncImage(
-                model = travel.imageUrl,
-                contentDescription = "${travel.name} 사진",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(99.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .clickable {
-                        onClick(travel.id)
-                    }
-            )
-        }
-        else {
-            Image( // 사진이 없을 때 이미지
-                painter = painterResource(id = R.drawable.destination_img),
-                contentDescription = "${travel.name} 기본 사진",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(99.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .clickable {
-                        onClick(travel.id)
-                    }
-            )
-        }
+        AsyncImage(
+            model = travel.imageUrl,
+            contentDescription = "${travel.name} 사진",
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.destination_img),
+            modifier = Modifier
+                .size(99.dp)
+                .clip(RoundedCornerShape(15.dp))
+                .clickable {
+                    onClick(travel.id)
+                }
+        )
 
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -206,11 +194,11 @@ fun ScrapTravelItem(
             Icon(
                 painter =
                     if (viewModel.isChecked(travel.name))
-                        painterResource(R.drawable.ic_checkbox_checked)
+                        painterResource(R.drawable.ic_selected_checkbox)
                     else
-                        painterResource(R.drawable.ic_checkbox_unchecked),
+                        painterResource(R.drawable.ic_unselected_checkbox),
                 contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
-                tint = Color.Unspecified
+                tint = Color.Unspecified,
             )
         }
     }
