@@ -2,10 +2,12 @@ package com.tlog.ui.screen.team
 
 import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -53,6 +55,7 @@ fun TeamCreateScreen(
             .background(Color.White)
             .imePadding()           // 키보드가 딸려 올라오도록
             .windowInsetsPadding(WindowInsets.systemBars)
+            .padding(horizontal = 24.dp)
 
     ) {
         TopBar(
@@ -61,7 +64,10 @@ fun TeamCreateScreen(
 
         Spacer(modifier = Modifier.height(35.dp))
 
+
         TitleInputField(
+            modifier = Modifier
+                .padding(horizontal = 24.dp),
             text = "팀 이름을 정해주세요!",
             value = viewModel.teamName.value,
             onValueChange = {
@@ -69,6 +75,7 @@ fun TeamCreateScreen(
             },
             placeholderText = "입력해주세요",
         )
+
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -80,7 +87,7 @@ fun TeamCreateScreen(
                 },
                 modifier = Modifier
                     .height(70.dp)
-                    .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
+                    .padding(bottom = 15.dp)
             )
         }
     }
