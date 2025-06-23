@@ -37,6 +37,12 @@ class ScrapAndCartViewModel @Inject constructor(
         }
     }
 
+    private var _selectedTab = mutableStateOf("스크랩")
+    val selectedTab: State<String> = _selectedTab
+
+    fun updateSelectedTab(tab: String) {
+        _selectedTab.value = tab
+    }
 
     private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
     val cartList: State<List<ShopCart>> = _cartList
