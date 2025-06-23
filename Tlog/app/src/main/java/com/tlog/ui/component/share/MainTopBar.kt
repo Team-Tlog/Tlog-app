@@ -42,7 +42,7 @@ fun MainTopBar(
                 .fillMaxWidth()
         ) {
             Icon(
-                painter = painterResource(R.drawable.google_login_icon),
+                painter = painterResource(R.drawable.login_ic_google),
                 contentDescription = "Logo",
                 modifier = Modifier.size(38.dp),
                 tint = Color.Unspecified

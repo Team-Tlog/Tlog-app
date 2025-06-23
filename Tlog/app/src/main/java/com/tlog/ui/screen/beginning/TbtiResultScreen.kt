@@ -29,8 +29,6 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
-import com.tlog.viewmodel.beginning.TbtiTestViewModel
-import com.tlog.viewmodel.beginning.login.LoginViewModel
 
 @Composable
 fun TbtiResultScreen(
@@ -75,7 +73,7 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.rena else tbtiDescription.imageUrl,
+                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.tbti_rena else tbtiDescription.imageUrl,
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,7 +191,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.roli,
+                        model = R.drawable.tbti_roli,
                         contentDescription = "최고의 궁합",
                         modifier = Modifier
                             .size(80.dp)
@@ -229,7 +227,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.roli,
+                        model = R.drawable.tbti_roli,
                         contentDescription = "최악의 궁합",
                         modifier = Modifier
                             .size(80.dp)

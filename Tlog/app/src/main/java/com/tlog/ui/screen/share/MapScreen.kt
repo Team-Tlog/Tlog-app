@@ -81,7 +81,7 @@ fun KakaoMapView(
                                 val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
 
                                 val style = LabelStyles.from(
-                                    LabelStyle.from(R.drawable._scrap)
+                                    LabelStyle.from(R.drawable.map_pin_scrap)
                                 )
 
                                 val options = LabelOptions.from(latLng)
@@ -99,7 +99,7 @@ fun KakaoMapView(
 
 
 
-                                val style = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable._cart)))
+                                val style = kakaoMap.labelManager?.addLabelStyles(LabelStyles.from(LabelStyle.from(R.drawable.map_pin_cart)))
 
                                 val options = LabelOptions.from(latLng)
                                     .setStyles(style)

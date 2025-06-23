@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -73,7 +72,7 @@ fun DropDown(
                 Spacer(modifier = Modifier.width(15.dp))
 
                 Icon(
-                    painter = painterResource (if(expanded) R.drawable.ic_top_arrow else R.drawable.ic_bottom_arrow),
+                    painter = painterResource (if(expanded) R.drawable.ic_arrow_top else R.drawable.ic_arrow_bottom),
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )

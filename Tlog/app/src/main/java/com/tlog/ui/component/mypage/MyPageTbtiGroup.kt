@@ -40,7 +40,7 @@ fun MyPageTbtiGroup(
     ) {
         if ( userInfo.tbtiDescription.imageUrl == null || userInfo.tbtiDescription.imageUrl == "") {
             Image(
-                painter = painterResource(R.drawable.rena),
+                painter = painterResource(R.drawable.tbti_rena),
                 contentDescription = "tbti 캐릭터",
                 Modifier
                     .size(178.dp)
@@ -97,7 +97,7 @@ fun MyPageTbtiGroup(
                     color = Color.White
                 )
                 Icon(
-                    painter = painterResource(R.drawable.ic_right_arrow),
+                    painter = painterResource(R.drawable.ic_arrow_right),
                     contentDescription = "검사 다시하기",
                     tint = Color.White,
                     modifier = Modifier

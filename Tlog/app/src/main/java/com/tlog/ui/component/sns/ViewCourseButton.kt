@@ -45,7 +45,7 @@ fun ViewCourseButton(
                 color = Essential
             )
             Icon(
-                painter = painterResource(id = R.drawable.ic_right_arrow),
+                painter = painterResource(id = R.drawable.ic_arrow_right),
                 contentDescription = buttonText,
                 modifier = Modifier.size(16.dp),
                 tint = Color.Unspecified
