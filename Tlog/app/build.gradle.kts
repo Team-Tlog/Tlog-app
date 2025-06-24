@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,9 +12,16 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+
+
+
 android {
     namespace = "com.tlog"
     compileSdk = 35
+
+    val localProperties = Properties()
+    localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
 
     defaultConfig {
         applicationId = "com.tlog"
@@ -19,21 +29,29 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+
         //Manifest에서 사용하는 용도
         //카카오 네이티브 앱키
-        manifestPlaceholders["KakaoScheme"] = "kakao${project.findProperty("KAKAO_NATIVE_APP_KEY")}"
-        manifestPlaceholders["KakaoNativeAppKey"] = "${project.findProperty("KAKAO_NATIVE_APP_KEY")}"
+
+        val kakaoNativeAppKey = localProperties.getProperty("KAKAO_NATIVE_APP_KEY")
+        manifestPlaceholders["KakaoScheme"] = "kakao${kakaoNativeAppKey}"
+        manifestPlaceholders["KakaoNativeAppKey"] = kakaoNativeAppKey
 
         //실제 코드에서 사용하는 용도
         //구글 클라이언트 ID
-        buildConfigField("String","GOOGLE_CLIENT_ID", "\"${property("GOOGLE_CLIENT_ID")}\"")
+        val googleClientId =  localProperties.getProperty("GOOGLE_CLIENT_ID")
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"$googleClientId\"")
+
         //카카오 네이티브 앱키
-        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${project.findProperty("KAKAO_NATIVE_APP_KEY")}\"")
+        buildConfigField("String", "KAKAO_NATIVE_APP_KEY", "\"${kakaoNativeAppKey}\"")
+
         //네이버 클라이언트 ID, 클라이언트 시크릿
-        buildConfigField("String", "NAVER_CLIENT_ID", "\"${project.findProperty("NAVER_CLIENT_ID")}\"")
-        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"${project.findProperty("NAVER_CLIENT_SECRET")}\"")
+        val naverClientId = localProperties.getProperty("NAVER_CLIENT_ID")
+        val naverClientSecret = localProperties.getProperty("NAVER_CLIENT_SECRET")
+        buildConfigField("String", "NAVER_CLIENT_ID", "\"$naverClientId\"")
+        buildConfigField("String", "NAVER_CLIENT_SECRET", "\"$naverClientSecret\"")
     }
 
     buildTypes {
