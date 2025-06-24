@@ -66,7 +66,7 @@ fun SnsDetailScreen(
     val post = viewModel.post.collectAsState()
 
 
-        Column(modifier = Modifier
+    Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
             .windowInsetsPadding(WindowInsets.systemBars)
