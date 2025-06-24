@@ -22,12 +22,12 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun SearchBar(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     placeholderText: String = "검색어를 입력하세요",
     singleLine: Boolean = true,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    modifier: Modifier = Modifier
+    leadingIcon: @Composable (() -> Unit)? = null
 ) {
     val defaultModifier = Modifier
         .fillMaxWidth()
@@ -57,8 +57,8 @@ fun SearchBar(
             shape = RoundedCornerShape(45),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MainColor,
-                unfocusedBorderColor = Color(0xFFF0F0F0),
-                cursorColor = MainColor
+                unfocusedBorderColor = MainColor,
+                cursorColor = Color.Black
             ),
             textStyle = TextStyle(
                 fontFamily = MainFont,
