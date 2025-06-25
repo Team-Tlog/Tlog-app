@@ -33,7 +33,7 @@ import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun SnsMyPageScreen(
+fun SnsProfileScreen(
     viewModel: SnsMyPageViewModel = hiltViewModel(),
     userId: String,
     navController: NavController
