@@ -48,7 +48,7 @@ fun ReviewItem(
     val koreaZone = ZoneId.of("Asia/Seoul")
     val koreaTime = instant.atZone(koreaZone)
 
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
     val time = koreaTime.format(formatter)
 
 
