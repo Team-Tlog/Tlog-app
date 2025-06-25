@@ -29,7 +29,6 @@ fun TravelDetailScreen(
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
 
-    // 여행지 ID로 API 호출 (최초 1회)
     LaunchedEffect(travelId) {
         viewModel.getTravelInfo(travelId)
     }

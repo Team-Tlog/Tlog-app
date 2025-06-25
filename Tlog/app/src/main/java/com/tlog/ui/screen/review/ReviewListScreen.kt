@@ -83,9 +83,10 @@ fun ReviewListScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = (31.5).dp)
+                        .padding(horizontal = 31.dp)
                 ) {
                     ReviewHeader(
+                        reviewCnt = viewModel.reviewList.value.size,
                         reviewWrite = { navController.navigate("review/$travelId/$travelName") }
                     )
                 }
@@ -94,7 +95,7 @@ fun ReviewListScreen(
 
                 Column(
                     modifier = Modifier
-                        .padding(31.5.dp)
+                        .padding(31.dp)
                 ) {
                     ReviewStatistics(
                         avgStarRating = viewModel.rating.value,
