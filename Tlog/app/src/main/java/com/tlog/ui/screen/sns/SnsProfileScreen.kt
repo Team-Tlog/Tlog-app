@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.text.TextStyle
 import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.api.SnsUserProfile
+import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 @Composable
@@ -118,7 +120,7 @@ fun ProfileSection(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 41.dp, top = 10.dp, bottom = 10.dp)
+            .padding(start = 24.dp, end = 24.dp, top = 10.dp, bottom = 10.dp)
     ) {
 
         Row(
@@ -132,30 +134,20 @@ fun ProfileSection(
                     .clip(CircleShape)
                     .background(Color(0xFFE6D08A))
             ) {
-
-                if (userProfile.profileImageUrl == null || userProfile.profileImageUrl == "") {
-                    Image(
-                        painter = painterResource(id = R.drawable.test_logo),
-                        contentDescription = "Profile Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                else {
-                    AsyncImage(
-                        model = userProfile.profileImageUrl,
-                        contentDescription = "Profile Image",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+                AsyncImage(
+                    model = userProfile.profileImageUrl,
+                    contentDescription = "Profile Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.destination_img)
+                )
             }
 
             Spacer(modifier = Modifier.width(38.dp))
 
             Row(
                 modifier = Modifier.weight(1f),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceAround
             ) {
                 StatItem(userProfile.posts.content.size.toString(), "게시글")
                 StatItem(userProfile.followerCount.toString(), "팔로워")
@@ -168,7 +160,7 @@ fun ProfileSection(
             text = userProfile.snsDescription ?: "나에 대한 설명글을 입력하세요",
             fontSize = 14.sp,
             color = Color.DarkGray,
-            modifier = Modifier.padding(top = 17.dp)
+            modifier = Modifier.padding(top = 17.dp, start = 9.dp)
         )
     }
 }
@@ -180,13 +172,18 @@ fun StatItem(count: String, label: String) {
     ) {
         Text(
             text = count,
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
+            style = Body1Bold
         )
+
+        Spacer(modifier = Modifier.height(11.dp))
+
         Text(
             text = label,
-            fontSize = 14.sp,
-            color = Color.Gray
+            style = TextStyle(
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp
+            )
         )
     }
 }
@@ -211,7 +208,7 @@ fun ActionButtons(
                 modifier = Modifier
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
                     text = "프로필 편집",
@@ -219,9 +216,9 @@ fun ActionButtons(
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp
+                        fontSize = 12.sp
                     ),
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 )
             }
 
@@ -230,7 +227,7 @@ fun ActionButtons(
                 modifier = Modifier
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
                     text = "프로필 공유",
@@ -238,9 +235,9 @@ fun ActionButtons(
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp
+                        fontSize = 12.sp
                     ),
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 )
             }
         }
@@ -250,7 +247,7 @@ fun ActionButtons(
                 modifier = Modifier
                     .weight(1f),
                 colors = ButtonDefaults.buttonColors(containerColor = MainColor),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(10.dp)
             ) {
                 Text(
                     text = if (isFollowing) "팔로잉" else "팔로우",
@@ -258,9 +255,9 @@ fun ActionButtons(
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.SemiBold,
-                        fontSize = 16.sp
+                        fontSize = 12.sp
                     ),
-                    modifier = Modifier.padding(vertical = 15.dp)
+                    modifier = Modifier.padding(vertical = 10.dp)
                 )
             }
         }
