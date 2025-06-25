@@ -66,7 +66,7 @@ fun TravelDetailScreen(
                         ) {
                             TravelInfoSummary(destination)
 
-                            Spacer(modifier = Modifier.height(89.dp))
+                            Spacer(modifier = Modifier.height(51.dp))
 
                             HorizontalDivider(
                                 color = Color(0xFFE3E3E3),
