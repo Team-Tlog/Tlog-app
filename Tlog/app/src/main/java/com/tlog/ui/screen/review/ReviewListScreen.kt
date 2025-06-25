@@ -115,8 +115,6 @@ fun ReviewListScreen(
                                 viewModel.updateSelectOption(it)
                             },
                             modifier = Modifier
-                                .heightIn(max = 130.dp)
-                                .width(98.dp)
                                 .align(Alignment.CenterEnd)
                         )
                     }
