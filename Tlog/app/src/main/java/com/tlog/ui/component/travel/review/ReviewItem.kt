@@ -54,8 +54,7 @@ fun ReviewItem(
 
     Column(
         modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .fillMaxWidth()
     ) {
         Box(
             modifier = Modifier
@@ -118,6 +117,8 @@ fun ReviewItem(
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = review.content,
