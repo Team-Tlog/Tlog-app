@@ -48,7 +48,7 @@ fun ReviewItem(
     val koreaZone = ZoneId.of("Asia/Seoul")
     val koreaTime = instant.atZone(koreaZone)
 
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     val time = koreaTime.format(formatter)
 
 
@@ -110,7 +110,7 @@ fun ReviewItem(
                     Text(
                         text = time,
                         fontFamily = MainFont,
-                        fontSize = 8.sp,
+                        fontSize = 12.sp,
                         fontWeight = FontWeight.Light,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.BottomCenter)
