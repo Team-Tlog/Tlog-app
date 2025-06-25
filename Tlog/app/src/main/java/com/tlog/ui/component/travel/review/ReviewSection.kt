@@ -40,7 +40,7 @@ fun ReviewSection(
         ) {
             // 후기 리뷰작성 아이콘
             ReviewHeader(
-                reviewCnt = reviewList.size,
+                reviewCnt = reviewCnt,
                 reviewWrite = reviewWrite
             )
 
