@@ -81,7 +81,7 @@ fun TeamDetailScreen(
                                     when (sizeState) {
                                         PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
                                         PageState.DEFAULT -> sizeState = PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                        PageState.SMALL -> sizeState =PageState.SMALL
+                                        PageState.SMALL -> sizeState = PageState.BIG
                                     }
                                 }
                         ) {
