@@ -28,7 +28,7 @@ fun BlueCircle() {
         ) {
             drawCircle( // 너무 어렵티비....
                 color = MainColor,
-                radius = 510.dp.toPx(),
+                radius = 600.dp.toPx(),
                 center = Offset(x = size.width / 2f, y = -120f)
             )
         }
