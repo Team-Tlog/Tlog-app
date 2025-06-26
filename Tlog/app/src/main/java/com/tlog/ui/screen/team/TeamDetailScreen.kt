@@ -1,9 +1,6 @@
 package com.tlog.ui.screen.team
 
 import android.util.Log
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,13 +13,15 @@ import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tlog.data.model.share.Location
+import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
-import com.tlog.ui.component.team.MidiumDesign
+import com.tlog.ui.component.travel.TravelList
 
 
-enum class PageState { DEFAULT, SMALL, MEDIUM, BIG }
+enum class PageState { DEFAULT, SMALL, BIG }
 
 @Composable
 fun TeamDetailScreen(
@@ -52,20 +51,6 @@ fun TeamDetailScreen(
             }
     }
 
-    val height by animateDpAsState(
-        targetValue = when (sizeState) {
-            PageState.SMALL -> 183.dp
-            PageState.DEFAULT -> 288.dp
-            PageState.MEDIUM -> 236.dp
-            PageState.BIG -> 368.dp
-        },
-        animationSpec = tween(
-            durationMillis = 500, // 애니매이션 속도
-            easing = LinearOutSlowInEasing // 애니매이션 가속도
-        ),
-        label = "AnimatedHeaderHeight"
-    )
-
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -88,27 +73,24 @@ fun TeamDetailScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(height)
                     ) {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     when (sizeState) {
-                                        PageState.BIG -> sizeState =
-                                            if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
-
-                                        PageState.DEFAULT -> sizeState =
-                                            PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                        PageState.SMALL -> sizeState =
-                                            PageState.MEDIUM //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
-                                        PageState.MEDIUM -> sizeState = PageState.SMALL
+                                        PageState.BIG -> sizeState = if (listState.firstVisibleItemIndex != 0) PageState.SMALL else PageState.DEFAULT
+                                        PageState.DEFAULT -> sizeState = PageState.BIG //if (listState.firstVisibleItemIndex == 0) PageState.BIG else sizeState
+                                        PageState.SMALL -> sizeState =PageState.SMALL
                                     }
                                 }
                         ) {
                             when (sizeState) {
                                 PageState.SMALL -> SmallDesign(
-                                    teamData = teamData
+                                    teamData = teamData,
+                                    showPopup = showPopup,
+                                    addMemberClick = { showPopup = true },
+                                    onDismiss = { showPopup = false }
                                 )
 
                                 PageState.DEFAULT -> DefaultDesign(
@@ -120,16 +102,6 @@ fun TeamDetailScreen(
 
                                 PageState.BIG -> BigDesign(
                                     teamData = teamData,
-                                    showPopup = showPopup,
-                                    addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
-                                )
-
-                                PageState.MEDIUM -> MidiumDesign(
-                                    teamData = teamData,
-                                    showPopup = showPopup,
-                                    addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
                                 )
                             }
                         }
@@ -137,13 +109,150 @@ fun TeamDetailScreen(
 
                     Spacer(modifier = Modifier.height(28.dp))
 
-//                TmpTravelList(
-//                    travelList = cartViewModel.cartList.value,
-//                    setCheckBox = { index, checked ->
-//                        cartViewModel.updateChecked(index, checked)
-//                    },
-//                    listState = listState
-//                )
+                    TravelList(
+                        travelList = //teamData.wishlist,
+                            listOf(
+                                Travel(
+                                name = "테스트1",
+                                address = "테스트",
+                                location = Location("0.0", "0.0"),
+                                city = "서울",
+                                district = "강남구",
+                                hasParking = true,
+                                petFriendly = true,
+                                imageUrl = "",
+                                description = "설명 설명 설명 설명",
+                                customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트2",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트3",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트4",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트5",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트6",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트7",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트8",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트9",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트10",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                ),
+                                Travel(
+                                    name = "테스트11",
+                                    address = "테스트",
+                                    location = Location("0.0", "0.0"),
+                                    city = "서울",
+                                    district = "강남구",
+                                    hasParking = true,
+                                    petFriendly = true,
+                                    imageUrl = "",
+                                    description = "설명 설명 설명 설명",
+                                    customTags = listOf("테스트", "안녕")
+                                )
+                        ),
+                        listState = listState,
+                        onClick = { travelName ->
+                            viewModel.updateCheckList(travelName)
+                        },
+                        isChecked = { travelName ->
+                            viewModel.isChecked(travelName)
+                        }
+                    )
                 }
             }
         } ?: {

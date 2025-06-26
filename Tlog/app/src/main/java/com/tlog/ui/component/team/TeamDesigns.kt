@@ -2,6 +2,7 @@ package com.tlog.ui.component.team
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,12 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.team.DetailTeam
-import com.tlog.ui.style.Body1Regular
+import com.tlog.data.model.team.Member
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
@@ -34,11 +36,14 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun SmallDesign(
-    teamData: DetailTeam
+    teamData: DetailTeam,
+    showPopup: Boolean,
+    addMemberClick: () -> Unit,
+    onDismiss: () -> Unit
+
 ) {
     Column(
         modifier = Modifier
-            .height(183.dp)
             .background(
                 color = MainColor,
                 shape = RoundedCornerShape(
@@ -54,7 +59,7 @@ fun SmallDesign(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp, vertical = 10.dp)
         ) {
             Column (
                 modifier = Modifier
@@ -69,14 +74,6 @@ fun SmallDesign(
                         color = Color.White
                     )
 
-                    Spacer(modifier = Modifier.width(10.dp))
-
-                    Text(
-                        text = "TBTI", //teamData.teamTBTI,
-                        style = BodyTitle,
-                        color = Color.White
-                    )
-
                     Spacer(modifier = Modifier.weight(1f))
 
                     TeamMemberImageGroup(
@@ -85,15 +82,27 @@ fun SmallDesign(
                             "",
                             "",
                             ""
-                        )
+                        ),
+                        addMemberClick = addMemberClick
+
                     )
                 }
 
-                Spacer(modifier = Modifier.height(18.dp))
-
-                TravelDateBox(teamData.startDate, teamData.endDate)
+                Text(
+                    text = "${teamData.startDate} ~ ${teamData.endDate}",
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp
+                    ),
+                    color = Color.White,
+                    modifier = Modifier
+                        .padding(bottom = 38.dp)
+                )
             }
         }
+        if (showPopup)
+            TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
     }
 }
 
@@ -108,7 +117,6 @@ fun DefaultDesign(
 ) {
     Column(
         modifier = Modifier
-            .height(288.dp)
             .background(
                 color = MainColor,
                 shape = RoundedCornerShape(
@@ -119,7 +127,7 @@ fun DefaultDesign(
     ) {
         TeamTopBar()
 
-        Spacer(modifier = Modifier.height(9.dp))
+        Spacer(modifier = Modifier.height((36.5).dp))
 
         Box(
             modifier = Modifier
@@ -133,7 +141,7 @@ fun DefaultDesign(
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
                     text = "TBTI", //teamData.teamTBTI,
@@ -141,40 +149,31 @@ fun DefaultDesign(
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(20.dp))
+
+                TeamMemberImageGroup(
+                    memberImageUrls = listOf(
+                        "",
+                        "",
+                        "",
+                        ""
+                    ),
+                    addMemberClick = addMemberClick
+                )
+
+                Spacer(modifier = Modifier.height((7.5).dp))
 
                 Text(
                     text = "${teamData.startDate} ~ ${teamData.endDate}",
-                    style = Body1Regular,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                Row(
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 12.sp
+                    ),
+                    color = Color.White,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                ) {
-                    TeamMemberImageGroup(
-                        memberImageUrls = listOf(
-                            "",
-                            "",
-                            "",
-                            ""
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    AddMemberBox(
-                        onClick = {
-                            addMemberClick()
-                        }
-                    )
-                }
-
-                //TravelDateBox(teamData.teamStartDate, teamData.teamEndDate)
+                        .padding(bottom = 20.dp)
+                )
             }
         }
 
@@ -183,98 +182,93 @@ fun DefaultDesign(
     }
 }
 
-//236
-@Composable
-fun MidiumDesign(
-    teamData: DetailTeam,
-    showPopup: Boolean,
-    addMemberClick: () -> Unit,
-    onDismiss: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .height(236.dp)
-            .background(
-                color = MainColor,
-                shape = RoundedCornerShape(
-                    bottomStart = 30.dp,
-                    bottomEnd = 30.dp
-                )
-            )
-    ) {
-        TeamTopBar()
-
-        Spacer(modifier = Modifier.height(9.dp))
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp)
-        ) {
-            Column {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = teamData.teamName,
-                        style = SubTitle,
-                        color = Color.White
-                    )
-
-                    Spacer(modifier = Modifier.width(10.dp))
-
-                    Text(
-                        text = "TBTI", //teamData.teamTBTI,
-                        style = BodyTitle,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                ) {
-                    TeamMemberImageGroup(
-                        memberImageUrls = listOf(
-                            "",
-                            "",
-                            "",
-                            ""
-                        )
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    AddMemberBox(
-                        onClick = {
-                            addMemberClick()
-                        }
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                TravelDateBox(teamData.startDate, teamData.endDate)
-            }
-        }
-    }
-    if (showPopup)
-        TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
-}
+//@Composable
+//fun MediumDesign(
+//    teamData: DetailTeam,
+//    showPopup: Boolean,
+//    addMemberClick: () -> Unit,
+//    onDismiss: () -> Unit
+//) {
+//    Column(
+//        modifier = Modifier
+//            .background(
+//                color = MainColor,
+//                shape = RoundedCornerShape(
+//                    bottomStart = 30.dp,
+//                    bottomEnd = 30.dp
+//                )
+//            )
+//    ) {
+//        TeamTopBar()
+//
+//        Spacer(modifier = Modifier.height(9.dp))
+//
+//        Box(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(horizontal = 24.dp)
+//        ) {
+//            Column {
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Text(
+//                        text = teamData.teamName,
+//                        style = SubTitle,
+//                        color = Color.White
+//                    )
+//
+//                    Spacer(modifier = Modifier.width(10.dp))
+//
+//                    Text(
+//                        text = "TBTI", //teamData.teamTBTI,
+//                        style = BodyTitle,
+//                        color = Color.White
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(30.dp))
+//
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(32.dp)
+//                ) {
+//                    TeamMemberImageGroup(
+//                        memberImageUrls = listOf(
+//                            "",
+//                            "",
+//                            "",
+//                            ""
+//                        ),
+//                        addMemberClick = addMemberClick
+//                    )
+//
+//                    Spacer(modifier = Modifier.weight(1f))
+//
+//                    AddMemberBox(
+//                        onClick = {
+//                            addMemberClick()
+//                        }
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(10.dp))
+//
+//                TravelDateBox(teamData.startDate, teamData.endDate)
+//            }
+//        }
+//    }
+//    if (showPopup)
+//        TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
+//}
 
 @Composable
 fun BigDesign(
     teamData: DetailTeam,
-    showPopup: Boolean,
-    addMemberClick: () -> Unit,
-    onDismiss: () -> Unit
 ) {
     Column(
         modifier = Modifier
-            .height(368.dp)
             .background(
                 color = MainColor,
                 shape = RoundedCornerShape(
@@ -282,7 +276,6 @@ fun BigDesign(
                     bottomEnd = 30.dp
                 )
             )
-            .padding(bottom = 20.dp)
     ) {
         TeamTopBar()
 
@@ -291,7 +284,7 @@ fun BigDesign(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 24.dp)
+                .padding(horizontal = 24.dp, vertical = 10.dp)
         ) {
             Column {
                 Text(
@@ -308,63 +301,94 @@ fun BigDesign(
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                ) {
-                    Column {
-                        Row (
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.ic_filled_star), // 추후 뷰모델 연결하기
-                                contentDescription = "",
-                                modifier = Modifier
-                                    .size(24.dp)
-                                    .clip(CircleShape)
-                                    .background(Color.White)
-                            )
-
-                            Spacer(modifier = Modifier.width(15.dp))
-
-                            Text(
-                                text = "이름",
-                                fontFamily = MainFont,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.White
-                            )
-                            Spacer(modifier = Modifier.width(9.dp))
-
-                            Text(
-                                text = "TBTI",
-                                fontFamily = MainFont,
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Normal,
-                                color = Color.White
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    AddMemberBox(
-                        onClick = {
-                            addMemberClick()
-                        }
+                DetailMember(
+                    listOf(
+                        Member(
+                            memberId = "tmp",
+                            memberName = "고중수",
+                            isLeader = true
+                        ),
+                        Member(
+                            memberId = "tmp",
+                            memberName = "박신욱",
+                            isLeader = true
+                        ),
+                        Member(
+                            memberId = "tmp",
+                            memberName = "백성수",
+                            isLeader = true
+                        ),
+                        Member(
+                            memberId = "tmp",
+                            memberName = "서준우",
+                            isLeader = true
+                        ),
+                        Member(
+                            memberId = "tmp",
+                            memberName = "정찬",
+                            isLeader = true
+                        )
                     )
-                }
+                )
+            }
+        }
 
-                //Spacer(modifier = Modifier.height(10.dp))
-                Spacer(modifier = Modifier.weight(1f)) // 맨아래 고정시킬지 ? 팀원 목록 아래 띄울지 고민할 것
+        Text(
+            text = "${teamData.startDate} ~ ${teamData.endDate}",
+            style = TextStyle(
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 12.sp
+            ),
+            color = Color.White,
+            modifier = Modifier
+                .padding(start = 24.dp, bottom = 16.dp)
+        )
+    }
+}
 
-                TravelDateBox(teamData.startDate, teamData.endDate)
+@Composable
+fun DetailMember(
+    memberList: List<Member>
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        memberList.forEach {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.login_ic_naver), // 추후 뷰모델 연결하기
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clip(CircleShape)
+                        .background(Color.White)
+                )
+
+                Spacer(modifier = Modifier.width(15.dp))
+
+                Text(
+                    text = it.memberName,
+                    fontFamily = MainFont,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.White
+                )
+
+                Spacer(modifier = Modifier.width(9.dp))
+
+                Text(
+                    text = "TBTI",
+                    fontFamily = MainFont,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.White
+                )
             }
         }
     }
-    if (showPopup)
-        TeamDialog(teamCode = teamData.inviteCode, onDismiss = { onDismiss() })
 }
