@@ -3,7 +3,7 @@ package com.tlog.data.model.travel
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.share.TagCount
 
-data class ShopCart(
+data class Cart(
     val id: String,
     val name: String,
     val imageUrl: String,

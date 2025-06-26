@@ -11,12 +11,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tlog.data.api.SearchTravel
 import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
+import com.tlog.data.model.travel.Travel
 
 
 @Composable
 fun TravelList(
-    travelList: List<ShopCart>,
+    travelList: List<Travel>,
+    listState: LazyListState = rememberLazyListState(),
+    onClick: (String) -> Unit,
+    isChecked: (String) -> Boolean
+) {
+    LazyColumn(
+        state = listState
+    ) {
+        itemsIndexed(travelList) { index, item ->
+            TravelItem(
+                travel = item,
+                onClick = onClick,
+                isChecked = isChecked
+            )
+            if (index == travelList.lastIndex) {
+                Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
+            } else {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+        }
+
+    }
+}
+
+@Composable
+fun CartList(
+    travelList: List<Cart>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit
 ) {
@@ -24,7 +51,7 @@ fun TravelList(
         state = listState
     ) {
         itemsIndexed(travelList) { index, item ->
-            TravelItem(
+            CartItem(
                 travel = item,
                 onClick = onClick
             )

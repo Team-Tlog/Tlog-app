@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -38,11 +37,10 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TwoMainButtons
 import com.tlog.ui.component.travel.ScrapTravelList
-import com.tlog.ui.component.travel.TravelList
+import com.tlog.ui.component.travel.CartList
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
-import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 
@@ -203,7 +201,7 @@ fun ScrapAndCartScreen(
                     }
                 )
             } else {
-                TravelList(
+                CartList(
                     travelList = viewModel.cartList.value,
                     onClick = { travelId ->
                         navController.navigate("travelInfo/$travelId")

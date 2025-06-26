@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -44,8 +44,8 @@ class ScrapAndCartViewModel @Inject constructor(
         _selectedTab.value = tab
     }
 
-    private var _cartList = mutableStateOf<List<ShopCart>>(emptyList())
-    val cartList: State<List<ShopCart>> = _cartList
+    private var _cartList = mutableStateOf<List<Cart>>(emptyList())
+    val cartList: State<List<Cart>> = _cartList
 
     private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
     val scrapList: State<List<Scrap>> = _scrapList
