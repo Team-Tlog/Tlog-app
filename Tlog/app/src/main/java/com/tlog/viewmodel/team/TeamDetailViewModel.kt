@@ -1,6 +1,7 @@
 package com.tlog.viewmodel.team
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.model.team.DetailTeam
@@ -18,6 +19,21 @@ class TeamDetailViewModel @Inject constructor(
 
     private val _teamData = MutableStateFlow<DetailTeam?>(null)
     val teamData: StateFlow<DetailTeam?> = _teamData
+
+    private val _checkTravelList = mutableStateListOf<String>()
+
+    fun updateCheckList(travelName: String) {
+        if (_checkTravelList.contains(travelName))
+            _checkTravelList.remove(travelName)
+        else
+            _checkTravelList.add(travelName)
+    }
+
+    fun isChecked(travelName: String): Boolean {
+        return _checkTravelList.contains(travelName)
+    }
+
+
 
 
     fun getTeamDetail(teamId: String) {

@@ -22,7 +22,7 @@ import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.tlog.R
 import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.share.MapViewModel
 import java.lang.Exception
@@ -53,7 +53,7 @@ fun MapScreen(
 
 @Composable
 fun KakaoMapView(
-    cartList: List<ShopCart>,
+    cartList: List<Cart>,
     scrapList: List<Scrap>
 ) {
     AndroidView(
