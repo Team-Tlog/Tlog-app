@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -55,8 +56,15 @@ class SNSIdViewModel @Inject constructor(
                     else -> _eventFlow.emit(UiEvent.ApiError(result.message ?: "알 수 없는 오류"))
                 }
             }
-            catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.message ?: "알 수 없는 오류"))
+            catch (e: HttpException) {
+                when (e.code()) {
+                    404 -> _eventFlow.emit(UiEvent.ApiError("사용자 정보 없음"))
+                    409 -> {
+                        _isDuplicated.value = true
+                    }
+                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류"))
+                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류"))
+                }
                 Log.d("SNSIdViewModel", e.message ?: "알 수 없는 오류")
             }
         }

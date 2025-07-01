@@ -30,7 +30,8 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.api.SearchTravel
 import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
+import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -39,8 +40,85 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 
 @Composable
 fun TravelItem(
+    travel: Travel,
+    onClick: (String) -> Unit,
+    isChecked: (String) -> Boolean
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        if (travel.imageUrl != "NaN") {
+            AsyncImage(
+                model = travel.imageUrl,
+                contentDescription = "${travel.name} 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+        else {
+            Image( // 사진이 없을 때 이미지
+                painter = painterResource(id = R.drawable.destination_img),
+                contentDescription = "${travel.name} 기본 사진",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(99.dp)
+                    .clip(RoundedCornerShape(15.dp))
+            )
+        }
+
+        Spacer(modifier = Modifier.width(15.dp))
+
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = travel.name,
+                style = Body1Bold,
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = travel.description ?: "설명 없음",
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Light,
+                fontSize = 10.sp,
+                modifier = Modifier
+                    .height(30.dp)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            HashTagsGroup(travel.customTags)
+        }
+
+        Spacer(modifier = Modifier.width(25.dp))
+
+        IconButton(
+            onClick = { onClick(travel.name) },
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Icon(
+                painter =
+                    if (isChecked(travel.name))
+                        painterResource(R.drawable.ic_checkbox_checked)
+                    else
+                        painterResource(R.drawable.ic_checkbox_unchecked),
+                contentDescription = if (isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+@Composable
+fun CartItem(
     viewModel: ScrapAndCartViewModel = viewModel(),
-    travel: ShopCart,
+    travel: Cart,
     onClick: (String) -> Unit
 ) {
     Row(

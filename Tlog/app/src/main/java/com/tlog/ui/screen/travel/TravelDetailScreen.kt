@@ -29,7 +29,6 @@ fun TravelDetailScreen(
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
 
-    // 여행지 ID로 API 호출 (최초 1회)
     LaunchedEffect(travelId) {
         viewModel.getTravelInfo(travelId)
     }
@@ -67,7 +66,7 @@ fun TravelDetailScreen(
                         ) {
                             TravelInfoSummary(destination)
 
-                            Spacer(modifier = Modifier.height(89.dp))
+                            Spacer(modifier = Modifier.height(51.dp))
 
                             HorizontalDivider(
                                 color = Color(0xFFE3E3E3),

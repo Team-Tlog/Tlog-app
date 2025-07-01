@@ -19,42 +19,42 @@ class TsnsNotificationViewModel : ViewModel() {
             TsnsNotificationData(
                 userName = "Tlog",
                 action = "님이 회원님의 게시글에 댓글을 남겼습니다",
-                time = "방금 전",
+                time = "방금전",
                 showFollowButton = false,
-                userProfileImageUrl = "https://picsum.photos/seed/user1/40/40",
-                postThumbnailImageUrl = "https://picsum.photos/seed/user1/40/40"
+                userProfileImageUrl = "",
+                postThumbnailImageUrl = ""
             ),
             TsnsNotificationData(
                 userName = "Tlog",
                 action = "님이 회원님의 게시글에 좋아요를 남겼습니다",
-                time = "방금 전",
+                time = "방금전",
                 showFollowButton = false,
-                userProfileImageUrl = "https://picsum.photos/seed/user1/40/40",
-                postThumbnailImageUrl = "https://picsum.photos/seed/user1/40/40"
+                userProfileImageUrl = "",
+                postThumbnailImageUrl = ""
             ),
             TsnsNotificationData(
                 userName = "Tlog",
                 action = "님이 회원님을 팔로우하기 시작했습니다",
-                time = "방금 전",
+                time = "방금전",
                 showFollowButton = true,          // 맞팔이면 postThumbnailImageUrl 필요 없음
-                userProfileImageUrl = "https://picsum.photos/seed/user1/40/40",
+                userProfileImageUrl = "",
                 postThumbnailImageUrl = null       // null
             ),
             TsnsNotificationData(
                 userName = "Tlog",
                 action = "님이 회원님의 게시글에 좋아요를 남겼습니다",
-                time = "방금 전",
+                time = "방금전",
                 showFollowButton = false,
-                userProfileImageUrl = "https://picsum.photos/seed/user1/40/40",
-                postThumbnailImageUrl = "https://picsum.photos/seed/user1/40/40"
+                userProfileImageUrl = "",
+                postThumbnailImageUrl = ""
             ),
             TsnsNotificationData(
                 userName = "Tlog",
                 action = "님이 회원님의 게시글에 댓글을 남겼습니다",
-                time = "방금 전",
+                time = "방금전",
                 showFollowButton = false,
-                userProfileImageUrl = "https://picsum.photos/seed/user1/40/40",
-                postThumbnailImageUrl = "https://picsum.photos/seed/user1/40/40"
+                userProfileImageUrl = "",
+                postThumbnailImageUrl = ""
             )
         )
     }

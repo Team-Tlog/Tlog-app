@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,8 +22,8 @@ class MapViewModel @Inject constructor(
 ): ViewModel() {
     var userId: String = ""
 
-    private var _cartList = mutableStateOf<List<ShopCart>?>(null)
-    val cartList: State<List<ShopCart>?> = _cartList
+    private var _cartList = mutableStateOf<List<Cart>?>(null)
+    val cartList: State<List<Cart>?> = _cartList
 
     private var _scrapList = mutableStateOf<List<Scrap>?>(null)
     val scrapList: State<List<Scrap>?> = _scrapList

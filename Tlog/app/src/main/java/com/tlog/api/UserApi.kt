@@ -2,7 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.ProfileImageRequest
-import com.tlog.data.model.travel.ShopCart
+import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.user.User
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,7 +16,7 @@ interface UserApi {
     @GET("api/shopcart/user/{userId}")
     suspend fun getUserCart(
         @Path("userId") userId: String
-    ): BaseResponse<List<ShopCart>>
+    ): BaseResponse<List<Cart>>
 
     @PUT("api/shopcart/user/{userId}")
     @Headers("Content-Type: text/plain")
