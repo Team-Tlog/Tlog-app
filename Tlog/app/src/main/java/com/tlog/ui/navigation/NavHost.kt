@@ -30,7 +30,7 @@ import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
 import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
-import com.tlog.ui.screen.sns.SnsMyPageScreen
+import com.tlog.ui.screen.sns.SnsProfileScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
@@ -108,7 +108,7 @@ fun NavHost(
         composable("snsMyPage/{userId}") { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: return@composable
 
-            SnsMyPageScreen(
+            SnsProfileScreen(
                 navController = navController,
                 userId = userId
             )
