@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -83,9 +81,10 @@ fun ReviewListScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = (31.5).dp)
+                        .padding(horizontal = 31.dp)
                 ) {
                     ReviewHeader(
+                        reviewCnt = viewModel.reviewList.value.size,
                         reviewWrite = { navController.navigate("review/$travelId/$travelName") }
                     )
                 }
@@ -94,7 +93,7 @@ fun ReviewListScreen(
 
                 Column(
                     modifier = Modifier
-                        .padding(31.5.dp)
+                        .padding(31.dp)
                 ) {
                     ReviewStatistics(
                         avgStarRating = viewModel.rating.value,
@@ -114,8 +113,6 @@ fun ReviewListScreen(
                                 viewModel.updateSelectOption(it)
                             },
                             modifier = Modifier
-                                .heightIn(max = 130.dp)
-                                .width(98.dp)
                                 .align(Alignment.CenterEnd)
                         )
                     }
