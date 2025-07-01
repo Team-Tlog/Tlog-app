@@ -96,6 +96,7 @@ fun MyPageScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 13.dp)
+                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
             ) {
                 BlueCircle()
 
@@ -103,17 +104,17 @@ fun MyPageScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
+                    MyPageTopBar(
+                        logoutClick = { viewModel.logout() }
+                    )
+
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()),
+                            .fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        MyPageTopBar(
-                            logoutClick = { viewModel.logout() }
-                        )
 
-                        Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(25.dp))
 
                         if (viewModel.isGetUserApiSuccess.value == true)
                             MyPageTbtiGroup(

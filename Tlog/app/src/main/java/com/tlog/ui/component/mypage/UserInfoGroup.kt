@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,13 +43,13 @@ fun UserInfoGroup(
             .fillMaxWidth()
             .shadow(1.dp, shape = RoundedCornerShape(10))
             .clip(RoundedCornerShape(10))
-            .background(Color.White)
+            .background(Color.White.copy(alpha = 0.8f))
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(25.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
+                .background(Color.White.copy(alpha = 0.8f))
                 .padding(
                     top = 31.dp,
                     bottom = 15.dp,
@@ -59,28 +60,16 @@ fun UserInfoGroup(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (userInfo.profileImageUrl != null && userInfo.profileImageUrl != "") {
-                    AsyncImage(
-                        model = userInfo.profileImageUrl,
-                        contentDescription = "프로필 사진",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(86.dp)
-                            .clip(RoundedCornerShape(50))
-                            .clickable{onImageClick()}
-                    )
-                }
-                else {
-                    Image(
-                        painter = painterResource(R.drawable.tmp_jeju),
-                        contentDescription = "프로필 사진",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(86.dp)
-                            .clip(RoundedCornerShape(50))
-                            .clickable{onImageClick()}
-                    )
-                }
+                AsyncImage(
+                    model = userInfo.profileImageUrl,
+                    contentDescription = "프로필 사진",
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(R.drawable.tmp_jeju),
+                    modifier = Modifier
+                        .size(86.dp)
+                        .clip(RoundedCornerShape(50))
+                        .clickable{onImageClick()}
+                )
 
                 Spacer(modifier = Modifier.width(25.dp))
 
@@ -92,16 +81,16 @@ fun UserInfoGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = userInfo.username,
+                            text = userInfo.snsId,
                             style = Body1Bold
                         )
 
                         Text(
-                            text = "ID ${userInfo.snsId}",
+                            text = "ID 어떤아이디넣지",
                             fontFamily = MainFont,
                             fontSize = 10.sp,
                             fontWeight = FontWeight.Normal,
-                            color = Color(0x665555FF)
+                            color = Color(0xFFADADAD)
                         )
                     }
 
@@ -121,7 +110,11 @@ fun UserInfoGroup(
             ) {
                 Text(
                     text = "업적",
-                    style = Body1Bold
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
 
                 Row(

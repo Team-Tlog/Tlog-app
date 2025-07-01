@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,7 +26,7 @@ fun BlueCircle() {
         ) {
             drawCircle( // 너무 어렵티비....
                 color = MainColor,
-                radius = 510.dp.toPx(),
+                radius = 600.dp.toPx(),
                 center = Offset(x = size.width / 2f, y = -120f)
             )
         }
