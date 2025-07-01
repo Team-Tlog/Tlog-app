@@ -43,8 +43,7 @@ fun AppNotificationItem(content: String, date: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(84.dp)
-            //.padding(horizontal = 24.dp)
+            .padding(vertical = 15.dp)
             .drawBehind {
                 val strokeWidth = 0.5.dp.toPx()
                 val y = size.height - strokeWidth / 2
@@ -54,13 +53,12 @@ fun AppNotificationItem(content: String, date: String) {
                     end = androidx.compose.ui.geometry.Offset(size.width, y),
                     strokeWidth = strokeWidth
                 )
-            }
-            .padding(top = 15.dp, bottom = 15.dp),
+            },
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_filled_notification),
+            painter = painterResource(id = R.drawable.ic_notification_light),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier.size(48.dp)
@@ -70,11 +68,15 @@ fun AppNotificationItem(content: String, date: String) {
 
         Column(
             modifier = Modifier
-                .width(242.dp)
+                .fillMaxWidth()
         ) {
             Text(
                 text = content,
-                style = Body2Regular,
+                style = TextStyle(
+                    fontFamily = MainFont,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Normal
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
@@ -83,19 +85,15 @@ fun AppNotificationItem(content: String, date: String) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Box(
-                modifier = Modifier
-                    .width(23.dp)
-                    .height(12.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(
                     text = date,
                     style = TextStyle(
-                        fontSize = 8.sp,
-                        lineHeight = 8.sp,
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.W300,
-                        color = Color(0xFF696969),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = Color(0xFF727272)
                     ),
                 )
             }

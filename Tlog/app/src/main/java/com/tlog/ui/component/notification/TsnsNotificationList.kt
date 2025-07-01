@@ -77,7 +77,9 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
                     }
                     append(item.action)
                 },
-                fontSize = 14.sp,
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 12.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -86,8 +88,10 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
 
             Text(
                 text = item.time,
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
-                color = Color.Gray
+                color = Color(0xFF727272)
             )
         }
 
