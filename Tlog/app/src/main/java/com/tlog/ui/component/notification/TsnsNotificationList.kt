@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +29,7 @@ import coil.compose.AsyncImage
 import com.tlog.data.model.notification.TsnsNotificationData
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.TsnsNotificationViewModel
+import com.tlog.R
 
 @Composable
 fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
@@ -58,7 +60,8 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.login_ic_google)
         )
 
         Spacer(modifier = Modifier.width(12.dp))
@@ -74,7 +77,9 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
                     }
                     append(item.action)
                 },
-                fontSize = 14.sp,
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Medium,
+                fontSize = 12.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -83,8 +88,10 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
 
             Text(
                 text = item.time,
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
-                color = Color.Gray
+                color = Color(0xFF727272)
             )
         }
 
@@ -118,7 +125,8 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
                 modifier = Modifier
                     .size(63.dp)
                     .clip(RoundedCornerShape(4.dp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.login_ic_google)
             )
         }
     }
