@@ -170,4 +170,9 @@ dependencies {
 
     // GPS
     implementation("com.google.android.gms:play-services-location:18.0.0")
+
+    //STOMP(채팅)
+    implementation("com.github.bishoybasily:stomp:1.6")
+    implementation("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.1")
 }
