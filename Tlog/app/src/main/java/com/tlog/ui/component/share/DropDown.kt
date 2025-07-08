@@ -36,6 +36,7 @@ fun DropDown(
     options: List<String>,
     value: String,
     valueChange: (String) -> Unit,
+    selectedTextStyle: TextStyle = TextStyle(fontFamily = MainFont, fontSize = 13.sp, fontWeight = FontWeight.Normal, color = Color.Black),
     textStyle: TextStyle = TextStyle(fontFamily = MainFont, fontSize = 13.sp, fontWeight = FontWeight.Normal, color = Color.Black),
     dividerColor: Color = Color(0xFFE8E8E8),
     bgColor: Color = Color.White,
@@ -59,7 +60,7 @@ fun DropDown(
             ) {
                 Text(
                     text = value,
-                    style = textStyle,
+                    style = selectedTextStyle,
                     modifier = Modifier
                         .padding(vertical = 10.dp)
                 )

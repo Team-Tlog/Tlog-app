@@ -90,10 +90,16 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
                 DropDown(
                     options = RegionData.regionMap.keys.toList(),
                     value = viewModel.city.value,
-                    textStyle = TextStyle(
+                    selectedTextStyle = TextStyle(
                         fontFamily = MainFont,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
+                        color = MainColor
+                    ),
+                    textStyle = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Normal,
                         color = MainColor
                     ),
                     bgColor = BackgroundBlue,
