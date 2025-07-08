@@ -1,6 +1,7 @@
 package com.tlog.ui.component.share
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
+import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 
 
@@ -43,14 +45,15 @@ fun DropDownCheckBox(
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    val defaultModifier = Modifier
-        .shadow(3.dp, shape = RoundedCornerShape(20.dp))
-        .shadow(if (expanded) 1.dp else 3.dp, shape = RoundedCornerShape(20.dp))
-        .background(Color.White)
-
-
     Box(
-        modifier = defaultModifier.then(modifier)
+        modifier = modifier
+            .background(Color.White)
+            .clip(RoundedCornerShape(10.dp))
+            .border(
+                width = 1.dp,
+                color = MainColor,
+                shape = RoundedCornerShape(10.dp)
+            )
     ) {
         Column {
             // 선택된 항목 표시 영역
@@ -111,12 +114,7 @@ fun DropDownCheckBox(
                                         .padding(top = 10.dp, bottom = 10.dp, end = 10.dp)
                                 ) {
                                     Icon(
-                                        painter = painterResource(
-                                            if (checked)
-                                                R.drawable.ic_checkbox_checked
-                                            else
-                                                R.drawable.ic_checkbox_unchecked
-                                        ),
+                                        painter = painterResource(if (checked) R.drawable.ic_filled_checkbox_checked else R.drawable.ic_filled_checkbox_unchecked),
                                         contentDescription = "$item" + if (checked) "체크해제하기" else "체크하기",
                                         tint = Color.Unspecified,
                                         modifier = Modifier

@@ -17,12 +17,15 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +40,8 @@ import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.share.DropDownCheckBox
 import com.tlog.ui.component.travel.DayTravelCounter
 import com.tlog.ui.style.BodyTitle
+import com.tlog.ui.theme.BackgroundBlue
+import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.CourseInputViewModel
 import java.time.LocalDate
@@ -85,13 +90,29 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
                 DropDown(
                     options = RegionData.regionMap.keys.toList(),
                     value = viewModel.city.value,
+                    selectedTextStyle = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MainColor
+                    ),
+                    textStyle = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MainColor
+                    ),
+                    bgColor = BackgroundBlue,
+                    dividerColor = Color.White,
+                    iconColor = MainColor,
                     valueChange = {
                         viewModel.updateCity(it)
                         Log.d("city", it)
                     },
                     modifier = Modifier
-                        .width(86.dp)
                         .heightIn(max = 185.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .verticalScroll(rememberScrollState())
                 )
 
                 // 시군구 필드
@@ -198,8 +219,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(85.dp)
-                    .padding(horizontal = 24.dp, vertical = 15.dp)
+                    .padding(vertical = 15.dp)
             ) {
                 MainButton(
                     text = "다음",
