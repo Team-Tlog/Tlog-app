@@ -100,7 +100,7 @@ fun AiCourseSelectCartScreen(viewModel: TmpCartViewModel = viewModel()) {
                 .padding(start = 24.dp, end = 24.dp, bottom = 15.dp)
         ) {
             MainButton(
-                text = "AI 코스 짜기",
+                text = "AI 코스 추천받기",
                 onClick = {
                     Log.d("AI", "my click!!")
                 },

@@ -38,6 +38,7 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamCreateScreen
+import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
 import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
@@ -248,6 +249,11 @@ fun NavHost(
                 navController = navController,
                 previousSelectedIndex = 0 // ?
             )
+        }
+
+        composable("AiSelect") {
+            val viewModel: TmpCartViewModel = hiltViewModel()
+            AiCourseSelectCartScreen(viewModel = viewModel)
         }
 
         composable("AiRecommend") {
