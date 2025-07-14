@@ -60,7 +60,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = "AiSelect") {
+    NavHost(navController = navController, startDestination = startScreen) {
         // Main
         composable("main") {
             MainScreen(navController = navController)
