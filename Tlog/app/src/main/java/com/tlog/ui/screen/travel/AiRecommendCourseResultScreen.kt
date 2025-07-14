@@ -36,7 +36,7 @@ fun AiRecommendCourseResultScreen(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.height(117.dp))
+                Spacer(modifier = Modifier.height(103.dp))
                 Text(
                     text = "AI추천 코스결과",
                     style = BodyTitle,
@@ -45,7 +45,7 @@ fun AiRecommendCourseResultScreen(
                         .wrapContentWidth(Alignment.CenterHorizontally)
                 )
 
-                Spacer(modifier = Modifier.height(75.dp))
+                Spacer(modifier = Modifier.height(41.dp))
 
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -57,7 +57,7 @@ fun AiRecommendCourseResultScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 RetryButton(
                     onClick = { /* 다시 추천 로직 */ },
@@ -66,7 +66,7 @@ fun AiRecommendCourseResultScreen(
                         .wrapContentWidth(Alignment.CenterHorizontally)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(41.dp))
             }
 
             cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->

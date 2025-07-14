@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -37,12 +38,14 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamCreateScreen
+import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -58,7 +61,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "AiRecommend") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -247,7 +250,10 @@ fun NavHost(
             )
         }
 
-
+        composable("AiRecommend") {
+            val viewModel: TmpCartViewModel = hiltViewModel()
+            AiRecommendCourseResultScreen(viewModel = viewModel)
+        }
 
     }
 }
