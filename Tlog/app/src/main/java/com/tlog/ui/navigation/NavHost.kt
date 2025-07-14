@@ -37,12 +37,14 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamCreateScreen
+import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.tmp.TmpCartViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -58,7 +60,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "AiSelect") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -247,6 +249,10 @@ fun NavHost(
             )
         }
 
+        composable("AiSelect") {
+            val viewModel: TmpCartViewModel = hiltViewModel()
+            AiCourseSelectCartScreen(viewModel = viewModel)
+        }
 
 
     }
