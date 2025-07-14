@@ -8,4 +8,4 @@ local.properties
 .idea/
 /.idea/*
 .idea/deploymentTargetSelector.xml
-/app/google-services.json
+/Tlog/app/google-services.json
