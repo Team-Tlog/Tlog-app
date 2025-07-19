@@ -35,10 +35,11 @@ fun TravelingCourse(
             )
         }
 
+        Spacer(modifier = Modifier.height(23.dp))
         // 여기에 커스텀 topContent 삽입(ex: team member image group)
         topContent?.invoke()
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(13.dp))
         Box(
             modifier = Modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
