@@ -8,3 +8,4 @@
 local.properties
 /Tlog/.idea/*
 /Tlog/app/google-services.json
+.idea/*
