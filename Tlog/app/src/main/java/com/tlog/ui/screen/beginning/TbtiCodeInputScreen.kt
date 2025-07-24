@@ -13,11 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +39,10 @@ import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
+import com.tlog.R
 
 
 @Composable
@@ -71,6 +76,8 @@ fun TbtiCodeInputScreen(
             Spacer(modifier = Modifier.height(157.dp))
             Text(
                 text = "TBTI 코드 입력",
+                modifier = Modifier
+                    .align (Alignment.CenterHorizontally),
                 style = SubTitle
             )
             Spacer(modifier = Modifier.height(10.dp))
@@ -78,11 +85,12 @@ fun TbtiCodeInputScreen(
                 text = "테스트 완료 후 받으신\n인증번호 8자리를 입력해주세요",
                 modifier = Modifier
                     .width(182.dp)
-                    .height(40.dp),
+                    .align (Alignment.CenterHorizontally),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 14.sp,
-                color = Color(0xFF767676)
+                color = Color(0xFF767676),
+                textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(50.dp))
 
@@ -108,13 +116,24 @@ fun TbtiCodeInputScreen(
 
             if (codeError.value) {
                 LaunchedEffect(key1 = codeError.value) {}
-                Text(
-                    text = "올바른 코드를 입력해주세요.",
-                    fontFamily = MainFont,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 14.sp,
-                    color = Color.Red
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_alert_red),
+                        contentDescription = "오류 아이콘",
+                        modifier = Modifier
+                            .padding(end = 10.dp),
+                        tint = Color.Unspecified // 원본 색상 유지
+                    )
+                    Text(
+                        text = "올바른 코드를 입력해주세요.",
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 14.sp,
+                        color = Color.Red
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.weight(1f))
