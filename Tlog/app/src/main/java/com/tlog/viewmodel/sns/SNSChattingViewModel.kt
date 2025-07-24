@@ -63,6 +63,7 @@ class SNSChattingViewModel @Inject constructor(
 
     //서버와 연결후 구독(subscribe)를 해야하는데 구독하는 부분
     private fun handleWebSocketOpened() {
+        Log.d("SNSChatting", "웹소켓 연결됨")
         topic = stomp.topic("/sub/chat/room/16").subscribe({ message ->
             Log.d("SNSChatting", "Received message: ${message.payload}")
             val json = JSONObject(message.payload)

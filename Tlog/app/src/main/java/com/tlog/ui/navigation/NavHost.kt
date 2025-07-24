@@ -27,6 +27,7 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
+import com.tlog.ui.screen.sns.SNSChattingScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
 import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
@@ -43,6 +44,7 @@ import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.sns.SNSChattingViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -58,7 +60,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = startScreen) {
+    NavHost(navController = navController, startDestination = "chatting") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -248,6 +250,12 @@ fun NavHost(
         }
 
 
+        composable("chatting") {
+            val viewModel: SNSChattingViewModel = hiltViewModel() // 또는 viewModel()
+            SNSChattingScreen(
+                viewModel = viewModel
+            )
+        }
 
     }
 }
