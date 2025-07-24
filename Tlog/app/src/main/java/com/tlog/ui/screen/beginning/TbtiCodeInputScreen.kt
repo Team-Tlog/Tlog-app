@@ -85,7 +85,6 @@ fun TbtiCodeInputScreen(
                 text = "테스트 완료 후 받으신\n인증번호 8자리를 입력해주세요",
                 modifier = Modifier
                     .width(182.dp)
-                    .height(40.dp)
                     .align (Alignment.CenterHorizontally),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
@@ -124,7 +123,6 @@ fun TbtiCodeInputScreen(
                         painter = painterResource(id = R.drawable.ic_alert_red),
                         contentDescription = "오류 아이콘",
                         modifier = Modifier
-                            .size(15.dp)
                             .padding(end = 10.dp),
                         tint = Color.Unspecified // 원본 색상 유지
                     )
