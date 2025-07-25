@@ -2,6 +2,10 @@ package com.tlog.viewmodel.sns
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -40,6 +44,9 @@ class SNSChattingViewModel @Inject constructor(
     private val _messageList = MutableStateFlow<List<ChatMessageDto>>(emptyList())
     val messageList: StateFlow<List<ChatMessageDto>> get() = _messageList
 
+    var messageText by mutableStateOf("")
+    var messages = mutableStateListOf<ChatMessageDto>()
+
     init {
         val connectionProvider = MyConnectionProvider(url, userPreferences)
         stomp = StompClient(connectionProvider)
@@ -64,7 +71,7 @@ class SNSChattingViewModel @Inject constructor(
     //서버와 연결후 구독(subscribe)를 해야하는데 구독하는 부분
     private fun handleWebSocketOpened() {
         Log.d("SNSChatting", "웹소켓 연결됨")
-        topic = stomp.topic("/sub/chat/room/16").subscribe({ message ->
+        topic = stomp.topic("/sub/chat/room/23").subscribe({ message ->
             Log.d("SNSChatting", "Received message: ${message.payload}")
             val json = JSONObject(message.payload)
             val chatMessage = ChatMessageDto(
@@ -82,22 +89,31 @@ class SNSChattingViewModel @Inject constructor(
         viewModelScope.launch {
             val userId = userPreferences.getUserId() ?: return@launch
             //구독 후 메시지 전송하는 부분 숫자 16은 roomId
-            sendMessage(userId, 16)
+            sendMessage(userId, 23, content = "초기 연결 메시지")
         }
     }
 
     //메시지를 보내는 부분, 무조건 서버와 형식을 맞춰야함 지금 이 상태 그대로 보내면 됨
-    fun sendMessage(senderId: String, chatRoomId: Long) {
+    fun sendMessage(senderId: String, chatRoomId: Long, content: String) {
         viewModelScope.launch {
             val messageJson = JSONObject().apply {
                 put("senderId", senderId)
                 put("chatRoomId", chatRoomId)
-                put("content", "ㅎㅇㅎㅇㅎㅇ 이게되네")
+                put("content", content)
             }
             Log.d("SNSChatting", "Sending message: $messageJson")
             stomp.send("/pub/chat/message", messageJson.toString())
                 .subscribe({
                     Log.d("SNSChatting", "Message sent successfully")
+                    // 보낸 메시지를 로컬 리스트에 추가
+                    messages.add(ChatMessageDto(
+                        chatRoomId = chatRoomId,
+                        senderId = senderId,
+                        senderName = "",
+                        content = content,
+                        sendAt = ""
+                    ))
+                    messageText = "" // 입력창 초기화
                 }, { error ->
                     Log.e("SNSChatting", "Error sending message", error)
                 })
