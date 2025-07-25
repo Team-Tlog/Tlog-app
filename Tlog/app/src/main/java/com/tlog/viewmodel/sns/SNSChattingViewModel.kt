@@ -85,12 +85,6 @@ class SNSChattingViewModel @Inject constructor(
         }, { error ->
             Log.e("SNSChatting", "Error receiving message", error)
         })
-
-        viewModelScope.launch {
-            val userId = userPreferences.getUserId() ?: return@launch
-            //구독 후 메시지 전송하는 부분 숫자 16은 roomId
-            sendMessage(userId, 23, content = "초기 연결 메시지")
-        }
     }
 
     //메시지를 보내는 부분, 무조건 서버와 형식을 맞춰야함 지금 이 상태 그대로 보내면 됨
