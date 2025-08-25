@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,6 +20,11 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun MainButton(
     text : String,
+    textStyle: TextStyle = TextStyle(
+        fontSize = 15.sp,
+        fontFamily = MainFont,
+        fontWeight = FontWeight.ExtraBold
+    ),
     enabled: Boolean = true,
     buttonColor: Color = MainColor,
     onClick : () -> Unit,
@@ -43,9 +49,7 @@ fun MainButton(
     ) {
         Text(
             text = text,
-            fontSize = 15.sp,
-            fontFamily = MainFont,
-            fontWeight = FontWeight.ExtraBold
+            style = textStyle
         )
     }
 }
