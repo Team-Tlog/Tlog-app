@@ -19,7 +19,7 @@ import androidx.compose.foundation.Image
 fun AutoSlidingImageRes(
     @DrawableRes imageRes: List<Int>,
     intervalMs: Long = 2500,
-    animationMs: Int = 380,
+    animationMs: Int = 1200,
     width: Int = 190,
     height: Int = 190,
     userScrollEnabled: Boolean = true
