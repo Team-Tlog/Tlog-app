@@ -28,6 +28,7 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
+import com.tlog.ui.screen.share.ReportToDeveloperScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
 import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
@@ -238,12 +239,18 @@ fun NavHost(
             )
         }
 
-        composable("course") {
-            MyTravelingCourseScreen(navController)
-        }
+        //MyPage
         composable("myPage") {
             MyPageScreen(navController = navController)
         }
+        composable("report") {
+            ReportToDeveloperScreen()
+        }
+
+        composable("course") {
+            MyTravelingCourseScreen(navController)
+        }
+
         composable("notification") {
             NotificationScreen(
                 navController = navController,
