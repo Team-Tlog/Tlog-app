@@ -133,7 +133,7 @@ class TeamInfoViewModel @Inject constructor(
                         startDate = startDate.value.toString(),
                         endDate = endDate.value.toString(),
                         visitCountPerDay = travelCountByDate.value.entries
-                            .mapIndexed { index, value -> "additionalProp${index + 1}" to value.value }
+                            .mapIndexed { index, value -> "${index + 1}" to value.value }
                             .toMap()
                     )
                 )

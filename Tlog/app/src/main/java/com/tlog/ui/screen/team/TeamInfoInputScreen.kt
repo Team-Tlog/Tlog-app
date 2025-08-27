@@ -65,6 +65,7 @@ fun TeamInfoInputScreen(
             when (event) {
                 is UiEvent.ApiSuccess -> {
                     navController.popBackStack()
+                    navController.popBackStack()
                 }
                 is UiEvent.ApiError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
