@@ -55,8 +55,6 @@ fun TeamCreateScreen(
             .background(Color.White)
             .imePadding()           // 키보드가 딸려 올라오도록
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 24.dp)
-
     ) {
         TopBar(
             text = "팀 생성"
