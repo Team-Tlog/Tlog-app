@@ -39,6 +39,7 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamCreateScreen
+import com.tlog.ui.screen.team.TeamInfoInputScreen
 import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
 import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
@@ -170,6 +171,14 @@ fun NavHost(
         }
         composable("createTeam") {
             TeamCreateScreen(navController = navController)
+        }
+        composable("teamInfoInput/{teamName}") { backstackEntry ->
+            val teamName = backstackEntry.arguments?.getString("teamName") ?: return@composable
+            TeamInfoInputScreen(
+                teamName = teamName,
+                navController = navController
+            )
+
         }
         composable("teamDetail/{teamId}") { backStackEntry ->
             val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable

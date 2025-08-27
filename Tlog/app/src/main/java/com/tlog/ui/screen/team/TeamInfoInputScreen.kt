@@ -1,6 +1,7 @@
-package com.tlog.ui.screen.travel
+package com.tlog.ui.screen.team
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,35 +23,57 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.data.local.RegionData
-import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.share.DropDownCheckBox
+import com.tlog.ui.component.share.MainButton
+import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.component.travel.DayTravelCounter
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.travel.CourseInputViewModel
+import com.tlog.viewmodel.team.TeamInfoViewModel
+import com.tlog.viewmodel.team.TeamInfoViewModel.UiEvent
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-
-@Preview
 @Composable
-fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
+fun TeamInfoInputScreen(
+    teamName: String,
+    navController: NavController,
+    viewModel: TeamInfoViewModel = hiltViewModel()) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.ApiSuccess -> {
+                    navController.popBackStack()
+                }
+                is UiEvent.ApiError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -73,7 +96,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             )
 
             Spacer(modifier = Modifier.height(30.dp))
- 
+
             Text(
                 text = "지역",
                 fontFamily = MainFont,
@@ -84,7 +107,7 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(24.dp))
 
 
-            Row ( 
+            Row (
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 DropDown(
@@ -162,10 +185,12 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-//            Calendar(
-//                today = LocalDate.now(),
-//                viewModel = viewModel
-//            )
+            Calendar(
+                today = LocalDate.now(),
+                startDate = viewModel.startDate.value,
+                endDate = viewModel.endDate.value,
+                updateDateRange = { viewModel.updateDateRange(it) }
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -222,9 +247,9 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
                     .padding(vertical = 15.dp)
             ) {
                 MainButton(
-                    text = "다음",
+                    text = "팀 생성하기",
                     onClick = {
-                        Log.d("course next button", "my click!!")
+                        viewModel.createTeam(teamName)
                     },
                     modifier = Modifier
                         .height(55.dp)
