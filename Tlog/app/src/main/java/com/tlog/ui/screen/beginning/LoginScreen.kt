@@ -1,11 +1,24 @@
 package com.tlog.ui.screen.beginning
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +44,28 @@ fun LoginScreen(
 ) {
     val context = LocalContext.current
 
+    var titleVisible by remember { mutableStateOf(false) }
+    val bounceOffset = remember { Animatable(0f) }
+
+    LaunchedEffect(Unit) {
+        titleVisible = true
+    }
+
+    LaunchedEffect(titleVisible) {
+        if (titleVisible) {
+            // 위로 바운스 하는 느낌으로 끌어 올리고
+            bounceOffset.animateTo(
+                targetValue = -12f,
+                animationSpec = tween(700, easing = FastOutSlowInEasing)
+            )
+            // 다시 원상복구 하기
+            bounceOffset.animateTo(
+                targetValue = 0f,
+                animationSpec = tween(500, easing = LinearOutSlowInEasing)
+            )
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -44,30 +79,46 @@ fun LoginScreen(
         ) {
             Spacer(modifier = Modifier.height(288.dp))
 
-            Box(
-                modifier = Modifier
-                    .width(360.dp)
-                    .height(124.dp)
-                    .padding(start = 40.dp, end = 40.dp, bottom = 12.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "여행을 \n담다",
-                        style = TextStyle(
-                            fontFamily = MainFont,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 40.sp,
-                            lineHeight = 50.sp,
-                            color = Color.White
-                        )
+            AnimatedVisibility(
+                visible = titleVisible,
+                enter = slideInVertically(
+                    initialOffsetY = { it },
+                    animationSpec = tween(
+                        durationMillis = 520,
+                        easing = FastOutSlowInEasing
                     )
+                ) + fadeIn(
+                    animationSpec = tween(750)
+                )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(124.dp)
+                        .padding(start = 40.dp, end = 40.dp, bottom = 12.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.Start),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "여행을 \n담다",
+                            style = TextStyle(
+                                fontFamily = MainFont,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 40.sp,
+                                lineHeight = 50.sp,
+                                color = Color.White
+                            ),
+                            modifier = Modifier
+                                .offset(y = bounceOffset.value.dp)
+                        )
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(133.dp))
+
+            Spacer(modifier = Modifier.weight(1f))
 
             LoginBubble()
 
@@ -92,12 +143,13 @@ fun LoginScreen(
 
             Text(
                 modifier = Modifier
-                    .clickable { /* 게스트 시작하기 */ },
+                    .clickable { /* 게스트 시작하기 */ }
+                    .padding(bottom = 50.dp),
                 text = "게스트로 시작하기",
                 color = Color.White,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Medium,
-                fontSize = 11.sp,
+                fontSize = 14.sp,
                 textDecoration = TextDecoration.Underline
             )
         }
