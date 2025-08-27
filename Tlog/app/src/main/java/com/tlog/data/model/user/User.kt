@@ -1,6 +1,6 @@
 package com.tlog.data.model.user
 
-import com.tlog.data.model.share.Tbti
+import com.tlog.data.model.share.TbtiDescription
 
 data class User(
     val username: String,
@@ -8,5 +8,5 @@ data class User(
     val profileImageUrl: String?,
     val defaultRewardPhrase: String,
     val userRewards: List<Reward>,
-    val tbtiDescription: Tbti
+    val tbtiDescription: TbtiDescription
 )

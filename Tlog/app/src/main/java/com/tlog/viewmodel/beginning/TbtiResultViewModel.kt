@@ -12,7 +12,7 @@ import com.tlog.data.api.FcmTokenBody
 import com.tlog.data.api.RegisterRequest
 import com.tlog.data.api.UserProfileDto
 import com.tlog.data.local.UserPreferences
-import com.tlog.data.model.share.Tbti
+import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -27,8 +27,8 @@ class TbtiResultViewModel @Inject constructor(
     private val tokenProvider: TokenProvider
 ): ViewModel() {
 
-    private val _tbtiDescription = mutableStateOf<Tbti?>(null)
-    val tbtiDescription: State<Tbti?> = _tbtiDescription
+    private val _tbtiDescription = mutableStateOf<TbtiDescription?>(null)
+    val tbtiDescription: State<TbtiDescription?> = _tbtiDescription
 
     private var userId = ""
 
