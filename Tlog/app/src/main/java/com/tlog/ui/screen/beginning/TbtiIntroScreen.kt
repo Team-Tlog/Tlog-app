@@ -19,12 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.tlog.R
+import com.tlog.ui.component.share.AutoSlidingImageRes
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
@@ -48,10 +50,11 @@ fun TbtiIntroScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.weight(1f))
+
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 263.dp),
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -59,7 +62,7 @@ fun TbtiIntroScreen(
                         color = Color.Black,
                         fontSize = 24.sp,
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
@@ -72,7 +75,7 @@ fun TbtiIntroScreen(
                         fontSize = 14.sp,
                     )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     Text(
                         text = "여행 성향을 분석해 나만의 여행 유형을\n찾아주는 맞춤형 여행 성향 테스트입니다",
@@ -81,12 +84,26 @@ fun TbtiIntroScreen(
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
                     )
+
+                    Spacer(modifier = Modifier.height(118.dp))
+                    AutoSlidingImageRes(
+                        imageRes = listOf(
+                            R.drawable.tbti_rela,
+                            R.drawable.tbti_sela,
+                            R.drawable.tbti_seli
+                        )
+                    )
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height((74.5).dp))
 
                 MainButton(
                     text = "테스트 시작",
+                    textStyle = TextStyle(
+                        fontSize = 18.sp,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium
+                    ),
                     onClick = {
                         navController.popBackStack()
                         navController.navigate("tbtiTest")
@@ -97,7 +114,7 @@ fun TbtiIntroScreen(
                         .height(55.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(bottom = 4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Row(
                     horizontalArrangement =  Arrangement.spacedBy(10.dp),
