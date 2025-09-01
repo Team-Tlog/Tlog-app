@@ -24,7 +24,6 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
@@ -33,21 +32,7 @@ fun TeamCreateScreen(
     viewModel: TeamNameViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
-
-        viewModel.eventFlow.collect { event ->
-            when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.popBackStack()
-                }
-                is UiEvent.ApiError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -55,8 +40,6 @@ fun TeamCreateScreen(
             .background(Color.White)
             .imePadding()           // 키보드가 딸려 올라오도록
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 24.dp)
-
     ) {
         TopBar(
             text = "팀 생성"
@@ -83,11 +66,11 @@ fun TeamCreateScreen(
             MainButton(
                 text = "팀 생성하기",
                 onClick = {
-                    viewModel.createTeam()
+                    navController.navigate("teamInfoInput/${viewModel.teamName.value}")
                 },
                 modifier = Modifier
                     .height(70.dp)
-                    .padding(bottom = 15.dp)
+                    .padding(bottom = 15.dp, start = 24.dp, end = 24.dp)
             )
         }
     }

@@ -30,5 +30,6 @@ data class SearchTravel(
     val reviewCount: Int,
     val averageRating: Double,
     val imageUrl: String?,
+    val description: String,
     val tagCountList: List<TagCount> = emptyList(),
 )

@@ -29,6 +29,7 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
+import com.tlog.data.model.share.Tbti
 
 @Composable
 fun TbtiResultScreen(
@@ -73,13 +74,17 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.tbti_rena else tbtiDescription.imageUrl,
+                model = try {
+                    Tbti.valueOf(tbtiDescription.tbtiString).icon
+                } catch (e: IllegalArgumentException) {
+                    R.drawable.character_error
+                },
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(200.dp)
                     .height(200.dp),
-                //4contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -181,7 +186,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "RENA",
+                        text = tbtiDescription.preferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -191,12 +196,16 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.tbti_roli,
+                        model = try {
+                            Tbti.valueOf(tbtiDescription.preferredTbti).icon
+                        } catch (e: IllegalArgumentException) {
+                            R.drawable.character_error
+                        },
                         contentDescription = "최고의 궁합",
                         modifier = Modifier
                             .size(80.dp)
                             .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 }
 
@@ -217,7 +226,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "RENA",
+                        text = tbtiDescription.notPreferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -227,12 +236,16 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.tbti_roli,
+                        model = try {
+                            Tbti.valueOf(tbtiDescription.notPreferredTbti).icon
+                        } catch (e: IllegalArgumentException) {
+                            R.drawable.character_error
+                        },
                         contentDescription = "최악의 궁합",
                         modifier = Modifier
                             .size(80.dp)
                             .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 }
             }
