@@ -34,7 +34,7 @@ import com.tlog.ui.component.login.LoginBubble
 import com.tlog.ui.component.login.LoginIcon
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.beginning.LoginViewModel
 
 @Composable
 fun LoginScreen(

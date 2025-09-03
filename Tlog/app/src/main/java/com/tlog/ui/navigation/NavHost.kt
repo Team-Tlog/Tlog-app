@@ -47,7 +47,7 @@ import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
-import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.beginning.LoginViewModel
 import com.tlog.viewmodel.tmp.TmpCartViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
