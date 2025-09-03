@@ -12,13 +12,13 @@ import com.tlog.data.api.RegisterRequest
 import com.tlog.data.api.UserProfileDto
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.share.TbtiDescription
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 
 @HiltViewModel
@@ -104,8 +104,8 @@ class TbtiResultViewModel @Inject constructor(
                 } else {
                     _eventFlow.emit(UiEvent.Error("회원가입 실패"))
                 }
-            } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error("회원가입 실패 : ${e.message()}"))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.Error("회원가입 실패 : ${e.toErrorMessage()}"))
             }
         }
     }
