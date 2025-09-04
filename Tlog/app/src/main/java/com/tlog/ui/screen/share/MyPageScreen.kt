@@ -116,7 +116,7 @@ fun MyPageScreen(
 
                         Spacer(modifier = Modifier.height(25.dp))
 
-                        if (viewModel.isGetUserApiSuccess.value == true)
+                        if (viewModel.isGetUserApiSuccess.value)
                             MyPageTbtiGroup(
                                 userInfo = viewModel.userInfo.value!!,
                                 tbtiTestClick = {

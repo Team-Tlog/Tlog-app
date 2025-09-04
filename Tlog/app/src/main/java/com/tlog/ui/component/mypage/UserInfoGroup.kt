@@ -81,8 +81,9 @@ fun UserInfoGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = userInfo.snsId,
-                            style = Body1Bold
+                            text = userInfo.snsId ?: "SNS Id 없음", // SNS 아이디 만들기?
+                            style = Body1Bold,
+                            color = if (userInfo.snsId == null) Color.Red else Color.Black
                         )
 
                         Text(
@@ -123,9 +124,9 @@ fun UserInfoGroup(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
 
-                    val tmp_list = listOf(1, 2, 3)
+                    val tmpList = listOf(1, 2, 3)
 
-                    tmp_list.forEach { idx ->
+                    tmpList.forEach { idx ->
                         Box(
                             modifier = Modifier
                                 .size(90.dp)
