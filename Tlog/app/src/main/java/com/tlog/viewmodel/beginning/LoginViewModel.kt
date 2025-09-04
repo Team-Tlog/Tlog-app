@@ -24,6 +24,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import retrofit2.Response
 
 @HiltViewModel
@@ -116,8 +117,10 @@ class LoginViewModel @Inject constructor(
                         _eventFlow.emit(UiEvent.LoginFailure("로그인 실패"))
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e: HttpException) {
                _eventFlow.emit(UiEvent.LoginFailure(e.toErrorMessage()))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.LoginFailure(e.toErrorMessage()))
             }
         }
     }

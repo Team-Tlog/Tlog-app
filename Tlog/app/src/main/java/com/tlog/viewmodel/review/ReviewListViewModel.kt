@@ -15,6 +15,7 @@ import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Review
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import retrofit2.HttpException
 import java.util.Locale
 
 
@@ -75,7 +76,9 @@ class ReviewListViewModel @Inject constructor(
                 _reviewList.value = response.data.reviews.content
                 getRating(reviewCount = response.data.ratingDistribution)
             }
-            catch (e: Exception) {
+            catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+            } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
         }
@@ -123,6 +126,8 @@ class ReviewListViewModel @Inject constructor(
                 isLastPage = response.data.reviews.last
                 _reviewList.value += response.data.reviews.content
 
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
@@ -133,6 +138,8 @@ class ReviewListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 scrapManager.toggleScrap(destinationId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
                 _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             }

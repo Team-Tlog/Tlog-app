@@ -19,6 +19,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 
 @HiltViewModel
@@ -104,8 +105,10 @@ class TbtiResultViewModel @Inject constructor(
                 } else {
                     _eventFlow.emit(UiEvent.Error("회원가입 실패"))
                 }
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error("회원가입 실패 : ${e.toErrorMessage()}"))
+                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
             }
         }
     }
