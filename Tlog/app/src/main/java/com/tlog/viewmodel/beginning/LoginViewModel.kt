@@ -3,7 +3,6 @@ package com.tlog.viewmodel.beginning
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
@@ -17,11 +16,14 @@ import com.tlog.data.api.FcmTokenBody
 import com.tlog.data.api.FirebaseTokenData
 import com.tlog.data.api.LoginRequest
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
@@ -31,6 +33,17 @@ class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : ViewModel() {
+    sealed class UiEvent {
+        object LoginSuccess: UiEvent()
+        data class LoginFailure(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+
+
+
     // Kakao Manager 사용
     fun kakaoLogin(context: Context, navController: NavController) {
         KakaoLoginManager(context) { token ->
@@ -84,7 +97,6 @@ class LoginViewModel @Inject constructor(
                         saveTokens(authorizationHeader, setCookieHeader, firebaseCustomToken)
                         val fcmToken = userPreferences.getFcmToken()
                         val userId = userPreferences.getUserId()
-                        Log.d("FCM Token in viewmodel", fcmToken ?: "")
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(
                                 FcmTokenBody(
@@ -95,21 +107,21 @@ class LoginViewModel @Inject constructor(
                         navController.navigate("main") {
                             popUpTo("login") { inclusive = true }
                         }
-                        Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+                        _eventFlow.emit(UiEvent.LoginSuccess)
                     } else {
-                        Log.d("LoginViewModel", "로그인 성공했지만 토큰 없음") // 디버그
+                        _eventFlow.emit(UiEvent.LoginFailure("로그인 실패 (토큰 x)"))
                     }
                 } else {
-                    if(response.code() == 404){
-                        Log.d("LoginViewModel", "404 응답 확인 tbti 테스트 시작")
+                    if(response.code() == 404) {
+                        Log.d("LoginViewModel", "신규회원, tbti 테스트 시작")
                         navController.navigate("tbtiIntro")
                     }
                     else{
-                        Log.d("LoginViewModel", "로그인 실패")
+                        _eventFlow.emit(UiEvent.LoginFailure("로그인 실패"))
                     }
                 }
             } catch (e: Exception) {
-                Log.d("LoginViewModel", "로그인 에러: ${e.message}") // 디버그
+               _eventFlow.emit(UiEvent.LoginFailure(e.toErrorMessage()))
             }
         }
     }
