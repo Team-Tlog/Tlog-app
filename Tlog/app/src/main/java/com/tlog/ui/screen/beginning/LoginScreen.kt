@@ -1,7 +1,7 @@
 package com.tlog.ui.screen.beginning
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -49,6 +49,21 @@ fun LoginScreen(
 
     LaunchedEffect(Unit) {
         titleVisible = true
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                LoginViewModel.UiEvent.LoginSuccess ->  {
+                    Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
+                    navController.navigate("main") {
+                            popUpTo("login") { inclusive = true }
+                    }
+                }
+                LoginViewModel.UiEvent.NewUser -> navController.navigate("tbtiIntro")
+                is LoginViewModel.UiEvent.LoginFailure -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     LaunchedEffect(titleVisible) {
@@ -132,10 +147,10 @@ fun LoginScreen(
                     onGoogleLoginClick()
                 }
                 LoginIcon(R.drawable.login_ic_naver, "네이버", 50.dp) {
-                    viewModel.naverLogin(context, navController)
+                    viewModel.naverLogin(context)
                 }
                 LoginIcon(R.drawable.login_ic_kakao, "카카오", 50.dp) {
-                    viewModel.kakaoLogin(context, navController)
+                    viewModel.kakaoLogin(context)
                 }
             }
 

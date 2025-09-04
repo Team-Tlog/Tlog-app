@@ -20,7 +20,6 @@ import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -29,12 +28,12 @@ import retrofit2.Response
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : ViewModel() {
     sealed class UiEvent {
         object LoginSuccess: UiEvent()
+        object NewUser: UiEvent()
         data class LoginFailure(val message: String): UiEvent()
     }
 
@@ -45,20 +44,20 @@ class LoginViewModel @Inject constructor(
 
 
     // Kakao Manager 사용
-    fun kakaoLogin(context: Context, navController: NavController) {
+    fun kakaoLogin(context: Context) {
         KakaoLoginManager(context) { token ->
-            loginToServer("KAKAO", token, navController)
+            loginToServer("KAKAO", token)
         }.login()
     }
 
     // Naver Manager 사용
-    fun naverLogin(context: Context, navController: NavController) {
+    fun naverLogin(context: Context) {
         NaverLoginManager(context) { token ->
-            loginToServer("NAVER", token, navController)
+            loginToServer("NAVER", token)
         }.login()
     }
 
-    fun googleLogin(resultData: Intent?, navController: NavController) {
+    fun googleLogin(resultData: Intent?) {
         try {
             val account = GoogleSignIn.getSignedInAccountFromIntent(resultData).getResult(
                 ApiException::class.java)
@@ -68,17 +67,17 @@ class LoginViewModel @Inject constructor(
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         if (!token.isNullOrEmpty()) {
-                            loginToServer("GOOGLE", token, navController)
+                            loginToServer("GOOGLE", token)
                         }
                     }
                 }
         } catch (e: Exception) {
-            Log.e("LoginViewModel", "Google 로그인 실패: ${e.message}", e)
+            Log.e("LoginViewModel", "Google 로그인 실패 : ${e.message}", e)
         }
     }
 
     // 서버로 로그인 요청
-    fun loginToServer(type: String, socialAccessToken: String, navController: NavController) {
+    fun loginToServer(type: String, socialAccessToken: String) {
         viewModelScope.launch {
             try {
                 val request = LoginRequest(type = type, accessToken = socialAccessToken)
@@ -104,9 +103,6 @@ class LoginViewModel @Inject constructor(
                                     firebaseToken = fcmToken
                                 )
                             )
-                        navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
-                        }
                         _eventFlow.emit(UiEvent.LoginSuccess)
                     } else {
                         _eventFlow.emit(UiEvent.LoginFailure("로그인 실패 (토큰 x)"))
@@ -114,7 +110,7 @@ class LoginViewModel @Inject constructor(
                 } else {
                     if(response.code() == 404) {
                         Log.d("LoginViewModel", "신규회원, tbti 테스트 시작")
-                        navController.navigate("tbtiIntro")
+                        _eventFlow.emit(UiEvent.NewUser)
                     }
                     else{
                         _eventFlow.emit(UiEvent.LoginFailure("로그인 실패"))

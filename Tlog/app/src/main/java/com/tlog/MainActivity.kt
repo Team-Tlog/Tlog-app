@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult(),
             ) { result ->
-                loginViewModel.googleLogin(result.data, navController)
+                loginViewModel.googleLogin(result.data)
             }
             // google end
 
