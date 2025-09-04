@@ -23,9 +23,11 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.user.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import retrofit2.HttpException
 import kotlin.String
 
 @HiltViewModel
@@ -47,15 +49,15 @@ class MyPageViewModel @Inject constructor(
 
     sealed class UiEvent {
         object LogoutSuccess: UiEvent()
-        data class LogoutError(val message: String): UiEvent()
+        data class Error(val message: String): UiEvent()
         object ProfileImageUpdated: UiEvent()
     }
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _isGetUserApiSuccess = MutableStateFlow(false)
-    val isGetUserApiSuccess = _isGetUserApiSuccess.asStateFlow()
+    private val _getUserInfo = MutableStateFlow(false)
+    val getUserInfo = _getUserInfo.asStateFlow()
 
     init {
         getUserInfo()
@@ -65,17 +67,13 @@ class MyPageViewModel @Inject constructor(
     fun getUserInfo() {
         viewModelScope.launch {
             try {
-                val result = myPageRepository.getUserInfo()
+                _userInfo.value =  myPageRepository.getUserInfo().data
 
-                when (result.status) {
-                    200 -> {
-                        _userInfo.value = result.data
-                        _isGetUserApiSuccess.value = true
-                    }
-                    else -> _isGetUserApiSuccess.value = false
-                }
+                _getUserInfo.value = true
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("MyPageViewModel getUserInfo", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -85,18 +83,15 @@ class MyPageViewModel @Inject constructor(
         val refreshToken = tokenProvider.getRefreshToken() ?:""
         viewModelScope.launch {
             try {
-                val result = myPageRepository.logout(refreshToken)
-                when (result.status) {
-                    200 -> {
-                        _eventFlow.emit(LogoutSuccess)
-                        userPreferences.clearTokens()
-                    }
+                myPageRepository.logout(refreshToken)
 
-                    500 -> _eventFlow.emit(UiEvent.LogoutError("로그아웃 실패"))
-                    else -> _eventFlow.emit(UiEvent.LogoutError("알 수 없는 오류가 발생했습니다."))
-                }
+                _eventFlow.emit(LogoutSuccess)
+                userPreferences.clearTokens()
+
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("MyPageViewModel logout", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -126,9 +121,10 @@ class MyPageViewModel @Inject constructor(
                     _eventFlow.emit(UiEvent.ProfileImageUpdated)
                     Toast.makeText(context, "프로필 사진 변경 성공", Toast.LENGTH_SHORT).show()
                 }
-            }
-            catch(e: Exception){
-                Log.d("MyPageViewModel", e.message.toString())
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }

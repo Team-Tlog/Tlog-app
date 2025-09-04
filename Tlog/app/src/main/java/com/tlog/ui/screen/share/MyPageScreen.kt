@@ -65,17 +65,16 @@ fun MyPageScreen(
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is UiEvent.LogoutSuccess -> {
+                UiEvent.LogoutSuccess -> {
                     navController.navigate("login") {
                         popUpTo(0) { inclusive = true } // 모두 날려버려~
                     }
                 }
-                is UiEvent.LogoutError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
+                is UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 is UiEvent.ProfileImageUpdated -> {
-                    navController.popBackStack()
-                    navController.navigate("myPage")
+                    navController.navigate("myPage") {
+                        popUpTo("myPage") { inclusive = true }
+                    }
                 }
             }
         }
@@ -93,7 +92,7 @@ fun MyPageScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 60.dp)
         ) {
-            viewModel.isGetUserApiSuccess.collectAsState().let { isGetUserApiSuccess ->
+            viewModel.getUserInfo.collectAsState().let { isGetUserApiSuccess ->
 
                 Box(
                     modifier = Modifier
@@ -121,7 +120,7 @@ fun MyPageScreen(
 
                             Spacer(modifier = Modifier.height(25.dp))
 
-                            if (isGetUserApiSuccess.value)
+                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
                                 MyPageTbtiGroup(
                                     userInfo = viewModel.userInfo.value!!,
                                     tbtiTestClick = {
@@ -140,7 +139,7 @@ fun MyPageScreen(
                                 }
                             }
 
-                            if (isGetUserApiSuccess.value)
+                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
                                 UserInfoGroup(
                                     userInfo = viewModel.userInfo.value!!,
                                     onImageClick = {
