@@ -8,11 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -22,6 +26,13 @@ class SnsDetailViewModel @Inject constructor(
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+
+    sealed class UiEvent {
+        data class Error(val message: String) : UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     var userId: String? = ""
 
@@ -33,7 +44,7 @@ class SnsDetailViewModel @Inject constructor(
     private var _post = MutableStateFlow<SnsPost?>(null)
     val post: StateFlow<SnsPost?> = _post
 
-    private var _comment = mutableStateOf<String>("")
+    private var _comment = mutableStateOf("")
     val comment: State<String> = _comment
 
     fun getPostDetail(postId: String) {
@@ -42,8 +53,10 @@ class SnsDetailViewModel @Inject constructor(
                 val result = repository.getPost(postId)
 
                 _post.value = result.data
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("SnsDetailViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -52,18 +65,14 @@ class SnsDetailViewModel @Inject constructor(
         Log.d("okhttp", "hihi")
         viewModelScope.launch {
             try {
-                val result = repository.createComment(postId = post.value!!.postId, author = userId!!, content = comment.value)
-                when(result.status) {
-                    200 -> {
-                        _comment.value = ""
-                        getPostDetail(post.value!!.postId)
-                    }
-                    else -> {
-                        Log.d("SnsDetailViewModel", result.message)
-                    }
-                }
+                repository.createComment(postId = post.value!!.postId, author = userId!!, content = comment.value)
+
+                _comment.value = ""
+                getPostDetail(post.value!!.postId)
             } catch (e: Exception) {
-                Log.d("SnsDetailViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -80,8 +89,10 @@ class SnsDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 followManager.followUser(toUserId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("SnsViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
