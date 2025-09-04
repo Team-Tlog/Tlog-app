@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.tbti.TbtiQuestion
 
 @HiltViewModel
@@ -54,9 +55,18 @@ class TbtiTestViewModel @Inject constructor(
     // 중복 방지 플래그 추가
     private var alreadyFetchedQuestions = false
 
+    // 선택한 답변 인덱스를 저장
+    val selectedAnswers = mutableListOf<Int?>()
+
+    private val _isTestFinished = mutableStateOf(false)
+    val isTestFinished: State<Boolean> get() = _isTestFinished
+
+    val selectedIdx = mutableStateOf<Int?>(null)
+
 
     fun fetchAllQuestions() {
         if (alreadyFetchedQuestions) return  // 중복 방지
+
         alreadyFetchedQuestions = true
 
         viewModelScope.launch {
@@ -65,14 +75,14 @@ class TbtiTestViewModel @Inject constructor(
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
-                    response.data?.let { allQuestions.addAll(it) }
+                    response.data.let { allQuestions.addAll(it) }
                 }
                 _questions.clear()
                 _questions.addAll(allQuestions)
 
                 updateCurrentQuestion()
             } catch (e: Exception) {
-                Log.e("TbtiTestViewModel", "질문 전체 로딩 실패", e)
+                Log.e("TbtiTestViewModel", e.toErrorMessage())
             }
         }
     }
@@ -90,8 +100,6 @@ class TbtiTestViewModel @Inject constructor(
         }
     }
 
-    // 선택한 답변 인덱스를 저장
-    val selectedAnswers = mutableListOf<Int?>()
 
     fun onAnswerSelected(index: Int) {
         selectedIdx.value = index
@@ -123,11 +131,11 @@ class TbtiTestViewModel @Inject constructor(
 
             val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
             traitScores[category] = score
-            Log.d("cScore", category + "   " + score.toString())
+//            Log.d("cScore", category + "   " + score.toString())
         }
 
         val resultCode = getSRResultCode(traitScores, categoryInitial)
-        Log.d("result", categoryInitial.toString() + traitScores)
+//        Log.d("result", categoryInitial.toString() + traitScores)
         val resultIntCode = getIntCode()
 
         _traitScores.value = traitScores
@@ -153,7 +161,7 @@ class TbtiTestViewModel @Inject constructor(
         }
 
 
-        Log.d("helloResultCode", retResultCode)
+//        Log.d("ResultCode", retResultCode)
 
         return retResultCode
     }
@@ -181,8 +189,7 @@ class TbtiTestViewModel @Inject constructor(
         return resultCode.toString()
     }
 
-    private val _isTestFinished = mutableStateOf(false)
-    val isTestFinished: State<Boolean> get() = _isTestFinished
+
 
     fun moveToNextQuestion() {
         if (_currentQuestionIndex.intValue < _questions.size - 1) {
@@ -196,14 +203,14 @@ class TbtiTestViewModel @Inject constructor(
                 val index = _questions.indexOf(question)
                     selectedAnswers.getOrNull(index) ?: 0
                 }
+
                 userSelections[category] = selections
             }
 
             val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
+
             _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
             _isTestFinished.value = true
         }
     }
-
-    val selectedIdx = mutableStateOf<Int?>(null)
 }
