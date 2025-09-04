@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.sns
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import com.tlog.R
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.sns.SnsMyPageViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.api.SnsUserProfile
@@ -39,10 +41,18 @@ fun SnsProfileScreen(
     userId: String,
     navController: NavController
 ) {
+    val context = LocalContext.current
     val followingList = viewModel.followingList.collectAsState().value
+
 
     LaunchedEffect(Unit) {
         viewModel.getUserProfile(userId)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is SnsMyPageViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     val userProfile = viewModel.userProfileInfo.collectAsState()
