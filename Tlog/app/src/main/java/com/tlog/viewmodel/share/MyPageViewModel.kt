@@ -24,6 +24,8 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.user.User
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlin.String
 
 @HiltViewModel
@@ -52,7 +54,8 @@ class MyPageViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    val isGetUserApiSuccess = mutableStateOf(false)
+    private val _isGetUserApiSuccess = MutableStateFlow(false)
+    val isGetUserApiSuccess = _isGetUserApiSuccess.asStateFlow()
 
     init {
         getUserInfo()
@@ -67,9 +70,9 @@ class MyPageViewModel @Inject constructor(
                 when (result.status) {
                     200 -> {
                         _userInfo.value = result.data
-                        isGetUserApiSuccess.value = true
+                        _isGetUserApiSuccess.value = true
                     }
-                    else -> isGetUserApiSuccess.value = false
+                    else -> _isGetUserApiSuccess.value = false
                 }
             } catch (e: Exception) {
                 Log.d("MyPageViewModel getUserInfo", e.message.toString())
