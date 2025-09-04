@@ -56,7 +56,7 @@ fun BottomBar(
                             }
                             navController.navigate(route) { // 바텀바에서 스택이 쌓이는 버그 수정하기 위한 코드
                                 popUpTo(navController.graph.startDestinationId) {
-                                    saveState = true
+                                    saveState = false
                                 }
                                 launchSingleTop = true
                                 restoreState = true
