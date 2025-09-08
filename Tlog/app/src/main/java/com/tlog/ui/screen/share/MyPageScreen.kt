@@ -63,7 +63,7 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> when(event.target) {
                     MyPageViewModel.NavTarget.Login ->  {

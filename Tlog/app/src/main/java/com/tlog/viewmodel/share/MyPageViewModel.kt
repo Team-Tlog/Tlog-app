@@ -15,7 +15,6 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 import android.net.Uri
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.share.toErrorMessage
@@ -41,8 +40,8 @@ class MyPageViewModel @Inject constructor(
         data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = Channel<UiEvent>(Channel.BUFFERED)
-    val eventFlow = _eventFlow.receiveAsFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
 
     private val _notification = mutableStateOf(true)
@@ -72,9 +71,9 @@ class MyPageViewModel @Inject constructor(
 
                 _getUserInfo.value = true
             } catch (e: HttpException) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -86,14 +85,14 @@ class MyPageViewModel @Inject constructor(
             try {
                 myPageRepository.logout(refreshToken)
 
-                _eventFlow.trySend(UiEvent.ShowToast("로그아웃 성공"))
-                _eventFlow.trySend(UiEvent.Navigate(NavTarget.Login))
+                _uiEvent.trySend(UiEvent.ShowToast("로그아웃 성공"))
+                _uiEvent.trySend(UiEvent.Navigate(NavTarget.Login))
 
                 userPreferences.clearTokens()
             } catch (e: HttpException) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -122,11 +121,11 @@ class MyPageViewModel @Inject constructor(
                 )
 
                 getUserInfo()
-                _eventFlow.trySend(UiEvent.ShowToast("프로필 사진 변경 성공"))
+                _uiEvent.trySend(UiEvent.ShowToast("프로필 사진 변경 성공"))
             } catch (e: HttpException) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
