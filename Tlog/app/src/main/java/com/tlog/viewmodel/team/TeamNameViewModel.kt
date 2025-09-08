@@ -7,8 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamNameViewModel @Inject constructor() : ViewModel() {
-
-    var _teamName = mutableStateOf("")
+    private var _teamName = mutableStateOf("")
     val teamName = _teamName
 
     fun updateTeamName(newTeamName: String) {
