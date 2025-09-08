@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.review
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -42,8 +44,18 @@ fun ReviewListScreen(
 ) {
     val listState = rememberLazyListState()
 
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.getReviewList(id = travelId)
+
+        viewModel.eventFlow.collect { event ->
+            when(event) {
+                is ReviewListViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
     }
 
     LaunchedEffect(listState) {
@@ -57,6 +69,7 @@ fun ReviewListScreen(
             }
         }
     }
+
     LaunchedEffect(viewModel.sortOption.value) {
         viewModel.getReviewList(id = travelId)
     }

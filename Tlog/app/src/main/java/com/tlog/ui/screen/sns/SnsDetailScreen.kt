@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.sns
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -58,8 +60,16 @@ fun SnsDetailScreen(
     navController: NavController,
     postId: String,
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.getPostDetail(postId)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is SnsDetailViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     val followingList = viewModel.followingList.collectAsState().value

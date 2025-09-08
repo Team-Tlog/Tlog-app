@@ -1,19 +1,22 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TravelListRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 @HiltViewModel
 class TravelListViewModel @Inject constructor(
@@ -21,6 +24,11 @@ class TravelListViewModel @Inject constructor(
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+    sealed class UiEvent {
+        data class Error(val message: String): UiEvent()
+    }
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
@@ -31,6 +39,7 @@ class TravelListViewModel @Inject constructor(
     val scrapList: State<List<String>> = scrapManager.scrapList
 
     private var userId: String? = null
+
 
     init {
         userId = tokenProvider.getUserId()
@@ -62,19 +71,20 @@ class TravelListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 scrapManager.toggleScrap(destinationId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("scrap", "스크랩 에러: ${e.message}")
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
+
 
 
     private var page = 0
     private val pageSize = 10
     private val sort = emptyList<String>()
     private var isLastPage = false
-
-
 
     fun getTravelList(
         city: String,
@@ -93,8 +103,10 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value = response.data.content
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -118,8 +130,10 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value += response.data.content
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -132,9 +146,10 @@ class TravelListViewModel @Inject constructor(
                 val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
                 _destinations.value = response.data.content
                 isLastPage = response.data.last
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
-                _destinations.value = emptyList()
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }

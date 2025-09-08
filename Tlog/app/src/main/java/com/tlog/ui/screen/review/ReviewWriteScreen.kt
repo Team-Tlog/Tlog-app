@@ -193,7 +193,7 @@ fun ReviewWriteScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(31.dp))
 
             MainButton(
                 text = "리뷰 등록하기",

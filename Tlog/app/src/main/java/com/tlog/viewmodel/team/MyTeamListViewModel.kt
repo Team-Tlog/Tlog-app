@@ -1,17 +1,18 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,9 +49,10 @@ class MyTeamListViewModel @Inject constructor(
                     500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
                     else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
                 }
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-                Log.d("MyTeamListViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             }
         }
     }
@@ -65,9 +67,10 @@ class MyTeamListViewModel @Inject constructor(
                 } else {
                     _eventFlow.emit(UiEvent.ApiError("삭제 실패: ${result.message}"))
                 }
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-                Log.d("MyTeamListViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             }
         }
     }

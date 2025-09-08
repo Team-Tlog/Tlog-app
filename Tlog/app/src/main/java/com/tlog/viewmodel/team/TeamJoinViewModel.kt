@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -9,11 +8,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,9 +30,6 @@ class TeamJoinViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-
-
-
     private var userId: String? = null
 
     init {
@@ -42,18 +40,17 @@ class TeamJoinViewModel @Inject constructor(
         viewModelScope.launch {
             val safeUserId = userId ?: return@launch
             val code = textList.joinToString(separator = "") { it.value.text }
-            try {
-                val result = repository.joinTeam(userId = safeUserId, teamCode = code)
 
-                when(result.status) {
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    else -> _eventFlow.emit(UiEvent.ApiError("참여 실패"))
-                }
+            try {
+                repository.joinTeam(userId = safeUserId, teamCode = code)
+
+                _eventFlow.emit(UiEvent.ApiSuccess)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             }
-            catch (e: Exception) {
-                Log.d("TeamJoinViewModel", e.message.toString())
-                _eventFlow.emit(UiEvent.ApiError("참여 실패"))
-            }
+
 
         }
     }

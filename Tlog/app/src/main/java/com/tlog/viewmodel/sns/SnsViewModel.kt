@@ -1,19 +1,19 @@
 package com.tlog.viewmodel.sns
 
-// ViewModel 및 데이터 모델
-import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -23,6 +23,13 @@ class SnsViewModel @Inject constructor(
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ): ViewModel() {
+    sealed class UiEvent {
+        data class Error(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     private var userId: String? = ""
 
     private var lastPostId: String? = null
@@ -47,8 +54,10 @@ class SnsViewModel @Inject constructor(
                 val result = repository.getFollowingPostList(lastPostId = lastPostId, size = size)
                 _postList.value = result.data.content
                 lastPostId = _postList.value[result.data.size - 1].postId
+            } catch(e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch(e: Exception) {
-                Log.d("SnsViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
 
@@ -58,8 +67,10 @@ class SnsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 followManager.followUser(toUserId)
-            } catch (e: Exception) {
-                Log.d("SnsViewModel", e.message.toString())
+            } catch(e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            } catch(e: Exception) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.travel
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -28,7 +30,15 @@ fun TravelDetailScreen(
     navController: NavController
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
+    val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is TravelInfoViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     LaunchedEffect(travelId) {
         viewModel.getTravelInfo(travelId)
     }

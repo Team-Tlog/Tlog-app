@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil.network.HttpException
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
@@ -20,6 +21,7 @@ import java.util.UUID
 
 import com.google.firebase.auth.FirebaseAuth
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.model.share.toErrorMessage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
@@ -87,7 +89,6 @@ class ReviewWriteViewModel @Inject constructor(
     fun addReview(context: Context, travelId: String) {
         viewModelScope.launch {
             val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
-            Log.d("auth", FirebaseAuth.getInstance().currentUser?.uid ?: "로그인 안됨")
 
             try {
                 val imageUrlList = imageUpload(context, imageList.value)
@@ -102,14 +103,11 @@ class ReviewWriteViewModel @Inject constructor(
                         customTagNames = hashTags.value
                     )
                 )
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ReviewSuccess)
-                    400 -> _eventFlow.emit(UiEvent.ReviewError("올바른 값을 입력해 주세요."))
-                    500 -> _eventFlow.emit(UiEvent.ReviewError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(UiEvent.ReviewError("알 수 없는 오류가 발생했습니다."))
-                }
+                _eventFlow.emit(UiEvent.ReviewSuccess)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ReviewError(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ReviewError("네트워크 오류가 발생했습니다. ${e.message}"))
+                _eventFlow.emit(UiEvent.ReviewError(e.toErrorMessage()))
             }
         }
     }

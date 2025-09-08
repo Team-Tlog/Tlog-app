@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.review
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,11 @@ import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableDoubleStateOf
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Review
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import retrofit2.HttpException
 import java.util.Locale
 
 
@@ -21,6 +24,14 @@ class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
 ): ViewModel() {
+
+    sealed class UiEvent {
+        data class ShowToast(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     private val _reviewList = mutableStateOf<List<Review>>(emptyList())
     val reviewList: State<List<Review>> = _reviewList
 
@@ -65,8 +76,10 @@ class ReviewListViewModel @Inject constructor(
                 _reviewList.value = response.data.reviews.content
                 getRating(reviewCount = response.data.ratingDistribution)
             }
-            catch (e: Exception) {
-                Log.d("ReviewListViewModel", e.message.toString())
+            catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
         }
     }
@@ -98,7 +111,7 @@ class ReviewListViewModel @Inject constructor(
             else -> "RECENT"
         }
     ) {
-        if (isLastPage == true) return
+        if (isLastPage) return
         page++
         viewModelScope.launch {
             try {
@@ -109,13 +122,14 @@ class ReviewListViewModel @Inject constructor(
                     size = pageSize,
                     sort = sort
                 )
-                Log.d("ReviewListViewModel", response.data.toString())
 
                 isLastPage = response.data.reviews.last
                 _reviewList.value += response.data.reviews.content
 
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                Log.d("ReviewListViewModel", "에러 로그 : ${e.message}")
+                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
         }
     }
@@ -124,8 +138,10 @@ class ReviewListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 scrapManager.toggleScrap(destinationId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                Log.d("ReviewListViewModel", "스크랩 에러 로그 : ${e.message}")
+                _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             }
         }
     }

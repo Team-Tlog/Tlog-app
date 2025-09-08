@@ -5,7 +5,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.tlog.api.LoginApi
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.FcmTokenBody
@@ -13,10 +12,14 @@ import com.tlog.data.api.RegisterRequest
 import com.tlog.data.api.UserProfileDto
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.share.TbtiDescription
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 
 @HiltViewModel
@@ -26,6 +29,17 @@ class TbtiResultViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val tokenProvider: TokenProvider
 ): ViewModel() {
+
+    sealed class UiEvent {
+        object Success: UiEvent()
+        data class Error(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+
+
 
     private val _tbtiDescription = mutableStateOf<TbtiDescription?>(null)
     val tbtiDescription: State<TbtiDescription?> = _tbtiDescription
@@ -58,9 +72,7 @@ class TbtiResultViewModel @Inject constructor(
         }
     }
 
-    fun registerUser(
-        navController: NavController,
-        tbtiValue: String) {
+    fun registerUser(tbtiValue: String) {
         viewModelScope.launch {
             val socialAccessToken = userPreferences.getTmpSocialAccessToken()
             val socialType = userPreferences.getTmpSocialType()
@@ -88,17 +100,15 @@ class TbtiResultViewModel @Inject constructor(
                             response.body()!!.data.firebaseCustomToken
                         )
                         loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
-                        navController.navigate("main") {
-                            popUpTo(0)
-                            launchSingleTop = true
-                        }
-                        Log.d("TbtiResultViewModel", "회원가입 성공 후 메인으로 이동")
+                        _eventFlow.emit(UiEvent.Success)
                     }
                 } else {
-                    Log.e("TbtiResultViewModel", "회원가입 실패: ${response.body()?.status}")
+                    _eventFlow.emit(UiEvent.Error("회원가입 실패"))
                 }
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                Log.e("TbtiResultViewModel", "회원가입 실패", e)
+                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
             }
         }
     }

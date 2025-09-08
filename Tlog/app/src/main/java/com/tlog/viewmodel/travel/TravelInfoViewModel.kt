@@ -1,17 +1,20 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SearchOneDestinationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
@@ -19,6 +22,12 @@ class TravelInfoViewModel @Inject constructor(
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+    sealed class UiEvent {
+        data class Error(val message: String) : UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
 
     private var userId: String? = null
 
@@ -42,9 +51,10 @@ class TravelInfoViewModel @Inject constructor(
             try {
                 val response = repository.getDestinationById(id)
                 _destinationDetail.value = response.data
-            }
-            catch (e: Exception) {
-                Log.d("TravelInfoViewModel", e.message.toString())
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -53,8 +63,10 @@ class TravelInfoViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 scrapManager.toggleScrap(destinationId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("TravelInfoViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }

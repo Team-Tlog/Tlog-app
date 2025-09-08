@@ -1,6 +1,6 @@
 package com.tlog.ui.screen.beginning
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,14 +31,13 @@ import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
 import com.tlog.data.model.share.Tbti
+import com.tlog.viewmodel.beginning.TbtiResultViewModel.UiEvent
 
 @Composable
 fun TbtiResultScreen(
     tbtiResult: String, // ex) RENA
     tbtiResultCode: String, // ex) 10230203
     viewModel: TbtiResultViewModel = hiltViewModel(),
-    //tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
-    //loginViewModel: LoginViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
     navController: NavController
 ) {
@@ -45,18 +45,30 @@ fun TbtiResultScreen(
     val scrollState = rememberScrollState()
     val leftLabels = listOf("R", "E", "N", "A")
     val rightLabels = listOf("S", "O", "L", "I")
-    val tbtiDescription = viewModel.tbtiDescription.value
-    val tbtiCodeList = tbtiResultCode.toString().chunked(2)
-    Log.d("resultCode11", tbtiResultCode)
-    Log.d("resultCode11", tbtiCodeList.toString())
+    val tbtiCodeList = tbtiResultCode.chunked(2)
 
+    val context = LocalContext.current
 
 
     LaunchedEffect(Unit) {
         viewModel.fetchTbtiDescription(tbtiResult)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is UiEvent.Success -> {
+                    navController.navigate("main") {
+                        popUpTo(0)
+                        launchSingleTop = true
+                    }
+                }
+                is UiEvent.Error -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
-    if (tbtiDescription != null) {
+    viewModel.tbtiDescription.value?.let{ tbtiDescription ->2
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -268,7 +280,7 @@ fun TbtiResultScreen(
                         navController.navigate("myPage")
                     }
                     else
-                        viewModel.registerUser(navController, tbtiValue)
+                        viewModel.registerUser(tbtiValue)
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)

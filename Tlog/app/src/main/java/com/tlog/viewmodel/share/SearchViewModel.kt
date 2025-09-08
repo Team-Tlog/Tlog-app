@@ -6,14 +6,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -21,6 +25,13 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository
 ): ViewModel() {
+    sealed class UiEvent {
+        data class Error(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     private var _searchResult = mutableStateOf<List<SearchTravel>>(emptyList())
     val searchResult: State<List<SearchTravel>> = _searchResult
 
@@ -38,10 +49,12 @@ class SearchViewModel @Inject constructor(
                 .collect {
                     try {
                         searchTravel(it)
+                    } catch (e: HttpException) {
+                        _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                    } catch (e: Exception) {
+                        _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
                     }
-                    catch (e: Exception) {
-                        Log.d("SearchViewModel", e.message.toString())
-                    }
+
                 }
         }
     }

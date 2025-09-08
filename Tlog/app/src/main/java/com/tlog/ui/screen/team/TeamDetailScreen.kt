@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.team
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.travel.Travel
@@ -28,6 +30,8 @@ fun TeamDetailScreen(
     viewModel: TeamDetailViewModel = hiltViewModel(),
     teamId: String,
 ) {
+    val context = LocalContext.current
+
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
     val listState = rememberLazyListState()
     var showPopup by remember { mutableStateOf(false) }
@@ -36,6 +40,12 @@ fun TeamDetailScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getTeamDetail(teamId)
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is TeamDetailViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     LaunchedEffect(listState) {

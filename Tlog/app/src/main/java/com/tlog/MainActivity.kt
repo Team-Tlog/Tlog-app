@@ -21,7 +21,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.vectormap.KakaoMapSdk
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
-import com.tlog.viewmodel.beginning.login.LoginViewModel
+import com.tlog.viewmodel.beginning.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
             val launcher = rememberLauncherForActivityResult(
                 contract = ActivityResultContracts.StartActivityForResult(),
             ) { result ->
-                loginViewModel.googleLogin(result.data, navController)
+                loginViewModel.googleLogin(result.data)
             }
             // google end
 

@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.sns
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,11 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.SnsUserProfile
 import com.tlog.data.local.FollowManager
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -22,6 +25,13 @@ class SnsMyPageViewModel @Inject constructor(
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ): ViewModel() {
+    sealed class UiEvent {
+        data class Error(val message: String): UiEvent()
+    }
+
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
     private val _userId = mutableStateOf<String?>(null)
     val userId: State<String?> = _userId
 
@@ -40,16 +50,11 @@ class SnsMyPageViewModel @Inject constructor(
     fun getUserProfile(userId: String) {
         viewModelScope.launch {
             try {
-                val result = repository.getUserProfile(userId!!)
-
-                when (result.status) {
-                    200 -> {
-                        _userProfileInfo.value = result.data
-                    }
-                    else -> {}
-                }
+                _userProfileInfo.value = repository.getUserProfile(userId).data
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("getUserProfile", e.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -60,8 +65,10 @@ class SnsMyPageViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val result = repository.updateSnsDescription(description)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("updateSnsDescription", e.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
@@ -73,8 +80,10 @@ class SnsMyPageViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 followManager.followUser(toUserId)
+            } catch (e: HttpException) {
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.d("SnsViewModel", e.message.toString())
+                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
             }
         }
     }
