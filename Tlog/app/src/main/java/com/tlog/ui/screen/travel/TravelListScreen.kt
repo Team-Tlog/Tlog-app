@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.travel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,6 +28,7 @@ import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelListViewModel
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun TravelListScreen(
@@ -38,13 +40,14 @@ fun TravelListScreen(
     val listState = rememberLazyListState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
+    val context = LocalContext.current
 
 
     LaunchedEffect(listState) {
         snapshotFlow {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
             val totalItemCount = listState.layoutInfo.totalItemsCount
-            lastVisibleItem?.index == totalItemCount - 2 // 마지막에서 2번째 친구면
+            lastVisibleItem?.index == totalItemCount - 3 // 마지막에서 2번째 친구면
         }.collect { isLastItemVisible ->
             if (isLastItemVisible) {
                 if (city != null)
@@ -58,6 +61,12 @@ fun TravelListScreen(
         viewModel.initUserIdAndScrapList()
         if (city != null && viewModel.destinations.value.isEmpty()) {
             viewModel.getTravelList(city)
+        }
+
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is TravelListViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
