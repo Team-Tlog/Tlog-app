@@ -65,17 +65,16 @@ fun MyPageScreen(
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collect { event ->
             when (event) {
-                UiEvent.LogoutSuccess -> {
-                    navController.navigate("login") {
-                        popUpTo(0) { inclusive = true } // 모두 날려버려~
+                is UiEvent.Navigate -> when(event.target) {
+                    MyPageViewModel.NavTarget.Login ->  {
+                        navController.navigate("login") {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
                     }
                 }
-                is UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                is UiEvent.ProfileImageUpdated -> {
-                    navController.navigate("myPage") {
-                        popUpTo("myPage") { inclusive = true }
-                    }
-                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
