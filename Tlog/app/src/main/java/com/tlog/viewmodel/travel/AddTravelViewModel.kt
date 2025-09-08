@@ -2,7 +2,6 @@ package com.tlog.viewmodel.travel
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
@@ -83,7 +82,7 @@ class AddTravelViewModel @Inject constructor(
             try {
                 val imageUrl = imageUpload(context, imageUri.value, "city", "district")
 
-                val result = repository.addTravel(
+                repository.addTravel(
                     AddTravelRequest(
                         creater = safeUserId,
                         name = travelName.value,

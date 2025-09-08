@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf

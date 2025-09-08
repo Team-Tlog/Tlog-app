@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
