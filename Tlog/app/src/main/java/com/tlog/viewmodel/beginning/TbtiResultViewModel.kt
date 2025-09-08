@@ -16,8 +16,9 @@ import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -29,14 +30,16 @@ class TbtiResultViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val tokenProvider: TokenProvider
 ): ViewModel() {
-
-    sealed class UiEvent {
-        object Success: UiEvent()
-        data class Error(val message: String): UiEvent()
+    sealed interface NavTarget {
+        data object Main: NavTarget
+    }
+    sealed interface UiEvent {
+        data class Navigate(val target: NavTarget, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
 
 
@@ -100,15 +103,17 @@ class TbtiResultViewModel @Inject constructor(
                             response.body()!!.data.firebaseCustomToken
                         )
                         loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
-                        _eventFlow.emit(UiEvent.Success)
+                        _uiEvent.trySend(UiEvent.ShowToast("TBTI 변경 성공"))
+                        delay(500)
+                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.Main, true))
                     }
                 } else {
-                    _eventFlow.emit(UiEvent.Error("회원가입 실패"))
+                    _uiEvent.trySend(UiEvent.ShowToast("회원가입 실패"))
                 }
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error("${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }

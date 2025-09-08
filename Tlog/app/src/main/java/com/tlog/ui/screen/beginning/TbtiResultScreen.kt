@@ -53,15 +53,18 @@ fun TbtiResultScreen(
     LaunchedEffect(Unit) {
         viewModel.fetchTbtiDescription(tbtiResult)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Success -> {
-                    navController.navigate("main") {
-                        popUpTo(0)
-                        launchSingleTop = true
+                is UiEvent.Navigate -> when (event.target) {
+                    is TbtiResultViewModel.NavTarget.Main -> {
+                        navController.navigate("main") {
+                            if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                            launchSingleTop = true
+                            restoreState = false
+                        }
                     }
                 }
-                is UiEvent.Error -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
