@@ -59,6 +59,11 @@ class ReviewListViewModel @Inject constructor(
     private val sort = emptyList<String>()
     private var isLastPage = false
 
+    fun resetPaging() {
+        page = 0
+        isLastPage = false
+        _reviewList.value = emptyList()
+    }
     fun getReviewList(
         id: String,
         sortType: String = when (sortOption.value) {

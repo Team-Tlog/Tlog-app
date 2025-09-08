@@ -77,6 +77,7 @@ fun ReviewListScreen(
     }
 
     LaunchedEffect(viewModel.sortOption.value) {
+        viewModel.resetPaging()
         viewModel.getReviewList(id = travelId)
     }
 
