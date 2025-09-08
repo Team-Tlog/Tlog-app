@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.TravelPlan
+import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -122,30 +123,28 @@ class TeamInfoViewModel @Inject constructor(
             val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
 
             try {
-                val result = repository.createTeam(CreateTeamRequest( //data에 팀아이디가 옴
-                    name = teamName,
-                    creator = safeUserId,
-                    travelPlan = TravelPlan(
-                        city = city.value,
-                        regionList = checkedDistrict.value.toList(),
-                        hasPet = hasPet.value,
-                        hasTransport = hasCar.value,
-                        startDate = startDate.value.toString(),
-                        endDate = endDate.value.toString(),
-                        visitCountPerDay = travelCountByDate.value.entries
-                            .mapIndexed { index, value -> "${index + 1}" to value.value }
-                            .toMap()
+                repository.createTeam(
+                    CreateTeamRequest( //data에 팀아이디가 옴
+                        name = teamName,
+                        creator = safeUserId,
+                        travelPlan = TravelPlan(
+                            city = city.value,
+                            regionList = checkedDistrict.value.toList(),
+                            hasPet = hasPet.value,
+                            hasTransport = hasCar.value,
+                            startDate = startDate.value.toString(),
+                            endDate = endDate.value.toString(),
+                            visitCountPerDay = travelCountByDate.value.entries
+                                .mapIndexed { index, value -> "${index + 1}" to value.value }
+                                .toMap()
+                        )
                     )
                 )
-                )
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    else -> _eventFlow.emit(UiEvent.ApiError(result.message))
-                }
+                _eventFlow.emit(UiEvent.ApiSuccess)
             } catch (e: HttpException) {
-                Log.d("TeamNameViewModel", "Error creating team: ${e.message}")
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+            } catch (e: Exception) {
+                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
             }
         }
     }
