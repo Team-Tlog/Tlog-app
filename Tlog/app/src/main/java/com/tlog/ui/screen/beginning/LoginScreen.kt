@@ -50,18 +50,18 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         titleVisible = true
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                LoginViewModel.UiEvent.LoginSuccess ->  {
-                    Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                is LoginViewModel.UiEvent.Navigate ->  {
+                    if (event.popUpTo != null) {
+                        navController.navigate(event.route) {
+                            popUpTo(event.popUpTo) { inclusive = event.inclusive }
+                        }
+                    } else {
+                        navController.navigate(event.route)
                     }
                 }
-                LoginViewModel.UiEvent.NewUser -> navController.navigate("tbtiIntro")
-                is LoginViewModel.UiEvent.LoginFailure -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
+                is LoginViewModel.UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

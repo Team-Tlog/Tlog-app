@@ -2,10 +2,8 @@ package com.tlog.viewmodel.beginning
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -20,9 +18,9 @@ import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import javax.inject.Inject
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
@@ -33,13 +31,16 @@ class LoginViewModel @Inject constructor(
     private val loginApi: LoginApi
 ) : ViewModel() {
     sealed class UiEvent {
-        object LoginSuccess: UiEvent()
-        object NewUser: UiEvent()
-        data class LoginFailure(val message: String): UiEvent()
+        data class Navigate(
+            val route: String,
+            val popUpTo: String? = null,
+            val inclusive: Boolean = false
+        ): UiEvent()
+        data class ShowToast(val message: String): UiEvent()
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
 
 
@@ -73,7 +74,8 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         } catch (e: Exception) {
-            Log.e("LoginViewModel", "Google 로그인 실패 : ${e.message}", e)
+            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+//            Log.e("LoginViewModel", "Google 로그인 실패 : ${e.message}", e)
         }
     }
 
@@ -104,23 +106,23 @@ class LoginViewModel @Inject constructor(
                                     firebaseToken = fcmToken
                                 )
                             )
-                        _eventFlow.emit(UiEvent.LoginSuccess)
+                        _uiEvent.trySend(UiEvent.ShowToast("로그인 성공!!"))
+                        _uiEvent.trySend(UiEvent.Navigate(route = "main", popUpTo = "login", inclusive = false))
                     } else {
-                        _eventFlow.emit(UiEvent.LoginFailure("로그인 실패 (토큰 x)"))
+                        _uiEvent.trySend(UiEvent.ShowToast("로그인 실패 (토큰 x)"))
                     }
                 } else {
-                    if(response.code() == 404) {
-                        Log.d("LoginViewModel", "신규회원, tbti 테스트 시작")
-                        _eventFlow.emit(UiEvent.NewUser)
-                    }
-                    else{
-                        _eventFlow.emit(UiEvent.LoginFailure("로그인 실패"))
+                    if (response.code() == 404) {
+                        _uiEvent.trySend(UiEvent.ShowToast("신규회원 TBTI 테스트 진행"))
+                        _uiEvent.trySend(UiEvent.Navigate(route = "tbtiIntro"))
+                    } else {
+                        _uiEvent.trySend(UiEvent.ShowToast("로그인 실패"))
                     }
                 }
             } catch (e: HttpException) {
-               _eventFlow.emit(UiEvent.LoginFailure(e.toErrorMessage()))
+               _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.LoginFailure(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
