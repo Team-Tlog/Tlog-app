@@ -30,13 +30,13 @@ class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : ViewModel() {
-    sealed class UiEvent {
-        data class Navigate(
-            val route: String,
-            val popUpTo: String? = null,
-            val inclusive: Boolean = false
-        ): UiEvent()
-        data class ShowToast(val message: String): UiEvent()
+    sealed interface NavTarget {
+        data object Main: NavTarget
+        data object TbtiIntro: NavTarget
+    }
+    sealed interface UiEvent {
+        data class Navigate(val target: NavTarget, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
     private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
@@ -107,14 +107,14 @@ class LoginViewModel @Inject constructor(
                                 )
                             )
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 성공!!"))
-                        _uiEvent.trySend(UiEvent.Navigate(route = "main", popUpTo = "login", inclusive = false))
+                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.Main, true))
                     } else {
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 실패 (토큰 x)"))
                     }
                 } else {
                     if (response.code() == 404) {
                         _uiEvent.trySend(UiEvent.ShowToast("신규회원 TBTI 테스트 진행"))
-                        _uiEvent.trySend(UiEvent.Navigate(route = "tbtiIntro"))
+                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.TbtiIntro))
                     } else {
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 실패"))
                     }

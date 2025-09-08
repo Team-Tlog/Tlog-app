@@ -52,13 +52,16 @@ fun LoginScreen(
 
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is LoginViewModel.UiEvent.Navigate ->  {
-                    if (event.popUpTo != null) {
-                        navController.navigate(event.route) {
-                            popUpTo(event.popUpTo) { inclusive = event.inclusive }
+                is LoginViewModel.UiEvent.Navigate ->  when(event.target) {
+                    LoginViewModel.NavTarget.Main -> {
+                        navController.navigate("main") {
+                            if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                            launchSingleTop = true
+                            restoreState = false
                         }
-                    } else {
-                        navController.navigate(event.route)
+                    }
+                    LoginViewModel.NavTarget.TbtiIntro -> {
+                        navController.navigate("tbtiIntro")
                     }
                 }
                 is LoginViewModel.UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
