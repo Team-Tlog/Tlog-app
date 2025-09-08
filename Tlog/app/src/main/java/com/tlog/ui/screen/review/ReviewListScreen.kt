@@ -48,8 +48,14 @@ fun ReviewListScreen(
     LaunchedEffect(Unit) {
         viewModel.getReviewList(id = travelId)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when(event) {
+                is ReviewListViewModel.UiEvent.Navigate -> when (event.target) {
+                    is ReviewListViewModel.NavTarget.ReviewWrite -> {
+                        navController.navigate("review/${event.target.travelId}/${event.target.travelName}")
+                    }
+                    is ReviewListViewModel.NavTarget.SnsMyPage -> navController.navigate("snsMyPage/${event.target.userId}")
+                }
                 is ReviewListViewModel.UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
@@ -101,7 +107,7 @@ fun ReviewListScreen(
                 ) {
                     ReviewHeader(
                         reviewCnt = viewModel.reviewList.value.size,
-                        reviewWrite = { navController.navigate("review/$travelId/$travelName") }
+                        reviewWrite = { viewModel.navToReviewWrite(travelId, travelName) }
                     )
                 }
 
@@ -140,7 +146,7 @@ fun ReviewListScreen(
                     ReviewList(
                         reviewList = viewModel.reviewList.value,
                         onClick = { userId ->
-                            navController.navigate("snsMyPage/$userId")
+                            viewModel.navToSnsMyPage(userId)
                         }
                     )
                 }

@@ -13,8 +13,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableDoubleStateOf
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Review
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import retrofit2.HttpException
 import java.util.Locale
 
@@ -25,12 +25,17 @@ class ReviewListViewModel @Inject constructor(
     private val scrapManager: ScrapManager
 ): ViewModel() {
 
-    sealed class UiEvent {
-        data class ShowToast(val message: String): UiEvent()
+    sealed interface NavTarget {
+        data class ReviewWrite(val travelId: String, val travelName: String): NavTarget
+        data class SnsMyPage(val userId: String): NavTarget
+    }
+    sealed interface UiEvent {
+        data class Navigate(val target: NavTarget): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private val _reviewList = mutableStateOf<List<Review>>(emptyList())
     val reviewList: State<List<Review>> = _reviewList
@@ -77,9 +82,9 @@ class ReviewListViewModel @Inject constructor(
                 getRating(reviewCount = response.data.ratingDistribution)
             }
             catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
         }
     }
@@ -127,9 +132,9 @@ class ReviewListViewModel @Inject constructor(
                 _reviewList.value += response.data.reviews.content
 
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
             }
         }
     }
@@ -139,14 +144,22 @@ class ReviewListViewModel @Inject constructor(
             try {
                 scrapManager.toggleScrap(destinationId)
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
+                _uiEvent.trySend(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
             }
         }
     }
 
     fun isScraped(destinationId: String): Boolean {
         return scrapManager.isScraped(destinationId)
+    }
+
+    fun navToReviewWrite(travelId: String, travelName: String) {
+        _uiEvent.trySend(UiEvent.Navigate(NavTarget.ReviewWrite(travelId, travelName)))
+    }
+
+    fun navToSnsMyPage(userId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(NavTarget.SnsMyPage(userId)))
     }
 }
