@@ -56,9 +56,12 @@ fun ScrapAndCartScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is ScrapAndCartViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is ScrapAndCartViewModel.UiEvent.Navigate -> when(event.target) {
+                    is ScrapAndCartViewModel.NavTarget.TravelInfo -> navController.navigate("travelInfo/${event.target.travelId}")
+                }
+                is ScrapAndCartViewModel.UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -212,14 +215,16 @@ fun ScrapAndCartScreen(
                 ScrapTravelList(
                     scrapTravelList = viewModel.scrapList.value,
                     onClick = { travelId ->
-                        navController.navigate("travelInfo/$travelId")
+                        viewModel.navToTravelInfo(travelId)
+//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             } else {
                 CartList(
                     travelList = viewModel.cartList.value,
                     onClick = { travelId ->
-                        navController.navigate("travelInfo/$travelId")
+                        viewModel.navToTravelInfo(travelId)
+//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             }

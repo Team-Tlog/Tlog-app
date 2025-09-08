@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.share
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,8 +10,8 @@ import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -23,12 +22,18 @@ class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    sealed class UiEvent {
-        data class Error(val message: String): UiEvent()
+    sealed interface NavTarget {
+        data class TravelInfo(val travelId: String): NavTarget
+    }
+    sealed interface UiEvent {
+        data class Navigate(val target: NavTarget): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
+
+
 
     private var userId: String = ""
 
@@ -49,9 +54,9 @@ class ScrapAndCartViewModel @Inject constructor(
             try {
                 _cartList.value = repository.getUserCart(userId)
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -70,9 +75,9 @@ class ScrapAndCartViewModel @Inject constructor(
             try {
                 _scrapList.value = repository.getUserScrap(userId)
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -98,9 +103,9 @@ class ScrapAndCartViewModel @Inject constructor(
                     fetchCart()
                 }
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -117,9 +122,9 @@ class ScrapAndCartViewModel @Inject constructor(
 
                 fetchCart()
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -156,6 +161,10 @@ class ScrapAndCartViewModel @Inject constructor(
             _checkedTravelList.value = allItems
         else
             _checkedTravelList.value = emptyList()
+    }
+
+    fun navToTravelInfo(travelId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(NavTarget.TravelInfo(travelId)))
     }
 }
 
