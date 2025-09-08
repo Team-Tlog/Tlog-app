@@ -39,7 +39,6 @@ fun MyTeamListScreen(
                 }
                 is UiEvent.ApiError -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                    // Error Screen 이동?
                 }
             }
         }
