@@ -66,14 +66,14 @@ fun ReviewWriteScreen(
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
-            when (event) {
-                is UiEvent.Navigate -> when(event.target) {
-                    ReviewWriteViewModel.NavTarget.Main -> {
-                        navController.navigate("main") {
-                            popUpTo(navController.graph.id) { inclusive = true }
-                            launchSingleTop = true
-                            restoreState = false
+            when(event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
                         }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
                 is UiEvent.ShowToast -> {

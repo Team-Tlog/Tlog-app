@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.toErrorMessage
+import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
@@ -27,12 +28,8 @@ class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    sealed interface NavTarget {
-        object Main: NavTarget
-    }
-    // api 결과에 따른 이벤트 값
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -105,7 +102,7 @@ class ReviewWriteViewModel @Inject constructor(
                 )
                 _uiEvent.trySend(UiEvent.ShowToast("리뷰 작성 성공"))
 //                delay(500) -> 채널의 버퍼를 지정하지 않으면 사이즈가 0이라 동시에 들어가면 무시될 수 있으나 버퍼를 지정하면 큐에 들어가기 때문에 딜레이 따로 넣을 필요 X
-                _uiEvent.trySend(UiEvent.Navigate(NavTarget.Main))
+                _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
             } catch (e: HttpException) {
                 _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
