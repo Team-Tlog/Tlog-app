@@ -14,10 +14,10 @@ import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TbtiRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -30,11 +30,8 @@ class TbtiResultViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val tokenProvider: TokenProvider
 ): ViewModel() {
-    sealed interface NavTarget {
-        data object Main: NavTarget
-    }
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget, val clearBackStack: Boolean = false): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -58,10 +55,11 @@ class TbtiResultViewModel @Inject constructor(
     }
 
     fun updateTbti(tbtiValue: String) {
-        Log.d("hellosResultCode1", tbtiValue)
         viewModelScope.launch {
             tbtiRepository.updateTbti(tbtiValue)
         }
+        _uiEvent.trySend(UiEvent.ShowToast("TBTI 변경 성공"))
+        _uiEvent.trySend(UiEvent.Navigate(Screen.MyPage, true))
     }
 
     fun fetchTbtiDescription(resultCode: String) {
@@ -69,8 +67,10 @@ class TbtiResultViewModel @Inject constructor(
             try {
                 val response = tbtiRepository.getTbtiDescription(resultCode)
                 _tbtiDescription.value = response.data
+            } catch (e: HttpException) {
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                Log.e("TbtiTestViewModel", "설명 데이터 요청 실패", e)
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -80,10 +80,7 @@ class TbtiResultViewModel @Inject constructor(
             val socialAccessToken = userPreferences.getTmpSocialAccessToken()
             val socialType = userPreferences.getTmpSocialType()
 
-            if (socialAccessToken.isNullOrEmpty()) {
-                return@launch
-            }
-
+            if (socialAccessToken.isNullOrEmpty()) { return@launch }
 
             val request = RegisterRequest(
                 type = socialType.toString(),
@@ -103,9 +100,8 @@ class TbtiResultViewModel @Inject constructor(
                             response.body()!!.data.firebaseCustomToken
                         )
                         loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
-                        _uiEvent.trySend(UiEvent.ShowToast("TBTI 변경 성공"))
-                        delay(500)
-                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.Main, true))
+                        _uiEvent.trySend(UiEvent.ShowToast("회원가입 성공"))
+                        _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
                     }
                 } else {
                     _uiEvent.trySend(UiEvent.ShowToast("회원가입 실패"))
