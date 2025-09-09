@@ -99,7 +99,7 @@ sealed interface Screen {
         val eValue: String,
         val lValue: String,
         val aValue: String
-    )
+    ) : Screen
 
 
     // MyPage
