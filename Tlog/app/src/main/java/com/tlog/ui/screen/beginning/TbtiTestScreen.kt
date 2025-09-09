@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.beginning
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,31 +17,38 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.tbti.TbtiQuestionSection
 import com.tlog.viewmodel.beginning.TbtiTestViewModel
-import androidx.compose.runtime.getValue
+import com.tlog.viewmodel.beginning.TbtiTestViewModel.UiEvent
 
 @Composable
 fun TbtiTestScreen(
     navController: NavController,
     viewModel: TbtiTestViewModel = hiltViewModel()
 ) {
-    val isTestFinished by viewModel.isTestFinished
 
+    val context = LocalContext.current
     // 최초 화면 진입 시 한 번만 호출
     LaunchedEffect(Unit) {
         viewModel.fetchAllQuestions()
-    }
-    LaunchedEffect(isTestFinished) {
-        if (isTestFinished) {
-            val resultCode = viewModel.tbtiResult.value
-            Log.d("TbtiTEst", resultCode)
-            navController.navigate("tbtiResult/$resultCode/${viewModel.sValue.value}/${viewModel.eValue.value}/${viewModel.lValue.value}/${viewModel.aValue.value}") {
-                popUpTo("tbtiTest") { inclusive = true }
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
