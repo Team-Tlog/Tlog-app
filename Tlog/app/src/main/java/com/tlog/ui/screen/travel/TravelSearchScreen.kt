@@ -35,9 +35,16 @@ fun TravelSearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SearchViewModel.UiEvent.Error -> {
+                is SearchViewModel.UiEvent.Navigate -> when (event.target) {
+                    is SearchViewModel.NavTarget.TravelInfo -> {
+                        navController.navigate("travelInfo/${event.target.travelId}")
+                    }
+
+                    else -> Unit
+                }
+                is SearchViewModel.UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -86,8 +93,9 @@ fun TravelSearchScreen(
             }
             else {
                 itemsIndexed(viewModel.searchResult.value) { index, item ->
-                    SearchTravelItem(travel = item, onClick = { travelId, travelName ->
-                        navController.navigate("travelInfo/${travelId}")
+                    SearchTravelItem(travel = item, onClick = { travelId, _ ->
+//                        navController.navigate("travelInfo/${travelId}")
+                        viewModel.navToTravelInfo(travelId)
                     })
                     if (index == viewModel.searchResult.value.lastIndex) {
                         Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백

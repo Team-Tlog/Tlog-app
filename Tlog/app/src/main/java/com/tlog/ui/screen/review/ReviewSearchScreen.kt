@@ -48,9 +48,16 @@ fun ReviewSearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SearchViewModel.UiEvent.Error -> {
+                is SearchViewModel.UiEvent.Navigate -> when (event.target) {
+                    is SearchViewModel.NavTarget.ReviewWrite -> {
+                        navController.navigate("review/${event.target.travelId}/${event.target.travelName}")
+                    }
+
+                    else -> Unit
+                }
+                is SearchViewModel.UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -126,7 +133,8 @@ fun ReviewSearchScreen(
                 SearchTravelList(
                     travelList = viewModel.searchResult.value,
                     onClick = { travelId, travelName ->
-                        navController.navigate("review/$travelId/$travelName")
+                        viewModel.navToReviewWrite(travelId, travelName)
+//                        navController.navigate("review/$travelId/$travelName")
                     }
                 )
             }
