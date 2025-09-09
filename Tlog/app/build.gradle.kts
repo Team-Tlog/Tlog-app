@@ -8,6 +8,9 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
 
+    // Nav TypeSafe
+//    kotlin("plugin.serialization")
+    alias(libs.plugins.kotlin.serialization)
     // firebase
     id("com.google.gms.google-services")
 }
@@ -97,20 +100,18 @@ dependencies {
 
     // Tlog
     // Jetpack Compose
-    implementation("androidx.activity:activity-compose:1.7.2")
-    implementation("androidx.compose.ui:ui:1.5.3")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.5.3")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
+    implementation("androidx.activity:activity-compose:1.9.0")
+//    implementation("androidx.compose.ui:ui")
+//    implementation("androidx.compose.ui:ui-tooling-preview")
+//    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
     implementation("io.coil-kt:coil-compose:2.4.0")
+
     // 애니매이션 네비
     // implementation("com.google.accompanist:accompanist-navigation-animation:0.32.0")
     // implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Material3
-    implementation("androidx.compose.material3:material3:1.1.2")
-
-    // Navigation (화면 전환)
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+//    implementation("androidx.compose.material3:material3")
 
     // 접근 권한 (갤러리)
     implementation(libs.accompanist.permissions)
@@ -122,7 +123,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     // OkHttp (네트워크 통신, Retrofit 내부에서 사용)
-    implementation("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     // OkHttp Logging Interceptor (통신 로그 찍고 싶을 때 사용)
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
@@ -146,28 +147,30 @@ dependencies {
     // hilt
     implementation("com.google.dagger:hilt-android:2.56.1")
     ksp("com.google.dagger:hilt-android-compiler:2.56.1")
-    implementation("androidx.navigation:navigation-compose:2.5.3")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
+    // Nav
+    implementation("androidx.navigation:navigation-compose:2.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
     // firebase
     implementation(platform("com.google.firebase:firebase-bom:33.14.0"))
     implementation("com.google.firebase:firebase-storage-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+
     // firebase messaging service
     implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.firebase:firebase-messaging:23.0.3")
-
+//    implementation("com.google.firebase:firebase-messaging:23.0.3")
+    implementation("com.google.firebase:firebase-messaging-ktx")
     // await (콜백 -> 비동기)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
 
     // 구글 로그인 (파이어베이스)
-    apply(plugin = "com.google.gms.google-services")
-    implementation("com.google.android.gms:play-services-auth:20.7.0")
+//    apply(plugin = "com.google.gms.google-services")
 
     // Kakao map
     implementation("com.kakao.maps.open:android:2.12.8")
 
     // GPS
-    implementation("com.google.android.gms:play-services-location:18.0.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 }
