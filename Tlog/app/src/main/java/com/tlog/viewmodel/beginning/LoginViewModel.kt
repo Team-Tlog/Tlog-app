@@ -17,6 +17,7 @@ import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
@@ -30,12 +31,8 @@ class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : ViewModel() {
-    sealed interface NavTarget {
-        data object Main: NavTarget
-        data object TbtiIntro: NavTarget
-    }
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget, val clearBackStack: Boolean = false): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -107,14 +104,14 @@ class LoginViewModel @Inject constructor(
                                 )
                             )
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 성공!!"))
-                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.Main, true))
+                        _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
                     } else {
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 실패 (토큰 x)"))
                     }
                 } else {
                     if (response.code() == 404) {
                         _uiEvent.trySend(UiEvent.ShowToast("신규회원 TBTI 테스트 진행"))
-                        _uiEvent.trySend(UiEvent.Navigate(NavTarget.TbtiIntro))
+                        _uiEvent.trySend(UiEvent.Navigate(Screen.TbtiIntro))
                     } else {
                         _uiEvent.trySend(UiEvent.ShowToast("로그인 실패"))
                     }

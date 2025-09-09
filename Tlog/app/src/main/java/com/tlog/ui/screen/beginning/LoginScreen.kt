@@ -35,6 +35,7 @@ import com.tlog.ui.component.login.LoginIcon
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.LoginViewModel
+import com.tlog.viewmodel.beginning.LoginViewModel.UiEvent
 
 @Composable
 fun LoginScreen(
@@ -52,19 +53,14 @@ fun LoginScreen(
 
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is LoginViewModel.UiEvent.Navigate ->  when(event.target) {
-                    LoginViewModel.NavTarget.Main -> {
-                        navController.navigate("main") {
-                            if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
-                            launchSingleTop = true
-                            restoreState = false
-                        }
-                    }
-                    LoginViewModel.NavTarget.TbtiIntro -> {
-                        navController.navigate("tbtiIntro")
+                is UiEvent.Navigate ->  {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is LoginViewModel.UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
