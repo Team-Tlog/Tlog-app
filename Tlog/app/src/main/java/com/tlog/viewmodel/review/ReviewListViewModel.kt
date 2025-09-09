@@ -13,6 +13,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableDoubleStateOf
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Review
+import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import retrofit2.HttpException
@@ -24,13 +25,8 @@ class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
 ): ViewModel() {
-
-    sealed interface NavTarget {
-        data class ReviewWrite(val travelId: String, val travelName: String): NavTarget
-        data class SnsMyPage(val userId: String): NavTarget
-    }
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -161,10 +157,10 @@ class ReviewListViewModel @Inject constructor(
     }
 
     fun navToReviewWrite(travelId: String, travelName: String) {
-        _uiEvent.trySend(UiEvent.Navigate(NavTarget.ReviewWrite(travelId, travelName)))
+        _uiEvent.trySend(UiEvent.Navigate(Screen.ReviewWrite(travelId, travelName)))
     }
 
     fun navToSnsMyPage(userId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(NavTarget.SnsMyPage(userId)))
+        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMyPage(userId)))
     }
 }

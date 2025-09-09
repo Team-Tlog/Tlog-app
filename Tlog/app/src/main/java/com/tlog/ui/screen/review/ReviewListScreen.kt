@@ -33,6 +33,7 @@ import com.tlog.ui.component.travel.review.ReviewHeader
 import com.tlog.ui.component.travel.review.ReviewList
 import com.tlog.ui.component.travel.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
+import com.tlog.viewmodel.review.ReviewListViewModel.UiEvent
 
 
 @Composable
@@ -50,13 +51,16 @@ fun ReviewListScreen(
 
         viewModel.uiEvent.collect { event ->
             when(event) {
-                is ReviewListViewModel.UiEvent.Navigate -> when (event.target) {
-                    is ReviewListViewModel.NavTarget.ReviewWrite -> {
-                        navController.navigate("review/${event.target.travelId}/${event.target.travelName}")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
                     }
-                    is ReviewListViewModel.NavTarget.SnsMyPage -> navController.navigate("snsMyPage/${event.target.userId}")
                 }
-                is ReviewListViewModel.UiEvent.ShowToast -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
