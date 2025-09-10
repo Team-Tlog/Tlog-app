@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.sns
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
@@ -11,13 +10,10 @@ import com.tlog.data.local.FollowManager
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
-import com.tlog.viewmodel.share.MyPageViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

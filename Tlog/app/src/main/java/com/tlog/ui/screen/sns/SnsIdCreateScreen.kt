@@ -36,12 +36,12 @@ fun SnsIdCreateScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
+                is UiEvent.Navigate -> {
                     navController.navigate("snsMain")
                 }
-                is UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
