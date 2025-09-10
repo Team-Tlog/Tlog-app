@@ -26,6 +26,7 @@ import com.tlog.ui.component.travel.RecentSearches
 import com.tlog.ui.component.travel.SearchTravelItem
 import com.tlog.ui.component.travel.TravelCategoryGrid
 import com.tlog.viewmodel.share.SearchViewModel
+import com.tlog.viewmodel.share.SearchViewModel.UiEvent
 
 @Composable
 fun TravelSearchScreen(
@@ -37,14 +38,14 @@ fun TravelSearchScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is SearchViewModel.UiEvent.Navigate -> when (event.target) {
-                    is SearchViewModel.NavTarget.TravelInfo -> {
-                        navController.navigate("travelInfo/${event.target.travelId}")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
                     }
-
-                    else -> Unit
                 }
-                is SearchViewModel.UiEvent.ShowToast -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
