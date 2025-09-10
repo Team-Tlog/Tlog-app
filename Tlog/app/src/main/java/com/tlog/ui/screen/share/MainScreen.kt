@@ -48,6 +48,7 @@ import com.tlog.R
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.component.travel.BlueHashTagGroup
+import com.tlog.ui.navigation.Screen
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.Essential
@@ -63,8 +64,8 @@ fun MainScreen(
     Scaffold(
         topBar = {
             MainTopBar(
-                searchIconClickable = { navController.navigate("search") },
-                notificationIconClickable = { navController.navigate("notification") }
+                searchIconClickable = { navController.navigate(Screen.Search) },
+                notificationIconClickable = { navController.navigate(Screen.Notification) }
             )
         },
         bottomBar = {
@@ -175,16 +176,16 @@ fun MainScreen(
                                         when (name) {
                                             "AI 추천 코스" -> {}
                                             "리뷰 쓰기" -> {
-                                                navController.navigate("searchReview")
+                                                navController.navigate(Screen.SearchReview)
                                             }
                                             "지도에서 보기" -> {
-                                                navController.navigate("map")
+                                                navController.navigate(Screen.Map)
                                             }
                                             "내 팀보기" -> {
-                                                navController.navigate("teamList")
+                                                navController.navigate(Screen.TeamList)
                                             }
                                             "스크랩" -> {
-                                                navController.navigate("scrapAndCart")
+                                                navController.navigate(Screen.ScrapAndCart)
                                             }
                                             "지도 채우기" -> {}
                                         }
@@ -276,7 +277,7 @@ fun MainScreen(
                                         verticalArrangement = Arrangement.spacedBy(space = 5.dp),
                                         modifier = Modifier
                                             .clickable {
-                                                navController.navigate("recommendDestination/$name 여행지/$name")
+                                                navController.navigate(Screen.TravelList(name, name))
                                             }
                                     ) {
                                         Icon(

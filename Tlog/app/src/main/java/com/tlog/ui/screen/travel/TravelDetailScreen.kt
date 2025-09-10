@@ -39,8 +39,9 @@ fun TravelDetailScreen(
                 is UiEvent.Navigate -> {
                     navController.navigate(event.target) {
                         if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
-                        launchSingleTop = true
-                        restoreState = false
+                        // 시밀러 여행지 눌렀을 때 재사용되는 상황 제거하기 위해 주석
+//                        launchSingleTop = false
+//                        restoreState = false
                     }
                 }
                 is UiEvent.ShowToast -> {

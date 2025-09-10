@@ -108,7 +108,7 @@ fun ReviewSearchScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .clickable {
-                                navController.navigate("addTravel")
+                                viewModel.navToAddTravel()
                             }
                     ) {
                         Image(

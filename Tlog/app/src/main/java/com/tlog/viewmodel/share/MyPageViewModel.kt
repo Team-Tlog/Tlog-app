@@ -128,4 +128,8 @@ class MyPageViewModel @Inject constructor(
             }
         }
     }
+
+    fun navToTbtiTest() {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.TbtiIntro))
+    }
 }

@@ -121,7 +121,7 @@ fun MyPageScreen(
                                 MyPageTbtiGroup(
                                     userInfo = viewModel.userInfo.value!!,
                                     tbtiTestClick = {
-                                        navController.navigate("tbtiIntro")
+                                        viewModel.navToTbtiTest()
                                     }
                                 )
 

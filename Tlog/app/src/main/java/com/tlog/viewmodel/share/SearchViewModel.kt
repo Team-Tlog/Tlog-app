@@ -87,4 +87,8 @@ class SearchViewModel @Inject constructor(
     fun navToTravelInfo(travelId: String) {
         _uiEvent.trySend(UiEvent.Navigate(Screen.TravelInfo(travelId)))
     }
+
+    fun navToAddTravel() {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.AddTravel))
+    }
 }

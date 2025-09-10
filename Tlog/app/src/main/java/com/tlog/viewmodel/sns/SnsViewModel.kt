@@ -84,4 +84,12 @@ class SnsViewModel @Inject constructor(
     fun navToSnsPostDetail(postId: String) {
         _uiEvent.trySend(UiEvent.Navigate(Screen.SnsPostDetail(postId)))
     }
+
+    fun navToSnsSearch() {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsSearch))
+    }
+
+    fun navToNotification() {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.Notification))
+    }
 }

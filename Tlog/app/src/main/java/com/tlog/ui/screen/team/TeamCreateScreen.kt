@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.team
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,14 +12,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
+import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
@@ -27,6 +31,24 @@ fun TeamCreateScreen(
     viewModel: TeamNameViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
 
     Column(
@@ -60,7 +82,7 @@ fun TeamCreateScreen(
         MainButton(
             text = "팀 생성하기",
             onClick = {
-                navController.navigate("teamInfoInput/${viewModel.teamName.value}")
+                viewModel.navToTeamInfoInput(viewModel.teamName.value)
             },
             enabled = viewModel.checkTeamName(),
             modifier = Modifier

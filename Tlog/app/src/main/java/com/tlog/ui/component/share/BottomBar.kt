@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.tlog.R
+import com.tlog.ui.navigation.Screen
 
 @Preview
 @Composable
@@ -48,11 +49,11 @@ fun BottomBar(
                         .size(24.dp)
                         .clickable {
                             val route = when (index) {
-                                0 -> "main"
-                                1 -> "course"
-                                2 -> "sns"
-                                3 -> "myPage"
-                                else -> "main"
+                                0 -> Screen.Main
+                                1 -> Screen.Course
+                                2 -> Screen.Sns
+                                3 -> Screen.MyPage
+                                else -> Screen.Main
                             }
                             navController.navigate(route) { // 바텀바에서 스택이 쌓이는 버그 수정하기 위한 코드
                                 popUpTo(navController.graph.startDestinationId) {

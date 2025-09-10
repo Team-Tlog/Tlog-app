@@ -52,8 +52,12 @@ fun SnsScreen(
     Scaffold(
         topBar = {
             MainTopBar(
-                searchIconClickable = { navController.navigate("snsSearch") },
-                notificationIconClickable = { navController.navigate("notification") }
+                searchIconClickable = {
+                    viewModel.navToSnsSearch()
+                },
+                notificationIconClickable = {
+                    viewModel.navToNotification()
+                }
             )
         },
         bottomBar = {
