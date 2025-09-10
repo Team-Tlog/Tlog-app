@@ -46,6 +46,7 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.share.ScrapAndCartViewModel.UiEvent
 
 
 @Composable
@@ -58,10 +59,14 @@ fun ScrapAndCartScreen(
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is ScrapAndCartViewModel.UiEvent.Navigate -> when(event.target) {
-                    is ScrapAndCartViewModel.NavTarget.TravelInfo -> navController.navigate("travelInfo/${event.target.travelId}")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is ScrapAndCartViewModel.UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

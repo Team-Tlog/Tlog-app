@@ -9,6 +9,7 @@ import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,11 +23,8 @@ class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    sealed interface NavTarget {
-        data class TravelInfo(val travelId: String): NavTarget
-    }
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -164,7 +162,7 @@ class ScrapAndCartViewModel @Inject constructor(
     }
 
     fun navToTravelInfo(travelId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(NavTarget.TravelInfo(travelId)))
+        _uiEvent.trySend(UiEvent.Navigate(Screen.TravelInfo(travelId)))
     }
 }
 
