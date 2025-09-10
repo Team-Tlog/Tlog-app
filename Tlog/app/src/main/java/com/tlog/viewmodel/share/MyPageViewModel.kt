@@ -19,6 +19,7 @@ import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.user.User
+import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,11 +33,8 @@ class MyPageViewModel @Inject constructor(
     private val tokenProvider: TokenProvider,
     private val userPreferences: UserPreferences
 ): ViewModel() {
-    sealed interface NavTarget {
-        object Login: NavTarget
-    }
     sealed interface UiEvent {
-        data class Navigate(val target: NavTarget): UiEvent
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
         data class ShowToast(val message: String): UiEvent
     }
 
@@ -86,7 +84,7 @@ class MyPageViewModel @Inject constructor(
                 myPageRepository.logout(refreshToken)
 
                 _uiEvent.trySend(UiEvent.ShowToast("로그아웃 성공"))
-                _uiEvent.trySend(UiEvent.Navigate(NavTarget.Login))
+                _uiEvent.trySend(UiEvent.Navigate(Screen.Login, true))
 
                 userPreferences.clearTokens()
             } catch (e: HttpException) {
@@ -121,6 +119,7 @@ class MyPageViewModel @Inject constructor(
                 )
 
                 getUserInfo()
+
                 _uiEvent.trySend(UiEvent.ShowToast("프로필 사진 변경 성공"))
             } catch (e: HttpException) {
                 _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
