@@ -10,11 +10,15 @@ import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
+import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.share.MyPageViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -27,12 +31,13 @@ class SnsDetailViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ) : ViewModel() {
 
-    sealed class UiEvent {
-        data class Error(val message: String) : UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String) : UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     var userId: String? = ""
 
@@ -54,15 +59,14 @@ class SnsDetailViewModel @Inject constructor(
 
                 _post.value = result.data
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
 
     fun addComment() {
-        Log.d("okhttp", "hihi")
         viewModelScope.launch {
             try {
                 repository.createComment(postId = post.value!!.postId, author = userId!!, content = comment.value)
@@ -70,9 +74,9 @@ class SnsDetailViewModel @Inject constructor(
                 _comment.value = ""
                 getPostDetail(post.value!!.postId)
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -90,10 +94,14 @@ class SnsDetailViewModel @Inject constructor(
             try {
                 followManager.followUser(toUserId)
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
+    }
+
+    fun navToSnsMyPage(userId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMyPage(userId)))
     }
 }

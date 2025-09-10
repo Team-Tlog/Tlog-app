@@ -52,6 +52,7 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
+import com.tlog.viewmodel.sns.SnsDetailViewModel.UiEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -65,9 +66,16 @@ fun SnsDetailScreen(
     LaunchedEffect(Unit) {
         viewModel.getPostDetail(postId)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SnsDetailViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -96,7 +104,7 @@ fun SnsDetailScreen(
                             viewModel.followUser(viewModel.post.value!!.authorId)
                         },
                         clickUser = {
-                            navController.navigate("snsMyPage/${viewModel.post.value!!.authorId}")
+                            viewModel.navToSnsMyPage(viewModel.post.value!!.authorId)
                         }
                     )
 
@@ -127,7 +135,7 @@ fun SnsDetailScreen(
                         CommentItem(
                             comment = comment,
                             userClick = { targetUserId ->
-                                navController.navigate("snsMyPage/$targetUserId")
+                                viewModel.navToSnsMyPage(targetUserId)
                             }
                         )
                     }
