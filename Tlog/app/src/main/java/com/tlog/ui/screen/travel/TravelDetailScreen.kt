@@ -21,6 +21,7 @@ import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
+import com.tlog.viewmodel.travel.TravelInfoViewModel.UiEvent
 import kotlin.math.floor
 
 @Composable
@@ -33,9 +34,18 @@ fun TravelDetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is TravelInfoViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -92,13 +102,13 @@ fun TravelDetailScreen(
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount,
                             moreReview = {
-                                navController.navigate("reviewList/$travelId/${destination.name}")
+                                viewModel.navToReviewList(travelId, destination.name)
                             },
                             reviewWrite = {
-                                navController.navigate("review/$travelId/${destination.name}")
+                                viewModel.navToReviewWrite(travelId, destination.name)
                             },
                             onClick = { userId ->
-                                navController.navigate("snsMyPage/$userId")
+                                viewModel.navToSnsMyPage(userId)
                             }
                         )
 
@@ -112,7 +122,7 @@ fun TravelDetailScreen(
                             SimilarTravelSection(
                                 travelList = destination.relatedDestinations,
                                 clickable = { travelId ->
-                                    navController.navigate("travelInfo/$travelId")
+                                    viewModel.navToTravelInfo(travelId)
                                 }
                             )
                         }
