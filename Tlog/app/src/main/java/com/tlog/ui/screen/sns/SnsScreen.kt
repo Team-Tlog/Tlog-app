@@ -18,7 +18,9 @@ import androidx.navigation.NavController
 import com.tlog.ui.component.sns.PostItem
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.sns.SnsViewModel
+import com.tlog.viewmodel.sns.SnsViewModel.UiEvent
 
 
 @Composable
@@ -29,9 +31,16 @@ fun SnsScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
-            when(event) {
-                is SnsViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(Screen.Main) { inclusive = false }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -80,10 +89,10 @@ fun SnsScreen(
                             post = post,
                             isFollowing = followingList.contains(post.authorId),
                             clickUser = { userId ->
-                                navController.navigate("snsMyPage/$userId")
+                                viewModel.navToSnsMyPage(userId)
                             },
                             courseClick = { postId ->
-                                navController.navigate("snsPostDetail/$postId")
+                                viewModel.navToSnsPostDetail(postId)
                             },
                             followClick = {
                                 viewModel.followUser(post.authorId)
