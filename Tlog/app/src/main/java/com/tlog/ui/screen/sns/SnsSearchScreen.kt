@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.travel.RecentSearches
-import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.sns.SnsSearchViewModel
 import com.tlog.viewmodel.sns.SnsSearchViewModel.UiEvent
 
@@ -38,7 +37,7 @@ fun SnsSearchScreen(
             when (event) {
                 is UiEvent.Navigate -> {
                     navController.navigate(event.target) {
-                        if (event.clearBackStack) popUpTo(Screen.Main) { inclusive = false }
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
                         launchSingleTop = true
                         restoreState = false
                     }
