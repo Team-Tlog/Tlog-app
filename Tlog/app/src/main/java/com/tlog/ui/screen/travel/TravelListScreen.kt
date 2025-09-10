@@ -27,6 +27,7 @@ import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelListViewModel
+import com.tlog.viewmodel.travel.TravelListViewModel.UiEvent
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalContext
 
@@ -63,9 +64,18 @@ fun TravelListScreen(
             viewModel.getTravelList(city)
         }
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is TravelListViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -172,6 +182,7 @@ fun TravelListScreen(
                             .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                     ) {
                         val isFavorite = viewModel.scrapList.value.contains(destination.id)
+
                         DestinationCard(
                             destination = destination,
                             isFavorite = isFavorite,
@@ -179,7 +190,7 @@ fun TravelListScreen(
                                 viewModel.toggleScrap(destination.id)
                             },
                             onClick = {
-                                navController.navigate("travelInfo/${destination.id}")
+                                viewModel.navToTravelInfo(destination.id)
                             }
                         )
                     }
