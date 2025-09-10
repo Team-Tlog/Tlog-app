@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.team
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -33,12 +32,14 @@ fun MyTeamListScreen(
 
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    Log.d("MyTeamListScreen", "ApiSuccess")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is UiEvent.ApiError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -67,7 +68,9 @@ fun MyTeamListScreen(
                 TeamCard(
                     team = team,
                     onDeleteClick = { viewModel.deleteTeam(it) },
-                    onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
+                    onClick = { teamId ->
+                        viewModel.navToTeamDetail(teamId)
+                    }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -78,7 +81,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "코드 입력해서 팀 합류",
             onClick = {
-                navController.navigate("joinTeam")
+                viewModel.navToJoinTeam()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,7 +93,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "팀 생성",
             onClick = {
-                navController.navigate("createTeam")
+                viewModel.navToCreateTeam()
             },
             modifier = Modifier
                 .fillMaxWidth()
