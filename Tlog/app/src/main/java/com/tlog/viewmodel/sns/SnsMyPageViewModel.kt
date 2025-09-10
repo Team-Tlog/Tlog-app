@@ -66,7 +66,7 @@ class SnsMyPageViewModel @Inject constructor(
     fun updateSnsDescription(description: String) {
         viewModelScope.launch {
             try {
-                val result = repository.updateSnsDescription(description)
+                repository.updateSnsDescription(description)
             } catch (e: HttpException) {
                 _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
