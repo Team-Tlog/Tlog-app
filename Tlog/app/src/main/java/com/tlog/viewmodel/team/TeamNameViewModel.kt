@@ -14,4 +14,9 @@ class TeamNameViewModel @Inject constructor() : ViewModel() {
         _teamName.value = newTeamName
     }
 
+    // 일단 길이제한
+    fun checkTeamName(): Boolean {
+        return _teamName.value.isNotEmpty() && _teamName.value.length in 2 .. 20
+    }
+
 }

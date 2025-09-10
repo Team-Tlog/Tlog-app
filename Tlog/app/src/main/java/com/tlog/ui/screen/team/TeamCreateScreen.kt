@@ -62,16 +62,15 @@ fun TeamCreateScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (viewModel.teamName.value.isNotBlank() && viewModel.teamName.value.length >= 2) {
-            MainButton(
-                text = "팀 생성하기",
-                onClick = {
-                    navController.navigate("teamInfoInput/${viewModel.teamName.value}")
-                },
-                modifier = Modifier
-                    .height(70.dp)
-                    .padding(bottom = 15.dp, start = 24.dp, end = 24.dp)
-            )
-        }
+        MainButton(
+            text = "팀 생성하기",
+            onClick = {
+                navController.navigate("teamInfoInput/${viewModel.teamName.value}")
+            },
+            enabled = viewModel.checkTeamName(),
+            modifier = Modifier
+                .height(70.dp)
+                .padding(bottom = 15.dp, start = 24.dp, end = 24.dp)
+        )
     }
 }
