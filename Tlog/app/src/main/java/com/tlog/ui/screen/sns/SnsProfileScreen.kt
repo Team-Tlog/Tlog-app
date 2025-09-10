@@ -34,6 +34,7 @@ import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.sns.SnsMyPageViewModel.UiEvent
 
 @Composable
 fun SnsProfileScreen(
@@ -48,9 +49,16 @@ fun SnsProfileScreen(
     LaunchedEffect(Unit) {
         viewModel.getUserProfile(userId)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SnsMyPageViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -115,7 +123,7 @@ fun SnsProfileScreen(
             PostsGrid(
                 postList = profile.posts.content,
                 onClick = { postId ->
-                    navController.navigate("snsPostDetail/$postId")
+                    viewModel.navToSnsPostDetail(postId)
                 }
             )
         }
@@ -284,31 +292,17 @@ fun PostsGrid(
     ) {
         postList.forEach { post ->
             item {
-                if (post.previewImageUrl != null && post.previewImageUrl != "") { // 정상적인 상황에선 있을 수 없음 무조건 이미지 url이 정상 하지만 테스트를 위해
-                    AsyncImage(
-                        model = post.previewImageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .clickable {
-                                onClick(post.postId)
-                            }
-                    )
-                }
-                else {
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .background(Color.Gray)
-                    ) {
-                        Text(
-                            text = "XXX",
-                            color = Color.White,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                }
+                AsyncImage(
+                    model = post.previewImageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.tmp_jeju),
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .clickable {
+                            onClick(post.postId)
+                        }
+                )
             }
         }
     }
