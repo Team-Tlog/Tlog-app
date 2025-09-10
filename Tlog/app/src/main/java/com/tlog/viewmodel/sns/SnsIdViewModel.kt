@@ -16,7 +16,7 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class SNSIdViewModel @Inject constructor(
+class SnsIdViewModel @Inject constructor(
     private val repository: SnsRepository,
     private val userPreferences: UserPreferences
 ) : ViewModel() {
@@ -44,7 +44,8 @@ class SNSIdViewModel @Inject constructor(
                 repository.updateSnsId(id)
 
                 userPreferences.setSnsId(id)
-                _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMain))
+
+                _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMain, true))
             } catch (e: HttpException) {
                 _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {

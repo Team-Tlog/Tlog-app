@@ -48,6 +48,7 @@ import com.tlog.data.model.sns.Comment
 import com.tlog.ui.component.sns.PostAuthorInfo
 import com.tlog.ui.component.sns.PostContentAndInteractions
 import com.tlog.ui.component.sns.PostImage
+import com.tlog.ui.navigation.Screen
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
@@ -70,7 +71,7 @@ fun SnsDetailScreen(
             when (event) {
                 is UiEvent.Navigate -> {
                     navController.navigate(event.target) {
-                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        if (event.clearBackStack) popUpTo(Screen.Main) { inclusive = false }
                         launchSingleTop = true
                         restoreState = false
                     }
@@ -82,7 +83,6 @@ fun SnsDetailScreen(
 
     val followingList = viewModel.followingList.collectAsState().value
     val post = viewModel.post.collectAsState()
-
 
     Column(modifier = Modifier
             .fillMaxSize()
