@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.team.DetailTeam
 import com.tlog.data.repository.TeamRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +20,10 @@ import javax.inject.Inject
 class TeamDetailViewModel @Inject constructor(
     private val repository: TeamRepository
 ): ViewModel() {
-    sealed class UiEvent {
-        data class Error(val message: String): UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+
+        data class ShowToast(val message: String): UiEvent
     }
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -50,11 +53,12 @@ class TeamDetailViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val result = repository.getTeamDetails(teamId)
+
                 _teamData.value = result.data
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _eventFlow.emit(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _eventFlow.emit(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
