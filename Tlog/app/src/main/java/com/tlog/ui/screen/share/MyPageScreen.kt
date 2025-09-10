@@ -63,19 +63,16 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                UiEvent.LogoutSuccess -> {
-                    navController.navigate("login") {
-                        popUpTo(0) { inclusive = true } // 모두 날려버려~
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                is UiEvent.ProfileImageUpdated -> {
-                    navController.navigate("myPage") {
-                        popUpTo("myPage") { inclusive = true }
-                    }
-                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -124,7 +121,7 @@ fun MyPageScreen(
                                 MyPageTbtiGroup(
                                     userInfo = viewModel.userInfo.value!!,
                                     tbtiTestClick = {
-                                        navController.navigate("tbtiIntro")
+                                        viewModel.navToTbtiTest()
                                     }
                                 )
 

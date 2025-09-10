@@ -33,6 +33,7 @@ import com.tlog.ui.component.travel.review.ReviewHeader
 import com.tlog.ui.component.travel.review.ReviewList
 import com.tlog.ui.component.travel.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
+import com.tlog.viewmodel.review.ReviewListViewModel.UiEvent
 
 
 @Composable
@@ -48,9 +49,18 @@ fun ReviewListScreen(
     LaunchedEffect(Unit) {
         viewModel.getReviewList(id = travelId)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when(event) {
-                is ReviewListViewModel.UiEvent.ShowToast -> {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -71,6 +81,7 @@ fun ReviewListScreen(
     }
 
     LaunchedEffect(viewModel.sortOption.value) {
+        viewModel.resetPaging()
         viewModel.getReviewList(id = travelId)
     }
 
@@ -101,7 +112,7 @@ fun ReviewListScreen(
                 ) {
                     ReviewHeader(
                         reviewCnt = viewModel.reviewList.value.size,
-                        reviewWrite = { navController.navigate("review/$travelId/$travelName") }
+                        reviewWrite = { viewModel.navToReviewWrite(travelId, travelName) }
                     )
                 }
 
@@ -140,7 +151,7 @@ fun ReviewListScreen(
                     ReviewList(
                         reviewList = viewModel.reviewList.value,
                         onClick = { userId ->
-                            navController.navigate("snsMyPage/$userId")
+                            viewModel.navToSnsMyPage(userId)
                         }
                     )
                 }

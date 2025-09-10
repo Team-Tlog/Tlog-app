@@ -46,6 +46,7 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.share.ScrapAndCartViewModel.UiEvent
 
 
 @Composable
@@ -56,9 +57,16 @@ fun ScrapAndCartScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is ScrapAndCartViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -212,14 +220,16 @@ fun ScrapAndCartScreen(
                 ScrapTravelList(
                     scrapTravelList = viewModel.scrapList.value,
                     onClick = { travelId ->
-                        navController.navigate("travelInfo/$travelId")
+                        viewModel.navToTravelInfo(travelId)
+//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             } else {
                 CartList(
                     travelList = viewModel.cartList.value,
                     onClick = { travelId ->
-                        navController.navigate("travelInfo/$travelId")
+                        viewModel.navToTravelInfo(travelId)
+//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             }

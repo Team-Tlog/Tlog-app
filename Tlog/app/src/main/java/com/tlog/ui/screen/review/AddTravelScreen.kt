@@ -40,6 +40,7 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.AddTravelViewModel
+import com.tlog.viewmodel.travel.AddTravelViewModel.UiEvent
 
 
 @Composable
@@ -50,17 +51,16 @@ fun AddTravelScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is AddTravelViewModel.UiEvent.ApiSuccess -> {
-                    navController.navigate("main") {
-                        viewModel.clearImages()
-                        viewModel.clearHashTags()
-                        Toast.makeText(context, "여행지 등록 성공", Toast.LENGTH_SHORT).show()
-                        popUpTo("main") { inclusive = false }
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is AddTravelViewModel.UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }

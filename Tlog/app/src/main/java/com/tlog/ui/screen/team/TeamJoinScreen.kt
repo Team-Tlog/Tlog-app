@@ -37,7 +37,7 @@ import com.tlog.viewmodel.team.TeamJoinViewModel.UiEvent
 
 
 @Composable
-fun TeamJoinByCode(
+fun TeamJoinScreen(
     viewModel: TeamJoinViewModel = hiltViewModel(),
     navController: NavController
 ) {
@@ -49,12 +49,15 @@ fun TeamJoinByCode(
     val requesterList = viewModel.requesterList
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.popBackStack()
+                is UiEvent.Navigate -> Unit
+                is UiEvent.PopBackStack -> {
+                    repeat(event.count) {
+                        navController.popBackStack()
+                    }
                 }
-                is UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }

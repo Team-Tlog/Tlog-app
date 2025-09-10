@@ -21,6 +21,7 @@ import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
 import com.tlog.ui.component.travel.TravelList
+import com.tlog.viewmodel.team.TeamDetailViewModel.UiEvent
 
 
 enum class PageState { DEFAULT, SMALL, BIG }
@@ -43,7 +44,8 @@ fun TeamDetailScreen(
 
         viewModel.eventFlow.collect { event ->
             when (event) {
-                is TeamDetailViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.Navigate -> Unit // 화면 이동 없음
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

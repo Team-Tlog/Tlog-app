@@ -2,7 +2,6 @@ package com.tlog.viewmodel.review
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,36 +13,34 @@ import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.UUID
-
-import com.google.firebase.auth.FirebaseAuth
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.toErrorMessage
+import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @HiltViewModel
 class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
+    }
+
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     private var userId: String? = null
 
     init {
         userId = tokenProvider.getUserId()
     }
-    
-    // api 결과에 따른 이벤트 값
-    sealed class UiEvent {
-        object ReviewSuccess: UiEvent()
-        data class ReviewError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
     private var _rating = mutableIntStateOf(0)
     val rating: State<Int> = _rating
@@ -92,7 +89,7 @@ class ReviewWriteViewModel @Inject constructor(
 
             try {
                 val imageUrlList = imageUpload(context, imageList.value)
-                val result = repository.addReview(
+                repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
                         destinationId = travelId,
@@ -103,11 +100,13 @@ class ReviewWriteViewModel @Inject constructor(
                         customTagNames = hashTags.value
                     )
                 )
-                _eventFlow.emit(UiEvent.ReviewSuccess)
+                _uiEvent.trySend(UiEvent.ShowToast("리뷰 작성 성공"))
+//                delay(500) -> 채널의 버퍼를 지정하지 않으면 사이즈가 0이라 동시에 들어가면 무시될 수 있으나 버퍼를 지정하면 큐에 들어가기 때문에 딜레이 따로 넣을 필요 X
+                _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ReviewError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ReviewError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }

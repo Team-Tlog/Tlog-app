@@ -53,15 +53,18 @@ fun TbtiResultScreen(
     LaunchedEffect(Unit) {
         viewModel.fetchTbtiDescription(tbtiResult)
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Success -> {
-                    navController.navigate("main") {
-                        popUpTo(0)
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is UiEvent.Error -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -275,9 +278,9 @@ fun TbtiResultScreen(
                 onClick = {
                     if (viewModel.isUserId()) {
                         viewModel.updateTbti(tbtiValue)
-                        navController.popBackStack()
-                        navController.popBackStack()
-                        navController.navigate("myPage")
+//                        navController.popBackStack()
+//                        navController.popBackStack()
+//                        navController.navigate("myPage")
                     }
                     else
                         viewModel.registerUser(tbtiValue)

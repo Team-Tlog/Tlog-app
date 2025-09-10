@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.AutoSlidingImageRes
 import com.tlog.ui.component.share.MainButton
+import com.tlog.ui.navigation.Screen
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
 
@@ -106,7 +107,7 @@ fun TbtiIntroScreen(
                     ),
                     onClick = {
                         navController.popBackStack()
-                        navController.navigate("tbtiTest")
+                        navController.navigate(Screen.TbtiTest)
                     },
                     modifier = Modifier
                         .padding(horizontal = 24.dp)

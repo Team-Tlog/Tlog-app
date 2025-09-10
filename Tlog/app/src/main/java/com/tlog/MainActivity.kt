@@ -21,6 +21,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.kakao.vectormap.KakaoMapSdk
 import com.tlog.data.local.UserPreferences
 import com.tlog.ui.navigation.NavHost
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.beginning.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -103,9 +104,9 @@ class MainActivity : ComponentActivity() {
             } else {
                 val startScreen =
                     if (!userId.isNullOrBlank() && !accessToken.isNullOrBlank() && !refreshToken.isNullOrBlank()) {
-                        "main"
+                        Screen.Main
                     } else {
-                        "login"
+                        Screen.Login
                     }
                 NavHost(
                     navController = navController,
@@ -127,19 +128,23 @@ class MainActivity : ComponentActivity() {
                                 "2" -> {
                                     val linkType = intent.getStringExtra("linkType")
                                     Log.d("MainActivity", "linkType : $linkType")
+
                                     when (linkType) {
                                         "1" -> {} // mainScreen이라 놔둬도 됨
-                                        "2" -> navController.navigate("myPage")
+                                        "2" -> navController.navigate(Screen.MyPage)
                                         else -> {
                                             val linkAddress = intent.getStringExtra("linkAddress")
                                             Log.d("MainActivity", "linkAddress : $linkAddress")
 
-                                            when (linkType) {
-                                                "10" -> navController.navigate("travelInfo/$linkAddress")
-                                                "11" -> navController.navigate("snsPostDetail/$linkAddress")
-                                                "12" -> navController.navigate("snsMyPage/$linkAddress")
-                                                "13" -> {} // 채팅방 이동 (채팅방 생기면 ㄱㄱ)
-                                                else -> Log.d("MainActivity", "알림 타입 오류")
+                                            if (linkAddress != null) {
+
+                                                when (linkType) {
+                                                    "10" -> navController.navigate(Screen.TravelInfo(linkAddress))
+                                                    "11" -> navController.navigate(Screen.SnsPostDetail(linkAddress))
+                                                    "12" -> navController.navigate(Screen.SnsMyPage(linkAddress))
+                                                    "13" -> {} // 채팅방 이동 (채팅방 생기면 ㄱㄱ)
+                                                    else -> Log.d("MainActivity", "알림 타입 오류")
+                                                }
                                             }
                                         }
                                     }
@@ -147,12 +152,15 @@ class MainActivity : ComponentActivity() {
 
                                 "10" -> {
                                     val objectId = intent.getStringExtra("objectId")
-                                    navController.navigate("snsPostDetail/$objectId")
+
+                                    if (objectId != null)
+                                        navController.navigate(Screen.SnsPostDetail(objectId))
                                 }
 
                                 "11" -> {
                                     val actorId = intent.getStringExtra("actorId")
-                                    navController.navigate("snsMyPage/$actorId")
+                                    if (actorId != null)
+                                        navController.navigate(Screen.SnsMyPage(actorId))
                                 }
                             }
                         } catch (e: Exception) {

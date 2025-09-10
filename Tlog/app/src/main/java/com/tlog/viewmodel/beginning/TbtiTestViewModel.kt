@@ -13,11 +13,21 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.tbti.TbtiQuestion
+import com.tlog.ui.navigation.Screen
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
 ) : ViewModel() {
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
+    }
+
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private val _questions = mutableStateListOf<TbtiQuestion>()
 
@@ -58,8 +68,6 @@ class TbtiTestViewModel @Inject constructor(
     // 선택한 답변 인덱스를 저장
     val selectedAnswers = mutableListOf<Int?>()
 
-    private val _isTestFinished = mutableStateOf(false)
-    val isTestFinished: State<Boolean> get() = _isTestFinished
 
     val selectedIdx = mutableStateOf<Int?>(null)
 
@@ -210,7 +218,17 @@ class TbtiTestViewModel @Inject constructor(
             val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
 
             _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
-            _isTestFinished.value = true
+            _uiEvent.trySend(
+                UiEvent.Navigate(Screen.TbtiResult(
+                    _tbtiResult.value,
+                        sValue.value.toString(),
+                        eValue.value.toString(),
+                        lValue.value.toString(),
+                        aValue.value.toString()
+                    ),
+                    true
+                )
+            )
         }
     }
 }

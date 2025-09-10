@@ -61,13 +61,24 @@ fun TeamInfoInputScreen(
 
     LaunchedEffect(Unit) {
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.popBackStack()
-                    navController.popBackStack()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is UiEvent.ApiError -> {
+                // suspension point가 없어서 Screen이 종료되어도 코루틴이 쓰레드 풀에 올라가 있어서 여러 번 pop 할 수 있음
+                // if delay등 suspension point가 있다면? -> LaunchedEffect cancel 때문에 쓰레드 배정 중단
+                is UiEvent.PopBackStack -> {
+                    repeat(event.count) {
+                        if (navController.previousBackStackEntry != null)
+                            navController.popBackStack()
+                    }
+                }
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }

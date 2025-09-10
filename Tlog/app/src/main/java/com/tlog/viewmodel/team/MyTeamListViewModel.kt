@@ -8,9 +8,10 @@ import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -20,19 +21,22 @@ class MyTeamListViewModel @Inject constructor(
     private val teamRepository: TeamRepository,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false) : UiEvent
+        data class ShowToast(val message: String) : UiEvent
+    }
+
+    private val _eventFlow = Channel<UiEvent>(Channel.BUFFERED)
+    val eventFlow = _eventFlow.receiveAsFlow()
+
+
     private var userId: String? = null
 
     init {
         userId = tokenProvider.getUserId()
     }
 
-    sealed class UiEvent {
-        object ApiSuccess : UiEvent()
-        data class ApiError(val message: String) : UiEvent()
-    }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _teamList = mutableStateOf<List<Team>>(emptyList())
     val teamsList: State<List<Team>> = _teamList
@@ -43,16 +47,13 @@ class MyTeamListViewModel @Inject constructor(
             try {
                 val safeUserId = userId ?: return@launch
                 val result = teamRepository.getTeamList(safeUserId)
+
                 _teamList.value = result.data
-                when (result.status) {
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
-                }
+
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -60,19 +61,27 @@ class MyTeamListViewModel @Inject constructor(
     fun deleteTeam(teamId: String) {
         viewModelScope.launch {
             try {
-                val result = teamRepository.deleteTeam(teamId)
-                if (result.status == 200) {
-                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
-                    _eventFlow.emit(UiEvent.ApiSuccess)
-                } else {
-                    _eventFlow.emit(UiEvent.ApiError("삭제 실패: ${result.message}"))
-                }
+                teamRepository.deleteTeam(teamId)
+
+                _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _eventFlow.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
+    }
+
+    fun navToCreateTeam() {
+        _eventFlow.trySend(UiEvent.Navigate(Screen.CreateTeam))
+    }
+
+    fun navToTeamDetail(teamId: String) {
+        _eventFlow.trySend(UiEvent.Navigate(Screen.TeamDetail(teamId)))
+    }
+
+    fun navToJoinTeam() {
+        _eventFlow.trySend(UiEvent.Navigate(Screen.JoinTeam))
     }
 }
 

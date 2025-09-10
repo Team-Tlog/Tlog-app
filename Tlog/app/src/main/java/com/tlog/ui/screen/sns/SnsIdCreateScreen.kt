@@ -24,24 +24,28 @@ import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.sns.SNSIdViewModel
-import com.tlog.viewmodel.sns.SNSIdViewModel.UiEvent
+import com.tlog.viewmodel.sns.SnsIdViewModel
+import com.tlog.viewmodel.sns.SnsIdViewModel.UiEvent
 import com.tlog.R
 
 @Composable
 fun SnsIdCreateScreen(
-    viewModel: SNSIdViewModel = hiltViewModel(),
+    viewModel: SnsIdViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.navigate("snsMain")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }

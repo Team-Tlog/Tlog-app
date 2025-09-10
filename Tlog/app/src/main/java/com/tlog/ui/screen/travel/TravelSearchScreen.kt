@@ -26,6 +26,7 @@ import com.tlog.ui.component.travel.RecentSearches
 import com.tlog.ui.component.travel.SearchTravelItem
 import com.tlog.ui.component.travel.TravelCategoryGrid
 import com.tlog.viewmodel.share.SearchViewModel
+import com.tlog.viewmodel.share.SearchViewModel.UiEvent
 
 @Composable
 fun TravelSearchScreen(
@@ -35,9 +36,16 @@ fun TravelSearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SearchViewModel.UiEvent.Error -> {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -86,8 +94,9 @@ fun TravelSearchScreen(
             }
             else {
                 itemsIndexed(viewModel.searchResult.value) { index, item ->
-                    SearchTravelItem(travel = item, onClick = { travelId, travelName ->
-                        navController.navigate("travelInfo/${travelId}")
+                    SearchTravelItem(travel = item, onClick = { travelId, _ ->
+//                        navController.navigate("travelInfo/${travelId}")
+                        viewModel.navToTravelInfo(travelId)
                     })
                     if (index == viewModel.searchResult.value.lastIndex) {
                         Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백

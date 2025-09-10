@@ -35,6 +35,7 @@ import com.tlog.ui.component.login.LoginIcon
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.LoginViewModel
+import com.tlog.viewmodel.beginning.LoginViewModel.UiEvent
 
 @Composable
 fun LoginScreen(
@@ -50,18 +51,16 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         titleVisible = true
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                LoginViewModel.UiEvent.LoginSuccess ->  {
-                    Toast.makeText(context, "로그인 성공", Toast.LENGTH_SHORT).show()
-                    navController.navigate("main") {
-                            popUpTo("login") { inclusive = true }
+                is UiEvent.Navigate ->  {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                LoginViewModel.UiEvent.NewUser -> navController.navigate("tbtiIntro")
-                is LoginViewModel.UiEvent.LoginFailure -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }

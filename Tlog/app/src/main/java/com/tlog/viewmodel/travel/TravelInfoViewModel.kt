@@ -7,12 +7,13 @@ import com.tlog.data.api.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SearchOneDestinationRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -22,12 +23,13 @@ class TravelInfoViewModel @Inject constructor(
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
 ) : ViewModel() {
-    sealed class UiEvent {
-        data class Error(val message: String) : UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String) : UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private var userId: String? = null
 
@@ -52,9 +54,9 @@ class TravelInfoViewModel @Inject constructor(
                 val response = repository.getDestinationById(id)
                 _destinationDetail.value = response.data
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -64,14 +66,30 @@ class TravelInfoViewModel @Inject constructor(
             try {
                 scrapManager.toggleScrap(destinationId)
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
 
     fun isScraped(destinationId: String): Boolean {
         return scrapManager.isScraped(destinationId)
+    }
+
+    fun navToTravelInfo(travelId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.TravelInfo(travelId)))
+    }
+
+    fun navToSnsMyPage(userId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMyPage(userId)))
+    }
+
+    fun navToReviewWrite(travelId: String, destinationName: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.ReviewWrite(travelId, destinationName)))
+    }
+
+    fun navToReviewList(travelId: String, destinationName: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.ReviewList(travelId, destinationName)))
     }
 }

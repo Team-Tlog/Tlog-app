@@ -7,26 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
-class SNSIdViewModel @Inject constructor(
+class SnsIdViewModel @Inject constructor(
     private val repository: SnsRepository,
     private val userPreferences: UserPreferences
 ) : ViewModel() {
 
-    sealed class UiEvent {
-        object ApiSuccess : UiEvent()
-        data class ApiError(val message: String) : UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     // 입력된 ID
     private val _snsId = mutableStateOf("")
@@ -43,11 +44,12 @@ class SNSIdViewModel @Inject constructor(
                 repository.updateSnsId(id)
 
                 userPreferences.setSnsId(id)
-                _eventFlow.emit(UiEvent.ApiSuccess)
+
+                _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMain, true))
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }

@@ -38,6 +38,7 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.travel.SearchTravelList
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
+import com.tlog.viewmodel.share.SearchViewModel.UiEvent
 
 
 @Composable
@@ -48,9 +49,16 @@ fun ReviewSearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is SearchViewModel.UiEvent.Error -> {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -100,7 +108,7 @@ fun ReviewSearchScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .clickable {
-                                navController.navigate("addTravel")
+                                viewModel.navToAddTravel()
                             }
                     ) {
                         Image(
@@ -126,7 +134,7 @@ fun ReviewSearchScreen(
                 SearchTravelList(
                     travelList = viewModel.searchResult.value,
                     onClick = { travelId, travelName ->
-                        navController.navigate("review/$travelId/$travelName")
+                        viewModel.navToReviewWrite(travelId, travelName)
                     }
                 )
             }
