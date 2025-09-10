@@ -9,9 +9,10 @@ import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.TravelPlan
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TeamRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.time.LocalDate
@@ -24,21 +25,21 @@ class TeamInfoViewModel @Inject constructor(
     private val repository: TeamRepository,
     tokenProvider: TokenProvider
 ) : ViewModel() {
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class PopBackStack(val count: Int = 1): UiEvent
+        data class ShowToast(val message: String): UiEvent
+    }
+
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
+
+
     private var userId: String? = null
 
     init {
         userId = tokenProvider.getUserId()
     }
-
-    sealed class UiEvent {
-        object ApiSuccess: UiEvent()
-        data class ApiError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
-
 
     private val _city = mutableStateOf("지역")
     val city: State<String> = _city
@@ -139,11 +140,11 @@ class TeamInfoViewModel @Inject constructor(
                         )
                     )
                 )
-                _eventFlow.emit(UiEvent.ApiSuccess)
+                _uiEvent.trySend(UiEvent.PopBackStack(2))
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
