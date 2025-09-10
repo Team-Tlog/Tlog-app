@@ -7,13 +7,15 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -23,12 +25,14 @@ import javax.inject.Inject
 class SnsSearchViewModel @Inject constructor(
     private val repository: SnsRepository
 ): ViewModel() {
-    sealed class UiEvent {
-        data class Error(val message: String): UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     private var _searchText = MutableStateFlow("")
     val searchText = _searchText
 
@@ -61,9 +65,9 @@ class SnsSearchViewModel @Inject constructor(
                 lastPostId = response.data.content[response.data.content.size - 1].postId
 
         } catch (e: HttpException) {
-            eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
         } catch (e: Exception) {
-            eventFlow.emit(UiEvent.Error(e.toErrorMessage()))
+            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
         }
     }
 
@@ -76,5 +80,9 @@ class SnsSearchViewModel @Inject constructor(
 
     fun checkSearchText(): Boolean {
         return searchText.value.isNotBlank()
+    }
+
+    fun navToPostDetail(postId: String) {
+        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsPostDetail(postId)))
     }
 }

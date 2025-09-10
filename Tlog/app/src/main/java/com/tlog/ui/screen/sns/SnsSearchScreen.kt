@@ -21,7 +21,9 @@ import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.travel.RecentSearches
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.sns.SnsSearchViewModel
+import com.tlog.viewmodel.sns.SnsSearchViewModel.UiEvent
 
 
 @Composable
@@ -32,9 +34,16 @@ fun SnsSearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
-            when(event) {
-                is SnsSearchViewModel.UiEvent.Error -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(Screen.Main) { inclusive = false }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -72,7 +81,7 @@ fun SnsSearchScreen(
                     PostsGrid(
                         postList = viewModel.searchResult.value,
                         onClick = { postId ->
-                            navController.navigate("snsPostDetail/$postId")
+                            viewModel.navToPostDetail(postId)
                         }
                     )
             }
