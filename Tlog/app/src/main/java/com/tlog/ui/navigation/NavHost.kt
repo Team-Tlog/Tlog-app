@@ -6,11 +6,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import androidx.navigation.navArgument
@@ -39,7 +37,7 @@ import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
-import com.tlog.ui.screen.team.TeamJoinByCode
+import com.tlog.ui.screen.team.TeamJoinScreen
 import com.tlog.ui.screen.team.TeamCreateScreen
 import com.tlog.ui.screen.team.TeamInfoInputScreen
 import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
@@ -138,7 +136,7 @@ fun NavHost(
             val args = backStackEntry.toRoute<Screen.TeamDetail>()
             TeamDetailScreen(teamId = args.teamId)
         }
-        composable<Screen.JoinTeam> { TeamJoinByCode(navController = navController) }
+        composable<Screen.JoinTeam> { TeamJoinScreen(navController = navController) }
 
         // Search
         composable<Screen.Search> { TravelSearchScreen(navController = navController) }
@@ -304,7 +302,7 @@ fun NavHost(
             TeamDetailScreen(teamId = teamId)
         }
         composable("joinTeam") {
-            TeamJoinByCode(navController = navController)
+            TeamJoinScreen(navController = navController)
         }
 
 
