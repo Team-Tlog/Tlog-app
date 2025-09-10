@@ -12,10 +12,11 @@ import com.tlog.data.model.share.Location
 import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.util.UUID
@@ -25,13 +26,13 @@ class AddTravelViewModel @Inject constructor(
     private val repository: AddTravelRepository,
     tokenProvider: TokenProvider
 ): ViewModel() {
-    sealed class UiEvent {
-        object ApiSuccess: UiEvent()
-        data class ApiError(val message: String): UiEvent()
+    sealed interface UiEvent {
+        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
+        data class ShowToast(val message: String): UiEvent
     }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     private var userId: String? = null
 
@@ -97,11 +98,14 @@ class AddTravelViewModel @Inject constructor(
                         customTags = hashTags.value
                     )
                 )
-                _eventFlow.emit(UiEvent.ApiSuccess)
+                clearImages()
+                clearHashTags()
+                _uiEvent.trySend(UiEvent.ShowToast("여행지 등록 성공"))
+                _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
             } catch (e: HttpException) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError(e.toErrorMessage()))
+                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
         }
     }
@@ -135,7 +139,7 @@ class AddTravelViewModel @Inject constructor(
         _hashTags.value += hashTag
     }
 
-    fun clearHashTags() {
+    private fun clearHashTags() {
         _hashTags.value = emptyList()
     }
 
@@ -143,7 +147,7 @@ class AddTravelViewModel @Inject constructor(
         _imageUri.value = uri
     }
 
-    fun clearImages() {
+    private fun clearImages() {
         _imageUri.value = Uri.EMPTY
     }
 
