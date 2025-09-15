@@ -27,7 +27,7 @@ import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelListViewModel
-import com.tlog.viewmodel.travel.TravelListViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalContext
 
@@ -76,6 +76,7 @@ fun TravelListScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

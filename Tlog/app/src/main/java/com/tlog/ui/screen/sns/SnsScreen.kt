@@ -20,7 +20,7 @@ import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.sns.SnsViewModel
-import com.tlog.viewmodel.sns.SnsViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -41,6 +41,7 @@ fun SnsScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

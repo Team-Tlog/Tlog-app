@@ -35,7 +35,7 @@ import com.tlog.ui.component.login.LoginIcon
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.LoginViewModel
-import com.tlog.viewmodel.beginning.LoginViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun LoginScreen(
@@ -61,6 +61,7 @@ fun LoginScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

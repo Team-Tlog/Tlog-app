@@ -14,18 +14,17 @@ import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.RetryButton
 import com.tlog.ui.style.BodyTitle
-import com.tlog.viewmodel.tmp.TmpCartViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun AiRecommendCourseResultScreen(
-    viewModel: TmpCartViewModel = viewModel()
+//    viewModel: TmpCartViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+//    val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
 
     // 도시별로 묶기
-    val cityGrouped = travelList.groupBy { it.city }
+//    val cityGrouped = travelList.groupBy { it.city }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -69,21 +68,21 @@ fun AiRecommendCourseResultScreen(
                 Spacer(modifier = Modifier.height(41.dp))
             }
 
-            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
-                item {
-                    CityTravelList(
-                        city = city,
-                        travelItems = list,
-                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-                        onDeleteClick = { travelItem ->
-                            // 여행지 삭제 로직
-                        },
-                        onUpdateChecked = { i, checked ->
-                            viewModel.updateChecked(i, checked)
-                        }
-                    )
-                }
-            }
+//            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+//                item {
+//                    CityTravelList(
+//                        city = city,
+//                        travelItems = list,
+//                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
+//                        onDeleteClick = { travelItem ->
+//                            // 여행지 삭제 로직
+//                        },
+//                        onUpdateChecked = { i, checked ->
+//                            viewModel.updateChecked(i, checked)
+//                        }
+//                    )
+//                }
+//            }
 
         }
 

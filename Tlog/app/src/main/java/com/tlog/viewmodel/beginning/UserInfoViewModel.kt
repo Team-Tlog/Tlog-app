@@ -1,10 +1,10 @@
 package com.tlog.viewmodel.beginning
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 
 
-class UserInfoViewModel: ViewModel() {
+class UserInfoViewModel: BaseViewModel() {
 
     private var _nickname = mutableStateOf("")
     val nickname = _nickname

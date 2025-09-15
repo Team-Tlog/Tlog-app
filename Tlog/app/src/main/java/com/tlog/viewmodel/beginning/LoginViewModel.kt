@@ -2,8 +2,7 @@ package com.tlog.viewmodel.beginning
 
 import android.content.Context
 import android.content.Intent
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
@@ -14,30 +13,19 @@ import com.tlog.data.api.FcmTokenBody
 import com.tlog.data.api.FirebaseTokenData
 import com.tlog.data.api.LoginRequest
 import com.tlog.data.local.UserPreferences
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import retrofit2.Response
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
-) : ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
 
 
@@ -71,15 +59,15 @@ class LoginViewModel @Inject constructor(
                     }
                 }
         } catch (e: Exception) {
-            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+            showToast(e.message ?: "Google 로그인 실패")
 //            Log.e("LoginViewModel", "Google 로그인 실패 : ${e.message}", e)
         }
     }
 
     // 서버로 로그인 요청
     fun loginToServer(type: String, socialAccessToken: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val request = LoginRequest(type = type, accessToken = socialAccessToken)
                 val response: Response<BaseResponse<FirebaseTokenData>> = loginApi.ssoLogin(request)
                 val firebaseCustomToken = response.body()?.data?.firebaseCustomToken
@@ -103,25 +91,21 @@ class LoginViewModel @Inject constructor(
                                     firebaseToken = fcmToken
                                 )
                             )
-                        _uiEvent.trySend(UiEvent.ShowToast("로그인 성공!!"))
-                        _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
+                        showToast("로그인 성공!!")
+                        navigate(Screen.Main, true)
                     } else {
-                        _uiEvent.trySend(UiEvent.ShowToast("로그인 실패 (토큰 x)"))
+                        showToast("로그인 실패 (토큰 x)")
                     }
                 } else {
                     if (response.code() == 404) {
-                        _uiEvent.trySend(UiEvent.ShowToast("신규회원 TBTI 테스트 진행"))
-                        _uiEvent.trySend(UiEvent.Navigate(Screen.TbtiIntro))
+                        showToast("신규회원 TBTI 테스트 진행")
+                        navigate(Screen.TbtiIntro)
                     } else {
-                        _uiEvent.trySend(UiEvent.ShowToast("로그인 실패"))
+                        showToast("로그인 실패")
                     }
                 }
-            } catch (e: HttpException) {
-               _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 

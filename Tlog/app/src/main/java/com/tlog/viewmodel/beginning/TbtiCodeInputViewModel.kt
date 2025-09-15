@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 
-class TbtiCodeInputViewModel : ViewModel() {
+class TbtiCodeInputViewModel : BaseViewModel() {
 
     val codeError = mutableStateOf(false)
     val isCodeValid = mutableStateOf(false)

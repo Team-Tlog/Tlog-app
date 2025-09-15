@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.tbti.TbtiQuestionSection
 import com.tlog.viewmodel.beginning.TbtiTestViewModel
-import com.tlog.viewmodel.beginning.TbtiTestViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun TbtiTestScreen(
@@ -49,6 +49,7 @@ fun TbtiTestScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

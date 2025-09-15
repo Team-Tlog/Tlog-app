@@ -26,7 +26,7 @@ import com.tlog.ui.component.travel.RecentSearches
 import com.tlog.ui.component.travel.SearchTravelItem
 import com.tlog.ui.component.travel.TravelCategoryGrid
 import com.tlog.viewmodel.share.SearchViewModel
-import com.tlog.viewmodel.share.SearchViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun TravelSearchScreen(
@@ -48,6 +48,7 @@ fun TravelSearchScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

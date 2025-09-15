@@ -1,20 +1,14 @@
 package com.tlog.viewmodel.sns
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -23,14 +17,7 @@ class SnsViewModel @Inject constructor(
     private val repository: SnsRepository,
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
     private var userId: String? = ""
 
@@ -51,45 +38,36 @@ class SnsViewModel @Inject constructor(
 
 
     fun getSnsPost() {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val result = repository.getFollowingPostList(lastPostId = lastPostId, size = size)
                 _postList.value = result.data.content
                 lastPostId = _postList.value[result.data.size - 1].postId
-            } catch(e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch(e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
-
+        )
     }
 
     fun followUser(toUserId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 followManager.followUser(toUserId)
-            } catch(e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch(e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     fun navToSnsMyPage(userId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMyPage(userId)))
+        navigate(Screen.SnsMyPage(userId))
     }
 
     fun navToSnsPostDetail(postId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsPostDetail(postId)))
+        navigate(Screen.SnsPostDetail(postId))
     }
 
     fun navToSnsSearch() {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsSearch))
+        navigate(Screen.SnsSearch)
     }
 
     fun navToNotification() {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.Notification))
+        navigate(Screen.Notification)
     }
 }

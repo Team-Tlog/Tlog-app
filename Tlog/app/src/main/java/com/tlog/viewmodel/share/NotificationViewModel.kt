@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.tlog.data.model.notification.NotificationData
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class NotificationViewModel @Inject constructor (): ViewModel() {
+class NotificationViewModel @Inject constructor (): BaseViewModel() {
     init {
         //fetchNotifications()
     }

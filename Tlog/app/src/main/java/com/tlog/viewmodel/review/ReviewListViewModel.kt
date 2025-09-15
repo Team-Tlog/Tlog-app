@@ -1,22 +1,16 @@
 package com.tlog.viewmodel.review
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableDoubleStateOf
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.navigation.Screen
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import retrofit2.HttpException
 import java.util.Locale
 
 
@@ -24,14 +18,7 @@ import java.util.Locale
 class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
     private val _reviewList = mutableStateOf<List<Review>>(emptyList())
     val reviewList: State<List<Review>> = _reviewList
@@ -69,8 +56,8 @@ class ReviewListViewModel @Inject constructor(
             else -> "RECENT"
         }
     ) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getReviewList(
                     travelId = id,
                     sortType = sortType,
@@ -81,13 +68,9 @@ class ReviewListViewModel @Inject constructor(
                 _ratingDistribution.value = response.data.ratingDistribution
                 _reviewList.value = response.data.reviews.content
                 getRating(reviewCount = response.data.ratingDistribution)
-            }
-            catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
-            }
-        }
+            },
+            onError = { showToast("[리뷰] $it") }
+        )
     }
 
     private fun getRating(reviewCount: Map<String, Int>) {
@@ -119,8 +102,8 @@ class ReviewListViewModel @Inject constructor(
     ) {
         if (isLastPage) return
         page++
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getReviewList(
                     travelId = id,
                     sortType = sortType,
@@ -131,25 +114,18 @@ class ReviewListViewModel @Inject constructor(
 
                 isLastPage = response.data.reviews.last
                 _reviewList.value += response.data.reviews.content
-
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast("[리뷰] ${e.toErrorMessage()}"))
-            }
-        }
+            },
+            onError = { showToast("[리뷰] $it") }
+        )
     }
 
     fun toggleScrap(destinationId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 scrapManager.toggleScrap(destinationId)
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast("[스크랩] ${e.toErrorMessage()}"))
-            }
-        }
+            },
+            onError = { showToast("[스크랩] $it") }
+        )
     }
 
     fun isScraped(destinationId: String): Boolean {
@@ -157,10 +133,10 @@ class ReviewListViewModel @Inject constructor(
     }
 
     fun navToReviewWrite(travelId: String, travelName: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.ReviewWrite(travelId, travelName)))
+        navigate(Screen.ReviewWrite(travelId, travelName))
     }
 
     fun navToSnsMyPage(userId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMyPage(userId)))
+        navigate(Screen.SnsMyPage(userId))
     }
 }

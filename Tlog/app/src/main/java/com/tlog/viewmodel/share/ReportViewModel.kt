@@ -2,7 +2,7 @@ package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -10,7 +10,7 @@ import jakarta.inject.Inject
 @HiltViewModel
 class ReportViewModel @Inject constructor(
 
-): ViewModel() {
+): BaseViewModel() {
     private var _title = mutableStateOf("")
     val title: State<String> = _title
 

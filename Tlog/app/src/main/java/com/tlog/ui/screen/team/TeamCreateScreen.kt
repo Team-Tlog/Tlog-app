@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
@@ -46,6 +46,7 @@ fun TeamCreateScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

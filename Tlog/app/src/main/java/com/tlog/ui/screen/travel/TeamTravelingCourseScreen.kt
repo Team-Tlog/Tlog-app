@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.share.BottomBar
-import com.tlog.viewmodel.tmp.TmpCartViewModel
 import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -17,10 +16,10 @@ import com.tlog.ui.component.travel.TravelingCourse
 @Composable
 fun TeamTravelingCourseScreen(
     navController: NavController,
-    viewModel: TmpCartViewModel = viewModel(),
+//    viewModel: TmpCartViewModel = viewModel(),
     teamViewModel: TeamDetailViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+//    val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
     var selectedTab by remember { mutableStateOf(1) }
 
@@ -34,11 +33,11 @@ fun TeamTravelingCourseScreen(
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
         TravelingCourse(
-            travelList = travelList,
+            travelList = emptyList(),
             selectedDay = selectedDay,
             onDaySelected = { selectedDay = it },
             onUpdateChecked = { i, checked ->
-                viewModel.updateChecked(i, checked)
+//                viewModel.updateChecked(i, checked)
             },
             topContent = {
                 Spacer(modifier = Modifier.height(13.dp))

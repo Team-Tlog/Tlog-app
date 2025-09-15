@@ -4,27 +4,21 @@ import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 import android.net.Uri
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.user.User
 import com.tlog.ui.navigation.Screen
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import retrofit2.HttpException
 import kotlin.String
 
 @HiltViewModel
@@ -32,14 +26,7 @@ class MyPageViewModel @Inject constructor(
     private val myPageRepository: MyPageRepository,
     private val tokenProvider: TokenProvider,
     private val userPreferences: UserPreferences
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
 
     private val _notification = mutableStateOf(true)
@@ -63,36 +50,25 @@ class MyPageViewModel @Inject constructor(
 
 
     private fun getUserInfo() {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 _userInfo.value =  myPageRepository.getUserInfo().data
-
                 _getUserInfo.value = true
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     // 로그아웃
     fun logout() {
         val refreshToken = tokenProvider.getRefreshToken() ?: ""
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 myPageRepository.logout(refreshToken)
-
-                _uiEvent.trySend(UiEvent.ShowToast("로그아웃 성공"))
-                _uiEvent.trySend(UiEvent.Navigate(Screen.Login, true))
-
+                showToast("로그아웃 성공")
+                navigate(Screen.Login, true)
                 userPreferences.clearTokens()
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     fun changeNotification() {
@@ -108,8 +84,8 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun updateProfileImage(context: Context ){
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrl = imageUpload(context, imageUri.value.toUri())
 
                 myPageRepository.updateProfileImage(
@@ -119,17 +95,12 @@ class MyPageViewModel @Inject constructor(
                 )
 
                 getUserInfo()
-
-                _uiEvent.trySend(UiEvent.ShowToast("프로필 사진 변경 성공"))
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                showToast("프로필 사진 변경 성공")
             }
-        }
+        )
     }
 
     fun navToTbtiTest() {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.TbtiIntro))
+        navigate(Screen.TbtiIntro)
     }
 }

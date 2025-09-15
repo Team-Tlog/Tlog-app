@@ -5,36 +5,25 @@ import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import coil.network.HttpException
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.launch
 import java.util.UUID
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.ui.navigation.Screen
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @HiltViewModel
 class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
     private var userId: String? = null
 
@@ -84,10 +73,10 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun addReview(context: Context, travelId: String) {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
+        val safeUserId = userId ?: return // null이면 return
 
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrlList = imageUpload(context, imageList.value)
                 repository.addReview(
                     ReviewRequest(
@@ -100,15 +89,10 @@ class ReviewWriteViewModel @Inject constructor(
                         customTagNames = hashTags.value
                     )
                 )
-                _uiEvent.trySend(UiEvent.ShowToast("리뷰 작성 성공"))
-//                delay(500) -> 채널의 버퍼를 지정하지 않으면 사이즈가 0이라 동시에 들어가면 무시될 수 있으나 버퍼를 지정하면 큐에 들어가기 때문에 딜레이 따로 넣을 필요 X
-                _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                showToast("리뷰 작성 성공")
+                navigate(Screen.Main, true)
             }
-        }
+        )
     }
 
     fun inputCheck(): Int {

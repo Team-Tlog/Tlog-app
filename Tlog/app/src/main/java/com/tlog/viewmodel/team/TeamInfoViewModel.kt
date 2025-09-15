@@ -2,19 +2,13 @@ package com.tlog.viewmodel.team
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.TravelPlan
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.collections.set
@@ -24,15 +18,7 @@ import kotlin.collections.set
 class TeamInfoViewModel @Inject constructor(
     private val repository: TeamRepository,
     tokenProvider: TokenProvider
-) : ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class PopBackStack(val count: Int = 1): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
 
     private var userId: String? = null
@@ -119,10 +105,10 @@ class TeamInfoViewModel @Inject constructor(
     }
 
     fun createTeam(teamName: String) {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
+        val safeUserId = userId ?: return // null이면 return
 
-            try {
+        launchSafeCall(
+            action = {
                 repository.createTeam(
                     CreateTeamRequest( //data에 팀아이디가 옴
                         name = teamName,
@@ -140,12 +126,9 @@ class TeamInfoViewModel @Inject constructor(
                         )
                     )
                 )
-                _uiEvent.trySend(UiEvent.PopBackStack(2))
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                showToast("팀이 생성되었습니다")
+                popBackStack(2)
             }
-        }
+        )
     }
 }

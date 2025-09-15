@@ -5,32 +5,18 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamJoinViewModel @Inject constructor(
     private val repository: TeamRepository,
     tokenProvider: TokenProvider
-) : ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class PopBackStack(val count: Int = 1): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
     private var userId: String? = null
 
@@ -39,20 +25,17 @@ class TeamJoinViewModel @Inject constructor(
     }
 
     fun joinTeam() {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch
-            val code = textList.joinToString(separator = "") { it.value.text }
+        val safeUserId = userId ?: return
+        val code = textList.joinToString(separator = "") { it.value.text }
 
-            try {
+        launchSafeCall(
+            action = {
                 repository.joinTeam(userId = safeUserId, teamCode = code)
 
-                _uiEvent.trySend(UiEvent.PopBackStack())
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                popBackStack(1)
+                showToast("팀 참여 성공")
             }
-        }
+        )
     }
 
 

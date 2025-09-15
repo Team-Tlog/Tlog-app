@@ -46,7 +46,7 @@ import com.tlog.viewmodel.share.ScrapAndCartViewModel
 import com.tlog.R
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.ScrapAndCartViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -67,6 +67,7 @@ fun ScrapAndCartScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

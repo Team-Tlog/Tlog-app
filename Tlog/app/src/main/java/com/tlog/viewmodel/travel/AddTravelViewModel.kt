@@ -3,36 +3,23 @@ package com.tlog.viewmodel.travel
 import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import androidx.compose.runtime.State
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.AddTravelRequest
 import com.tlog.data.model.share.Location
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import java.util.UUID
 
 @HiltViewModel
 class AddTravelViewModel @Inject constructor(
     private val repository: AddTravelRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
     private var userId: String? = null
 
@@ -77,10 +64,10 @@ class AddTravelViewModel @Inject constructor(
         }
 
     fun addNewTravel(context: Context) {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch
+        val safeUserId = userId ?: return
 
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrl = imageUpload(context, imageUri.value, "city", "district")
 
                 repository.addTravel(
@@ -100,14 +87,10 @@ class AddTravelViewModel @Inject constructor(
                 )
                 clearImages()
                 clearHashTags()
-                _uiEvent.trySend(UiEvent.ShowToast("여행지 등록 성공"))
-                _uiEvent.trySend(UiEvent.Navigate(Screen.Main, true))
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                showToast("여행지 등록 성공")
+                navigate(Screen.Main, true)
             }
-        }
+        )
     }
 
 

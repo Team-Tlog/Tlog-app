@@ -2,32 +2,18 @@ package com.tlog.viewmodel.sns
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @HiltViewModel
 class SnsIdViewModel @Inject constructor(
     private val repository: SnsRepository,
     private val userPreferences: UserPreferences
-) : ViewModel() {
-
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
     // 입력된 ID
     private val _snsId = mutableStateOf("")
@@ -39,19 +25,13 @@ class SnsIdViewModel @Inject constructor(
 
 
     fun updateSnsId(id: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 repository.updateSnsId(id)
-
                 userPreferences.setSnsId(id)
-
-                _uiEvent.trySend(UiEvent.Navigate(Screen.SnsMain, true))
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+                navigate(Screen.SnsMain, true)
             }
-        }
+        )
     }
 
 
