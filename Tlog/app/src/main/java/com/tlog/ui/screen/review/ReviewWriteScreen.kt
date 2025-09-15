@@ -50,7 +50,7 @@ import com.tlog.ui.component.review.ReviewNoticeDialog
 import com.tlog.ui.component.share.BottomLineInputField
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -79,6 +79,7 @@ fun ReviewWriteScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

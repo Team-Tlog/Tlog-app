@@ -33,7 +33,7 @@ import com.tlog.ui.component.travel.review.ReviewHeader
 import com.tlog.ui.component.travel.review.ReviewList
 import com.tlog.ui.component.travel.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
-import com.tlog.viewmodel.review.ReviewListViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -63,6 +63,7 @@ fun ReviewListScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
 

@@ -2,19 +2,13 @@ package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 
@@ -22,14 +16,7 @@ import javax.inject.Inject
 class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
 
 
@@ -48,15 +35,11 @@ class ScrapAndCartViewModel @Inject constructor(
     }
 
     fun fetchCart() {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 _cartList.value = repository.getUserCart(userId)
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     private var _selectedTab = mutableStateOf("스크랩")
@@ -69,22 +52,18 @@ class ScrapAndCartViewModel @Inject constructor(
 
 
     fun fetchScrapList() {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 _scrapList.value = repository.getUserScrap(userId)
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 
 
     fun deleteSelectedItems(selectedTab: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 checkedTravelList.value.forEach { destName ->
                     if (selectedTab == "스크랩") {
                         val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
@@ -100,31 +79,22 @@ class ScrapAndCartViewModel @Inject constructor(
                 } else {
                     fetchCart()
                 }
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 
     fun addSelectedTravelToCart() {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 checkedTravelList.value.forEach { destName ->
                     val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
                     repository.addDestinationToCart(userId, destinationId)
                 }
                 clearChecked()
-
                 fetchCart()
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 
@@ -162,7 +132,7 @@ class ScrapAndCartViewModel @Inject constructor(
     }
 
     fun navToTravelInfo(travelId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.TravelInfo(travelId)))
+        navigate(Screen.TravelInfo(travelId))
     }
 }
 

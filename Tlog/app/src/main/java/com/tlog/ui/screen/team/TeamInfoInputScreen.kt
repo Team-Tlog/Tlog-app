@@ -47,7 +47,7 @@ import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.team.TeamInfoViewModel
-import com.tlog.viewmodel.team.TeamInfoViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 

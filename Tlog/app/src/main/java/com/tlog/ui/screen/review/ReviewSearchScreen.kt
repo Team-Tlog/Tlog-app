@@ -38,7 +38,7 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.travel.SearchTravelList
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
-import com.tlog.viewmodel.share.SearchViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -61,6 +61,7 @@ fun ReviewSearchScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

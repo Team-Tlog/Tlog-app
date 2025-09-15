@@ -34,7 +34,7 @@ import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.sns.SnsMyPageViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun SnsProfileScreen(
@@ -59,6 +59,7 @@ fun SnsProfileScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

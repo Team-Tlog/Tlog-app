@@ -1,11 +1,11 @@
 package com.tlog.viewmodel.share
 
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.model.notification.TsnsNotificationData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class TsnsNotificationViewModel : ViewModel() {
+class TsnsNotificationViewModel : BaseViewModel() {
 
     private val _tsnsNotifications = MutableStateFlow<List<TsnsNotificationData>>(emptyList())
     val tsnsNotifications: StateFlow<List<TsnsNotificationData>> = _tsnsNotifications

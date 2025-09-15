@@ -21,7 +21,7 @@ import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
-import com.tlog.viewmodel.travel.TravelInfoViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import kotlin.math.floor
 
 @Composable
@@ -47,6 +47,7 @@ fun TravelDetailScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

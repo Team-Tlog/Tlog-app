@@ -2,36 +2,25 @@ package com.tlog.viewmodel.sns
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.api.SnsPostPreview
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.receiveAsFlow
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import javax.inject.Inject
 
 
 @HiltViewModel
 class SnsSearchViewModel @Inject constructor(
     private val repository: SnsRepository
-): ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+): BaseViewModel() {
 
     private var _searchText = MutableStateFlow("")
     val searchText = _searchText
@@ -64,10 +53,8 @@ class SnsSearchViewModel @Inject constructor(
             if (response.data.content.isNotEmpty()) // content가 비었을 때 예외 처리
                 lastPostId = response.data.content[response.data.content.size - 1].postId
 
-        } catch (e: HttpException) {
-            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
         } catch (e: Exception) {
-            _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
+            showToast(e.message ?: "검색 중 오류가 발생했습니다")
         }
     }
 
@@ -83,6 +70,6 @@ class SnsSearchViewModel @Inject constructor(
     }
 
     fun navToPostDetail(postId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.SnsPostDetail(postId)))
+        navigate(Screen.SnsPostDetail(postId))
     }
 }

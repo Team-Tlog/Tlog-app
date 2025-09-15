@@ -3,15 +3,13 @@ package com.tlog.viewmodel.share
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -19,7 +17,7 @@ import javax.inject.Inject
 class MapViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
+): BaseViewModel() {
     var userId: String = ""
 
     private var _cartList = mutableStateOf<List<Cart>?>(null)
@@ -38,25 +36,23 @@ class MapViewModel @Inject constructor(
     }
 
     fun fetchScrapList(userId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val result = repository.getUserScrap(userId)
                 _scrapList.value = result
-            } catch (e: Exception) {
-                Log.d("MapViewModel", e.message.toString())
-            }
-        }
+            },
+            onError = { Log.d("MapViewModel", it) }
+        )
     }
 
     fun fetchCartList(userId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val result = repository.getUserCart(userId)
                 _cartList.value = result
-            } catch (e: Exception) {
-                Log.d("MapViewModel", e.message.toString())
-            }
-        }
+            },
+            onError = { Log.d("MapViewModel", it) }
+        )
     }
 
     fun updateCurrentLocation(latitude: Double, longitude: Double) {

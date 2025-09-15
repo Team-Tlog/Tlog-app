@@ -53,7 +53,7 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
-import com.tlog.viewmodel.sns.SnsDetailViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -77,6 +77,7 @@ fun SnsDetailScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

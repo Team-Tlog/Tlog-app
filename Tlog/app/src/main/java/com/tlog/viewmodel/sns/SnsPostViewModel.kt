@@ -3,12 +3,12 @@ package com.tlog.viewmodel.sns
 import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.R
 import com.tlog.data.model.sns.TravelCourse
 
 
-class SnsPostViewModel: ViewModel() {
+class SnsPostViewModel: BaseViewModel() {
     private var _recentTravelCourses = mutableStateOf<List<TravelCourse>>(
         listOf(
             TravelCourse(

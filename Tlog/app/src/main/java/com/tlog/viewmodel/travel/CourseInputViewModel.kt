@@ -2,10 +2,10 @@ package com.tlog.viewmodel.travel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import java.time.LocalDate
 
-class CourseInputViewModel: ViewModel() {
+class CourseInputViewModel: BaseViewModel() {
     private val _city = mutableStateOf("지역")
     val city: State<String> = _city
 

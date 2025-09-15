@@ -17,7 +17,7 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.team.TeamCard
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.team.MyTeamListViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.team.MyTeamListViewModel
 
 @Composable
@@ -30,7 +30,7 @@ fun MyTeamListScreen(
     LaunchedEffect(Unit) {
         viewModel.fetchTeamsFromServer()
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
                     navController.navigate(event.target) {
@@ -40,6 +40,7 @@ fun MyTeamListScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

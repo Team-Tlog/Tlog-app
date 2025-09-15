@@ -25,7 +25,7 @@ import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.SnsIdViewModel
-import com.tlog.viewmodel.sns.SnsIdViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.R
 
 @Composable
@@ -48,6 +48,7 @@ fun SnsIdCreateScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

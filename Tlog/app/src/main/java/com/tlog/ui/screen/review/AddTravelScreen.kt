@@ -40,7 +40,7 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.share.TwoColumnRadioGroup
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.AddTravelViewModel
-import com.tlog.viewmodel.travel.AddTravelViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -63,6 +63,7 @@ fun AddTravelScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

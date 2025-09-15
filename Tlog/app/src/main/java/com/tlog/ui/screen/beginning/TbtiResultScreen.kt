@@ -31,7 +31,7 @@ import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
 import com.tlog.data.model.share.Tbti
-import com.tlog.viewmodel.beginning.TbtiResultViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun TbtiResultScreen(
@@ -67,6 +67,7 @@ fun TbtiResultScreen(
                 is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

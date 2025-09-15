@@ -22,7 +22,7 @@ import com.tlog.R
 import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.travel.RecentSearches
 import com.tlog.viewmodel.sns.SnsSearchViewModel
-import com.tlog.viewmodel.sns.SnsSearchViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -43,6 +43,7 @@ fun SnsSearchScreen(
                     }
                 }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }

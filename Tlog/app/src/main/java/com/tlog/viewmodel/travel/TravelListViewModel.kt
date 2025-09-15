@@ -1,36 +1,24 @@
 package com.tlog.viewmodel.travel
 
 import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.repository.TravelListRepository
 import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import retrofit2.HttpException
 
 @HiltViewModel
 class TravelListViewModel @Inject constructor(
     private val repository: TravelListRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
-) : ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
@@ -49,10 +37,12 @@ class TravelListViewModel @Inject constructor(
 
 
     fun initUserIdAndScrapList() {
-        viewModelScope.launch {
-            userId?.let { scrapManager.refreshScrapList(it) }
-            scrapManager.init()
-        }
+        launchSafeCall(
+            action = {
+                userId?.let { scrapManager.refreshScrapList(it) }
+                scrapManager.init()
+            }
+        )
     }
 
     fun setCategory(category: String) {
@@ -70,15 +60,11 @@ class TravelListViewModel @Inject constructor(
 
 
     fun toggleScrap(destinationId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 scrapManager.toggleScrap(destinationId)
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 
@@ -93,8 +79,8 @@ class TravelListViewModel @Inject constructor(
         sortType: String? = "REVIEW", // 현재는 리뷰 추후 변경 할 것 (api가 리뷰만 돌아감)
         tbti: String? = null
     ) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
@@ -105,12 +91,8 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value = response.data.content
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     fun getNextPage(
@@ -120,8 +102,8 @@ class TravelListViewModel @Inject constructor(
     ) {
         if (isLastPage == true) return
         page++
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
@@ -132,30 +114,22 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value += response.data.content
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
     fun searchTravelToCity(city: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
                 _destinations.value = response.data.content
                 isLastPage = response.data.last
-            } catch (e: HttpException) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
-            } catch (e: Exception) {
-                _uiEvent.trySend(UiEvent.ShowToast(e.toErrorMessage()))
             }
-        }
+        )
     }
 
 
     fun navToTravelInfo(travelId: String) {
-        _uiEvent.trySend(UiEvent.Navigate(Screen.TravelInfo(travelId)))
+        navigate(Screen.TravelInfo(travelId))
     }
 }

@@ -33,7 +33,7 @@ import com.tlog.ui.component.share.OtpCodeInput
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.team.TeamJoinViewModel
-import com.tlog.viewmodel.team.TeamJoinViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable

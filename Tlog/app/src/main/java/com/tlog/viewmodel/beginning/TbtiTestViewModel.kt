@@ -3,31 +3,19 @@ package com.tlog.viewmodel.beginning
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import com.tlog.data.model.share.toErrorMessage
 import com.tlog.data.model.tbti.TbtiQuestion
 import com.tlog.ui.navigation.Screen
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
-) : ViewModel() {
-    sealed interface UiEvent {
-        data class Navigate(val target: Screen, val clearBackStack: Boolean = false): UiEvent
-        data class ShowToast(val message: String): UiEvent
-    }
-
-    private val _uiEvent = Channel<UiEvent>(Channel.BUFFERED)
-    val uiEvent = _uiEvent.receiveAsFlow()
+) : BaseViewModel() {
 
     private val _questions = mutableStateListOf<TbtiQuestion>()
 
@@ -77,8 +65,8 @@ class TbtiTestViewModel @Inject constructor(
 
         alreadyFetchedQuestions = true
 
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val allQuestions = mutableListOf<TbtiQuestion>()
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
@@ -89,10 +77,9 @@ class TbtiTestViewModel @Inject constructor(
                 _questions.addAll(allQuestions)
 
                 updateCurrentQuestion()
-            } catch (e: Exception) {
-                Log.e("TbtiTestViewModel", e.toErrorMessage())
-            }
-        }
+            },
+            onError = { Log.e("TbtiTestViewModel", it) }
+        )
     }
 
 
@@ -218,17 +205,13 @@ class TbtiTestViewModel @Inject constructor(
             val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
 
             _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
-            _uiEvent.trySend(
-                UiEvent.Navigate(Screen.TbtiResult(
-                    _tbtiResult.value,
-                        sValue.value.toString(),
-                        eValue.value.toString(),
-                        lValue.value.toString(),
-                        aValue.value.toString()
-                    ),
-                    true
-                )
-            )
+            navigate(Screen.TbtiResult(
+                _tbtiResult.value,
+                sValue.value.toString(),
+                eValue.value.toString(),
+                lValue.value.toString(),
+                aValue.value.toString()
+            ), true)
         }
     }
 }
