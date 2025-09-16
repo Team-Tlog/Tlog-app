@@ -8,22 +8,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.R
 import com.tlog.ui.component.share.DestinationCard
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.ChooseMyTypeViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
-@Preview(showBackground = true)
 @Composable
 fun ChooseMyTypeDestinationScreen(
-    viewModel: ChooseMyTypeViewModel = viewModel()
+    tbtiValue: String,
+    viewModel: ChooseMyTypeViewModel = hiltViewModel()
 ) {
     val maxSelection = 3
     val destinations = listOf("놀이공원", "공원", "호수", "바다", "대전", "광주", "대구", "부산", "충남", "충북", "전남", "전북", "경북", "경남", "울산", "제주")
@@ -97,7 +96,8 @@ fun ChooseMyTypeDestinationScreen(
         ) {
             MainButton(
                 text = "선택 완료",
-                onClick = { /* 선택 완료 처리*/ },
+                onClick = { viewModel.registerUser(tbtiValue) },
+                enabled = viewModel.checkEnabled(),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)

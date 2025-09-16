@@ -6,9 +6,6 @@ data class LoginRequest(
 )
 
 
-
-
-
 data class FirebaseTokenData(
     val firebaseCustomToken: String
 )
@@ -21,7 +18,8 @@ data class FcmTokenBody(
 data class RegisterRequest(
     val type: String,
     val accessToken: String,
-    val userProfile: UserProfileDto
+    val userProfile: UserProfileDto,
+    val preferTagIds: List<String>
 )
 
 data class UserProfileDto(
