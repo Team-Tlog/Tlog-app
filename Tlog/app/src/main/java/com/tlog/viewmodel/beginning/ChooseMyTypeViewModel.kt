@@ -22,16 +22,16 @@ class ChooseMyTypeViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val tokenProvider: TokenProvider
 ) : BaseViewModel() {
-    private val _selected = mutableStateOf(setOf<String>())
-    val selected: State<Set<String>> = _selected
+    private val _selected = mutableStateOf(emptyList<Int>())
+    val selected: State<List<Int>> = _selected
 
-    fun toggleSelection(name: String, maxSelection: Int) {
-        _selected.value = if (_selected.value.contains(name)) {
-            _selected.value - name
-        } else {
-            if (_selected.value.size < maxSelection) _selected.value + name
-            else _selected.value
-        }
+    fun toggleSelection(idx: Int) {
+        _selected.value = if (_selected.value.contains(idx))
+            _selected.value - idx
+        else if (_selected.value.size < 3)
+            _selected.value + idx
+        else
+            _selected.value
     }
 
     fun checkEnabled(): Boolean {
@@ -50,7 +50,7 @@ class ChooseMyTypeViewModel @Inject constructor(
                     type = socialType.toString(),
                     accessToken = socialAccessToken,
                     userProfile = UserProfileDto(tbtiValue = tbtiValue),
-                    preferTagIds = _selected.value.toList()
+                    preferTagIds = _selected.value
                 )
 
                 val response = repository.ssoRegister(request)

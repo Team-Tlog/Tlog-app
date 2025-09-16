@@ -67,14 +67,14 @@ fun ChooseMyTypeDestinationScreen(
                         if (index < destinations.size) {
                             val name = destinations[index]
                             val image = images[index]
-                            val isSelected = selected.contains(name)
+                            val isSelected = selected.contains(index)
 
                             DestinationCard(
                                 name = name,
                                 image = image,
                                 isSelected = isSelected,
                                 onClick = {
-                                    viewModel.toggleSelection(name, maxSelection)
+                                    viewModel.toggleSelection(index)
                                 },
                                 modifier = Modifier
                                     .weight(1f)

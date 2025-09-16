@@ -19,7 +19,7 @@ data class RegisterRequest(
     val type: String,
     val accessToken: String,
     val userProfile: UserProfileDto,
-    val preferTagIds: List<String>
+    val preferTagIds: List<Int>
 )
 
 data class UserProfileDto(
