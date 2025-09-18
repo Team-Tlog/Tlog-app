@@ -17,7 +17,6 @@ import androidx.compose.foundation.border
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
-import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.tlog.ui.theme.MainColor
 
@@ -46,7 +45,6 @@ fun DestinationCard(
             model = ImageRequest.Builder(context)
                 .data(image)
                 .crossfade(true)  // 부드러운 전환 효과
-                .memoryCachePolicy(CachePolicy.ENABLED)
                 .build(),
             contentDescription = name,
             contentScale = ContentScale.Crop,
