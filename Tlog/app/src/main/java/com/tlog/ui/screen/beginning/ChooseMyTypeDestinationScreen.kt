@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.beginning
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -10,20 +11,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.R
 import com.tlog.ui.component.share.DestinationCard
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.beginning.ChooseMyTypeViewModel
 
 
 @Composable
 fun ChooseMyTypeDestinationScreen(
     tbtiValue: String,
+    navController: NavController,
     viewModel: ChooseMyTypeViewModel = hiltViewModel()
 ) {
     val destinations = remember { (1..12).toList() }
@@ -43,6 +49,23 @@ fun ChooseMyTypeDestinationScreen(
         )
     }
 
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()

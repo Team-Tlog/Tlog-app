@@ -78,7 +78,7 @@ fun NavHost(
 
         composable<Screen.SelectTravel> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.SelectTravel>()
-            ChooseMyTypeDestinationScreen(args.tbtiValue)
+            ChooseMyTypeDestinationScreen(tbtiValue = args.tbtiValue, navController = navController)
         }
 
         // SNS
