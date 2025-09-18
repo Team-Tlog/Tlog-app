@@ -1,6 +1,5 @@
 package com.tlog.ui.component.share
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,13 +9,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 import androidx.compose.foundation.border
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.request.CachePolicy
+import coil.request.ImageRequest
 import com.tlog.ui.theme.MainColor
 
 @Composable
@@ -27,15 +29,12 @@ fun DestinationCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Box(
         modifier = modifier
-            .width(150.dp)
-            .height(110.dp)
-            .graphicsLayer {
-                shadowElevation = 4.dp.toPx()
-                shape = RoundedCornerShape(16.dp)
-                clip = true // 그림자 영역 자르기
-            }
+            .aspectRatio(150f / 110f)
+            .clip(RoundedCornerShape(16.dp))
             .border(
                 width = if (isSelected) 2.dp else 0.dp,
                 color = if (isSelected) MainColor else Color.Transparent,
@@ -43,12 +42,17 @@ fun DestinationCard(
             )
             .clickable { onClick() }
     ) {
-        Image(
-            painter = painterResource(id = image),
+        AsyncImage(
+            model = ImageRequest.Builder(context)
+                .data(image)
+                .crossfade(true)  // 부드러운 전환 효과
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .build(),
             contentDescription = name,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
         )
+
         Text(
             text = name,
             fontSize = 16.sp,

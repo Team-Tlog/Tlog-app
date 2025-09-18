@@ -104,7 +104,7 @@ dependencies {
 //    implementation("androidx.compose.ui:ui")
 //    implementation("androidx.compose.ui:ui-tooling-preview")
 //    debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
-    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-compose:2.7.0")
 
     // 애니매이션 네비
     // implementation("com.google.accompanist:accompanist-navigation-animation:0.32.0")
