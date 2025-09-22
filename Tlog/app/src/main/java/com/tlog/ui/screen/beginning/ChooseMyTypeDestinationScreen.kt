@@ -32,7 +32,7 @@ fun ChooseMyTypeDestinationScreen(
     navController: NavController,
     viewModel: ChooseMyTypeViewModel = hiltViewModel()
 ) {
-    val destinations = remember { (1..12).toList() }
+    val destinations = remember { (1..14).toList() }
     val images = remember { listOf(
             R.drawable.img_travel_ex01,
             R.drawable.img_travel_ex02,
@@ -46,6 +46,8 @@ fun ChooseMyTypeDestinationScreen(
             R.drawable.img_travel_ex10,
             R.drawable.img_travel_ex11,
             R.drawable.img_travel_ex12,
+            R.drawable.img_travel_ex13,
+            R.drawable.img_travel_ex14,
         )
     }
 
