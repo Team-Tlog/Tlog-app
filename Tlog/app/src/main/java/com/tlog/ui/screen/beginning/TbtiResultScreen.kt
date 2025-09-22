@@ -279,12 +279,9 @@ fun TbtiResultScreen(
                 onClick = {
                     if (viewModel.isUserId()) {
                         viewModel.updateTbti(tbtiValue)
-//                        navController.popBackStack()
-//                        navController.popBackStack()
-//                        navController.navigate("myPage")
                     }
                     else
-                        viewModel.registerUser(tbtiValue)
+                        viewModel.navToSelectTravel(tbtiValue)
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)

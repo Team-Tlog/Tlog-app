@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.ui.screen.beginning.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
 import com.tlog.ui.screen.beginning.TbtiIntroScreen
@@ -74,6 +75,11 @@ fun NavHost(
             )
         }
         composable<Screen.Map> { MapScreen() }
+
+        composable<Screen.SelectTravel> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.SelectTravel>()
+            ChooseMyTypeDestinationScreen(tbtiValue = args.tbtiValue, navController = navController)
+        }
 
         // SNS
         composable<Screen.SnsMain> { SnsScreen(navController = navController) }

@@ -12,6 +12,8 @@ sealed interface Screen {
     @Serializable
     data object Map: Screen
 
+    @Serializable
+    data class SelectTravel(val tbtiValue: String): Screen
 
     // Sns
     @Serializable

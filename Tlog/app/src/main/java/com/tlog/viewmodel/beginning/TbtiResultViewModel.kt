@@ -21,12 +21,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class TbtiResultViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository,
-    private val loginApi: LoginApi,
-    private val userPreferences: UserPreferences,
-    private val tokenProvider: TokenProvider
+    tokenProvider: TokenProvider
 ): BaseViewModel() {
-
-
 
 
     private val _tbtiDescription = mutableStateOf<TbtiDescription?>(null)
@@ -61,38 +57,7 @@ class TbtiResultViewModel @Inject constructor(
         )
     }
 
-    fun registerUser(tbtiValue: String) {
-        launchSafeCall(
-            action = {
-                val socialAccessToken = userPreferences.getTmpSocialAccessToken()
-                val socialType = userPreferences.getTmpSocialType()
-
-                if (socialAccessToken.isNullOrEmpty()) { return@launchSafeCall }
-
-                val request = RegisterRequest(
-                    type = socialType.toString(),
-                    accessToken = socialAccessToken,
-                    userProfile = UserProfileDto(tbtiValue = tbtiValue)
-                )
-
-                val response = loginApi.ssoRegister(request)
-                if (response.isSuccessful) {
-                    val authorizationHeader = response.headers()["authorization"]
-                    val setCookieHeader = response.headers()["set-cookie"]
-                    if (authorizationHeader != null && setCookieHeader != null) {
-                        userPreferences.saveTokensAndUserId(
-                            authorizationHeader,
-                            setCookieHeader,
-                            response.body()!!.data.firebaseCustomToken
-                        )
-                        loginApi.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
-                        showToast("회원가입 성공")
-                        navigate(Screen.Main, true)
-                    }
-                } else {
-                    showToast("회원가입 실패")
-                }
-            }
-        )
+    fun navToSelectTravel(tbtiValue: String) {
+        navigate(Screen.SelectTravel(tbtiValue))
     }
 }

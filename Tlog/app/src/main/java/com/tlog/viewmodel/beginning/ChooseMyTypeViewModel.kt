@@ -1,18 +1,92 @@
 package com.tlog.viewmodel.beginning
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import com.tlog.api.LoginApi
+import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.FcmTokenBody
+import com.tlog.data.api.FirebaseTokenData
+import com.tlog.data.api.RegisterRequest
+import com.tlog.data.api.UserProfileDto
+import com.tlog.data.local.UserPreferences
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
+import retrofit2.Response
 
-class ChooseMyTypeViewModel : BaseViewModel() {
-    private val _selected = mutableStateOf(setOf<String>())
-    val selected get() = _selected
+@HiltViewModel
+class ChooseMyTypeViewModel @Inject constructor(
+    private val repository: ChooseMyTypeRepository,
+    private val userPreferences: UserPreferences,
+    private val tokenProvider: TokenProvider
+) : BaseViewModel() {
+    private val _selected = mutableStateOf(emptyList<Int>())
+    val selected: State<List<Int>> = _selected
 
-    fun toggleSelection(name: String, maxSelection: Int) {
-        _selected.value = if (_selected.value.contains(name)) {
-            _selected.value - name
-        } else {
-            if (_selected.value.size < maxSelection) _selected.value + name
-            else _selected.value
-        }
+    fun toggleSelection(idx: Int) {
+        _selected.value = if (_selected.value.contains(idx))
+            _selected.value - idx
+        else if (_selected.value.size < 3)
+            _selected.value + idx
+        else
+            _selected.value
+    }
+
+    fun checkEnabled(): Boolean {
+        return _selected.value.size in 1..3
+    }
+
+    fun registerUser(tbtiValue: String) {
+        launchSafeCall(
+            action = {
+                val socialAccessToken = userPreferences.getTmpSocialAccessToken()
+                val socialType = userPreferences.getTmpSocialType()
+
+                if (socialAccessToken.isNullOrEmpty()) { return@launchSafeCall }
+
+                val request = RegisterRequest(
+                    type = socialType.toString(),
+                    accessToken = socialAccessToken,
+                    userProfile = UserProfileDto(tbtiValue = tbtiValue),
+                    preferTagIds = _selected.value
+                )
+
+                val response = repository.ssoRegister(request)
+
+                if (response.isSuccessful) {
+                    val authorizationHeader = response.headers()["authorization"]
+                    val setCookieHeader = response.headers()["set-cookie"]
+                    if (authorizationHeader != null && setCookieHeader != null) {
+                        userPreferences.saveTokensAndUserId(
+                            authorizationHeader,
+                            setCookieHeader,
+                            response.body()!!.data.firebaseCustomToken
+                        )
+                        repository.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
+
+
+                        showToast("회원가입 성공")
+                        navigate(Screen.Main, true)
+                    }
+                } else {
+                    showToast("회원가입 실패")
+                }
+            }
+        )
+    }
+}
+
+
+class ChooseMyTypeRepository @Inject constructor(
+    private val loginRetrofitInstance: LoginApi
+) {
+    suspend fun ssoRegister(request: RegisterRequest): Response<BaseResponse<FirebaseTokenData>> {
+        return loginRetrofitInstance.ssoRegister(request)
+    }
+
+    suspend fun setFcmToken(request: FcmTokenBody): BaseResponse<Unit> {
+        return loginRetrofitInstance.setFcmToken(request)
     }
 }
