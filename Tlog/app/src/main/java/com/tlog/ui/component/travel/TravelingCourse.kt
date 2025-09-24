@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
 import com.tlog.ui.style.Body1Bold
 import CityTravelList
+import androidx.compose.foundation.lazy.itemsIndexed
 import com.tlog.data.api.UserCourseDestination
 
 @Composable
@@ -58,8 +59,10 @@ fun TravelingCourse(
                 .padding(bottom = 60.dp)
                 .padding(horizontal = 12.dp)
         ) {
-            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
-                item {
+            itemsIndexed (
+                items = cityGrouped.toList(),
+                key = { idx, (city, _) -> "$idx$city" },
+            ) { cityIndex, (city, list) ->
                     CityTravelList(
                         city = city,
                         travelItems = list,
@@ -67,7 +70,6 @@ fun TravelingCourse(
                         onDeleteClick = { /* 삭제 로직 */ },
                         onUpdateChecked = onUpdateChecked
                     )
-                }
             }
 
             item {

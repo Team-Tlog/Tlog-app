@@ -40,7 +40,10 @@ fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
-        items(tsnsNotifications) { item ->
+        items(
+            items = tsnsNotifications,
+            key = { notification -> "${notification.userName}${notification.time}"}
+        ) { item ->
             TsnsNotificationItem(item = item) // 이렇게 넘기자
         }
     }

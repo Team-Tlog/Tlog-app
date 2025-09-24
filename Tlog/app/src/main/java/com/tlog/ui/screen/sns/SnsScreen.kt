@@ -89,7 +89,10 @@ fun SnsScreen(
                         .fillMaxSize()
                         .background(Color.White)
                 ) {
-                    items(postList) { post ->
+                    items(
+                        items = postList,
+                        key = { post -> post.postId }
+                    ) { post ->
                         PostItem(
                             post = post,
                             isFollowing = followingList.contains(post.authorId),
