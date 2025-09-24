@@ -461,7 +461,7 @@ fun MainScreen(
                         )
                     ),
                     RecommendTravel(
-                        title = "봄인데, 벚꽃보러 갈래요?",
+                        title = "여름인데, 벚꽃보러 갈래요?",
                         description = "국내 벚꽃 명소 보러가기",
                         travelList = listOf(
                             TmpTravel(
@@ -479,7 +479,7 @@ fun MainScreen(
                         )
                     ),
                     RecommendTravel(
-                        title = "봄인데, 벚꽃보러 갈래요?",
+                        title = "가을인데, 벚꽃보러 갈래요?",
                         description = "국내 벚꽃 명소 보러가기",
                         travelList = listOf(
                             TmpTravel(
