@@ -55,7 +55,10 @@ fun PopularDestinations(
         LazyRow(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(categories) { category ->
+            items(
+                items = categories,
+                key = { category -> category }
+            ) { category ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(end = 14.dp)
