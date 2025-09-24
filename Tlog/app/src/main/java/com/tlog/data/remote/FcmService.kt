@@ -11,6 +11,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.tlog.MainActivity
 import com.tlog.R
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.notification.NotificationType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,10 +37,11 @@ class FcmService: FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         Log.d("FCM Message", message.data.toString())
-        val messageType = message.data["tlog-message-type"]
+        val messageTypeString = message.data["tlog-message-type"] ?: ""
+        val messageType = NotificationType.fromType(messageTypeString)
 
         when (messageType) {
-            "1" ->  {
+            NotificationType.BASIC_MESSAGE ->  {
                 val content = message.data["content"]
 
                 val intent = Intent(this, MainActivity::class.java).apply {
@@ -49,7 +51,7 @@ class FcmService: FirebaseMessagingService() {
 
                 sendNotification(content, intent)
             }
-            "2" -> {
+            NotificationType.LINK_MESSAGE -> {
                 val content = message.data["content"]
                 val linkType = message.data["link-type"]
                 val linkAddress = message.data["link-address"]
@@ -63,7 +65,7 @@ class FcmService: FirebaseMessagingService() {
 
                 sendNotification(content, intent)
             }
-            "10" -> {
+            NotificationType.BASIC_TSNS_MESSAGE -> {
                 val content = message.data["content"]
                 val actorId = message.data["actor-id"]
                 val actorImage = message.data["actor-image"]
@@ -81,7 +83,7 @@ class FcmService: FirebaseMessagingService() {
 
                 sendNotification(content, intent)
             }
-            "11" -> {
+            NotificationType.FOLLOWING_TSNS_MESSAGE -> {
                 val content = message.data["content"]
                 val actorId = message.data["actor-id"]
                 val actorImage = message.data["actor-image"]
