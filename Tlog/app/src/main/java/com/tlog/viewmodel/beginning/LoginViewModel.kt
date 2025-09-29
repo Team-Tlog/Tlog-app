@@ -87,7 +87,7 @@ class LoginViewModel @Inject constructor(
                         val userId = userPreferences.getUserId()
 
                         // 디버그
-                        Log.d("fcm token", fcmToken.toString())
+//                        Log.d("fcm token", fcmToken.toString())
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(
                                 FcmTokenBody(
