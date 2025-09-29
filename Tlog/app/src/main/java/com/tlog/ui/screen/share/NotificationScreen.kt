@@ -16,7 +16,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.ui.component.notification.NotificationList
 import com.tlog.ui.component.notification.TsnsNotificationList
-import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont

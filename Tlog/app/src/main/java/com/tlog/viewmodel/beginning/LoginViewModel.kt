@@ -2,7 +2,6 @@ package com.tlog.viewmodel.beginning
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.tlog.viewmodel.base.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -19,7 +18,6 @@ import com.tlog.data.util.NaverLoginManager
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import retrofit2.Response
 
 @HiltViewModel

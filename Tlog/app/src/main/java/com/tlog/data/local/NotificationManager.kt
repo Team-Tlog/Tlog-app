@@ -92,14 +92,6 @@ class NotificationManager @Inject constructor(
         }
     }
 
-    // SNS 알림 타입별 조회
-    fun getTSnsNotificationsByType(type: NotificationType):
-            Flow<List<TSnsNotificationItem>> {
-        return getTSnsNotificationList().map { notifications ->
-            notifications.filter { it.notificationType == type.type }
-        }
-    }
-
     private fun getCurrentNotificationData(preferences: Preferences):
             NotificationData {
         val json = preferences[NOTIFICATION_KEY] ?: ""
