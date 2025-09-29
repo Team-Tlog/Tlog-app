@@ -116,11 +116,5 @@ fun NotificationScreen(
         else {
             TsnsNotificationList(tSnsNotificationList)
         }
-
-
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        BottomBar(navController = navController, selectedIndex = previousSelectedIndex)
     }
 }
