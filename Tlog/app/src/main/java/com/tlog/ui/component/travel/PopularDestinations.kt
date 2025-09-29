@@ -35,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun PopularDestinations(
     modifier: Modifier = Modifier
 ) {
-    val categories = listOf("장소", "장소", "장소", "장소")
+    val categories = listOf("장소1", "장소2", "장소3", "장소4")
     Column(
         modifier = modifier
             .fillMaxWidth()
