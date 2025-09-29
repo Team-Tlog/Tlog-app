@@ -24,12 +24,12 @@ import com.tlog.viewmodel.share.NotificationViewModel
 @Composable
 fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
-    navController: NavController,
-    previousSelectedIndex: Int
+    navController: NavController
 ) {
     val notificationList by viewModel.notificationList.collectAsState()
     val tSnsNotificationList by viewModel.tSnsNotificationList.collectAsState()
     val selectedTab by viewModel.selectedTab
+    val followingList by viewModel.followingList.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -88,10 +88,8 @@ fun NotificationScreen(
                         )
                     }
                     .clickable {
-                        if (selectedTab != "T-SNS") {
+                        if (selectedTab != "T-SNS")
                             viewModel.updateSelectedTab("T-SNS")
-                            // SNS 불러오기 (로컬에 두지않을까 싶음)
-                        }
                     }
                     .weight(1f)
             ) {
@@ -109,11 +107,14 @@ fun NotificationScreen(
             }
         }
 
-        if (selectedTab == "새 소식") {
+        if (selectedTab == "새 소식")
             NotificationList(notificationList)
-        }
         else {
-            TsnsNotificationList(tSnsNotificationList)
+            TsnsNotificationList(
+                tSnsNotificationList,
+                userFollow = { userId -> viewModel.followUser(userId) },
+                followingList =  followingList
+            )
         }
     }
 }

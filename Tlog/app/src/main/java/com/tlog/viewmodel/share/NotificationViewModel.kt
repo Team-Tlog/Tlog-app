@@ -2,6 +2,7 @@ package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager,
+    private val followManager: FollowManager
 ): BaseViewModel() {
     private val _tSnsNotificationList = MutableStateFlow<List< TSnsNotificationItem>>(emptyList())
     val tSnsNotificationList: StateFlow<List<TSnsNotificationItem>> = _tSnsNotificationList
@@ -26,6 +28,8 @@ class NotificationViewModel @Inject constructor(
     private val _selectedTab = mutableStateOf("새 소식")
     val selectedTab = _selectedTab
 
+    val followingList = followManager.followingList
+
     init {
         fetchNotifications()
         fetchTSnsNotifications()
@@ -35,7 +39,6 @@ class NotificationViewModel @Inject constructor(
     fun updateSelectedTab(tab: String) {
         _selectedTab.value = tab
     }
-
 
 
     private fun fetchNotifications() {
@@ -54,5 +57,9 @@ class NotificationViewModel @Inject constructor(
                     _tSnsNotificationList.value = tSnsNotificationList
                 }
         }
+    }
+
+    fun followUser(userId: String) {
+        followManager.followUser(userId)
     }
 }

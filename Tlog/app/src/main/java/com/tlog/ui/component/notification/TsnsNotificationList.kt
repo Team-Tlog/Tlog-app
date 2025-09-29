@@ -1,6 +1,5 @@
 package com.tlog.ui.component.notification
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +28,9 @@ import com.tlog.util.toTimeString
 
 @Composable
 fun TsnsNotificationList(
-    tSnsNotificationList: List<TSnsNotificationItem>
+    tSnsNotificationList: List<TSnsNotificationItem>,
+    userFollow: (String) -> Unit,
+    followingList: Set<String>
 ) {
     LazyColumn(
         modifier = Modifier
@@ -40,7 +41,11 @@ fun TsnsNotificationList(
             items = tSnsNotificationList,
             key = { notification -> "${notification.actorId}${notification.timestamp}"}
         ) { item ->
-            TsnsNotificationItem(item = item) // 이렇게 넘기자
+            TsnsNotificationItem(
+                item = item,
+                userFollow = userFollow,
+                followingList = followingList
+            ) // 이렇게 넘기자
 
             HorizontalDivider(
                 thickness = 1.dp,
@@ -52,12 +57,12 @@ fun TsnsNotificationList(
 }
 
 @Composable
-fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
-
-    Log.d("objectImage", item.objectImage ?: "")
-
-
-
+fun TsnsNotificationItem(
+    item: TSnsNotificationItem,
+    userFollow: (String) -> Unit,
+    followingList: Set<String>
+) { // 깔끔하게 묶기
+    val isFollow = followingList.contains(item.actorId ?: "")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,25 +115,23 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
 
         if (item.isFollowing != null) {
             Button(
-                onClick = { /* 맞팔로우 기능 */ },
+                onClick = {
+                    userFollow(item.actorId ?: "")
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4F8FF9),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(8.dp),
-//                modifier = Modifier
-//                    .height(32.dp)
-//                    .width(73.dp),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = if (item.isFollowing) "팔로잉" else "맞팔로우",
+                    text = if (item.isFollowing || isFollow) "팔로잉" else "맞팔로우",
                     fontSize = 12.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier
                         .padding(horizontal = 14.dp, vertical = 10.dp)
-//                        .align(Alignment.CenterVertically)
                 )
             }
         } else {
