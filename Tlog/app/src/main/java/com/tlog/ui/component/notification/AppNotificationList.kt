@@ -32,7 +32,10 @@ fun AppNotificationList(viewModel: NotificationViewModel) {
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
-        items(notifications) { item ->
+        items(
+            items = notifications,
+            key = { notification -> "${notification.content}${notification.date}" }
+        ) { item ->
             AppNotificationItem(content = item.content, date = item.date)
         }
     }

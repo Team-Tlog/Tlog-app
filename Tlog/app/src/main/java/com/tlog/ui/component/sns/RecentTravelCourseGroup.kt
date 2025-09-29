@@ -66,7 +66,10 @@ fun RecentTravelCourse(
         modifier = Modifier
             .padding(vertical = 10.dp)
     ) {
-        itemsIndexed(viewModel.recentTravelCourses.value) { idx, item ->
+        itemsIndexed(
+            items = viewModel.recentTravelCourses.value,
+            key = { idx, course -> "$idx${course.city}" }
+        ) { idx, item ->
             Column(
                 modifier = Modifier
                     .padding(vertical = 10.dp)

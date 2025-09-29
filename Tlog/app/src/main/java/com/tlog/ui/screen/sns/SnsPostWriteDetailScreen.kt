@@ -161,14 +161,17 @@ fun CoursePictures(
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        items(selectedCourse.pictureList.size) { index ->
+        items(
+            count = selectedCourse.pictureList.size,
+            key = { idx -> idx } // pictureList가 삭제되거나 수정되지 않음 -> idx를 키로 사용해도 무관
+        ) { idx ->
             Box(
                 modifier = Modifier
                     .width(94.dp)
                     .height(105.dp)
             ) {
                 Image(
-                    painter = painterResource(selectedCourse.pictureList[index]),
+                    painter = painterResource(selectedCourse.pictureList[idx]),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize(),

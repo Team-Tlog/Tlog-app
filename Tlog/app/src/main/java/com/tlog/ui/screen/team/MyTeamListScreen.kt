@@ -65,7 +65,10 @@ fun MyTeamListScreen(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(viewModel.teamsList.value) { team ->
+            items(
+                items = viewModel.teamsList.value,
+                key = { team -> team.teamId }
+            ) { team ->
                 TeamCard(
                     team = team,
                     onDeleteClick = { viewModel.deleteTeam(it) },
