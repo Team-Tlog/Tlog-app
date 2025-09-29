@@ -15,6 +15,9 @@ import javax.inject.Inject
 import android.net.Uri
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.local.FollowManager
+import com.tlog.data.local.NotificationManager
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.model.user.User
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +28,10 @@ import kotlin.String
 class MyPageViewModel @Inject constructor(
     private val myPageRepository: MyPageRepository,
     private val tokenProvider: TokenProvider,
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val notificationManager: NotificationManager,
+    private val followManager: FollowManager,
+    private val scrapManager: ScrapManager
 ): BaseViewModel() {
 
 
@@ -65,8 +71,14 @@ class MyPageViewModel @Inject constructor(
             action = {
                 myPageRepository.logout(refreshToken)
                 showToast("로그아웃 성공")
-                navigate(Screen.Login, true)
+
                 userPreferences.clearTokens()
+                notificationManager.clearAllNotifications()
+                scrapManager.clearAllScrapData()
+                followManager.clearAllFollowData()
+
+                navigate(Screen.Login, true)
+
             }
         )
     }

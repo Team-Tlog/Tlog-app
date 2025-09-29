@@ -7,50 +7,62 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.tlog.data.model.notification.TsnsNotificationData
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.TsnsNotificationViewModel
 import com.tlog.R
+import com.tlog.data.model.notification.TSnsNotificationItem
+import com.tlog.util.toTimeString
 
 @Composable
-fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
-    val tsnsNotifications by viewModel.tsnsNotifications.collectAsState()
-
+fun TsnsNotificationList(
+    tSnsNotificationList: List<TSnsNotificationItem>,
+    userFollow: (String) -> Unit,
+    followingList: Set<String>
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
         items(
-            items = tsnsNotifications,
-            key = { notification -> "${notification.userName}${notification.time}"}
+            items = tSnsNotificationList,
+            key = { notification -> "${notification.actorId}${notification.timestamp}"}
         ) { item ->
-            TsnsNotificationItem(item = item) // 이렇게 넘기자
+            TsnsNotificationItem(
+                item = item,
+                userFollow = userFollow,
+                followingList = followingList
+            ) // 이렇게 넘기자
+
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Color(0xFFF0F0F0),
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
 
 @Composable
-fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
+fun TsnsNotificationItem(
+    item: TSnsNotificationItem,
+    userFollow: (String) -> Unit,
+    followingList: Set<String>
+) { // 깔끔하게 묶기
+    val isFollow = followingList.contains(item.actorId ?: "")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +70,7 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = item.userProfileImageUrl,
+            model = item.actorImage,
             contentDescription = null,
             modifier = Modifier
                 .size(48.dp)
@@ -72,14 +84,15 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            // userName + action 이어서 출력 (userName만 Bold)
+            // userName + action 이어서 출력 (userName만 Bold) -> 현재 api에서 유저 닉네임이 오지 않아 글로 대치
             Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(item.userName)
-                    }
-                    append(item.action)
-                },
+                text = item.content,
+//                buildAnnotatedString {
+//                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+//                        append(item.actorId)
+//                    }
+//                    append(item.content)
+//                },
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Medium,
                 fontSize = 12.sp,
@@ -87,10 +100,10 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
-                text = item.time,
+                text = item.timestamp.toTimeString(),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
@@ -98,32 +111,32 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(8  .dp))
 
-        if (item.showFollowButton) {
+        if (item.isFollowing != null) {
             Button(
-                onClick = { /* 맞팔로우 기능 */ },
+                onClick = {
+                    userFollow(item.actorId ?: "")
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF4F8FF9),
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .height(32.dp)
-                    .width(73.dp),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = "맞팔로우",
+                    text = if (item.isFollowing || isFollow) "팔로잉" else "맞팔로우",
                     fontSize = 12.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .padding(horizontal = 14.dp, vertical = 10.dp)
                 )
             }
         } else {
             AsyncImage(
-                model = item.postThumbnailImageUrl,
+                model = item.objectImage,
                 contentDescription = null,
                 modifier = Modifier
                     .size(63.dp)

@@ -176,7 +176,7 @@ fun NavHost(
         composable<Screen.Report> { ReportToDeveloperScreen() }
         composable<Screen.Course> { MyTravelingCourseScreen(navController) }
         composable<Screen.Notification> {
-            NotificationScreen(navController = navController, previousSelectedIndex = 0)
+            NotificationScreen(navController = navController)
         }
     }
 }

@@ -95,10 +95,12 @@ fun TravelSearchScreen(
             }
             else {
                 itemsIndexed(viewModel.searchResult.value) { index, item ->
-                    SearchTravelItem(travel = item, onClick = { travelId, _ ->
-//                        navController.navigate("travelInfo/${travelId}")
-                        viewModel.navToTravelInfo(travelId)
-                    })
+                    SearchTravelItem(
+                        travel = item,
+                        onClick = { travelId, _ ->
+                            viewModel.navToTravelInfo(travelId)
+                        }
+                    )
                     if (index == viewModel.searchResult.value.lastIndex) {
                         Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
                     } else {

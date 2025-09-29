@@ -20,6 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.vectormap.KakaoMapSdk
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.notification.LinkType
+import com.tlog.data.model.notification.NotificationType
 import com.tlog.ui.navigation.NavHost
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.beginning.LoginViewModel
@@ -117,21 +119,21 @@ class MainActivity : ComponentActivity() {
                 )
 
                 LaunchedEffect(navController, startScreen) {
-                    val type = intent.getStringExtra("type")
+                    val code = intent.getStringExtra("type") ?: ""
+                    val type = NotificationType.fromType(code)
                     if (type != null) {
-
                         kotlinx.coroutines.delay(100)
 
                         try {
                             when (type) {
-                                "1" -> {}
-                                "2" -> {
-                                    val linkType = intent.getStringExtra("linkType")
-                                    Log.d("MainActivity", "linkType : $linkType")
+                                NotificationType.BASIC_MESSAGE -> Unit
+                                NotificationType.LINK_MESSAGE -> {
+                                    val linkCode = intent.getStringExtra("linkType") ?: ""
+                                    val linkType = LinkType.fromCode(linkCode)
 
                                     when (linkType) {
-                                        "1" -> {} // mainScreen이라 놔둬도 됨
-                                        "2" -> navController.navigate(Screen.MyPage)
+                                        LinkType.MAIN_SCREEN -> Unit
+                                        LinkType.MY_PAGE -> navController.navigate(Screen.MyPage)
                                         else -> {
                                             val linkAddress = intent.getStringExtra("linkAddress")
                                             Log.d("MainActivity", "linkAddress : $linkAddress")
@@ -139,26 +141,27 @@ class MainActivity : ComponentActivity() {
                                             if (linkAddress != null) {
 
                                                 when (linkType) {
-                                                    "10" -> navController.navigate(Screen.TravelInfo(linkAddress))
-                                                    "11" -> navController.navigate(Screen.SnsPostDetail(linkAddress))
-                                                    "12" -> navController.navigate(Screen.SnsMyPage(linkAddress))
-                                                    "13" -> {} // 채팅방 이동 (채팅방 생기면 ㄱㄱ)
-                                                    else -> Log.d("MainActivity", "알림 타입 오류")
+                                                    LinkType.TRAVEL_INFO -> navController.navigate(Screen.TravelInfo(linkAddress))
+                                                    LinkType.SNS_POST_DETAIL -> navController.navigate(Screen.SnsPostDetail(linkAddress))
+                                                    LinkType.SNS_MY_PAGE -> navController.navigate(Screen.SnsMyPage(linkAddress))
+                                                    LinkType.CHAT_ROOM -> {} // 채팅방 이동 (채팅방 생기면 ㄱㄱ)
+                                                    else -> Unit //Log.d("MainActivity", "알림 타입 오류")
                                                 }
                                             }
                                         }
                                     }
                                 }
 
-                                "10" -> {
+                                NotificationType.BASIC_TSNS_MESSAGE -> {
                                     val objectId = intent.getStringExtra("objectId")
 
                                     if (objectId != null)
                                         navController.navigate(Screen.SnsPostDetail(objectId))
                                 }
 
-                                "11" -> {
+                                NotificationType.FOLLOWING_TSNS_MESSAGE -> {
                                     val actorId = intent.getStringExtra("actorId")
+
                                     if (actorId != null)
                                         navController.navigate(Screen.SnsMyPage(actorId))
                                 }

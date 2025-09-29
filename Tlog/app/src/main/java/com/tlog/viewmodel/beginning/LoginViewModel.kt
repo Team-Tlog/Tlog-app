@@ -18,7 +18,6 @@ import com.tlog.data.util.NaverLoginManager
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlinx.coroutines.launch
 import retrofit2.Response
 
 @HiltViewModel
@@ -84,6 +83,9 @@ class LoginViewModel @Inject constructor(
                         saveTokens(authorizationHeader, setCookieHeader, firebaseCustomToken)
                         val fcmToken = userPreferences.getFcmToken()
                         val userId = userPreferences.getUserId()
+
+                        // 디버그
+//                        Log.d("fcm token", fcmToken.toString())
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(
                                 FcmTokenBody(
