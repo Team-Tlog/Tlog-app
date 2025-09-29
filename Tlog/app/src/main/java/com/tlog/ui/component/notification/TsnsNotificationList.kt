@@ -9,8 +9,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,11 +22,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.ui.theme.MainFont
 import com.tlog.R
 import com.tlog.data.model.notification.TSnsNotificationItem
+import com.tlog.util.toTimeString
 
 @Composable
 fun TsnsNotificationList(
@@ -89,7 +87,7 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = item.timestamp.toString(),
+                text = item.timestamp.toTimeString(),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
