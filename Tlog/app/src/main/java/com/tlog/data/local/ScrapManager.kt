@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tlog.api.ScrapApi
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.NotificationManager.Companion.NOTIFICATION_KEY
 import com.tlog.data.repository.ScrapRepository
 import dagger.Module
 import dagger.Provides
@@ -104,6 +105,18 @@ class ScrapManager @Inject constructor(
             Log.e("ScrapManager", "스크랩 목록 갱신 실패", e)
         }
     }
+
+    suspend fun clearAllScrapData() {
+        try {
+            context.dataStore.edit { preferences ->
+                preferences.remove(SCRAP_KEY)
+            }
+            _scrapList.value = emptyList()
+        } catch (e: Exception) {
+            Log.e("ScrapManager", "error")
+        }
+    }
+
 }
 
 @Module
