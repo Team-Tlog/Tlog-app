@@ -3,6 +3,7 @@ package com.tlog.ui.component.notification
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,6 @@ import com.tlog.util.toTimeString
 fun NotificationList(
     notificationList: List<NotificationItem>
 ) {
-
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,6 +36,12 @@ fun NotificationList(
             key = { notification -> "${notification.content}${notification.timestamp}" }
         ) { item ->
             NotificationItem(content = item.content, date = item.timestamp.toTimeString())
+
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Color(0xFFF0F0F0),
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
@@ -45,17 +51,7 @@ fun NotificationItem(content: String, date: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 15.dp)
-            .drawBehind {
-                val strokeWidth = 0.5.dp.toPx()
-                val y = size.height - strokeWidth / 2
-                drawLine(
-                    color = Color(0xFFF0F0F0),
-                    start = androidx.compose.ui.geometry.Offset(0f, y),
-                    end = androidx.compose.ui.geometry.Offset(size.width, y),
-                    strokeWidth = strokeWidth
-                )
-            },
+            .padding(vertical = 15.dp),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {

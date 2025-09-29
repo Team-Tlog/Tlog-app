@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +43,12 @@ fun TsnsNotificationList(
             key = { notification -> "${notification.actorId}${notification.timestamp}"}
         ) { item ->
             TsnsNotificationItem(item = item) // 이렇게 넘기자
+
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = Color(0xFFF0F0F0),
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
@@ -84,7 +91,7 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
                 overflow = TextOverflow.Ellipsis
             )
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = item.timestamp.toTimeString(),
@@ -105,9 +112,9 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
                     contentColor = Color.White
                 ),
                 shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .height(32.dp)
-                    .width(73.dp),
+//                modifier = Modifier
+//                    .height(32.dp)
+//                    .width(73.dp),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
@@ -115,7 +122,9 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
                     fontSize = 12.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier
+                        .padding(horizontal = 14.dp, vertical = 10.dp)
+//                        .align(Alignment.CenterVertically)
                 )
             }
         } else {
