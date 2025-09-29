@@ -11,7 +11,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.tlog.MainActivity
 import com.tlog.R
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.notification.NotificationItem
 import com.tlog.data.model.notification.NotificationType
+import com.tlog.data.model.notification.TSnsNotificationItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FcmService: FirebaseMessagingService() {
     @Inject lateinit var userPreferences: UserPreferences
+    @Inject lateinit var notificationManager: com.tlog.data.local.NotificationManager
 
     // 앱 설치시 자동으로 발급 -> dataStore에 저장
     override fun onNewToken(token: String) {
@@ -50,6 +53,15 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = NotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveNotification(notification)
+                }
             }
             NotificationType.LINK_MESSAGE -> {
                 val content = message.data["content"]
@@ -64,6 +76,17 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = NotificationItem(
+                    content = content ?: "",
+                    linkType = linkType,
+                    linkAddress = linkAddress,
+                    notificationType = messageTypeString
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveNotification(notification)
+                }
             }
             NotificationType.BASIC_TSNS_MESSAGE -> {
                 val content = message.data["content"]
@@ -79,6 +102,19 @@ class FcmService: FirebaseMessagingService() {
                     putExtra("actorId", actorId)
                     putExtra("actorImage", actorImage)
                     putExtra("content", content)
+                }
+
+                val notification = TSnsNotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString,
+                    actorId = actorId,
+                    actorImage = actorImage,
+                    objectId = objectId,
+                    objectImage = objectImage
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveTSnsNotification(notification)
                 }
 
                 sendNotification(content, intent)
@@ -98,6 +134,18 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = TSnsNotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString,
+                    actorId = actorId,
+                    actorImage = actorImage,
+                    isFollowing = if (isFollowing == "true") true else false
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveTSnsNotification(notification)
+                }
             }
             else -> Log.d("FCM Message", "타입 에러")
         }

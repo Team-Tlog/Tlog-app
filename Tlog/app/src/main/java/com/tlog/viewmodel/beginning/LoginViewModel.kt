@@ -2,6 +2,7 @@ package com.tlog.viewmodel.beginning
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.tlog.viewmodel.base.BaseViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
@@ -84,6 +85,9 @@ class LoginViewModel @Inject constructor(
                         saveTokens(authorizationHeader, setCookieHeader, firebaseCustomToken)
                         val fcmToken = userPreferences.getFcmToken()
                         val userId = userPreferences.getUserId()
+
+                        // 디버그
+                        Log.d("fcm token", fcmToken.toString())
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(
                                 FcmTokenBody(

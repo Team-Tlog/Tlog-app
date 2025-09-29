@@ -28,6 +28,10 @@ fun NotificationScreen(
     navController: NavController,
     previousSelectedIndex: Int
 ) {
+    val notificationList by viewModel.notificationList.collectAsState()
+    val tSnsNotificationList by viewModel.tSnsNotificationList.collectAsState()
+    val selectedTab by viewModel.selectedTab
+
     Column(modifier = Modifier
         .fillMaxSize()
         .windowInsetsPadding(WindowInsets.systemBars)
@@ -63,8 +67,8 @@ fun NotificationScreen(
                     text = "새 소식",
                     fontFamily = MainFont,
                     fontSize = 18.sp,
-                    fontWeight = if (viewModel.selectedTab.value == "새 소식") FontWeight.Bold else FontWeight.Medium,
-                    color = if (viewModel.selectedTab.value == "새 소식") MainColor else Color.Gray,
+                    fontWeight = if (selectedTab == "새 소식") FontWeight.Bold else FontWeight.Medium,
+                    color = if (selectedTab == "새 소식") MainColor else Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = (11.5).dp)
@@ -78,14 +82,14 @@ fun NotificationScreen(
                         val strokeWidth = 2.dp.toPx()
                         val y = size.height - strokeWidth / 2
                         drawLine(
-                            color = if (viewModel.selectedTab.value == "T-SNS") MainColor else Color(0xFF969696),
+                            color = if (selectedTab == "T-SNS") MainColor else Color(0xFF969696),
                             start = Offset(0f, y),
                             end = Offset(size.width, y),
                             strokeWidth = strokeWidth
                         )
                     }
                     .clickable {
-                        if (viewModel.selectedTab.value != "T-SNS") {
+                        if (selectedTab != "T-SNS") {
                             viewModel.updateSelectedTab("T-SNS")
                             // SNS 불러오기 (로컬에 두지않을까 싶음)
                         }
@@ -96,8 +100,8 @@ fun NotificationScreen(
                     text = "T-SNS",
                     fontFamily = MainFont,
                     fontSize = 18.sp,
-                    fontWeight = if (viewModel.selectedTab.value == "T-SNS") FontWeight.Bold else FontWeight.Medium,
-                    color = if (viewModel.selectedTab.value == "T-SNS") MainColor else Color.Gray,
+                    fontWeight = if (selectedTab == "T-SNS") FontWeight.Bold else FontWeight.Medium,
+                    color = if (selectedTab == "T-SNS") MainColor else Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = (11.5).dp)
@@ -106,11 +110,11 @@ fun NotificationScreen(
             }
         }
 
-        if (viewModel.selectedTab.value == "새 소식") {
-            AppNotificationList(viewModel)
+        if (selectedTab == "새 소식") {
+            AppNotificationList(notificationList)
         }
         else {
-            TsnsNotificationList()
+            TsnsNotificationList(tSnsNotificationList)
         }
 
 

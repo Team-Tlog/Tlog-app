@@ -19,13 +19,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.ui.style.Body2Regular
+import com.tlog.data.model.notification.NotificationItem
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.NotificationViewModel
 
 @Composable
-fun AppNotificationList(viewModel: NotificationViewModel) {
-    val notifications by viewModel.notifications.collectAsState()
+fun AppNotificationList(
+    notificationList: List<NotificationItem>
+) {
 
     LazyColumn(
         modifier = Modifier
@@ -33,10 +34,10 @@ fun AppNotificationList(viewModel: NotificationViewModel) {
             .padding(horizontal = 24.dp)
     ) {
         items(
-            items = notifications,
-            key = { notification -> "${notification.content}${notification.date}" }
+            items = notificationList,
+            key = { notification -> "${notification.content}${notification.timestamp}" }
         ) { item ->
-            AppNotificationItem(content = item.content, date = item.date)
+            AppNotificationItem(content = item.content, date = item.timestamp.toString())
         }
     }
 }

@@ -30,19 +30,20 @@ import com.tlog.data.model.notification.TsnsNotificationData
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.TsnsNotificationViewModel
 import com.tlog.R
+import com.tlog.data.model.notification.TSnsNotificationItem
 
 @Composable
-fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
-    val tsnsNotifications by viewModel.tsnsNotifications.collectAsState()
-
+fun TsnsNotificationList(
+    tSnsNotificationList: List<TSnsNotificationItem>
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp)
     ) {
         items(
-            items = tsnsNotifications,
-            key = { notification -> "${notification.userName}${notification.time}"}
+            items = tSnsNotificationList,
+            key = { notification -> "${notification.actorId}${notification.timestamp}"}
         ) { item ->
             TsnsNotificationItem(item = item) // 이렇게 넘기자
         }
@@ -50,7 +51,7 @@ fun TsnsNotificationList(viewModel: TsnsNotificationViewModel = viewModel()) {
 }
 
 @Composable
-fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
+fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -58,7 +59,7 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = item.userProfileImageUrl,
+            model = item.actorImage,
             contentDescription = null,
             modifier = Modifier
                 .size(48.dp)
@@ -76,9 +77,9 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
             Text(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(item.userName)
+                        append(item.actorId)
                     }
-                    append(item.action)
+                    append(item.content)
                 },
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Medium,
@@ -90,7 +91,7 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = item.time,
+                text = item.timestamp.toString(),
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
                 fontSize = 12.sp,
@@ -100,7 +101,7 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        if (item.showFollowButton) {
+        if (item.isFollowing == true) {
             Button(
                 onClick = { /* 맞팔로우 기능 */ },
                 colors = ButtonDefaults.buttonColors(
@@ -123,7 +124,7 @@ fun TsnsNotificationItem(item: TsnsNotificationData) { // 깔끔하게 묶기
             }
         } else {
             AsyncImage(
-                model = item.postThumbnailImageUrl,
+                model = item.objectImage,
                 contentDescription = null,
                 modifier = Modifier
                     .size(63.dp)
