@@ -38,6 +38,7 @@ fun TsnsNotificationList(
             .padding(horizontal = 24.dp)
     ) {
         items(
+<<<<<<< HEAD
             items = tSnsNotificationList,
             key = { notification -> "${notification.actorId}${notification.timestamp}"}
         ) { item ->
@@ -52,6 +53,12 @@ fun TsnsNotificationList(
                 color = Color(0xFFF0F0F0),
                 modifier = Modifier.fillMaxWidth()
             )
+=======
+            items = tsnsNotifications,
+            key = { notification -> "${notification.userName}${notification.time}"}
+        ) { item ->
+            TsnsNotificationItem(item = item) // 이렇게 넘기자
+>>>>>>> 51d915f2f40775f9e18fce3ecb07d6e1be49d807
         }
     }
 }
