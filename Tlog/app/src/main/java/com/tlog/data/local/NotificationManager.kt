@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tlog.data.model.notification.NotificationItem
-import com.tlog.data.model.notification.NotificationType
 import com.tlog.data.model.notification.TSnsNotificationItem
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
