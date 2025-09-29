@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.share
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
@@ -8,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -19,6 +21,7 @@ import com.tlog.ui.component.notification.TsnsNotificationList
 import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.share.NotificationViewModel
 
 @Composable
@@ -26,6 +29,26 @@ fun NotificationScreen(
     viewModel: NotificationViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
+
     val notificationList by viewModel.notificationList.collectAsState()
     val tSnsNotificationList by viewModel.tSnsNotificationList.collectAsState()
     val selectedTab by viewModel.selectedTab
