@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.tlog.ui.component.notification.AppNotificationList
+import com.tlog.ui.component.notification.NotificationList
 import com.tlog.ui.component.notification.TsnsNotificationList
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.TopBar
@@ -111,7 +111,7 @@ fun NotificationScreen(
         }
 
         if (selectedTab == "새 소식") {
-            AppNotificationList(notificationList)
+            NotificationList(notificationList)
         }
         else {
             TsnsNotificationList(tSnsNotificationList)

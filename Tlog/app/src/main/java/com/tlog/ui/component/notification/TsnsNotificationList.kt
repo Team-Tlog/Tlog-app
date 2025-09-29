@@ -26,9 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
-import com.tlog.data.model.notification.TsnsNotificationData
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.TsnsNotificationViewModel
 import com.tlog.R
 import com.tlog.data.model.notification.TSnsNotificationItem
 
