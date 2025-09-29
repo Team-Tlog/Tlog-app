@@ -1,5 +1,6 @@
 package com.tlog.ui.component.notification
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,6 +56,11 @@ fun TsnsNotificationList(
 
 @Composable
 fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
+
+    Log.d("objectImage", item.objectImage ?: "")
+
+
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -76,14 +82,15 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            // userName + action 이어서 출력 (userName만 Bold)
+            // userName + action 이어서 출력 (userName만 Bold) -> 현재 api에서 유저 닉네임이 오지 않아 글로 대치
             Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(item.actorId)
-                    }
-                    append(item.content)
-                },
+                text = item.content,
+//                buildAnnotatedString {
+//                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+//                        append(item.actorId)
+//                    }
+//                    append(item.content)
+//                },
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Medium,
                 fontSize = 12.sp,
@@ -102,9 +109,9 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
             )
         }
 
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(8  .dp))
 
-        if (item.isFollowing == true) {
+        if (item.isFollowing != null) {
             Button(
                 onClick = { /* 맞팔로우 기능 */ },
                 colors = ButtonDefaults.buttonColors(
@@ -118,7 +125,7 @@ fun TsnsNotificationItem(item: TSnsNotificationItem) { // 깔끔하게 묶기
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Text(
-                    text = "맞팔로우",
+                    text = if (item.isFollowing) "팔로잉" else "맞팔로우",
                     fontSize = 12.sp,
                     fontFamily = MainFont,
                     fontWeight = FontWeight.SemiBold,
