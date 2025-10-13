@@ -6,9 +6,16 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.TextFieldValue
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class TbtiCodeInputViewModel : BaseViewModel() {
+
+@HiltViewModel
+class TbtiCodeInputViewModel @Inject constructor(
+
+): BaseViewModel() {
 
     val codeError = mutableStateOf(false)
     val isCodeValid = mutableStateOf(false)
@@ -44,5 +51,9 @@ class TbtiCodeInputViewModel : BaseViewModel() {
             isCodeValid.value = false
             codeError.value = true
         }
+    }
+
+    fun navToSelectTravel() {
+        navigate(Screen.SelectTravel(textList.joinToString("") { it.value.text }), true)
     }
 }

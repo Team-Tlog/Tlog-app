@@ -42,7 +42,6 @@ import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
-import com.tlog.viewmodel.beginning.TbtiCodeInputViewModel
 import com.tlog.viewmodel.beginning.LoginViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -146,8 +145,7 @@ fun NavHost(
         // TBTI
         composable<Screen.TbtiTest> { TbtiTestScreen(navController) }
         composable<Screen.TbtiCodeInput> {
-            val viewModel: TbtiCodeInputViewModel = hiltViewModel()
-            TbtiCodeInputScreen(viewModel = viewModel)
+            TbtiCodeInputScreen(navController = navController)
         }
         composable<Screen.TbtiIntro> { TbtiIntroScreen(navController = navController) }
         composable<Screen.TbtiResult> { backStackEntry ->
