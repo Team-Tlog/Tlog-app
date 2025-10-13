@@ -108,9 +108,6 @@ fun TravelDetailScreen(
                             },
                             reviewWrite = {
                                 viewModel.navToReviewWrite(travelId, destination.name)
-                            },
-                            onClick = { userId ->
-                                viewModel.navToSnsMyPage(userId)
                             }
                         )
 
