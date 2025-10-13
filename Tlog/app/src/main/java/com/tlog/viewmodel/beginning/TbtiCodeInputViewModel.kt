@@ -54,6 +54,6 @@ class TbtiCodeInputViewModel @Inject constructor(
     }
 
     fun navToSelectTravel() {
-        navigate(Screen.SelectTravel(textList.joinToString("")), true)
+        navigate(Screen.SelectTravel(textList.joinToString("") { it.value.text }), true)
     }
 }

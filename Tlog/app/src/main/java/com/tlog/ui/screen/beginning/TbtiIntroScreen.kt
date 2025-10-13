@@ -139,7 +139,7 @@ fun TbtiIntroScreen(
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier
                             .padding(vertical = 10.dp)
-                            .clickable{ Log.d("TbtiSkipText", "my click!!") }
+                            .clickable{ navController.navigate(Screen.TbtiCodeInput) }
                     )
                 }
             }
