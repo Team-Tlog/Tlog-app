@@ -81,6 +81,7 @@ fun TbtiCodeInputScreen(
                 style = SubTitle
             )
             Spacer(modifier = Modifier.height(10.dp))
+
             Text(
                 text = "테스트 완료 후 받으신\n인증번호 8자리를 입력해주세요",
                 modifier = Modifier
@@ -92,6 +93,7 @@ fun TbtiCodeInputScreen(
                 color = Color(0xFF767676),
                 textAlign = TextAlign.Center
             )
+
             Spacer(modifier = Modifier.height(50.dp))
 
             LaunchedEffect(textList.map { it.value.text }) {
@@ -105,7 +107,6 @@ fun TbtiCodeInputScreen(
                     viewModel.onCodeEntered(code)
                     if (viewModel.isCodeValid.value) {
                         Log.d("TbtiCode", "success$code")
-                        focusManager.clearFocus()
                     } else {
                         Log.d("TbtiCode", "fail$code")
                     }

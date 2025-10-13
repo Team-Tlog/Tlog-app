@@ -15,7 +15,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.input.key.*
 
 @Composable
 fun OtpCodeInput(
@@ -33,7 +33,6 @@ fun OtpCodeInput(
     isNumber: Boolean = true,
     onComplete: (String) -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
     val currentFocusIndex = remember { mutableStateOf(0) } // 포커스 1개로만 관리하기 위해서 만든 변수
 
     Surface(
@@ -66,46 +65,58 @@ fun OtpCodeInput(
                             val input = if (isNumber) newValue.text.filter { it.isDigit() } else newValue.text
                             val oldText = textList[i].value.text
 
-                            // 값이 있다가 사라질 경우 (지워질 경우) 포커스 이동
-                            if (oldText.isNotEmpty() && input.isEmpty()) {
-                                textList[i].value = TextFieldValue("", TextRange(0))
-                                if (i > 0)
-                                    currentFocusIndex.value = i - 1
-                                return@InputFeild
-                            }
-
-                            // 붙여넣기 할 경우 갈라서 넣어주고 포커스 옮겨주기
-                            if (input.isNotEmpty()) {
-                                val maxLength = textList.size - i // 최대 몇 글자까지 입력 가능한지 -> 붙여넣기 시 필드 초과하는 것 방지
-                                val subInput = input.take(maxLength) // 남은 길이만큼 자름 -> List 사이즈 = 8 / 1번필드 + "123456789" = "12345678" (9 잘림)
-
-                                for ((offset, char) in subInput.withIndex()) {
-                                    val targetIndex = i + offset
-                                    if (targetIndex < textList.size) {
-                                        textList[targetIndex].value = TextFieldValue(
-                                            char.toString(),
-                                            TextRange(1)
-                                        )
+                            when {
+                                // 백스페이스
+                                oldText.isNotEmpty() && input.isEmpty() -> {
+                                    textList[i].value = TextFieldValue("", TextRange(0))
+                                    if (i > 0) {
+                                        currentFocusIndex.value = i - 1
                                     }
                                 }
 
-                                val code = textList.joinToString("") { it.value.text }
-                                val isComplete = code.length == textList.size
+                                // 문자 1개 입력
+                                input.length == 1 && oldText.isEmpty() -> {
+                                    textList[i].value = TextFieldValue(input, TextRange(1))
+                                    // 포커스 이동
+                                    if (i < textList.size - 1) {
+                                        currentFocusIndex.value = i + 1
+                                    } else {
+                                        val code = textList.joinToString("") { it.value.text }
+                                        if (code.length == textList.size) {
+                                            onComplete(code)
+                                        }
+                                    }
+                                }
 
-                                if (isComplete) {
-                                    focusManager.clearFocus()
-                                    onComplete(code)
-                                } else {
-                                    val nextIndex = i + subInput.length
-                                    if (nextIndex < requesterList.size)
+                                // 붙여넣기
+                                input.length > 1 -> {
+                                    val maxLength = textList.size - i
+                                    val subInput = input.take(maxLength)
+
+                                    for ((offset, char) in subInput.withIndex()) {
+                                        val targetIndex = i + offset
+                                        if (targetIndex < textList.size) {
+                                            textList[targetIndex].value = TextFieldValue(
+                                                char.toString(),
+                                                TextRange(1)
+                                            )
+                                        }
+                                    }
+
+                                    val code = textList.joinToString("") { it.value.text }
+                                    if (code.length == textList.size) {
+                                        onComplete(code)
+                                    } else {
+                                        val nextIndex = (i + subInput.length).coerceAtMost(textList.size - 1)
                                         currentFocusIndex.value = nextIndex
-                                    else
-                                        focusManager.clearFocus()
+                                    }
                                 }
                             }
                         },
                         isNumber = isNumber,
-                        focusRequester = requester
+                        focusRequester = requester,
+                        index = i,
+                        currentFocusIndex = currentFocusIndex
                     )
                 }
             }
@@ -118,7 +129,9 @@ fun InputFeild(
     value: TextFieldValue,
     onValueChange: (TextFieldValue) -> Unit,
     isNumber: Boolean = true,
-    focusRequester: FocusRequester
+    focusRequester: FocusRequester,
+    index: Int,
+    currentFocusIndex: MutableState<Int>
 ) {
     BasicTextField(
         value = value,
@@ -128,7 +141,19 @@ fun InputFeild(
             .clip(RoundedCornerShape(8.dp))
             .background(Color(0xFFF3F3F3))
             .wrapContentSize()
-            .focusRequester(focusRequester),
+            .focusRequester(focusRequester)
+            .onKeyEvent { keyEvent ->
+                // 빈 필드에서 백스페이스를 누르면 이전 필드로 이동
+                if (keyEvent.key == Key.Backspace &&
+                    keyEvent.type == KeyEventType.KeyDown &&
+                    value.text.isEmpty() &&
+                    index > 0) {
+                    currentFocusIndex.value = index - 1
+                    true
+                } else {
+                    false
+                }
+            },
         maxLines = 1,
         cursorBrush = SolidColor(Color.White),
         textStyle = TextStyle(
