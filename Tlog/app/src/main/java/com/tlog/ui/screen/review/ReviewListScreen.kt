@@ -150,10 +150,7 @@ fun ReviewListScreen(
                     Spacer(modifier = Modifier.height(29.dp))
 
                     ReviewList(
-                        reviewList = viewModel.reviewList.value,
-                        onClick = { userId ->
-                            viewModel.navToSnsMyPage(userId)
-                        }
+                        reviewList = viewModel.reviewList.value
                     )
                 }
             }

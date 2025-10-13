@@ -96,8 +96,7 @@ fun ReviewSection(
         ) {
             ReviewList(
                 reviewList = reviewList,
-                maxCnt = reviewCnt,
-                onClick = onClick
+                maxCnt = reviewCnt
             )
         }
     }
