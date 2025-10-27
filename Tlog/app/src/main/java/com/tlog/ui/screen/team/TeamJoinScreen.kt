@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,7 +41,6 @@ fun TeamJoinScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
     val codeError = viewModel.codeError
     val isCodeValid = viewModel.isCodeValid
     val textList = viewModel.textList
@@ -110,9 +108,6 @@ fun TeamJoinScreen(
                 isNumber = false,
                 onComplete = { code ->
                     viewModel.onCodeEntered(code)
-                    if (viewModel.isCodeValid.value) {
-                        focusManager.clearFocus()
-                    }
                 }
             )
 
