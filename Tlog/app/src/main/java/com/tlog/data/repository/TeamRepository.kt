@@ -29,13 +29,16 @@ class TeamRepository @Inject constructor(
 
     suspend fun createTeam(request: CreateTeamRequest): BaseResponse<TeamCreateResponse>{
         val result = retrofitInstance.createTeam(request)
-        Log.d("ReviewRepository", "addReview: $result")
         return result
     }
 
     suspend fun deleteTeam(teamId: String): BaseResponse<String> {
         val result = retrofitInstance.deleteTeam(teamId)
-        Log.d("TeamDeleteRepository", "deleteTeam: $result")
+        return result
+    }
+
+    suspend fun leaveTeam(teamId: String, userId: String): BaseResponse<String> {
+        val result = retrofitInstance.leaveTeam(teamId, userId)
         return result
     }
 }

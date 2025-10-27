@@ -23,7 +23,7 @@ import com.tlog.viewmodel.team.MyTeamListViewModel
 @Composable
 fun MyTeamListScreen(
     viewModel: MyTeamListViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val context = LocalContext.current
 
@@ -34,12 +34,17 @@ fun MyTeamListScreen(
             when (event) {
                 is UiEvent.Navigate -> {
                     navController.navigate(event.target) {
-                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
                         launchSingleTop = true
                         restoreState = false
                     }
                 }
-                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT)
+                    .show()
+
                 is UiEvent.PopBackStack -> Unit
             }
         }
@@ -71,7 +76,7 @@ fun MyTeamListScreen(
             ) { team ->
                 TeamCard(
                     team = team,
-                    onDeleteClick = { viewModel.deleteTeam(it) },
+                    onDeleteClick = { viewModel.deleteTeam(it, team.teamLeaderId) },
                     onClick = { teamId ->
                         viewModel.navToTeamDetail(teamId)
                     }
