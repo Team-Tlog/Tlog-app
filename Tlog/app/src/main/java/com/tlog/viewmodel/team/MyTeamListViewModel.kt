@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
     private val teamRepository: TeamRepository,
-    tokenProvider: TokenProvider
+    tokenProvider: TokenProvider,
 ) : BaseViewModel() {
 
 
@@ -22,7 +22,6 @@ class MyTeamListViewModel @Inject constructor(
     init {
         userId = tokenProvider.getUserId()
     }
-
 
 
     private val _teamList = mutableStateOf<List<Team>>(emptyList())
@@ -40,15 +39,24 @@ class MyTeamListViewModel @Inject constructor(
         )
     }
 
-    fun deleteTeam(teamId: String) {
+    fun deleteTeam(teamId: String, teamLeaderId: String) {
         launchSafeCall(
             action = {
-                teamRepository.deleteTeam(teamId)
+                if (teamLeaderId == userId) {
+                    teamRepository.deleteTeam(teamId)
 
-                _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    showToast("팀 삭제 성공")
+                } else {
+                    teamRepository.leaveTeam(teamId, userId!!)
+
+                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    showToast("팀 떠나기 성공")
+                }
             }
         )
     }
+
 
     fun navToCreateTeam() {
         navigate(Screen.CreateTeam)
