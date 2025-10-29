@@ -27,6 +27,7 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
+import com.tlog.ui.screen.sns.ChatListScreen
 import com.tlog.ui.screen.sns.SNSChattingScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
 import com.tlog.ui.screen.sns.SnsScreen
@@ -61,7 +62,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = "createTeamz") {
+    NavHost(navController = navController, startDestination = "chatList") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -261,11 +262,17 @@ fun NavHost(
         }
 
 
-        composable("chatting") {
-            val viewModel: SNSChattingViewModel = hiltViewModel() // 또는 viewModel()
+        composable("chatting/{chatRoomId}") { backStackEntry ->
+            val chatRoomId = backStackEntry.arguments?.getString("chatRoomId")?.toLongOrNull() ?: 0L
+            val viewModel: SNSChattingViewModel = hiltViewModel()
             SNSChattingScreen(
+                chatRoomId = chatRoomId,
                 viewModel = viewModel
             )
+        }
+
+        composable("chatList") {
+            ChatListScreen(navController = navController)
         }
 
     }

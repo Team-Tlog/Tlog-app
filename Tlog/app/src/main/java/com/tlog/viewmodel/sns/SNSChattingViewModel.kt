@@ -47,7 +47,12 @@ class SNSChattingViewModel @Inject constructor(
     var messageText by mutableStateOf("")
     var messages = mutableStateListOf<ChatMessageDto>()
 
-    init {
+    private var currentChatRoomId: Long = 0
+
+    fun initChatRoom(chatRoomId: Long) {
+        currentChatRoomId = chatRoomId
+        Log.d("SNSChatting", "Initializing chat room: $chatRoomId")
+
         val connectionProvider = MyConnectionProvider(url, userPreferences)
         stomp = StompClient(connectionProvider)
         connectionProvider.connect()
@@ -70,8 +75,8 @@ class SNSChattingViewModel @Inject constructor(
 
     //서버와 연결후 구독(subscribe)를 해야하는데 구독하는 부분
     private fun handleWebSocketOpened() {
-        Log.d("SNSChatting", "웹소켓 연결됨")
-        topic = stomp.topic("/sub/chat/room/51").subscribe({ message ->
+        Log.d("SNSChatting", "웹소켓 연결됨 - 채팅방 ID: $currentChatRoomId")
+        topic = stomp.topic("/sub/chat/room/$currentChatRoomId").subscribe({ message ->
             Log.d("SNSChatting", "Received message: ${message.payload}")
             val json = JSONObject(message.payload)
             val chatMessage = ChatMessageDto(

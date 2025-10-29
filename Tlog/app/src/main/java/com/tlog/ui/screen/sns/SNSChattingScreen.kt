@@ -48,13 +48,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun SNSChattingScreen(viewModel: SNSChattingViewModel = hiltViewModel()) {
+fun SNSChattingScreen(
+    chatRoomId: Long,
+    viewModel: SNSChattingViewModel = hiltViewModel()
+) {
     val messages by viewModel.messageList.collectAsState()
     var myId by remember { mutableStateOf<String?>(null) }
     var messageText by remember { mutableStateOf("") }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(chatRoomId) {
         myId = viewModel.getMyId()
+        viewModel.initChatRoom(chatRoomId)
     }
 
     val listState = rememberLazyListState()
@@ -158,7 +162,7 @@ fun SNSChattingScreen(viewModel: SNSChattingViewModel = hiltViewModel()) {
                 onClick = {
                     val id = myId
                     if (!messageText.isBlank() && id != null) {
-                        viewModel.sendMessage(id, chatRoomId = 51, content = messageText)
+                        viewModel.sendMessage(id, chatRoomId = chatRoomId, content = messageText)
                         messageText = ""
                     }
                 }
