@@ -3,7 +3,18 @@ package com.tlog.data.api
 
 data class CreateTeamRequest(
     val name: String,
-    val creator: String
+    val creator: String,
+    val travelPlan: TravelPlan
+)
+
+data class TravelPlan(
+    val city: String,
+    val regionList: List<String>,
+    val hasPet: Boolean,
+    val hasTransport: Boolean,
+    val startDate: String,
+    val endDate: String,
+    val visitCountPerDay: Map<String, Int>
 )
 
 data class JoinTeamRequest(

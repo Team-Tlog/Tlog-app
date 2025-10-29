@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.team
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -81,9 +82,10 @@ fun TeamCreateScreen(
 
         if (viewModel.teamName.value.isNotBlank() && viewModel.teamName.value.length >= 2) {
             MainButton(
-                text = "팀 생성하기",
+                text = "다음",
                 onClick = {
-                    viewModel.createTeam()
+                    val encodedTeamName = Uri.encode(viewModel.teamName.value)
+                    navController.navigate("teamCourseInput/$encodedTeamName")
                 },
                 modifier = Modifier
                     .height(70.dp)

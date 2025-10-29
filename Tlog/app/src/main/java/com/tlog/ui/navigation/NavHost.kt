@@ -38,6 +38,7 @@ import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinByCode
 import com.tlog.ui.screen.team.TeamCreateScreen
+import com.tlog.ui.screen.travel.CourseInputScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
@@ -60,7 +61,7 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
 
 
-    NavHost(navController = navController, startDestination = "chatting") {
+    NavHost(navController = navController, startDestination = "createTeam") {
         // Main
         composable("main") {
             MainScreen(navController = navController)
@@ -167,6 +168,16 @@ fun NavHost(
         }
         composable("createTeam") {
             TeamCreateScreen(navController = navController)
+        }
+        composable("teamCourseInput/{teamName}") { backStackEntry ->
+            val teamName = backStackEntry.arguments?.getString("teamName") ?: ""
+            val viewModel: com.tlog.viewmodel.travel.CourseInputViewModel = hiltViewModel()
+            viewModel.setTeamName(teamName)
+            CourseInputScreen(
+                isTeamMode = true,
+                navController = navController,
+                viewModel = viewModel
+            )
         }
         composable("teamDetail/{teamId}") { backStackEntry ->
             val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
