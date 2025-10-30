@@ -182,7 +182,7 @@ fun NavHost(
         }
         composable("teamDetail/{teamId}") { backStackEntry ->
             val teamId = backStackEntry.arguments?.getString("teamId") ?: return@composable
-            TeamDetailScreen(teamId = teamId)
+            TeamDetailScreen(teamId = teamId, navController = navController)
         }
         composable("joinTeam") {
             TeamJoinByCode(navController = navController)

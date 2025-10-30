@@ -39,7 +39,8 @@ fun SmallDesign(
     teamData: DetailTeam,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onChatClick: () -> Unit
 
 ) {
     Column(
@@ -52,7 +53,7 @@ fun SmallDesign(
                 )
             )
     ) {
-        TeamTopBar()
+        TeamTopBar(onChatClick = onChatClick)
 
         Spacer(modifier = Modifier.height(9.dp))
 
@@ -113,7 +114,8 @@ fun DefaultDesign(
     teamData: DetailTeam,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onChatClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -125,7 +127,7 @@ fun DefaultDesign(
                 )
             )
     ) {
-        TeamTopBar()
+        TeamTopBar(onChatClick = onChatClick)
 
         Spacer(modifier = Modifier.height((36.5).dp))
 
@@ -144,7 +146,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "TBTI", //teamData.teamTBTI,
+                    text = teamData.tbtiString,
                     style = BodyTitle,
                     color = Color.White
                 )
@@ -266,6 +268,7 @@ fun DefaultDesign(
 @Composable
 fun BigDesign(
     teamData: DetailTeam,
+    onChatClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -277,7 +280,7 @@ fun BigDesign(
                 )
             )
     ) {
-        TeamTopBar()
+        TeamTopBar(onChatClick = onChatClick)
 
         Spacer(modifier = Modifier.height(9.dp))
 
@@ -296,7 +299,7 @@ fun BigDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = "TBTI", //teamData.teamTBTI,
+                    text = teamData.tbtiString,
                     style = BodyTitle,
                     color = Color.White
                 )
@@ -304,33 +307,7 @@ fun BigDesign(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 DetailMember(
-                    listOf(
-                        Member(
-                            memberId = "tmp",
-                            memberName = "고중수",
-                            isLeader = true
-                        ),
-                        Member(
-                            memberId = "tmp",
-                            memberName = "박신욱",
-                            isLeader = true
-                        ),
-                        Member(
-                            memberId = "tmp",
-                            memberName = "백성수",
-                            isLeader = true
-                        ),
-                        Member(
-                            memberId = "tmp",
-                            memberName = "서준우",
-                            isLeader = true
-                        ),
-                        Member(
-                            memberId = "tmp",
-                            memberName = "정찬",
-                            isLeader = true
-                        )
-                    )
+                    memberList = teamData.members
                 )
             }
         }
@@ -372,7 +349,7 @@ fun DetailMember(
                 Spacer(modifier = Modifier.width(15.dp))
 
                 Text(
-                    text = it.memberName,
+                    text = it.name,
                     fontFamily = MainFont,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
@@ -382,7 +359,7 @@ fun DetailMember(
                 Spacer(modifier = Modifier.width(9.dp))
 
                 Text(
-                    text = "TBTI",
+                    text = it.tbtiString,
                     fontFamily = MainFont,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,

@@ -27,6 +27,7 @@ enum class PageState { DEFAULT, SMALL, BIG }
 fun TeamDetailScreen(
     viewModel: TeamDetailViewModel = hiltViewModel(),
     teamId: String,
+    navController: androidx.navigation.NavHostController
 ) {
     var sizeState by remember { mutableStateOf(PageState.DEFAULT) }
     val listState = rememberLazyListState()
@@ -90,18 +91,27 @@ fun TeamDetailScreen(
                                     teamData = teamData,
                                     showPopup = showPopup,
                                     addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
+                                    onDismiss = { showPopup = false },
+                                    onChatClick = {
+                                        navController.navigate("chatting/${teamData.chatRoomId}")
+                                    }
                                 )
 
                                 PageState.DEFAULT -> DefaultDesign(
                                     teamData = teamData,
                                     showPopup = showPopup,
                                     addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
+                                    onDismiss = { showPopup = false },
+                                    onChatClick = {
+                                        navController.navigate("chatting/${teamData.chatRoomId}")
+                                    }
                                 )
 
                                 PageState.BIG -> BigDesign(
                                     teamData = teamData,
+                                    onChatClick = {
+                                        navController.navigate("chatting/${teamData.chatRoomId}")
+                                    }
                                 )
                             }
                         }
