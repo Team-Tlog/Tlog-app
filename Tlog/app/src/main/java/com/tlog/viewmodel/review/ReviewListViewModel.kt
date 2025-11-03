@@ -1,18 +1,16 @@
 package com.tlog.viewmodel.review
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.collections.plus
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableDoubleStateOf
 import com.tlog.data.model.travel.Review
+import com.tlog.ui.navigation.Screen
 import java.util.Locale
 
 
@@ -20,7 +18,8 @@ import java.util.Locale
 class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
-): ViewModel() {
+): BaseViewModel() {
+
     private val _reviewList = mutableStateOf<List<Review>>(emptyList())
     val reviewList: State<List<Review>> = _reviewList
 
@@ -43,6 +42,11 @@ class ReviewListViewModel @Inject constructor(
     private val sort = emptyList<String>()
     private var isLastPage = false
 
+    fun resetPaging() {
+        page = 0
+        isLastPage = false
+        _reviewList.value = emptyList()
+    }
     fun getReviewList(
         id: String,
         sortType: String = when (sortOption.value) {
@@ -52,8 +56,8 @@ class ReviewListViewModel @Inject constructor(
             else -> "RECENT"
         }
     ) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getReviewList(
                     travelId = id,
                     sortType = sortType,
@@ -64,11 +68,9 @@ class ReviewListViewModel @Inject constructor(
                 _ratingDistribution.value = response.data.ratingDistribution
                 _reviewList.value = response.data.reviews.content
                 getRating(reviewCount = response.data.ratingDistribution)
-            }
-            catch (e: Exception) {
-                Log.d("ReviewListViewModel", e.message.toString())
-            }
-        }
+            },
+            onError = { showToast("[리뷰] $it") }
+        )
     }
 
     private fun getRating(reviewCount: Map<String, Int>) {
@@ -98,10 +100,10 @@ class ReviewListViewModel @Inject constructor(
             else -> "RECENT"
         }
     ) {
-        if (isLastPage == true) return
+        if (isLastPage) return
         page++
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getReviewList(
                     travelId = id,
                     sortType = sortType,
@@ -109,28 +111,32 @@ class ReviewListViewModel @Inject constructor(
                     size = pageSize,
                     sort = sort
                 )
-                Log.d("ReviewListViewModel", response.data.toString())
 
                 isLastPage = response.data.reviews.last
                 _reviewList.value += response.data.reviews.content
-
-            } catch (e: Exception) {
-                Log.d("ReviewListViewModel", "에러 로그 : ${e.message}")
-            }
-        }
+            },
+            onError = { showToast("[리뷰] $it") }
+        )
     }
 
     fun toggleScrap(destinationId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 scrapManager.toggleScrap(destinationId)
-            } catch (e: Exception) {
-                Log.d("ReviewListViewModel", "스크랩 에러 로그 : ${e.message}")
-            }
-        }
+            },
+            onError = { showToast("[스크랩] $it") }
+        )
     }
 
     fun isScraped(destinationId: String): Boolean {
         return scrapManager.isScraped(destinationId)
+    }
+
+    fun navToReviewWrite(travelId: String, travelName: String) {
+        navigate(Screen.ReviewWrite(travelId, travelName))
+    }
+
+    fun navToSnsMyPage(userId: String) {
+        navigate(Screen.SnsMyPage(userId))
     }
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,28 +32,30 @@ import com.tlog.ui.component.share.OtpCodeInput
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.team.TeamJoinViewModel
-import com.tlog.viewmodel.team.TeamJoinViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
-fun TeamJoinByCode(
+fun TeamJoinScreen(
     viewModel: TeamJoinViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
     val codeError = viewModel.codeError
     val isCodeValid = viewModel.isCodeValid
     val textList = viewModel.textList
     val requesterList = viewModel.requesterList
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.popBackStack()
+                is UiEvent.Navigate -> Unit
+                is UiEvent.PopBackStack -> {
+                    repeat(event.count) {
+                        navController.popBackStack()
+                    }
                 }
-                is UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -107,9 +108,6 @@ fun TeamJoinByCode(
                 isNumber = false,
                 onComplete = { code ->
                     viewModel.onCodeEntered(code)
-                    if (viewModel.isCodeValid.value) {
-                        focusManager.clearFocus()
-                    }
                 }
             )
 

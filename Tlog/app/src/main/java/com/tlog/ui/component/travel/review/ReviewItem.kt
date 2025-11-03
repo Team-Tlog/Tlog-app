@@ -40,8 +40,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReviewItem(
-    review: Review,
-    onClick: (String) -> Unit
+    review: Review
 ) {
     val instant = Instant.parse(review.createdAt)
 
@@ -72,10 +71,7 @@ fun ReviewItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(36.dp)
-                        .clip(RoundedCornerShape(100))
-                        .clickable {
-                            onClick(review.userId)
-                        },
+                        .clip(RoundedCornerShape(100)),
                     error = painterResource(id = R.drawable.tmp_jeju)
                 )
 
@@ -87,10 +83,6 @@ fun ReviewItem(
                     Text(
                         text = review.username,
                         style = Body1Bold,
-                        modifier = Modifier
-                            .clickable {
-                                onClick(review.userId)
-                            }
                     )
 
                     ReviewStar(

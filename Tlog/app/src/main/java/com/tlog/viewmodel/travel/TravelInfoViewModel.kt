@@ -1,24 +1,22 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.SearchOneDestinationRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelInfoViewModel @Inject constructor(
     private val repository: SearchOneDestinationRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
-) : ViewModel() {
+) : BaseViewModel() {
 
     private var userId: String? = null
 
@@ -38,28 +36,39 @@ class TravelInfoViewModel @Inject constructor(
     }
 
     fun getTravelInfo(id: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getDestinationById(id)
                 _destinationDetail.value = response.data
             }
-            catch (e: Exception) {
-                Log.d("TravelInfoViewModel", e.message.toString())
-            }
-        }
+        )
     }
 
     fun toggleScrap(destinationId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 scrapManager.toggleScrap(destinationId)
-            } catch (e: Exception) {
-                Log.d("TravelInfoViewModel", e.message.toString())
             }
-        }
+        )
     }
 
     fun isScraped(destinationId: String): Boolean {
         return scrapManager.isScraped(destinationId)
+    }
+
+    fun navToTravelInfo(travelId: String) {
+        navigate(Screen.TravelInfo(travelId))
+    }
+
+    fun navToSnsMyPage(userId: String) {
+        navigate(Screen.SnsMyPage(userId))
+    }
+
+    fun navToReviewWrite(travelId: String, destinationName: String) {
+        navigate(Screen.ReviewWrite(travelId, destinationName))
+    }
+
+    fun navToReviewList(travelId: String, destinationName: String) {
+        navigate(Screen.ReviewList(travelId, destinationName))
     }
 }

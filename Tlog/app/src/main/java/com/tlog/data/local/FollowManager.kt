@@ -73,5 +73,17 @@ class FollowManager @Inject constructor(
         }
     }
 
+    suspend fun clearAllFollowData() {
+        try {
+            context.dataStore.edit { preferences ->
+                preferences.remove(FOLLOW_LIST)
+            }
+
+            _followingList.value = emptySet()
+        } catch (e: Exception) {
+            Log.e("FollowManager", "error")
+        }
+    }
+
 
 }

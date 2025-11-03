@@ -32,7 +32,10 @@ fun HashTagsGroup(
         //contentPadding = PaddingValues(horizontal = 24.dp), // 여행지 등록, 리뷰 쓰기에 사용 가능 추후 변경할 것
         horizontalArrangement = Arrangement.spacedBy(space)
     ) {
-        items(hashTags) { tag ->
+        items(
+            items = hashTags,
+            key = { tag -> tag }
+        ) { tag ->
             Surface(
                 shape = RoundedCornerShape(50),
                 modifier = Modifier

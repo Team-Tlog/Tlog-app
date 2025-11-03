@@ -1,6 +1,6 @@
 package com.tlog.ui.screen.beginning
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,14 +30,14 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
+import com.tlog.data.model.share.Tbti
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun TbtiResultScreen(
     tbtiResult: String, // ex) RENA
     tbtiResultCode: String, // ex) 10230203
     viewModel: TbtiResultViewModel = hiltViewModel(),
-    //tbtiTestViewModel: TbtiTestViewModel = hiltViewModel(),
-    //loginViewModel: LoginViewModel = hiltViewModel(),
     traitScores: Map<String, Int>, // ViewModel에서 전달받는 점수 맵
     navController: NavController
 ) {
@@ -44,18 +45,34 @@ fun TbtiResultScreen(
     val scrollState = rememberScrollState()
     val leftLabels = listOf("R", "E", "N", "A")
     val rightLabels = listOf("S", "O", "L", "I")
-    val tbtiDescription = viewModel.tbtiDescription.value
-    val tbtiCodeList = tbtiResultCode.toString().chunked(2)
-    Log.d("resultCode11", tbtiResultCode)
-    Log.d("resultCode11", tbtiCodeList.toString())
+    val tbtiCodeList = tbtiResultCode.chunked(2)
 
+    val context = LocalContext.current
 
 
     LaunchedEffect(Unit) {
         viewModel.fetchTbtiDescription(tbtiResult)
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
     }
 
-    if (tbtiDescription != null) {
+    viewModel.tbtiDescription.value?.let{ tbtiDescription ->2
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,13 +90,17 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(15.dp))
 
             AsyncImage(
-                model = if (tbtiDescription.imageUrl.isNullOrBlank()) R.drawable.tbti_rena else tbtiDescription.imageUrl,
+                model = try {
+                    Tbti.valueOf(tbtiDescription.tbtiString).icon
+                } catch (e: IllegalArgumentException) {
+                    R.drawable.character_error
+                },
                 contentDescription = "TBTI 캐릭터 이미지",
                 modifier = Modifier
                     .fillMaxWidth()
                     .size(200.dp)
                     .height(200.dp),
-                //4contentScale = ContentScale.Fit
+                contentScale = ContentScale.Fit
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -181,7 +202,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "RENA",
+                        text = tbtiDescription.preferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -191,12 +212,16 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.tbti_roli,
+                        model = try {
+                            Tbti.valueOf(tbtiDescription.preferredTbti).icon
+                        } catch (e: IllegalArgumentException) {
+                            R.drawable.character_error
+                        },
                         contentDescription = "최고의 궁합",
                         modifier = Modifier
                             .size(80.dp)
                             .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 }
 
@@ -217,7 +242,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = "RENA",
+                        text = tbtiDescription.notPreferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -227,12 +252,16 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     AsyncImage(
-                        model = R.drawable.tbti_roli,
+                        model = try {
+                            Tbti.valueOf(tbtiDescription.notPreferredTbti).icon
+                        } catch (e: IllegalArgumentException) {
+                            R.drawable.character_error
+                        },
                         contentDescription = "최악의 궁합",
                         modifier = Modifier
                             .size(80.dp)
                             .clip(RoundedCornerShape(12.dp)),
-                        contentScale = ContentScale.Crop
+                        contentScale = ContentScale.Fit
                     )
                 }
             }
@@ -250,12 +279,9 @@ fun TbtiResultScreen(
                 onClick = {
                     if (viewModel.isUserId()) {
                         viewModel.updateTbti(tbtiValue)
-                        navController.popBackStack()
-                        navController.popBackStack()
-                        navController.navigate("myPage")
                     }
                     else
-                        viewModel.registerUser(navController, tbtiValue)
+                        viewModel.navToSelectTravel(tbtiValue)
                 },
                 modifier = Modifier
                     .padding(horizontal = 24.dp)

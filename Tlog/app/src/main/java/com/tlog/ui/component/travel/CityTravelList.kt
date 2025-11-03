@@ -87,7 +87,7 @@ fun CityTravelList(
                                 .padding(end = 20.dp)
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_delete),
+                                painter = painterResource(id = R.drawable.ic_x_circle),
                                 contentDescription = "삭제 아이콘",
                                 tint = Color.Unspecified
                             )

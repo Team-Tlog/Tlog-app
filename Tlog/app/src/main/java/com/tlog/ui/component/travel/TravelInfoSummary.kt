@@ -25,6 +25,7 @@ import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
+import kotlin.math.floor
 
 
 @Composable
@@ -78,7 +79,7 @@ fun TravelInfoSummary(
                         )
 
                         Text(
-                            text = travelInfo.averageRating.toString(),
+                            text = (floor(travelInfo.averageRating * 100) / 100).toString(),
                             style = Body2Regular
                         )
 

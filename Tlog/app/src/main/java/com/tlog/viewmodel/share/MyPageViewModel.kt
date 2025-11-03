@@ -1,37 +1,39 @@
 package com.tlog.viewmodel.share
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.data.util.FirebaseImageUploader
-import com.tlog.viewmodel.share.MyPageViewModel.UiEvent.LogoutSuccess
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
-import kotlin.toString
 import android.net.Uri
-import android.widget.Toast
 import androidx.core.net.toUri
 import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.local.FollowManager
+import com.tlog.data.local.NotificationManager
+import com.tlog.data.local.ScrapManager
 import com.tlog.data.model.user.User
+import com.tlog.ui.navigation.Screen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlin.String
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val myPageRepository: MyPageRepository,
     private val tokenProvider: TokenProvider,
-    private val userPreferences: UserPreferences
-): ViewModel() {
+    private val userPreferences: UserPreferences,
+    private val notificationManager: NotificationManager,
+    private val followManager: FollowManager,
+    private val scrapManager: ScrapManager
+): BaseViewModel() {
+
 
     private val _notification = mutableStateOf(true)
     val notification: State<Boolean> = _notification
@@ -43,59 +45,42 @@ class MyPageViewModel @Inject constructor(
     val imageUri = _image
 
 
-    sealed class UiEvent {
-        object LogoutSuccess: UiEvent()
-        data class LogoutError(val message: String): UiEvent()
-        object ProfileImageUpdated: UiEvent()
-    }
 
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
-    val isGetUserApiSuccess = mutableStateOf(false)
+    private val _getUserInfo = MutableStateFlow(false)
+    val getUserInfo = _getUserInfo.asStateFlow()
 
     init {
         getUserInfo()
     }
 
 
-    fun getUserInfo() {
-        viewModelScope.launch {
-            try {
-                val result = myPageRepository.getUserInfo()
-
-                when (result.status) {
-                    200 -> {
-                        _userInfo.value = result.data
-                        isGetUserApiSuccess.value = true
-                    }
-                    else -> isGetUserApiSuccess.value = false
-                }
-            } catch (e: Exception) {
-                Log.d("MyPageViewModel getUserInfo", e.message.toString())
+    private fun getUserInfo() {
+        launchSafeCall(
+            action = {
+                _userInfo.value =  myPageRepository.getUserInfo().data
+                _getUserInfo.value = true
             }
-        }
+        )
     }
 
     // 로그아웃
     fun logout() {
-        val refreshToken = tokenProvider.getRefreshToken() ?:""
-        viewModelScope.launch {
-            try {
-                val result = myPageRepository.logout(refreshToken)
-                when (result.status) {
-                    200 -> {
-                        _eventFlow.emit(LogoutSuccess)
-                        userPreferences.clearTokens()
-                    }
+        val refreshToken = tokenProvider.getRefreshToken() ?: ""
+        launchSafeCall(
+            action = {
+                myPageRepository.logout(refreshToken)
+                showToast("로그아웃 성공")
 
-                    500 -> _eventFlow.emit(UiEvent.LogoutError("로그아웃 실패"))
-                    else -> _eventFlow.emit(UiEvent.LogoutError("알 수 없는 오류가 발생했습니다."))
-                }
-            } catch (e: Exception) {
-                Log.d("MyPageViewModel logout", e.message.toString())
+                userPreferences.clearTokens()
+                notificationManager.clearAllNotifications()
+                scrapManager.clearAllScrapData()
+                followManager.clearAllFollowData()
+
+                navigate(Screen.Login, true)
+
             }
-        }
+        )
     }
 
     fun changeNotification() {
@@ -111,22 +96,23 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun updateProfileImage(context: Context ){
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrl = imageUpload(context, imageUri.value.toUri())
-                val response = myPageRepository.updateProfileImage(
+
+                myPageRepository.updateProfileImage(
                     ProfileImageRequest(
                         imageUrl = imageUrl
                     )
                 )
-                if (response.status == 200){
-                    _eventFlow.emit(UiEvent.ProfileImageUpdated)
-                    Toast.makeText(context, "프로필 사진 변경 성공", Toast.LENGTH_SHORT).show()
-                }
+
+                getUserInfo()
+                showToast("프로필 사진 변경 성공")
             }
-            catch(e: Exception){
-                Log.d("MyPageViewModel", e.message.toString())
-            }
-        }
+        )
+    }
+
+    fun navToTbtiTest() {
+        navigate(Screen.TbtiIntro)
     }
 }

@@ -1,26 +1,24 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.TravelDestinationResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.TravelListRepository
+import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 @HiltViewModel
 class TravelListViewModel @Inject constructor(
     private val repository: TravelListRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
@@ -32,16 +30,19 @@ class TravelListViewModel @Inject constructor(
 
     private var userId: String? = null
 
+
     init {
         userId = tokenProvider.getUserId()
     }
 
 
     fun initUserIdAndScrapList() {
-        viewModelScope.launch {
-            userId?.let { scrapManager.refreshScrapList(it) }
-            scrapManager.init()
-        }
+        launchSafeCall(
+            action = {
+                userId?.let { scrapManager.refreshScrapList(it) }
+                scrapManager.init()
+            }
+        )
     }
 
     fun setCategory(category: String) {
@@ -59,14 +60,13 @@ class TravelListViewModel @Inject constructor(
 
 
     fun toggleScrap(destinationId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 scrapManager.toggleScrap(destinationId)
-            } catch (e: Exception) {
-                Log.d("scrap", "스크랩 에러: ${e.message}")
             }
-        }
+        )
     }
+
 
 
     private var page = 0
@@ -74,15 +74,13 @@ class TravelListViewModel @Inject constructor(
     private val sort = emptyList<String>()
     private var isLastPage = false
 
-
-
     fun getTravelList(
         city: String,
         sortType: String? = "REVIEW", // 현재는 리뷰 추후 변경 할 것 (api가 리뷰만 돌아감)
         tbti: String? = null
     ) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
@@ -93,10 +91,8 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value = response.data.content
-            } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
             }
-        }
+        )
     }
 
     fun getNextPage(
@@ -106,8 +102,8 @@ class TravelListViewModel @Inject constructor(
     ) {
         if (isLastPage == true) return
         page++
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getTravelList(
                     page = page,
                     size = pageSize,
@@ -118,24 +114,22 @@ class TravelListViewModel @Inject constructor(
                 )
                 isLastPage = response.data.last
                 _destinations.value += response.data.content
-            } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
             }
-        }
+        )
     }
 
-
-
     fun searchTravelToCity(city: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
                 _destinations.value = response.data.content
                 isLastPage = response.data.last
-            } catch (e: Exception) {
-                Log.d("TravelDestinationRecommendationViewModel", "에러 로그 : ${e.message}")
-                _destinations.value = emptyList()
             }
-        }
+        )
+    }
+
+
+    fun navToTravelInfo(travelId: String) {
+        navigate(Screen.TravelInfo(travelId))
     }
 }

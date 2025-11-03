@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.team
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,28 +17,35 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.team.TeamCard
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.team.MyTeamListViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.team.MyTeamListViewModel
 
 @Composable
 fun MyTeamListScreen(
     viewModel: MyTeamListViewModel = hiltViewModel(),
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchTeamsFromServer()
 
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    Log.d("MyTeamListScreen", "ApiSuccess")
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is UiEvent.ApiError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                    // Error Screen 이동?
-                }
+
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT)
+                    .show()
+
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }
@@ -65,11 +70,16 @@ fun MyTeamListScreen(
                 .weight(1f),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(viewModel.teamsList.value) { team ->
+            items(
+                items = viewModel.teamsList.value,
+                key = { team -> team.teamId }
+            ) { team ->
                 TeamCard(
                     team = team,
-                    onDeleteClick = { viewModel.deleteTeam(it) },
-                    onClick = { teamId -> navController.navigate("teamDetail/${teamId}") }
+                    onDeleteClick = { viewModel.deleteTeam(it, team.teamLeaderId) },
+                    onClick = { teamId ->
+                        viewModel.navToTeamDetail(teamId)
+                    }
                 )
                 Spacer(modifier = Modifier.height(10.dp))
             }
@@ -80,7 +90,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "코드 입력해서 팀 합류",
             onClick = {
-                navController.navigate("joinTeam")
+                viewModel.navToJoinTeam()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,7 +102,7 @@ fun MyTeamListScreen(
         MainButton(
             text = "팀 생성",
             onClick = {
-                navController.navigate("createTeam")
+                viewModel.navToCreateTeam()
             },
             modifier = Modifier
                 .fillMaxWidth()

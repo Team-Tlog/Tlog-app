@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.sns
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -46,10 +48,12 @@ import com.tlog.data.model.sns.Comment
 import com.tlog.ui.component.sns.PostAuthorInfo
 import com.tlog.ui.component.sns.PostContentAndInteractions
 import com.tlog.ui.component.sns.PostImage
+import com.tlog.ui.navigation.Screen
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -58,13 +62,28 @@ fun SnsDetailScreen(
     navController: NavController,
     postId: String,
 ) {
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.getPostDetail(postId)
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(Screen.Main) { inclusive = false }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
     }
 
     val followingList = viewModel.followingList.collectAsState().value
     val post = viewModel.post.collectAsState()
-
 
     Column(modifier = Modifier
             .fillMaxSize()
@@ -86,7 +105,7 @@ fun SnsDetailScreen(
                             viewModel.followUser(viewModel.post.value!!.authorId)
                         },
                         clickUser = {
-                            navController.navigate("snsMyPage/${viewModel.post.value!!.authorId}")
+                            viewModel.navToSnsMyPage(viewModel.post.value!!.authorId)
                         }
                     )
 
@@ -117,7 +136,7 @@ fun SnsDetailScreen(
                         CommentItem(
                             comment = comment,
                             userClick = { targetUserId ->
-                                navController.navigate("snsMyPage/$targetUserId")
+                                viewModel.navToSnsMyPage(targetUserId)
                             }
                         )
                     }

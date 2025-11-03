@@ -49,7 +49,10 @@ fun StepCourseBar(
             contentPadding = PaddingValues(horizontal = 16.dp),
             verticalAlignment = Alignment.Top
         ) {
-            items(courseTitles.size) { stepIndex ->
+            items(
+                count = courseTitles.size,
+                key = { idx -> idx },
+            ) { stepIndex ->
                 val isActive = stepIndex == activeStepIndex
 
                 Column(

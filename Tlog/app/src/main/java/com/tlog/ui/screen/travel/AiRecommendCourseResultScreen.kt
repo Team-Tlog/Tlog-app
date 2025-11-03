@@ -14,18 +14,17 @@ import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.RetryButton
 import com.tlog.ui.style.BodyTitle
-import com.tlog.viewmodel.tmp.TmpCartViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun AiRecommendCourseResultScreen(
-    viewModel: TmpCartViewModel = viewModel()
+//    viewModel: TmpCartViewModel = viewModel()
 ) {
-    val travelList by viewModel.travelList
+//    val travelList by viewModel.travelList
     var selectedDay by remember { mutableStateOf(1) }
 
     // 도시별로 묶기
-    val cityGrouped = travelList.groupBy { it.city }
+//    val cityGrouped = travelList.groupBy { it.city }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -36,7 +35,7 @@ fun AiRecommendCourseResultScreen(
             contentPadding = PaddingValues(vertical = 16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.height(117.dp))
+                Spacer(modifier = Modifier.height(103.dp))
                 Text(
                     text = "AI추천 코스결과",
                     style = BodyTitle,
@@ -45,7 +44,7 @@ fun AiRecommendCourseResultScreen(
                         .wrapContentWidth(Alignment.CenterHorizontally)
                 )
 
-                Spacer(modifier = Modifier.height(75.dp))
+                Spacer(modifier = Modifier.height(41.dp))
 
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -57,7 +56,7 @@ fun AiRecommendCourseResultScreen(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
                 RetryButton(
                     onClick = { /* 다시 추천 로직 */ },
@@ -66,24 +65,24 @@ fun AiRecommendCourseResultScreen(
                         .wrapContentWidth(Alignment.CenterHorizontally)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(41.dp))
             }
 
-            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
-                item {
-                    CityTravelList(
-                        city = city,
-                        travelItems = list,
-                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-                        onDeleteClick = { travelItem ->
-                            // 여행지 삭제 로직
-                        },
-                        onUpdateChecked = { i, checked ->
-                            viewModel.updateChecked(i, checked)
-                        }
-                    )
-                }
-            }
+//            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+//                item {
+//                    CityTravelList(
+//                        city = city,
+//                        travelItems = list,
+//                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
+//                        onDeleteClick = { travelItem ->
+//                            // 여행지 삭제 로직
+//                        },
+//                        onUpdateChecked = { i, checked ->
+//                            viewModel.updateChecked(i, checked)
+//                        }
+//                    )
+//                }
+//            }
 
         }
 

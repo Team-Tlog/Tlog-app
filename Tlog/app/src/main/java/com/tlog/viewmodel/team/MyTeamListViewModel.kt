@@ -1,75 +1,73 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MyTeamListViewModel @Inject constructor(
     private val teamRepository: TeamRepository,
-    tokenProvider: TokenProvider
-) : ViewModel() {
+    tokenProvider: TokenProvider,
+) : BaseViewModel() {
+
+
     private var userId: String? = null
 
     init {
         userId = tokenProvider.getUserId()
     }
 
-    sealed class UiEvent {
-        object ApiSuccess : UiEvent()
-        data class ApiError(val message: String) : UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
     private val _teamList = mutableStateOf<List<Team>>(emptyList())
     val teamsList: State<List<Team>> = _teamList
 
 
     fun fetchTeamsFromServer() {
-        viewModelScope.launch {
-            try {
-                val safeUserId = userId ?: return@launch
+        launchSafeCall(
+            action = {
+                val safeUserId = userId ?: return@launchSafeCall
                 val result = teamRepository.getTeamList(safeUserId)
+
                 _teamList.value = result.data
-                when (result.status) {
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
-                }
-            } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-                Log.d("MyTeamListViewModel", e.message.toString())
             }
-        }
+        )
     }
 
-    fun deleteTeam(teamId: String) {
-        viewModelScope.launch {
-            try {
-                val result = teamRepository.deleteTeam(teamId)
-                if (result.status == 200) {
+    fun deleteTeam(teamId: String, teamLeaderId: String) {
+        launchSafeCall(
+            action = {
+                if (teamLeaderId == userId) {
+                    teamRepository.deleteTeam(teamId)
+
                     _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
-                    _eventFlow.emit(UiEvent.ApiSuccess)
+                    showToast("팀 삭제 성공")
                 } else {
-                    _eventFlow.emit(UiEvent.ApiError("삭제 실패: ${result.message}"))
+                    teamRepository.leaveTeam(teamId, userId!!)
+
+                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    showToast("팀 떠나기 성공")
                 }
-            } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-                Log.d("MyTeamListViewModel", e.message.toString())
             }
-        }
+        )
+    }
+
+
+    fun navToCreateTeam() {
+        navigate(Screen.CreateTeam)
+    }
+
+    fun navToTeamDetail(teamId: String) {
+        navigate(Screen.TeamDetail(teamId))
+    }
+
+    fun navToJoinTeam() {
+        navigate(Screen.JoinTeam)
     }
 }
 

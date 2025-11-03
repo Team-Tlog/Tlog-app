@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.model.share.Tbti
 import com.tlog.data.model.user.User
 import com.tlog.ui.theme.MainFont
 
@@ -40,47 +41,21 @@ fun MyPageTbtiGroup(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if ( userInfo.tbtiDescription.imageUrl == null || userInfo.tbtiDescription.imageUrl == "") {
-            var tbtiImage: Int = R.drawable.tbti_rena
-
-            when (userInfo.tbtiDescription.tbtiString) {
-                "SELA" -> tbtiImage = R.drawable.tbti_sela
-                "SELI" -> tbtiImage = R.drawable.tbti_seli
-                "SENA" -> tbtiImage = R.drawable.tbti_sena
-                "SENI" -> tbtiImage = R.drawable.tbti_seni
-                "SOLA" -> tbtiImage = R.drawable.tbti_sola
-                "SOLI" -> tbtiImage = R.drawable.tbti_soli
-                "SONA" -> tbtiImage = R.drawable.tbti_sona
-                "SONI" -> tbtiImage = R.drawable.tbti_soni
-                "RELA" -> tbtiImage = R.drawable.tbti_rela
-                "RELI" -> tbtiImage = R.drawable.tbti_reli
-                "RENA" -> tbtiImage = R.drawable.tbti_rena
-                "RENI" -> tbtiImage = R.drawable.tbti_reni
-                "ROLA" -> tbtiImage = R.drawable.tbti_rola
-                "ROLI" -> tbtiImage = R.drawable.tbti_roli
-                "RONA" -> tbtiImage = R.drawable.tbti_rona
-                "RONI" -> tbtiImage = R.drawable.tbti_roni
-            }
-
-            Image(
-                painter = painterResource(id = tbtiImage),
-                contentDescription = "tbti 캐릭터",
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .size(200.dp)
-                    .clip(RoundedCornerShape(50))
-                    .background(Color.White)
-            )
-        }
-        else {
-            AsyncImage(
-                model = userInfo.tbtiDescription.imageUrl,
-                contentDescription = "tbti 캐릭터",
-                modifier = Modifier
-                    .size(178.dp)
-                    .clip(RoundedCornerShape(50))
-            )
-        }
+        Image(
+            painter = painterResource(
+                try {
+                    Tbti.valueOf(userInfo.tbtiDescription.tbtiString).icon
+                } catch (e: IllegalArgumentException) {
+                    R.drawable.character_error
+                }
+            ),
+            contentDescription = "tbti 캐릭터",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(200.dp)
+                .clip(RoundedCornerShape(50))
+                .background(Color.White)
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 

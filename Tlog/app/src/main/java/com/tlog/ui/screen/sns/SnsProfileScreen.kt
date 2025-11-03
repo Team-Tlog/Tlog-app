@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.sns
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,11 +28,13 @@ import com.tlog.R
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.sns.SnsMyPageViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import com.tlog.data.api.SnsPostPreview
 import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable
 fun SnsProfileScreen(
@@ -39,10 +42,26 @@ fun SnsProfileScreen(
     userId: String,
     navController: NavController
 ) {
+    val context = LocalContext.current
     val followingList = viewModel.followingList.collectAsState().value
+
 
     LaunchedEffect(Unit) {
         viewModel.getUserProfile(userId)
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
     }
 
     val userProfile = viewModel.userProfileInfo.collectAsState()
@@ -105,7 +124,7 @@ fun SnsProfileScreen(
             PostsGrid(
                 postList = profile.posts.content,
                 onClick = { postId ->
-                    navController.navigate("snsPostDetail/$postId")
+                    viewModel.navToSnsPostDetail(postId)
                 }
             )
         }
@@ -274,31 +293,17 @@ fun PostsGrid(
     ) {
         postList.forEach { post ->
             item {
-                if (post.previewImageUrl != null && post.previewImageUrl != "") { // 정상적인 상황에선 있을 수 없음 무조건 이미지 url이 정상 하지만 테스트를 위해
-                    AsyncImage(
-                        model = post.previewImageUrl,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .clickable {
-                                onClick(post.postId)
-                            }
-                    )
-                }
-                else {
-                    Box(
-                        modifier = Modifier
-                            .aspectRatio(1f)
-                            .background(Color.Gray)
-                    ) {
-                        Text(
-                            text = "XXX",
-                            color = Color.White,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                }
+                AsyncImage(
+                    model = post.previewImageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.tmp_jeju),
+                    modifier = Modifier
+                        .aspectRatio(1f)
+                        .clickable {
+                            onClick(post.postId)
+                        }
+                )
             }
         }
     }

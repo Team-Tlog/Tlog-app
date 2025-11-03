@@ -11,6 +11,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.tlog.MainActivity
 import com.tlog.R
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.model.notification.NotificationItem
+import com.tlog.data.model.notification.NotificationType
+import com.tlog.data.model.notification.TSnsNotificationItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,6 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FcmService: FirebaseMessagingService() {
     @Inject lateinit var userPreferences: UserPreferences
+    @Inject lateinit var notificationManager: com.tlog.data.local.NotificationManager
 
     // 앱 설치시 자동으로 발급 -> dataStore에 저장
     override fun onNewToken(token: String) {
@@ -36,10 +40,11 @@ class FcmService: FirebaseMessagingService() {
         super.onMessageReceived(message)
 
         Log.d("FCM Message", message.data.toString())
-        val messageType = message.data["tlog-message-type"]
+        val messageTypeString = message.data["tlog-message-type"] ?: ""
+        val messageType = NotificationType.fromType(messageTypeString)
 
         when (messageType) {
-            "1" ->  {
+            NotificationType.BASIC_MESSAGE ->  {
                 val content = message.data["content"]
 
                 val intent = Intent(this, MainActivity::class.java).apply {
@@ -48,8 +53,17 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = NotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveNotification(notification)
+                }
             }
-            "2" -> {
+            NotificationType.LINK_MESSAGE -> {
                 val content = message.data["content"]
                 val linkType = message.data["link-type"]
                 val linkAddress = message.data["link-address"]
@@ -62,8 +76,19 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = NotificationItem(
+                    content = content ?: "",
+                    linkType = linkType,
+                    linkAddress = linkAddress,
+                    notificationType = messageTypeString
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveNotification(notification)
+                }
             }
-            "10" -> {
+            NotificationType.BASIC_TSNS_MESSAGE -> {
                 val content = message.data["content"]
                 val actorId = message.data["actor-id"]
                 val actorImage = message.data["actor-image"]
@@ -79,9 +104,22 @@ class FcmService: FirebaseMessagingService() {
                     putExtra("content", content)
                 }
 
+                val notification = TSnsNotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString,
+                    actorId = actorId,
+                    actorImage = actorImage,
+                    objectId = objectId,
+                    objectImage = objectImage
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveTSnsNotification(notification)
+                }
+
                 sendNotification(content, intent)
             }
-            "11" -> {
+            NotificationType.FOLLOWING_TSNS_MESSAGE -> {
                 val content = message.data["content"]
                 val actorId = message.data["actor-id"]
                 val actorImage = message.data["actor-image"]
@@ -96,6 +134,18 @@ class FcmService: FirebaseMessagingService() {
                 }
 
                 sendNotification(content, intent)
+
+                val notification = TSnsNotificationItem(
+                    content = content ?: "",
+                    notificationType = messageTypeString,
+                    actorId = actorId,
+                    actorImage = actorImage,
+                    isFollowing = if (isFollowing == "true") true else false
+                )
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    notificationManager.saveTSnsNotification(notification)
+                }
             }
             else -> Log.d("FCM Message", "타입 에러")
         }

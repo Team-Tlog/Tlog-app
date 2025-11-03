@@ -1,6 +1,6 @@
 package com.tlog.ui.screen.beginning
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,31 +16,58 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.tlog.R
+import com.tlog.ui.component.share.AutoSlidingImageRes
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.theme.FontBlue
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
+import com.tlog.viewmodel.beginning.TbtiIntroViewModel
 
 
 @Composable
 fun TbtiIntroScreen(
+    viewModel: TbtiIntroViewModel = hiltViewModel(),
     navController: NavController
 ) {
+
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate ->  {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars),
         color = Color.White
     ) {
-
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -48,10 +75,11 @@ fun TbtiIntroScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                Spacer(modifier = Modifier.weight(1f))
+
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 263.dp),
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
@@ -59,7 +87,7 @@ fun TbtiIntroScreen(
                         color = Color.Black,
                         fontSize = 24.sp,
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.ExtraBold
+                        fontWeight = FontWeight.Bold
                     )
 
                     Spacer(modifier = Modifier.height(40.dp))
@@ -72,7 +100,7 @@ fun TbtiIntroScreen(
                         fontSize = 14.sp,
                     )
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     Text(
                         text = "여행 성향을 분석해 나만의 여행 유형을\n찾아주는 맞춤형 여행 성향 테스트입니다",
@@ -81,15 +109,28 @@ fun TbtiIntroScreen(
                         fontWeight = FontWeight.Medium,
                         fontSize = 14.sp,
                     )
+
+                    Spacer(modifier = Modifier.height(118.dp))
+                    AutoSlidingImageRes(
+                        imageRes = listOf(
+                            R.drawable.tbti_rela,
+                            R.drawable.tbti_sela,
+                            R.drawable.tbti_seli
+                        )
+                    )
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height((74.5).dp))
 
                 MainButton(
                     text = "테스트 시작",
+                    textStyle = TextStyle(
+                        fontSize = 18.sp,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Medium
+                    ),
                     onClick = {
-                        navController.popBackStack()
-                        navController.navigate("tbtiTest")
+                        viewModel.navToTbtiTest()
                     },
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
@@ -97,7 +138,7 @@ fun TbtiIntroScreen(
                         .height(55.dp)
                 )
 
-                Spacer(modifier = Modifier.padding(bottom = 4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Row(
                     horizontalArrangement =  Arrangement.spacedBy(10.dp),
@@ -121,7 +162,7 @@ fun TbtiIntroScreen(
                         textDecoration = TextDecoration.Underline,
                         modifier = Modifier
                             .padding(vertical = 10.dp)
-                            .clickable{ Log.d("TbtiSkipText", "my click!!") }
+                            .clickable{ viewModel.navToTbticodeInput() }
                     )
                 }
             }

@@ -4,7 +4,8 @@
 /captures
 .externalNativeBuild
 .cxx
+/Tlog/.gradle
 local.properties
-.idea/
-/.idea/*
-.idea/deploymentTargetSelector.xml
+/Tlog/.idea/*
+/Tlog/app/google-services.json
+.idea/*

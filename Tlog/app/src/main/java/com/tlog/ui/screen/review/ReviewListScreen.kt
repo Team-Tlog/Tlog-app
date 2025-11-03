@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.review
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,12 +14,16 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -28,6 +33,7 @@ import com.tlog.ui.component.travel.review.ReviewHeader
 import com.tlog.ui.component.travel.review.ReviewList
 import com.tlog.ui.component.travel.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -39,8 +45,28 @@ fun ReviewListScreen(
 ) {
     val listState = rememberLazyListState()
 
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.getReviewList(id = travelId)
+
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+
     }
 
     LaunchedEffect(listState) {
@@ -54,7 +80,9 @@ fun ReviewListScreen(
             }
         }
     }
+
     LaunchedEffect(viewModel.sortOption.value) {
+        viewModel.resetPaging()
         viewModel.getReviewList(id = travelId)
     }
 
@@ -85,7 +113,7 @@ fun ReviewListScreen(
                 ) {
                     ReviewHeader(
                         reviewCnt = viewModel.reviewList.value.size,
-                        reviewWrite = { navController.navigate("review/$travelId/$travelName") }
+                        reviewWrite = { viewModel.navToReviewWrite(travelId, travelName) }
                     )
                 }
 
@@ -114,16 +142,15 @@ fun ReviewListScreen(
                             },
                             modifier = Modifier
                                 .align(Alignment.CenterEnd)
+                                .shadow(2.dp, shape = RoundedCornerShape(10.dp))
+                                .clip(RoundedCornerShape(10.dp))
                         )
                     }
 
                     Spacer(modifier = Modifier.height(29.dp))
 
                     ReviewList(
-                        reviewList = viewModel.reviewList.value,
-                        onClick = { userId ->
-                            navController.navigate("snsMyPage/$userId")
-                        }
+                        reviewList = viewModel.reviewList.value
                     )
                 }
             }

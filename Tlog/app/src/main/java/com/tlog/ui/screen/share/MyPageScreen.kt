@@ -30,6 +30,7 @@ import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -50,7 +51,7 @@ import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.MyPageViewModel
-import com.tlog.viewmodel.share.MyPageViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -62,20 +63,17 @@ fun MyPageScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.LogoutSuccess -> {
-                    navController.navigate("login") {
-                        popUpTo(0) { inclusive = true } // 모두 날려버려~
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is UiEvent.LogoutError -> {
-                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                }
-                is UiEvent.ProfileImageUpdated -> {
-                    navController.popBackStack()
-                    navController.navigate("myPage")
-                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }
@@ -92,59 +90,65 @@ fun MyPageScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(bottom = 60.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 13.dp)
-                    .padding(top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
-            ) {
-                BlueCircle()
+            viewModel.getUserInfo.collectAsState().let { isGetUserApiSuccess ->
 
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 13.dp)
+                        .padding(
+                            top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+                        )
                 ) {
-                    MyPageTopBar(
-                        logoutClick = { viewModel.logout() }
-                    )
+                    BlueCircle()
 
-                    Column(
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxWidth()
                     ) {
+                        MyPageTopBar(
+                            logoutClick = { viewModel.logout() }
+                        )
 
-                        Spacer(modifier = Modifier.height(25.dp))
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
 
-                        if (viewModel.isGetUserApiSuccess.value == true)
-                            MyPageTbtiGroup(
-                                userInfo = viewModel.userInfo.value!!,
-                                tbtiTestClick = {
-                                    navController.navigate("tbtiIntro")
+                            Spacer(modifier = Modifier.height(25.dp))
+
+                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
+                                MyPageTbtiGroup(
+                                    userInfo = viewModel.userInfo.value!!,
+                                    tbtiTestClick = {
+                                        viewModel.navToTbtiTest()
+                                    }
+                                )
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            val imagePickerLauncher = rememberLauncherForActivityResult(
+                                contract = ActivityResultContracts.GetContent()
+                            ) { uri: Uri? ->
+                                uri?.let {
+                                    viewModel.imageUri.value = it.toString()
+                                    viewModel.updateProfileImage(context)
                                 }
-                            )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        val imagePickerLauncher = rememberLauncherForActivityResult(
-                            contract = ActivityResultContracts.GetContent()
-                        ) { uri: Uri? ->
-                            uri?.let {
-                                viewModel.imageUri.value = it.toString()
-                                viewModel.updateProfileImage(context)
                             }
-                        }
 
-                        if (viewModel.isGetUserApiSuccess.value == true)
-                            UserInfoGroup(
-                                userInfo = viewModel.userInfo.value!!,
-                                onImageClick = {
-                                    imagePickerLauncher.launch("image/*")
-                                }
-                            )
+                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
+                                UserInfoGroup(
+                                    userInfo = viewModel.userInfo.value!!,
+                                    onImageClick = {
+                                        imagePickerLauncher.launch("image/*")
+                                    }
+                                )
+                        }
                     }
                 }
             }
+
 
             Spacer(modifier = Modifier.height(40.dp))
 

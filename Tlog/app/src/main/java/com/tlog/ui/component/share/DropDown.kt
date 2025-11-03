@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,12 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -38,20 +36,21 @@ fun DropDown(
     options: List<String>,
     value: String,
     valueChange: (String) -> Unit,
+    selectedTextStyle: TextStyle = TextStyle(fontFamily = MainFont, fontSize = 13.sp, fontWeight = FontWeight.Normal, color = Color.Black),
+    textStyle: TextStyle = TextStyle(fontFamily = MainFont, fontSize = 13.sp, fontWeight = FontWeight.Normal, color = Color.Black),
+    dividerColor: Color = Color(0xFFE8E8E8),
+    bgColor: Color = Color.White,
+    iconColor: Color = Color.Black,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
-            .shadow(2.dp, shape = RoundedCornerShape(10.dp))
-            .clip(RoundedCornerShape(10.dp))
-            .background(Color.White)
+            .background(bgColor)
             .padding(horizontal = 16.dp, vertical = (2.5).dp)
     ) {
-        Column(
-            modifier = Modifier
-        ) {
+        Column {
             // 선택된 항목 표시 영역
             Row(
                 modifier = Modifier
@@ -61,9 +60,7 @@ fun DropDown(
             ) {
                 Text(
                     text = value,
-                    fontFamily = MainFont,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Normal,
+                    style = selectedTextStyle,
                     modifier = Modifier
                         .padding(vertical = 10.dp)
                 )
@@ -73,35 +70,36 @@ fun DropDown(
                 Icon(
                     painter = painterResource (if(expanded) R.drawable.ic_arrow_top else R.drawable.ic_arrow_bottom),
                     contentDescription = null,
+                    tint = iconColor,
                     modifier = Modifier.size(20.dp)
                 )
             }
 
             if (expanded) {
                 options.forEachIndexed { index, item ->
-                    Box(
-                        modifier = Modifier
-                            .clickable {
-                                valueChange(item)
-                                expanded = false
-                            }
-                            .drawBehind {
-                                drawLine(
-                                    color = Color(0xFFE8E8E8),
-                                    start = Offset(0f, 0f),
-                                    end = Offset(size.width, 0f),
-                                    strokeWidth = 1.dp.toPx()
-                                )
-                            }
-                    ) {
-                        Text(
-                            text = item,
-                            fontFamily = MainFont,
-                            fontSize = 13.sp,
-                            fontWeight = FontWeight.Normal,
+                    if (item != value) {
+                        Box(
                             modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp, end = 30.dp)
-                        )
+                                .clickable {
+                                    valueChange(item)
+                                    expanded = false
+                                }
+                                .drawBehind {
+                                    drawLine(
+                                        color = dividerColor,
+                                        start = Offset(0f, 0f),
+                                        end = Offset(size.width, 0f),
+                                        strokeWidth = 1.dp.toPx()
+                                    )
+                                }
+                        ) {
+                            Text(
+                                text = item,
+                                style = textStyle,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp, end = 30.dp)
+                            )
+                        }
                     }
                 }
             }

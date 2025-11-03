@@ -32,15 +32,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.data.model.sns.TravelCourse
 import com.tlog.ui.component.share.TextButtonTopBar
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.SnsPostViewModel
 
-
+@Preview(showBackground = true)
 @Composable
 fun SnsPostWriteDetailScreen(
     viewModel: SnsPostViewModel = viewModel()
@@ -52,6 +57,7 @@ fun SnsPostWriteDetailScreen(
         modifier = Modifier
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
+            .background(Color.White)
             .verticalScroll(rememberScrollState())
     ) {
         TextButtonTopBar(
@@ -84,11 +90,21 @@ fun SnsPostWriteDetailScreen(
             },
             placeholder = {
                 Text(
-                    text = "게시물 내용을 입력해 주세요.",
-                    style = Body1Regular
+                    text = "게시물 내용 쓰기",
+                    style = TextStyle(
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 15.sp,
+                        color = Color.Black
+                    ),
                 )
             },
-            textStyle = Body1Regular,
+            textStyle = TextStyle(
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Normal,
+                fontSize = 15.sp,
+                color = Color.Black
+            ),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
                 unfocusedBorderColor = Color.Transparent,
@@ -145,14 +161,17 @@ fun CoursePictures(
             .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
-        items(selectedCourse.pictureList.size) { index ->
+        items(
+            count = selectedCourse.pictureList.size,
+            key = { idx -> idx } // pictureList가 삭제되거나 수정되지 않음 -> idx를 키로 사용해도 무관
+        ) { idx ->
             Box(
                 modifier = Modifier
                     .width(94.dp)
                     .height(105.dp)
             ) {
                 Image(
-                    painter = painterResource(selectedCourse.pictureList[index]),
+                    painter = painterResource(selectedCourse.pictureList[idx]),
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize(),

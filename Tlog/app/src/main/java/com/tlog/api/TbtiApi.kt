@@ -2,7 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.UpdateTbtiResponse
-import com.tlog.data.model.share.Tbti
+import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.model.tbti.TbtiQuestion
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -17,7 +17,7 @@ interface TbtiApi {
     @GET("/api/tbti-info")
     suspend fun getTbtiDescription(
         @Query("tbti") tbti: String
-    ): BaseResponse<Tbti>
+    ): BaseResponse<TbtiDescription>
 
     @POST("/api/users/tbti")
     suspend fun updateTbti(

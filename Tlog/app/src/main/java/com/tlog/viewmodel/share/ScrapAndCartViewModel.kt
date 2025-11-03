@@ -1,16 +1,14 @@
 package com.tlog.viewmodel.share
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -18,23 +16,30 @@ import javax.inject.Inject
 class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
+): BaseViewModel() {
+
+
+
     private var userId: String = ""
+
+    private var _cartList = mutableStateOf<List<Cart>>(emptyList())
+    val cartList: State<List<Cart>> = _cartList
+
+    private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
+    val scrapList: State<List<Scrap>> = _scrapList
 
     init {
         userId = tokenProvider.getUserId()?: ""
+
         fetchScrapList()
     }
 
     fun fetchCart() {
-        viewModelScope.launch {
-            try {
-                val result = repository.getUserCart(userId)
-                _cartList.value = result
-            } catch (e: Exception) {
-                // api실패 시
+        launchSafeCall(
+            action = {
+                _cartList.value = repository.getUserCart(userId)
             }
-        }
+        )
     }
 
     private var _selectedTab = mutableStateOf("스크랩")
@@ -44,23 +49,58 @@ class ScrapAndCartViewModel @Inject constructor(
         _selectedTab.value = tab
     }
 
-    private var _cartList = mutableStateOf<List<Cart>>(emptyList())
-    val cartList: State<List<Cart>> = _cartList
 
-    private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
-    val scrapList: State<List<Scrap>> = _scrapList
 
     fun fetchScrapList() {
-        viewModelScope.launch {
-            try {
-                val result = repository.getUserScrap(userId)
-                _scrapList.value = result
-            } catch (e: Exception) {
-                Log.d("ScrapAndCartViewModel", e.message.toString())
+        launchSafeCall(
+            action = {
+                _scrapList.value = repository.getUserScrap(userId)
             }
-        }
+        )
     }
 
+
+
+    fun deleteSelectedItems(selectedTab: String) {
+        launchSafeCall(
+            action = {
+                checkedTravelList.value.forEach { destName ->
+                    if (selectedTab == "스크랩") {
+                        val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                        repository.deleteScrapDestination(userId, destinationId)
+                    } else {
+                        val destinationId = cartList.value.find { it.name == destName }?.id ?: return@forEach
+                        repository.deleteTravelFromCart(userId, destinationId)
+                    }
+                }
+                clearChecked()
+                if (selectedTab == "스크랩") {
+                    fetchScrapList()
+                } else {
+                    fetchCart()
+                }
+            }
+        )
+    }
+
+
+    fun addSelectedTravelToCart() {
+        launchSafeCall(
+            action = {
+                checkedTravelList.value.forEach { destName ->
+                    val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                    repository.addDestinationToCart(userId, destinationId)
+                }
+                clearChecked()
+                fetchCart()
+            }
+        )
+    }
+
+
+
+
+    // checkBox
     private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
     val checkedTravelList: State<List<String>> = _checkedTravelList
 
@@ -79,48 +119,6 @@ class ScrapAndCartViewModel @Inject constructor(
         _checkedTravelList.value = emptyList()
     }
 
-    fun deleteSelectedItems(selectedTab: String) {
-        viewModelScope.launch {
-            try {
-                checkedTravelList.value.forEach { destName ->
-                    if (selectedTab == "스크랩") {
-                        val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
-                        repository.deleteScrapDestination(userId, destinationId)
-                    } else {
-                        val destinationId = cartList.value.find { it.name == destName }?.id ?: return@forEach
-                        repository.deleteTravelFromCart(userId, destinationId)
-                    }
-                }
-                clearChecked()
-                if (selectedTab == "스크랩") {
-                    fetchScrapList()
-                } else {
-                    fetchCart()
-                }
-            } catch (e: Exception) {
-                Log.d("ScrapAndCartViewModel", e.message.toString())
-
-            }
-        }
-    }
-
-
-    fun addSelectedTravelToCart() {
-        viewModelScope.launch {
-            try {
-                checkedTravelList.value.forEach { destName ->
-                    val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
-                    repository.addDestinationToCart(userId, destinationId)
-                }
-                clearChecked()
-                fetchCart()
-            } catch (e: Exception) {
-                Log.d("ScrapAndCartViewModel", e.message.toString())
-            }
-        }
-    }
-
-
     fun allChecked(selectedTab: String) {
         val allItems = if (selectedTab == "스크랩") {
             scrapList.value.map { it.name }
@@ -133,7 +131,9 @@ class ScrapAndCartViewModel @Inject constructor(
             _checkedTravelList.value = emptyList()
     }
 
-
+    fun navToTravelInfo(travelId: String) {
+        navigate(Screen.TravelInfo(travelId))
+    }
 }
 
 

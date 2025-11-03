@@ -3,20 +3,19 @@ package com.tlog.viewmodel.beginning
 import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.repository.TbtiRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import com.tlog.data.model.tbti.TbtiQuestion
+import com.tlog.ui.navigation.Screen
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val _questions = mutableStateListOf<TbtiQuestion>()
 
@@ -54,27 +53,33 @@ class TbtiTestViewModel @Inject constructor(
     // 중복 방지 플래그 추가
     private var alreadyFetchedQuestions = false
 
+    // 선택한 답변 인덱스를 저장
+    val selectedAnswers = mutableListOf<Int?>()
+
+
+    val selectedIdx = mutableStateOf<Int?>(null)
+
 
     fun fetchAllQuestions() {
         if (alreadyFetchedQuestions) return  // 중복 방지
+
         alreadyFetchedQuestions = true
 
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val allQuestions = mutableListOf<TbtiQuestion>()
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
-                    response.data?.let { allQuestions.addAll(it) }
+                    response.data.let { allQuestions.addAll(it) }
                 }
                 _questions.clear()
                 _questions.addAll(allQuestions)
 
                 updateCurrentQuestion()
-            } catch (e: Exception) {
-                Log.e("TbtiTestViewModel", "질문 전체 로딩 실패", e)
-            }
-        }
+            },
+            onError = { Log.e("TbtiTestViewModel", it) }
+        )
     }
 
 
@@ -90,8 +95,6 @@ class TbtiTestViewModel @Inject constructor(
         }
     }
 
-    // 선택한 답변 인덱스를 저장
-    val selectedAnswers = mutableListOf<Int?>()
 
     fun onAnswerSelected(index: Int) {
         selectedIdx.value = index
@@ -123,11 +126,11 @@ class TbtiTestViewModel @Inject constructor(
 
             val score = if (totalWeight == 0) 0 else (weightedSum / totalWeight).toInt()
             traitScores[category] = score
-            Log.d("cScore", category + "   " + score.toString())
+//            Log.d("cScore", category + "   " + score.toString())
         }
 
         val resultCode = getSRResultCode(traitScores, categoryInitial)
-        Log.d("result", categoryInitial.toString() + traitScores)
+//        Log.d("result", categoryInitial.toString() + traitScores)
         val resultIntCode = getIntCode()
 
         _traitScores.value = traitScores
@@ -153,7 +156,7 @@ class TbtiTestViewModel @Inject constructor(
         }
 
 
-        Log.d("helloResultCode", retResultCode)
+//        Log.d("ResultCode", retResultCode)
 
         return retResultCode
     }
@@ -181,8 +184,7 @@ class TbtiTestViewModel @Inject constructor(
         return resultCode.toString()
     }
 
-    private val _isTestFinished = mutableStateOf(false)
-    val isTestFinished: State<Boolean> get() = _isTestFinished
+
 
     fun moveToNextQuestion() {
         if (_currentQuestionIndex.intValue < _questions.size - 1) {
@@ -196,14 +198,20 @@ class TbtiTestViewModel @Inject constructor(
                 val index = _questions.indexOf(question)
                     selectedAnswers.getOrNull(index) ?: 0
                 }
+
                 userSelections[category] = selections
             }
 
             val categoryInitial = _questions.associate { it.traitCategory to it.categoryIntial }
+
             _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
-            _isTestFinished.value = true
+            navigate(Screen.TbtiResult(
+                _tbtiResult.value,
+                sValue.value.toString(),
+                eValue.value.toString(),
+                lValue.value.toString(),
+                aValue.value.toString()
+            ), true)
         }
     }
-
-    val selectedIdx = mutableStateOf<Int?>(null)
 }

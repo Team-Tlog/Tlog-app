@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
@@ -47,7 +48,9 @@ fun DayToggleBar(
                     Text(
                         text = "Day$day",
                         fontSize = 14.sp,
-                        color = if (isSelected) Color.White else MainColor
+                        color = if (isSelected) Color.White else Color(0xFF8DAEEC),
+                        fontWeight = FontWeight.Bold
+
                     )
                 }
             }

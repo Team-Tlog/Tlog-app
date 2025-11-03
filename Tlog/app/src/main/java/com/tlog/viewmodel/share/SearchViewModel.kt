@@ -1,18 +1,18 @@
 package com.tlog.viewmodel.share
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.api.SearchTravel
 import com.tlog.data.repository.SearchRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val repository: SearchRepository
-): ViewModel() {
+): BaseViewModel() {
+
     private var _searchResult = mutableStateOf<List<SearchTravel>>(emptyList())
     val searchResult: State<List<SearchTravel>> = _searchResult
 
@@ -38,10 +39,10 @@ class SearchViewModel @Inject constructor(
                 .collect {
                     try {
                         searchTravel(it)
+                    } catch (e: Exception) {
+                        showToast(e.message ?: "검색 중 오류가 발생했습니다")
                     }
-                    catch (e: Exception) {
-                        Log.d("SearchViewModel", e.message.toString())
-                    }
+
                 }
         }
     }
@@ -61,5 +62,20 @@ class SearchViewModel @Inject constructor(
 
     fun checkSearchText(): Boolean {
         return searchText.value.isNotBlank()
+    }
+
+
+
+    // Nav
+    fun navToReviewWrite(travelId: String, travelName: String) {
+        navigate(Screen.ReviewWrite(travelId, travelName))
+    }
+
+    fun navToTravelInfo(travelId: String) {
+        navigate(Screen.TravelInfo(travelId))
+    }
+
+    fun navToAddTravel() {
+        navigate(Screen.AddTravel)
     }
 }

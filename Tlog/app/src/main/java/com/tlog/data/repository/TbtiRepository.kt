@@ -3,7 +3,7 @@ package com.tlog.data.repository
 import com.tlog.api.TbtiApi
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.UpdateTbtiResponse
-import com.tlog.data.model.share.Tbti
+import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.model.tbti.TbtiQuestion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,7 +18,7 @@ class TbtiRepository @Inject constructor(
         }
     }
     
-    suspend fun getTbtiDescription(tbti: String): BaseResponse<Tbti> {
+    suspend fun getTbtiDescription(tbti: String): BaseResponse<TbtiDescription> {
         return withContext(Dispatchers.IO) {
             retrofitInstance.getTbtiDescription(tbti)
         }

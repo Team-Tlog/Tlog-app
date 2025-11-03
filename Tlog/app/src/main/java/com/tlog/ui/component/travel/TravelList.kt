@@ -25,7 +25,10 @@ fun TravelList(
     LazyColumn(
         state = listState
     ) {
-        itemsIndexed(travelList) { index, item ->
+        itemsIndexed(
+            items = travelList,
+            key = { _, travel -> travel.name }
+        ) { index, item ->
             TravelItem(
                 travel = item,
                 onClick = onClick,
@@ -50,7 +53,10 @@ fun CartList(
     LazyColumn(
         state = listState
     ) {
-        itemsIndexed(travelList) { index, item ->
+        itemsIndexed(
+            items = travelList,
+            key = { _, travel -> travel.name }
+        ) { index, item ->
             CartItem(
                 travel = item,
                 onClick = onClick
@@ -74,7 +80,10 @@ fun ScrapTravelList(
     LazyColumn(
         state = listState
     ) {
-        itemsIndexed(scrapTravelList) { index, item ->
+        itemsIndexed(
+            items = scrapTravelList,
+            key = { _, scrap -> scrap.name }
+        ) { index, item ->
             ScrapTravelItem(
                 travel = item,
                 onClick = onClick
@@ -99,7 +108,10 @@ fun SearchTravelList(
     LazyColumn(
         state = listState
     ) {
-        itemsIndexed(travelList) { index, item ->
+        itemsIndexed(
+            items = travelList,
+            key = { _, travel -> travel.name }
+        ) { index, item ->
             SearchTravelItem(travel = item, onClick = onClick)
             if (index == travelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백

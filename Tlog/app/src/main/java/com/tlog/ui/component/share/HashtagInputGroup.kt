@@ -39,7 +39,10 @@ fun HashtagInputGroup(
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(hashTags) { tag ->
+        items(
+            items = hashTags,
+            key = { hashTag -> hashTag }
+        ) { tag ->
             BlueHashTag(tag = tag)
         }
     }

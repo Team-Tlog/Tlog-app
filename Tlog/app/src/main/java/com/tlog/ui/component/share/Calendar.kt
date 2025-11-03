@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.travel.CourseInputViewModel
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -37,13 +36,12 @@ import java.time.YearMonth
 @Composable
 fun Calendar(
     today: LocalDate,
-    viewModel: CourseInputViewModel
+    startDate: LocalDate?,
+    endDate: LocalDate?,
+    updateDateRange: (LocalDate) -> Unit
 ) {
     val year = today.year
     val month = today.monthValue
-
-    val startDate = viewModel.startDate.value
-    val endDate = viewModel.endDate.value
 
     val selectedDates = if (startDate != null && endDate != null) {
         generateSequence(startDate) { it.plusDays(1) }
@@ -103,7 +101,7 @@ fun Calendar(
                     startDate = startDate,
                     endDate = endDate,
                     selectedDates = selectedDates,
-                    onClick = { viewModel.updateDateRange(it) }
+                    onClick = { updateDateRange(it) }
                 )
             }
         }
@@ -162,17 +160,17 @@ fun DayBox(
     Box(
         modifier = Modifier
             .size(38.dp)
-            .padding(vertical = 2.dp)
-            .clickable { onClick() },
+            .clickable { if (date != null && !date.isBefore(LocalDate.now())) onClick() }
+            .padding(vertical = 2.dp),
     ) {
         Box(
             modifier = Modifier
-                .size(38.dp)
+                .fillMaxSize()
                 .background(
-                    color = if (selected) MainColor.copy(alpha = 0.5f) else Color.Transparent,
+                    color = if (selected) MainColor.copy(alpha = 0.3f) else Color.Transparent,
                     shape = shape
-                )
-                .padding(horizontal = 8.dp, vertical = 6.dp)
+                ),
+            contentAlignment = Alignment.Center
 
         ) {
             Text(
@@ -181,8 +179,14 @@ fun DayBox(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Center,
+                color = when {
+                    date == null -> Color.Transparent
+                    date == LocalDate.now() -> MainColor
+                    LocalDate.now().isBefore(date) -> Color.Black
+                    else -> Color.Gray.copy(alpha = 0.5f)
+                },
                 modifier = Modifier
-                    .fillMaxSize()
+                    .align(Alignment.Center)
             )
         }
     }

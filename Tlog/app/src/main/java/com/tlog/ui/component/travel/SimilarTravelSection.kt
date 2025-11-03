@@ -41,7 +41,10 @@ fun SimilarTravelSection(
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
-                items(travelList) { travel ->
+                items(
+                    items = travelList,
+                    key = { travel -> travel.name }
+                ) { travel ->
                     SimilarTravelSpots(travel = travel, clickable = clickable)
                 }
             }

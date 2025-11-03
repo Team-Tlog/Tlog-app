@@ -50,7 +50,7 @@ import com.tlog.ui.component.review.ReviewNoticeDialog
 import com.tlog.ui.component.share.BottomLineInputField
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.review.ReviewWriteViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -65,18 +65,21 @@ fun ReviewWriteScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.eventFlow.collect { event ->
-            when (event) {
-                is UiEvent.ReviewSuccess -> {
-                    viewModel.clearImages()
-                    viewModel.clearHashTags()
-                    navController.navigate("main") {
-                        popUpTo("main") { inclusive = false } // 메인 화면을 제외하고 모두 제거
+        viewModel.uiEvent.collect { event ->
+            when(event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                        restoreState = false
                     }
                 }
-                is UiEvent.ReviewError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }
@@ -193,7 +196,7 @@ fun ReviewWriteScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(31.dp))
 
             MainButton(
                 text = "리뷰 등록하기",

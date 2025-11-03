@@ -91,9 +91,9 @@ fun TmpTravelItem(
                 Icon(
                     painter =
                         if (checked)
-                            painterResource(R.drawable.ic_checkbox_checked)
+                            painterResource(R.drawable.ic_filled_checkbox_checked)
                         else
-                            painterResource(R.drawable.ic_checkbox_unchecked),
+                            painterResource(R.drawable.ic_filled_checkbox_unchecked),
                     contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
                     tint = Color.Unspecified
                 )

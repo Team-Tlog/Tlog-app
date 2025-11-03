@@ -1,21 +1,22 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.model.team.DetailTeam
 import com.tlog.data.repository.TeamRepository
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamDetailViewModel @Inject constructor(
     private val repository: TeamRepository
-): ViewModel() {
+): BaseViewModel() {
+
 
     private val _teamData = MutableStateFlow<DetailTeam?>(null)
     val teamData: StateFlow<DetailTeam?> = _teamData
@@ -37,14 +38,11 @@ class TeamDetailViewModel @Inject constructor(
 
 
     fun getTeamDetail(teamId: String) {
-        viewModelScope.launch {
-            try {
+        launchSafeCall(
+            action = {
                 val result = repository.getTeamDetails(teamId)
                 _teamData.value = result.data
             }
-            catch (e: Exception) {
-                Log.d("TeamDetailViewModel", e.message.toString())
-            }
-        }
+        )
     }
 }

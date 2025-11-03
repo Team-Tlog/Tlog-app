@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.travel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,9 @@ import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.TravelListViewModel
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun TravelListScreen(
@@ -38,13 +41,14 @@ fun TravelListScreen(
     val listState = rememberLazyListState()
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
+    val context = LocalContext.current
 
 
     LaunchedEffect(listState) {
         snapshotFlow {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
             val totalItemCount = listState.layoutInfo.totalItemsCount
-            lastVisibleItem?.index == totalItemCount - 2 // 마지막에서 2번째 친구면
+            lastVisibleItem?.index == totalItemCount - 3 // 마지막에서 2번째 친구면
         }.collect { isLastItemVisible ->
             if (isLastItemVisible) {
                 if (city != null)
@@ -58,6 +62,22 @@ fun TravelListScreen(
         viewModel.initUserIdAndScrapList()
         if (city != null && viewModel.destinations.value.isEmpty()) {
             viewModel.getTravelList(city)
+        }
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
         }
     }
 
@@ -163,6 +183,7 @@ fun TravelListScreen(
                             .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                     ) {
                         val isFavorite = viewModel.scrapList.value.contains(destination.id)
+
                         DestinationCard(
                             destination = destination,
                             isFavorite = isFavorite,
@@ -170,7 +191,7 @@ fun TravelListScreen(
                                 viewModel.toggleScrap(destination.id)
                             },
                             onClick = {
-                                navController.navigate("travelInfo/${destination.id}")
+                                viewModel.navToTravelInfo(destination.id)
                             }
                         )
                     }

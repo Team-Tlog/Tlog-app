@@ -2,24 +2,20 @@ package com.tlog.viewmodel.review
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.tlog.viewmodel.base.BaseViewModel
+import coil.network.HttpException
 import com.tlog.data.api.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.util.UUID
-
-import com.google.firebase.auth.FirebaseAuth
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.ui.navigation.Screen
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
@@ -27,21 +23,13 @@ import kotlinx.coroutines.awaitAll
 class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
+): BaseViewModel() {
+
     private var userId: String? = null
 
     init {
         userId = tokenProvider.getUserId()
     }
-    
-    // api 결과에 따른 이벤트 값
-    sealed class UiEvent {
-        object ReviewSuccess: UiEvent()
-        data class ReviewError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
 
     private var _rating = mutableIntStateOf(0)
     val rating: State<Int> = _rating
@@ -85,13 +73,12 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun addReview(context: Context, travelId: String) {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
-            Log.d("auth", FirebaseAuth.getInstance().currentUser?.uid ?: "로그인 안됨")
+        val safeUserId = userId ?: return // null이면 return
 
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrlList = imageUpload(context, imageList.value)
-                val result = repository.addReview(
+                repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
                         destinationId = travelId,
@@ -102,16 +89,10 @@ class ReviewWriteViewModel @Inject constructor(
                         customTagNames = hashTags.value
                     )
                 )
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ReviewSuccess)
-                    400 -> _eventFlow.emit(UiEvent.ReviewError("올바른 값을 입력해 주세요."))
-                    500 -> _eventFlow.emit(UiEvent.ReviewError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(UiEvent.ReviewError("알 수 없는 오류가 발생했습니다."))
-                }
-            } catch (e: Exception) {
-                _eventFlow.emit(UiEvent.ReviewError("네트워크 오류가 발생했습니다. ${e.message}"))
+                showToast("리뷰 작성 성공")
+                navigate(Screen.Main, true)
             }
-        }
+        )
     }
 
     fun inputCheck(): Int {

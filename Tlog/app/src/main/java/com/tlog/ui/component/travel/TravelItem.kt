@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -320,11 +321,12 @@ fun SearchTravelItem(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "대충 설명 글\n대충 설명 글",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
-                modifier = Modifier.height(30.dp)
+                modifier = Modifier.height(30.dp),
+                maxLines = 2,
             )
 
             Spacer(modifier = Modifier.height(11.dp))

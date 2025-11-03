@@ -1,167 +1,27 @@
 package com.tlog.viewmodel.team
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.api.TravelPlan
-import com.tlog.data.repository.TeamRepository
+import com.tlog.viewmodel.base.BaseViewModel
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class TeamNameViewModel @Inject constructor(
-    private val repository: TeamRepository,
-    tokenProvider: TokenProvider
-) : ViewModel() {
+class TeamNameViewModel @Inject constructor() : BaseViewModel() {
 
-    private var userId: String? = null
-
-    init {
-        userId = tokenProvider.getUserId()
-    }
-
-    sealed class UiEvent {
-        object ApiSuccess: UiEvent()
-        data class ApiError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
-
-
-    var _teamName = mutableStateOf("")
+    private var _teamName = mutableStateOf("")
     val teamName = _teamName
 
     fun updateTeamName(newTeamName: String) {
         _teamName.value = newTeamName
     }
 
-    // CourseInput 관련 상태들
-    private val _city = mutableStateOf("지역")
-    val city: State<String> = _city
-
-    private val _district = mutableStateOf("지역을 선택해주세요")
-    val district: State<String> = _district
-
-    private val _checkedDistrict = mutableStateOf<Set<String>>(emptySet())
-    val checkedDistrict: State<Set<String>> = _checkedDistrict
-
-    private val _hasPet = mutableStateOf(false)
-    val hasPet: State<Boolean> = _hasPet
-
-    private val _hasCar = mutableStateOf(false)
-    val hasCar: State<Boolean> = _hasCar
-
-    private val _startDate = mutableStateOf<LocalDate?>(null)
-    val startDate: State<LocalDate?> = _startDate
-
-    private val _endDate = mutableStateOf<LocalDate?>(null)
-    val endDate: State<LocalDate?> = _endDate
-
-    private val _travelCountByDate = mutableStateOf<Map<LocalDate, Int>>(emptyMap())
-    val travelCountByDate: State<Map<LocalDate, Int>> = _travelCountByDate
-
-    // CourseInput 관련 함수들
-    fun updateCheckedDistrict(district: String) {
-        _checkedDistrict.value = _checkedDistrict.value + district
+    // 일단 길이제한
+    fun checkTeamName(): Boolean {
+        return _teamName.value.isNotEmpty() && _teamName.value.length in 2 .. 20
     }
 
-    fun deleteCheckedDistrict(district: String) {
-        _checkedDistrict.value = _checkedDistrict.value - district
-    }
-
-    fun updateCity(newCity: String) {
-        _city.value = newCity
-    }
-
-    fun updateCar(newHasCar: Boolean) {
-        _hasCar.value = newHasCar
-    }
-
-    fun updatePet(newHasPet: Boolean) {
-        _hasPet.value = newHasPet
-    }
-
-    fun updateDateRange(clickedDate: LocalDate) {
-        if (_startDate.value == null || _endDate.value != null) {
-            _startDate.value = clickedDate
-            _endDate.value = null
-        } else {
-            if (clickedDate.isBefore(_startDate.value)) {
-                _endDate.value = _startDate.value
-                _startDate.value = clickedDate
-            } else
-                _endDate.value = clickedDate
-        }
-    }
-
-    fun getTravelDates(): List<LocalDate> {
-        val start = startDate.value
-        val end = endDate.value
-
-        return if (start != null && end != null) {
-            generateSequence(start) { it.plusDays(1) }
-                .takeWhile { !it.isAfter(end) }
-                .toList()
-        } else emptyList()
-    }
-
-    fun updatePlaceCount(date: LocalDate, count: Int) {
-        _travelCountByDate.value = _travelCountByDate.value.toMutableMap().apply {
-            this[date] = count
-        }
-    }
-
-    fun createTeam() {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch // null이면 launch 종료 (안돌아감)
-
-            try {
-                // regionList 생성 (checkedDistrict의 값들)
-                val regionList = _checkedDistrict.value.toList()
-
-                // visitCountPerDay 생성 (날짜 순서대로 1부터 매핑)
-                val visitCountPerDay = mutableMapOf<String, Int>()
-                val sortedDates = _travelCountByDate.value.keys.sorted()
-                sortedDates.forEachIndexed { index, date ->
-                    visitCountPerDay[(index + 1).toString()] = _travelCountByDate.value[date] ?: 0
-                }
-
-                val travelPlan = TravelPlan(
-                    city = _city.value,
-                    regionList = regionList,
-                    hasPet = _hasPet.value,
-                    hasTransport = _hasCar.value,
-                    startDate = _startDate.value?.toString() ?: "",
-                    endDate = _endDate.value?.toString() ?: "",
-                    visitCountPerDay = visitCountPerDay
-                )
-
-                val result = repository.createTeam(
-                    CreateTeamRequest(
-                        name = teamName.value,
-                        creator = safeUserId,
-                        travelPlan = travelPlan
-                    )
-                )
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    else -> _eventFlow.emit(UiEvent.ApiError(result.message))
-                }
-            } catch (e: Exception) {
-                Log.d("TeamNameViewModel", "Error creating team: ${e.message}")
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-            }
-        }
+    fun navToTeamInfoInput(teamName: String) {
+        navigate(Screen.TeamInfoInput(teamName))
     }
 }

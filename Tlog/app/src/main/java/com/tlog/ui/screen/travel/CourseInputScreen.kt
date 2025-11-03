@@ -1,7 +1,6 @@
 package com.tlog.ui.screen.travel
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,22 +17,21 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
 import com.tlog.data.local.RegionData
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TwoColumnRadioGroup
@@ -42,6 +40,8 @@ import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.share.DropDownCheckBox
 import com.tlog.ui.component.travel.DayTravelCounter
 import com.tlog.ui.style.BodyTitle
+import com.tlog.ui.theme.BackgroundBlue
+import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.travel.CourseInputViewModel
 import java.time.LocalDate
@@ -50,30 +50,7 @@ import java.time.temporal.ChronoUnit
 
 @Preview
 @Composable
-fun CourseInputScreen(
-    isTeamMode: Boolean = false,
-    navController: NavHostController? = null,
-    viewModel: CourseInputViewModel = hiltViewModel()
-) {
-    val context = LocalContext.current
-
-    // 팀 모드일 때 API 성공/실패 이벤트 처리
-    if (isTeamMode && navController != null) {
-        LaunchedEffect(Unit) {
-            viewModel.eventFlow.collect { event ->
-                when (event) {
-                    is CourseInputViewModel.UiEvent.ApiSuccess -> {
-                        navController.navigate("teamList") {
-                            popUpTo("createTeam") { inclusive = true }
-                        }
-                    }
-                    is CourseInputViewModel.UiEvent.ApiError -> {
-                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
+fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -113,13 +90,29 @@ fun CourseInputScreen(
                 DropDown(
                     options = RegionData.regionMap.keys.toList(),
                     value = viewModel.city.value,
+                    selectedTextStyle = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MainColor
+                    ),
+                    textStyle = TextStyle(
+                        fontFamily = MainFont,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MainColor
+                    ),
+                    bgColor = BackgroundBlue,
+                    dividerColor = Color.White,
+                    iconColor = MainColor,
                     valueChange = {
                         viewModel.updateCity(it)
                         Log.d("city", it)
                     },
                     modifier = Modifier
-                        .width(86.dp)
                         .heightIn(max = 185.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .verticalScroll(rememberScrollState())
                 )
 
                 // 시군구 필드
@@ -169,10 +162,10 @@ fun CourseInputScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            Calendar(
-                today = LocalDate.now(),
-                viewModel = viewModel
-            )
+//            Calendar(
+//                today = LocalDate.now(),
+//                viewModel = viewModel
+//            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -226,17 +219,12 @@ fun CourseInputScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(85.dp)
-                    .padding(horizontal = 24.dp, vertical = 15.dp)
+                    .padding(vertical = 15.dp)
             ) {
                 MainButton(
-                    text = if (isTeamMode) "팀 생성하기" else "다음",
+                    text = "다음",
                     onClick = {
-                        if (isTeamMode) {
-                            viewModel.createTeam()
-                        } else {
-                            Log.d("course next button", "my click!!")
-                        }
+                        Log.d("course next button", "my click!!")
                     },
                     modifier = Modifier
                         .height(55.dp)

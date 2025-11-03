@@ -104,6 +104,18 @@ class ScrapManager @Inject constructor(
             Log.e("ScrapManager", "스크랩 목록 갱신 실패", e)
         }
     }
+
+    suspend fun clearAllScrapData() {
+        try {
+            context.dataStore.edit { preferences ->
+                preferences.remove(SCRAP_KEY)
+            }
+            _scrapList.value = emptyList()
+        } catch (e: Exception) {
+            Log.e("ScrapManager", "error")
+        }
+    }
+
 }
 
 @Module

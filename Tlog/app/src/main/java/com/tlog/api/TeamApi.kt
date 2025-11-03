@@ -16,26 +16,32 @@ import retrofit2.http.Query
 interface TeamApi {
     @GET("/api/team")
     suspend fun getTeamList(
-        @Query("userId") userId: String
+        @Query("userId") userId: String,
     ): BaseResponse<List<Team>>
 
     @POST("/api/team")
     suspend fun createTeam(
-        @Body request: CreateTeamRequest
+        @Body request: CreateTeamRequest,
     ): BaseResponse<TeamCreateResponse>
 
     @DELETE("/api/team/{teamId}")
     suspend fun deleteTeam(
-        @Path("teamId") teamId: String
+        @Path("teamId") teamId: String,
     ): BaseResponse<String>
 
     @GET("/api/team/{teamId}/details")
     suspend fun getTeamDetails(
-        @Path("teamId") teamId: String
+        @Path("teamId") teamId: String,
     ): BaseResponse<DetailTeam>
 
     @POST("/api/team/join")
     suspend fun joinTeam(
-        @Body request: JoinTeamRequest
+        @Body request: JoinTeamRequest,
     ): BaseResponse<Unit>
+
+    @DELETE("/api/team/member/{teamId}/{userId}")
+    suspend fun leaveTeam(
+        @Path("teamId") teamId: String,
+        @Path("userId") userId: String,
+    ): BaseResponse<String>
 }

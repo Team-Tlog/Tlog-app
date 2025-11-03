@@ -2,28 +2,25 @@ package com.tlog.viewmodel.travel
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import com.tlog.viewmodel.base.BaseViewModel
 import androidx.compose.runtime.State
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.AddTravelRequest
 import com.tlog.data.model.share.Location
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
+import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.util.UUID
 
 @HiltViewModel
 class AddTravelViewModel @Inject constructor(
     private val repository: AddTravelRepository,
     tokenProvider: TokenProvider
-): ViewModel() {
+): BaseViewModel() {
+
     private var userId: String? = null
 
     init {
@@ -57,15 +54,6 @@ class AddTravelViewModel @Inject constructor(
     val imageUri: State<Uri> = _imageUri
 
 
-    sealed class UiEvent {
-        object ApiSuccess: UiEvent()
-        data class ApiError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
-
     suspend fun imageUpload(context: Context, imageUri: Uri, city: String, district: String): String {
         // 이미지 업로드를 병렬로 처리
         return FirebaseImageUploader.uploadWebpImage(
@@ -76,13 +64,13 @@ class AddTravelViewModel @Inject constructor(
         }
 
     fun addNewTravel(context: Context) {
-        viewModelScope.launch {
-            val safeUserId = userId ?: return@launch
+        val safeUserId = userId ?: return
 
-            try {
+        launchSafeCall(
+            action = {
                 val imageUrl = imageUpload(context, imageUri.value, "city", "district")
 
-                val result = repository.addTravel(
+                repository.addTravel(
                     AddTravelRequest(
                         creater = safeUserId,
                         name = travelName.value,
@@ -97,18 +85,12 @@ class AddTravelViewModel @Inject constructor(
                         customTags = hashTags.value
                     )
                 )
-
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    409 -> _eventFlow.emit(UiEvent.ApiError("이미 존재하는 여행지 입니다."))
-                    500 -> _eventFlow.emit(UiEvent.ApiError("서버 오류가 발생했습니다."))
-                    else -> _eventFlow.emit(UiEvent.ApiError("알 수 없는 오류가 발생했습니다."))
-                }
+                clearImages()
+                clearHashTags()
+                showToast("여행지 등록 성공")
+                navigate(Screen.Main, true)
             }
-            catch (e: Exception) {
-                Log.e("AddTravel", "알 수 없는 오류", e)
-            }
-        }
+        )
     }
 
 
@@ -140,7 +122,7 @@ class AddTravelViewModel @Inject constructor(
         _hashTags.value += hashTag
     }
 
-    fun clearHashTags() {
+    private fun clearHashTags() {
         _hashTags.value = emptyList()
     }
 
@@ -148,7 +130,7 @@ class AddTravelViewModel @Inject constructor(
         _imageUri.value = uri
     }
 
-    fun clearImages() {
+    private fun clearImages() {
         _imageUri.value = Uri.EMPTY
     }
 

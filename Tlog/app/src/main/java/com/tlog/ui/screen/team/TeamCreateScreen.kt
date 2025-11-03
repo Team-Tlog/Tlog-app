@@ -1,14 +1,11 @@
 package com.tlog.ui.screen.team
 
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -25,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TitleInputField
 import com.tlog.ui.component.share.TopBar
-import com.tlog.viewmodel.team.TeamNameViewModel.UiEvent
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.team.TeamNameViewModel
 
 
@@ -37,18 +34,23 @@ fun TeamCreateScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-
-        viewModel.eventFlow.collect { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.ApiSuccess -> {
-                    navController.popBackStack()
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
                 }
-                is UiEvent.ApiError -> {
+                is UiEvent.ShowToast -> {
                     Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 }
+                is UiEvent.PopBackStack -> Unit
             }
         }
     }
+
 
     Column(
         modifier = Modifier
@@ -56,8 +58,6 @@ fun TeamCreateScreen(
             .background(Color.White)
             .imePadding()           // 키보드가 딸려 올라오도록
             .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 24.dp)
-
     ) {
         TopBar(
             text = "팀 생성"
@@ -80,17 +80,15 @@ fun TeamCreateScreen(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (viewModel.teamName.value.isNotBlank() && viewModel.teamName.value.length >= 2) {
-            MainButton(
-                text = "다음",
-                onClick = {
-                    val encodedTeamName = Uri.encode(viewModel.teamName.value)
-                    navController.navigate("teamCourseInput/$encodedTeamName")
-                },
-                modifier = Modifier
-                    .height(70.dp)
-                    .padding(bottom = 15.dp)
-            )
-        }
+        MainButton(
+            text = "팀 생성하기",
+            onClick = {
+                viewModel.navToTeamInfoInput(viewModel.teamName.value)
+            },
+            enabled = viewModel.checkTeamName(),
+            modifier = Modifier
+                .height(70.dp)
+                .padding(bottom = 15.dp, start = 24.dp, end = 24.dp)
+        )
     }
 }

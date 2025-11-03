@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.review
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,10 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +38,7 @@ import com.tlog.ui.component.share.TopBar
 import com.tlog.ui.component.travel.SearchTravelList
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.SearchViewModel
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 
 @Composable
@@ -42,6 +46,26 @@ fun ReviewSearchScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +109,7 @@ fun ReviewSearchScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .clickable {
-                                navController.navigate("addTravel")
+                                viewModel.navToAddTravel()
                             }
                     ) {
                         Image(
@@ -111,7 +135,7 @@ fun ReviewSearchScreen(
                 SearchTravelList(
                     travelList = viewModel.searchResult.value,
                     onClick = { travelId, travelName ->
-                        navController.navigate("review/$travelId/$travelName")
+                        viewModel.navToReviewWrite(travelId, travelName)
                     }
                 )
             }

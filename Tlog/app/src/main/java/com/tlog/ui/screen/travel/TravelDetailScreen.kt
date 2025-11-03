@@ -1,5 +1,6 @@
 package com.tlog.ui.screen.travel
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -19,6 +21,7 @@ import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
 import com.tlog.viewmodel.travel.TravelInfoViewModel
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import kotlin.math.floor
 
 @Composable
@@ -28,7 +31,26 @@ fun TravelDetailScreen(
     navController: NavController
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
+    val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) { popUpTo(navController.graph.id) { inclusive = true } }
+                        // 시밀러 여행지 눌렀을 때 재사용되는 상황 제거하기 위해 주석
+//                        launchSingleTop = false
+//                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
     LaunchedEffect(travelId) {
         viewModel.getTravelInfo(travelId)
     }
@@ -82,13 +104,10 @@ fun TravelDetailScreen(
                             reviewList = destination.top2Reviews,
                             reviewCnt = destination.reviewCount,
                             moreReview = {
-                                navController.navigate("reviewList/$travelId/${destination.name}")
+                                viewModel.navToReviewList(travelId, destination.name)
                             },
                             reviewWrite = {
-                                navController.navigate("review/$travelId/${destination.name}")
-                            },
-                            onClick = { userId ->
-                                navController.navigate("snsMyPage/$userId")
+                                viewModel.navToReviewWrite(travelId, destination.name)
                             }
                         )
 
@@ -102,7 +121,7 @@ fun TravelDetailScreen(
                             SimilarTravelSection(
                                 travelList = destination.relatedDestinations,
                                 clickable = { travelId ->
-                                    navController.navigate("travelInfo/$travelId")
+                                    viewModel.navToTravelInfo(travelId)
                                 }
                             )
                         }
