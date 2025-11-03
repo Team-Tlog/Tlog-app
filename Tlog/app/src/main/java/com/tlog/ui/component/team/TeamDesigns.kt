@@ -32,6 +32,8 @@ import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 
 @Composable
@@ -78,12 +80,7 @@ fun SmallDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     TeamMemberImageGroup(
-                        memberImageUrls = listOf(
-                            "",
-                            "",
-                            "",
-                            ""
-                        ),
+                        memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
                         addMemberClick = addMemberClick
 
                     )
@@ -154,12 +151,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TeamMemberImageGroup(
-                    memberImageUrls = listOf(
-                        "",
-                        "",
-                        "",
-                        ""
-                    ),
+                    memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
                     addMemberClick = addMemberClick
                 )
 
@@ -337,13 +329,15 @@ fun DetailMember(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
-                    painter = painterResource(R.drawable.login_ic_naver), // 추후 뷰모델 연결하기
-                    contentDescription = "",
+                AsyncImage(
+                    model = it.profileImageUrl,
+                    contentDescription = "${it.name} 프로필 사진",
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(24.dp)
                         .clip(CircleShape)
-                        .background(Color.White)
+                        .background(Color.LightGray),
+                    error = painterResource(id = R.drawable.destination_img)
                 )
 
                 Spacer(modifier = Modifier.width(15.dp))
