@@ -1,15 +1,20 @@
 package com.tlog.ui.navigation
 
 import android.content.Intent
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.toRoute
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.ui.screen.beginning.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.beginning.LoginScreen
@@ -27,6 +32,8 @@ import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.share.ReportToDeveloperScreen
+import com.tlog.ui.screen.sns.ChatListScreen
+import com.tlog.ui.screen.sns.SNSChattingScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
 import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
@@ -43,6 +50,7 @@ import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.LoginViewModel
+import com.tlog.viewmodel.sns.SNSChattingViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -175,6 +183,52 @@ fun NavHost(
         composable<Screen.Course> { MyTravelingCourseScreen(navController) }
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)
+        }
+
+        // Chatting
+        composable("chatList") {
+            ChatListScreen(navController = navController)
+        }
+        composable(
+            route = "chatting/{chatRoomId}?teamName={teamName}&membersJson={membersJson}",
+            arguments = listOf(
+                navArgument("chatRoomId") { type = NavType.StringType },
+                navArgument("teamName") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("membersJson") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val chatRoomId = backStackEntry.arguments?.getString("chatRoomId")?.toLongOrNull() ?: 0L
+            val teamName = backStackEntry.arguments?.getString("teamName")
+            val membersJson = backStackEntry.arguments?.getString("membersJson")
+
+            // JSON 파싱
+            val members: List<com.tlog.viewmodel.sns.MemberProfile> = try {
+                if (membersJson != null && membersJson != "null") {
+                    val type = object : TypeToken<List<com.tlog.viewmodel.sns.MemberProfile>>() {}.type
+                    Gson().fromJson(membersJson, type) ?: emptyList()
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("NavHost", "Error parsing members JSON", e)
+                emptyList()
+            }
+
+            val viewModel: SNSChattingViewModel = hiltViewModel()
+            SNSChattingScreen(
+                chatRoomId = chatRoomId,
+                teamName = teamName,
+                members = members,
+                viewModel = viewModel
+            )
         }
     }
 }
