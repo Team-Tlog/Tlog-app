@@ -134,7 +134,7 @@ fun NavHost(
         }
         composable<Screen.TeamDetail> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.TeamDetail>()
-            TeamDetailScreen(teamId = args.teamId)
+            TeamDetailScreen(teamId = args.teamId, navController = navController)
         }
         composable<Screen.JoinTeam> { TeamJoinScreen(navController = navController) }
 
