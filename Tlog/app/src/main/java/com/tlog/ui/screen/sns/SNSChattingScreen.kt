@@ -46,18 +46,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.theme.MainFont
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
+import com.tlog.R
+import com.tlog.viewmodel.sns.MemberProfile
 
 @Composable
 fun SNSChattingScreen(
     chatRoomId: Long,
+    teamName: String? = null,
+    members: List<MemberProfile> = emptyList(),
     viewModel: SNSChattingViewModel = hiltViewModel()
 ) {
     val messages by viewModel.messageList.collectAsState()
+    val memberProfiles by viewModel.memberProfiles.collectAsState()
     var myId by remember { mutableStateOf<String?>(null) }
     var messageText by remember { mutableStateOf("") }
 
     LaunchedEffect(chatRoomId) {
         myId = viewModel.getMyId()
+        viewModel.setMemberProfiles(members)
         viewModel.initChatRoom(chatRoomId)
     }
 
@@ -83,19 +92,23 @@ fun SNSChattingScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "틀별명",
+                text = teamName ?: "채팅방",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = MainFont
             )
             Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                // 프로필 아이콘들 (임시로 원형 박스)
-                repeat(3) {
-                    Box(
+                // 멤버 프로필 아이콘들
+                members.take(3).forEach { member ->
+                    AsyncImage(
+                        model = member.profileImageUrl,
+                        contentDescription = "${member.name} 프로필",
                         modifier = Modifier
                             .size(32.dp)
                             .clip(CircleShape)
-                            .background(Color.LightGray)
+                            .background(Color.LightGray),
+                        contentScale = ContentScale.Crop,
+                        error = painterResource(id = R.drawable.destination_img)
                     )
                 }
             }
@@ -132,7 +145,12 @@ fun SNSChattingScreen(
                     viewModel.markMessageAsRead(message.messageId)
                 }
 
-                ChatBubble(message, myId.toString())
+                val senderProfile = memberProfiles[message.senderId]
+                ChatBubble(
+                    message = message,
+                    myId = myId.toString(),
+                    profileImageUrl = senderProfile?.profileImageUrl
+                )
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }

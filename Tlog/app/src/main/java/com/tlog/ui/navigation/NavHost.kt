@@ -49,6 +49,8 @@ import com.tlog.viewmodel.beginning.login.LoginViewModel
 import com.tlog.viewmodel.sns.SNSChattingViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 @Composable
@@ -262,11 +264,44 @@ fun NavHost(
         }
 
 
-        composable("chatting/{chatRoomId}") { backStackEntry ->
+        composable(
+            route = "chatting/{chatRoomId}?teamName={teamName}&membersJson={membersJson}",
+            arguments = listOf(
+                navArgument("chatRoomId") { type = NavType.StringType },
+                navArgument("teamName") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("membersJson") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
             val chatRoomId = backStackEntry.arguments?.getString("chatRoomId")?.toLongOrNull() ?: 0L
+            val teamName = backStackEntry.arguments?.getString("teamName")
+            val membersJson = backStackEntry.arguments?.getString("membersJson")
+
+            // JSON 파싱
+            val members: List<com.tlog.viewmodel.sns.MemberProfile> = try {
+                if (membersJson != null && membersJson != "null") {
+                    val type = object : TypeToken<List<com.tlog.viewmodel.sns.MemberProfile>>() {}.type
+                    Gson().fromJson(membersJson, type) ?: emptyList()
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("NavHost", "Error parsing members JSON", e)
+                emptyList()
+            }
+
             val viewModel: SNSChattingViewModel = hiltViewModel()
             SNSChattingScreen(
                 chatRoomId = chatRoomId,
+                teamName = teamName,
+                members = members,
                 viewModel = viewModel
             )
         }

@@ -50,6 +50,14 @@ class SNSChattingViewModel @Inject constructor(
 
     private var currentChatRoomId: Long = 0
 
+    // 멤버 프로필 정보 저장 (userId -> profileImageUrl)
+    private val _memberProfiles = MutableStateFlow<Map<String, MemberProfile>>(emptyMap())
+    val memberProfiles: StateFlow<Map<String, MemberProfile>> get() = _memberProfiles
+
+    fun setMemberProfiles(members: List<MemberProfile>) {
+        _memberProfiles.value = members.associateBy { it.userId }
+    }
+
     fun initChatRoom(chatRoomId: Long) {
         currentChatRoomId = chatRoomId
         Log.d("SNSChatting", "Initializing chat room: $chatRoomId")
@@ -221,4 +229,10 @@ data class ChatMessageDto(
     val senderName: String,
     val content: String,
     val sendAt: String
+)
+
+data class MemberProfile(
+    val userId: String,
+    val name: String,
+    val profileImageUrl: String?
 )

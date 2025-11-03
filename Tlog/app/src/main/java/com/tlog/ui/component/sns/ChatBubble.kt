@@ -21,12 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.tlog.R
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.ChatMessageDto
 
 @Composable
-fun ChatBubble(message: ChatMessageDto, myId: String) {
+fun ChatBubble(message: ChatMessageDto, myId: String, profileImageUrl: String? = null) {
     val isMine = message.senderId == myId
 
     Row(
@@ -42,11 +46,15 @@ fun ChatBubble(message: ChatMessageDto, myId: String) {
                 horizontalArrangement = Arrangement.Start
             ) {
                 // 프로필 아이콘
-                Box(
+                AsyncImage(
+                    model = profileImageUrl,
+                    contentDescription = "프로필 사진",
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
-                        .background(Color.LightGray)
+                        .background(Color.LightGray),
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.destination_img)
                 )
 
                 Spacer(modifier = Modifier.width(8.dp))
@@ -54,7 +62,7 @@ fun ChatBubble(message: ChatMessageDto, myId: String) {
                 Column {
                     // 닉네임
                     Text(
-                        text = "닉네임",
+                        text = message.senderName,
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Medium,
                         fontFamily = MainFont,
