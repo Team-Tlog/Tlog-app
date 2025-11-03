@@ -127,6 +127,11 @@ fun SNSChattingScreen(
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
             items(messages.reversed()) { message ->
+                // 메시지가 표시될 때 읽음 처리
+                LaunchedEffect(message.messageId) {
+                    viewModel.markMessageAsRead(message.messageId)
+                }
+
                 ChatBubble(message, myId.toString())
                 Spacer(modifier = Modifier.height(8.dp))
             }

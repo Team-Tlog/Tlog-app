@@ -81,7 +81,7 @@ fun UserInfoGroup(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = userInfo.snsId,
+                            text = userInfo.snsId ?: "SNS ID를 설정해주세요",
                             style = Body1Bold
                         )
 

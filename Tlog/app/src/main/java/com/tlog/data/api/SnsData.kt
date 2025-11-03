@@ -70,3 +70,8 @@ data class ChatRoom(
     val countChatRoomUsers: Int,
     val unreadCount: Int
 )
+
+data class MessageReadRequest(
+    val readerId: String,
+    val messageId: Long
+)

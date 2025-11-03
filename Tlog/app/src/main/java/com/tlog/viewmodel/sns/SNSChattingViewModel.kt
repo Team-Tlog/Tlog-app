@@ -33,7 +33,8 @@ import java.util.concurrent.TimeUnit
 @SuppressLint("CheckResult")
 @HiltViewModel
 class SNSChattingViewModel @Inject constructor(
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val snsApi: com.tlog.api.SnsApi
 ) : ViewModel() {
     private lateinit var stomp: StompClient
     private lateinit var topic: Disposable
@@ -78,8 +79,18 @@ class SNSChattingViewModel @Inject constructor(
         Log.d("SNSChatting", "웹소켓 연결됨 - 채팅방 ID: $currentChatRoomId")
         topic = stomp.topic("/sub/chat/room/$currentChatRoomId").subscribe({ message ->
             Log.d("SNSChatting", "Received message: ${message.payload}")
+
+            // STOMP 헤더에서 message-id 가져오기
+            val stompMessageId = message.stompHeaders.firstOrNull { it.key == "message-id" }?.value ?: "0"
+            Log.d("SNSChatting", "STOMP message-id: $stompMessageId")
+
+            // message-id에서 맨 앞 8자리 숫자 추출 (예: "67505388-4533-..." -> 67505388)
+            val messageIdValue = stompMessageId.take(8).toLongOrNull() ?: 0L
+            Log.d("SNSChatting", "Extracted messageId: $messageIdValue")
+
             val json = JSONObject(message.payload)
             val chatMessage = ChatMessageDto(
+                messageId = messageIdValue,
                 chatRoomId = json.getLong("chatRoomId"),
                 senderId = json.getString("senderId"),
                 senderName = json.getString("senderName"),
@@ -104,18 +115,31 @@ class SNSChattingViewModel @Inject constructor(
             stomp.send("/pub/chat/message", messageJson.toString())
                 .subscribe({
                     Log.d("SNSChatting", "Message sent successfully")
-                    // 보낸 메시지를 로컬 리스트에 추가
-                    messages.add(ChatMessageDto(
-                        chatRoomId = chatRoomId,
-                        senderId = senderId,
-                        senderName = "",
-                        content = content,
-                        sendAt = ""
-                    ))
-                    messageText = "" // 입력창 초기화
+                    // 보낸 메시지는 서버에서 WebSocket을 통해 다시 수신됨
                 }, { error ->
                     Log.e("SNSChatting", "Error sending message", error)
                 })
+        }
+    }
+
+    // 메시지 읽음 처리
+    fun markMessageAsRead(messageId: Long) {
+        viewModelScope.launch {
+            try {
+                val readerId = userPreferences.getUserId()
+                if (readerId != null) {
+                    val request = com.tlog.data.api.MessageReadRequest(
+                        readerId = readerId,
+                        messageId = messageId
+                    )
+                    val response = snsApi.markMessageAsRead(request)
+                    if (response.status == 200) {
+                        Log.d("SNSChatting", "Message $messageId marked as read")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "Error marking message as read", e)
+            }
         }
     }
 
@@ -191,6 +215,7 @@ class SNSChattingViewModel @Inject constructor(
 
 //나중에 실제로 사용할 Data Class
 data class ChatMessageDto(
+    val messageId: Long,
     val chatRoomId: Long,
     val senderId: String,
     val senderName: String,
