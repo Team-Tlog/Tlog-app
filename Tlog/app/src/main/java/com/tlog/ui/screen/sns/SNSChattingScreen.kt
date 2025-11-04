@@ -20,7 +20,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -32,6 +31,7 @@ import com.tlog.viewmodel.sns.SNSChattingViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -55,9 +55,9 @@ import com.tlog.viewmodel.sns.MemberProfile
 @Composable
 fun SNSChattingScreen(
     chatRoomId: Long,
-    teamName: String? = null,
-    members: List<MemberProfile> = emptyList(),
-    viewModel: SNSChattingViewModel = hiltViewModel()
+    teamName: String,
+    members: List<MemberProfile>,
+    viewModel: SNSChattingViewModel = hiltViewModel(),
 ) {
     val messages by viewModel.messageList.collectAsState()
     val memberProfiles by viewModel.memberProfiles.collectAsState()
@@ -87,34 +87,39 @@ fun SNSChattingScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(start = 14.dp, end = 21.dp, top = 19.dp, bottom = 19.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = teamName ?: "채팅방",
-                fontSize = 20.sp,
+                text = teamName,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = MainFont
+                fontFamily = MainFont,
+                modifier = Modifier.padding(start = 10.dp)
             )
-            Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                // 멤버 프로필 아이콘들
-                members.take(3).forEach { member ->
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy((-9).dp) // 살짝 겹쳐 보이게 (6이 맞는거같은데 추후 물어보고 수정)
+            ) {
+                val profileImages = members.map { it.profileImageUrl ?: "" }
+
+                profileImages.take(5).forEach { url ->
                     AsyncImage(
-                        model = member.profileImageUrl,
-                        contentDescription = "${member.name} 프로필",
+                        model = url,
+                        contentDescription = "팀원 이미지",
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(30.dp)
                             .clip(CircleShape)
                             .background(Color.LightGray),
-                        contentScale = ContentScale.Crop,
                         error = painterResource(id = R.drawable.destination_img)
                     )
                 }
             }
         }
 
-        Divider(color = Color.LightGray, thickness = 1.dp)
+        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
         // Today 라벨
         Box(
@@ -130,6 +135,7 @@ fun SNSChattingScreen(
                 fontFamily = MainFont
             )
         }
+
         // 채팅 리스트
         LazyColumn(
             modifier = Modifier
@@ -146,11 +152,13 @@ fun SNSChattingScreen(
                 }
 
                 val senderProfile = memberProfiles[message.senderId]
+
                 ChatBubble(
                     message = message,
                     myId = myId.toString(),
                     profileImageUrl = senderProfile?.profileImageUrl
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
             }
         }
@@ -166,12 +174,6 @@ fun SNSChattingScreen(
                 value = messageText,
                 onValueChange = { messageText = it },
                 modifier = Modifier.weight(1f),
-                placeholder = {
-                    Text(
-                        "",
-                        color = Color.LightGray
-                    )
-                },
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
@@ -181,9 +183,11 @@ fun SNSChattingScreen(
                 ),
                 singleLine = true
             )
+            
             IconButton(
                 onClick = {
                     val id = myId
+
                     if (!messageText.isBlank() && id != null) {
                         viewModel.sendMessage(id, chatRoomId = chatRoomId, content = messageText)
                         messageText = ""
