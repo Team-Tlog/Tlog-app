@@ -1,6 +1,7 @@
 package com.tlog.data.model.team
 
 import com.tlog.data.model.share.Location
+import com.tlog.data.model.share.TagCount
 
 data class WishlistItem(
     val id: String,
