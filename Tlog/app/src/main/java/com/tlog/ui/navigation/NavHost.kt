@@ -206,7 +206,7 @@ fun NavHost(
             )
         ) { backStackEntry ->
             val chatRoomId = backStackEntry.arguments?.getString("chatRoomId")?.toLongOrNull() ?: 0L
-            val teamName = backStackEntry.arguments?.getString("teamName")
+            val teamName = backStackEntry.arguments?.getString("teamName") ?: "Team"
             val membersJson = backStackEntry.arguments?.getString("membersJson")
 
             // JSON 파싱
@@ -222,12 +222,10 @@ fun NavHost(
                 emptyList()
             }
 
-            val viewModel: SNSChattingViewModel = hiltViewModel()
             SNSChattingScreen(
                 chatRoomId = chatRoomId,
                 teamName = teamName,
-                members = members,
-                viewModel = viewModel
+                members = members
             )
         }
     }
