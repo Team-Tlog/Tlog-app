@@ -1,8 +1,11 @@
 package com.tlog.ui.screen.team
 
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
+import com.google.gson.Gson
+import com.tlog.viewmodel.sns.MemberProfile
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -30,6 +33,7 @@ enum class PageState { DEFAULT, SMALL, BIG }
 fun TeamDetailScreen(
     viewModel: TeamDetailViewModel = hiltViewModel(),
     teamId: String,
+    navController: androidx.navigation.NavHostController
 ) {
     val context = LocalContext.current
 
@@ -103,18 +107,54 @@ fun TeamDetailScreen(
                                     teamData = teamData,
                                     showPopup = showPopup,
                                     addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
+                                    onDismiss = { showPopup = false },
+                                    onChatClick = {
+                                        val encodedTeamName = Uri.encode(teamData.teamName)
+                                        val memberProfiles = teamData.members.map { member ->
+                                            MemberProfile(
+                                                userId = member.userId,
+                                                name = member.name,
+                                                profileImageUrl = member.profileImageUrl
+                                            )
+                                        }
+                                        val membersJson = Uri.encode(Gson().toJson(memberProfiles))
+                                        navController.navigate("chatting/${teamData.chatRoomId}?teamName=$encodedTeamName&membersJson=$membersJson")
+                                    }
                                 )
 
                                 PageState.DEFAULT -> DefaultDesign(
                                     teamData = teamData,
                                     showPopup = showPopup,
                                     addMemberClick = { showPopup = true },
-                                    onDismiss = { showPopup = false }
+                                    onDismiss = { showPopup = false },
+                                    onChatClick = {
+                                        val encodedTeamName = Uri.encode(teamData.teamName)
+                                        val memberProfiles = teamData.members.map { member ->
+                                            MemberProfile(
+                                                userId = member.userId,
+                                                name = member.name,
+                                                profileImageUrl = member.profileImageUrl
+                                            )
+                                        }
+                                        val membersJson = Uri.encode(Gson().toJson(memberProfiles))
+                                        navController.navigate("chatting/${teamData.chatRoomId}?teamName=$encodedTeamName&membersJson=$membersJson")
+                                    }
                                 )
 
                                 PageState.BIG -> BigDesign(
                                     teamData = teamData,
+                                    onChatClick = {
+                                        val encodedTeamName = Uri.encode(teamData.teamName)
+                                        val memberProfiles = teamData.members.map { member ->
+                                            MemberProfile(
+                                                userId = member.userId,
+                                                name = member.name,
+                                                profileImageUrl = member.profileImageUrl
+                                            )
+                                        }
+                                        val membersJson = Uri.encode(Gson().toJson(memberProfiles))
+                                        navController.navigate("chatting/${teamData.chatRoomId}?teamName=$encodedTeamName&membersJson=$membersJson")
+                                    }
                                 )
                             }
                         }

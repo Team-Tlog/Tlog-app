@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import com.tlog.R
 
 @Composable
-fun TeamTopBar() {
+fun TeamTopBar(
+    onChatClick: () -> Unit = {}
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,7 +72,7 @@ fun TeamTopBar() {
             modifier = Modifier
                 .size(42.dp)
                 .clickable {
-                    Log.d("chat ic", "my click!!")
+                    onChatClick()
                 }
         )
 

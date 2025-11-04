@@ -62,3 +62,16 @@ data class FollowRequest(
     val from_userId: String,
     val to_userId: String
 )
+
+data class ChatRoom(
+    val chatRoomId: Long,
+    val lastMessageContent: String?,
+    val lastMessageSentAt: String?,
+    val countChatRoomUsers: Int,
+    val unreadCount: Int
+)
+
+data class MessageReadRequest(
+    val readerId: String,
+    val messageId: Long
+)

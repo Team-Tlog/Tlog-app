@@ -1,7 +1,9 @@
 package com.tlog.data.model.team
 
 data class Member(
-    val memberId: String,
-    val memberName: String,
+    val userId: String,
+    val profileImageUrl: String,
+    val name: String,
+    val tbtiString: String,
     val isLeader: Boolean
 )

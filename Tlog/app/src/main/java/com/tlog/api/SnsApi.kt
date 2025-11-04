@@ -2,8 +2,10 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.ChatRoom
 import com.tlog.data.api.CreateCommentRequest
 import com.tlog.data.api.FollowRequest
+import com.tlog.data.api.MessageReadRequest
 import com.tlog.data.api.SnsDescription
 import com.tlog.data.api.SnsPost
 import com.tlog.data.api.SnsPostPreview
@@ -78,7 +80,16 @@ interface SnsApi {
         @Body request: FollowRequest
     ): BaseResponse<StatusMessage>
 
+    @GET("/api/chat/room/{hostId}")
+    suspend fun getChatList(
+        @Path("hostId") hostId: String
+    ): BaseResponse<List<ChatRoom>>
 
+    // 메시지 읽음 처리
+    @PATCH("/api/chat/message/read")
+    suspend fun markMessageAsRead(
+        @Body request: MessageReadRequest
+    ): BaseResponse<Unit>
 
 
 

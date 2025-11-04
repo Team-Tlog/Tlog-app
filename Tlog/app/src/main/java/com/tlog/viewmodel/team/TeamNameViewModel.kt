@@ -3,7 +3,6 @@ package com.tlog.viewmodel.team
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.ui.navigation.Screen
-import com.tlog.viewmodel.share.SearchViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
