@@ -24,6 +24,7 @@ import ua.naiksoftware.stomp.ConnectionProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
+import com.tlog.data.api.ChatMessageHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -50,6 +51,16 @@ class SNSChattingViewModel @Inject constructor(
 
     private var currentChatRoomId: Long = 0
 
+    // 메시지 히스토리 페이지네이션 관련 (단순화)
+    private val _displayedHistoryMessages = MutableStateFlow<List<ChatMessageDto>>(emptyList())
+    val displayedHistoryMessages: StateFlow<List<ChatMessageDto>> get() = _displayedHistoryMessages
+
+    private val _isLoadingHistory = MutableStateFlow(false)
+    val isLoadingHistory: StateFlow<Boolean> get() = _isLoadingHistory
+
+    private val _hasMoreHistory = MutableStateFlow(true)
+    val hasMoreHistory: StateFlow<Boolean> get() = _hasMoreHistory
+
     // 멤버 프로필 정보 저장 (userId -> profileImageUrl)
     private val _memberProfiles = MutableStateFlow<Map<String, MemberProfile>>(emptyMap())
     val memberProfiles: StateFlow<Map<String, MemberProfile>> get() = _memberProfiles
@@ -61,6 +72,9 @@ class SNSChattingViewModel @Inject constructor(
     fun initChatRoom(chatRoomId: Long) {
         currentChatRoomId = chatRoomId
         Log.d("SNSChatting", "Initializing chat room: $chatRoomId")
+
+        // 초기 히스토리 로드
+        loadInitialHistory()
 
         val connectionProvider = MyConnectionProvider(url, userPreferences)
         stomp = StompClient(connectionProvider)
@@ -78,6 +92,97 @@ class SNSChattingViewModel @Inject constructor(
         }
     }
 
+    // 초기 히스토리 로드 (50개 전부 표시)
+    private fun loadInitialHistory() {
+        viewModelScope.launch {
+            try {
+                _isLoadingHistory.value = true
+                val response = snsApi.getChatMessageHistory(
+                    roomId = currentChatRoomId,
+                    size = 50
+                )
+
+                if (response.status == 200) {
+                    // 서버에서 받은 메시지를 ChatMessageDto로 변환
+                    val messages = response.data.messages.map { history: ChatMessageHistory ->
+                        ChatMessageDto(
+                            messageId = history.id,
+                            chatRoomId = history.chatRoomId,
+                            senderId = history.senderId,
+                            senderName = history.senderName,
+                            content = history.content,
+                            sendAt = history.sendAt,
+                            unreadCount = history.unreadCount
+                        )
+                    }
+
+                    // 서버에서 받은 메시지를 바로 전부 표시
+                    _displayedHistoryMessages.value = messages
+
+                    // hasNext가 false이면 더 이상 히스토리가 없음
+                    _hasMoreHistory.value = response.data.hasNext
+
+                    Log.d("SNSChatting", "✅ Initial load: ${messages.size} messages displayed, hasNext: ${response.data.hasNext}")
+                }
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "❌ Error loading message history", e)
+            } finally {
+                _isLoadingHistory.value = false
+            }
+        }
+    }
+
+    // 서버에서 다음 50개 메시지 로드
+    fun loadMoreHistory() {
+        viewModelScope.launch {
+            if (_isLoadingHistory.value || !_hasMoreHistory.value) {
+                Log.d("SNSChatting", "⚠️ Skip loading - loading: ${_isLoadingHistory.value}, hasMore: ${_hasMoreHistory.value}")
+                return@launch
+            }
+
+            try {
+                _isLoadingHistory.value = true
+
+                // 현재 표시된 히스토리 메시지 중 가장 오래된 메시지 ID를 beforeMessageId로 사용
+                val oldestMessageId = _displayedHistoryMessages.value.lastOrNull()?.messageId
+
+                Log.d("SNSChatting", "🔄 Loading more from server - beforeMessageId: $oldestMessageId")
+
+                val response = snsApi.getChatMessageHistory(
+                    roomId = currentChatRoomId,
+                    size = 50,
+                    beforeMessageId = oldestMessageId
+                )
+
+                if (response.status == 200) {
+                    val newMessages = response.data.messages.map { history: ChatMessageHistory ->
+                        ChatMessageDto(
+                            messageId = history.id,
+                            chatRoomId = history.chatRoomId,
+                            senderId = history.senderId,
+                            senderName = history.senderName,
+                            content = history.content,
+                            sendAt = history.sendAt,
+                            unreadCount = history.unreadCount
+                        )
+                    }
+
+                    // 기존 메시지에 새로운 메시지 추가
+                    _displayedHistoryMessages.value = _displayedHistoryMessages.value + newMessages
+
+                    // hasNext가 false이면 더 이상 히스토리가 없음
+                    _hasMoreHistory.value = response.data.hasNext
+
+                    Log.d("SNSChatting", "✅ Loaded ${newMessages.size} more messages, total: ${_displayedHistoryMessages.value.size}, hasNext: ${response.data.hasNext}")
+                }
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "❌ Error loading more message history", e)
+            } finally {
+                _isLoadingHistory.value = false
+            }
+        }
+    }
+
     suspend fun getMyId(): String? {
         return userPreferences.getUserId()
     }
@@ -85,27 +190,61 @@ class SNSChattingViewModel @Inject constructor(
     //서버와 연결후 구독(subscribe)를 해야하는데 구독하는 부분
     private fun handleWebSocketOpened() {
         Log.d("SNSChatting", "웹소켓 연결됨 - 채팅방 ID: $currentChatRoomId")
+
+        // 채팅 메시지 구독
         topic = stomp.topic("/sub/chat/room/$currentChatRoomId").subscribe({ message ->
             Log.d("SNSChatting", "Received message: ${message.payload}")
 
-            // STOMP 헤더에서 message-id 가져오기
-            val stompMessageId = message.stompHeaders.firstOrNull { it.key == "message-id" }?.value ?: "0"
-            Log.d("SNSChatting", "STOMP message-id: $stompMessageId")
-
-            // message-id에서 맨 앞 8자리 숫자 추출 (예: "67505388-4533-..." -> 67505388)
-            val messageIdValue = stompMessageId.take(8).toLongOrNull() ?: 0L
-            Log.d("SNSChatting", "Extracted messageId: $messageIdValue")
-
             val json = JSONObject(message.payload)
-            val chatMessage = ChatMessageDto(
-                messageId = messageIdValue,
-                chatRoomId = json.getLong("chatRoomId"),
-                senderId = json.getString("senderId"),
-                senderName = json.getString("senderName"),
-                content = json.getString("content"),
-                sendAt = json.getString("sendAt")
-            )
-            _messageList.value = _messageList.value + chatMessage
+            val messageIdValue = json.optLong("id", 0L)
+            val unreadCountValue = json.optInt("unreadCount", 0)
+
+            Log.d("SNSChatting", "📊 Message ID: $messageIdValue, unreadCount: $unreadCountValue")
+
+            // 기존 메시지 찾기 (히스토리 + 실시간)
+            val existingInHistory = _displayedHistoryMessages.value.find { it.messageId == messageIdValue }
+            val existingInRealtime = _messageList.value.find { it.messageId == messageIdValue }
+
+            if (existingInHistory != null || existingInRealtime != null) {
+                // 이미 존재하는 메시지 -> unreadCount 업데이트 (다른 사람이 읽음)
+                Log.d("SNSChatting", "🔄 Updating unreadCount for message $messageIdValue to $unreadCountValue")
+
+                // 히스토리 메시지 업데이트
+                _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
+                    if (msg.messageId == messageIdValue) {
+                        msg.copy(unreadCount = unreadCountValue)
+                    } else {
+                        msg
+                    }
+                }
+
+                // 실시간 메시지 업데이트
+                _messageList.value = _messageList.value.map { msg ->
+                    if (msg.messageId == messageIdValue) {
+                        msg.copy(unreadCount = unreadCountValue)
+                    } else {
+                        msg
+                    }
+                }
+            } else {
+                // 새로운 메시지 추가
+                Log.d("SNSChatting", "✨ New message $messageIdValue with unreadCount: $unreadCountValue")
+
+                val chatMessage = ChatMessageDto(
+                    messageId = messageIdValue,
+                    chatRoomId = json.getLong("chatRoomId"),
+                    senderId = json.getString("senderId"),
+                    senderName = json.getString("senderName"),
+                    content = json.getString("content"),
+                    sendAt = json.getString("sendAt"),
+                    unreadCount = unreadCountValue
+                )
+
+                _messageList.value = _messageList.value + chatMessage
+
+                // 새 메시지 읽음 처리 호출
+                markMessageAsRead(chatMessage.messageId)
+            }
         }, { error ->
             Log.e("SNSChatting", "Error receiving message", error)
         })
@@ -143,10 +282,54 @@ class SNSChattingViewModel @Inject constructor(
                     val response = snsApi.markMessageAsRead(request)
                     if (response.status == 200) {
                         Log.d("SNSChatting", "Message $messageId marked as read")
+                        // 읽음 처리 후 unreadCount 새로고침
+                        refreshUnreadCounts()
                     }
                 }
             } catch (e: Exception) {
                 Log.e("SNSChatting", "Error marking message as read", e)
+            }
+        }
+    }
+
+    // 최신 unreadCount를 서버에서 가져와서 업데이트
+    private fun refreshUnreadCounts() {
+        viewModelScope.launch {
+            try {
+                val response = snsApi.getChatMessageHistory(
+                    roomId = currentChatRoomId,
+                    size = 50  // 최근 50개 메시지의 unreadCount 조회
+                )
+
+                if (response.status == 200) {
+                    val latestUnreadCounts = response.data.messages.associate {
+                        it.id to it.unreadCount
+                    }
+
+                    Log.d("SNSChatting", "🔄 Refreshing unreadCounts for ${latestUnreadCounts.size} messages")
+
+                    // 히스토리 메시지 업데이트
+                    _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
+                        val newUnreadCount = latestUnreadCounts[msg.messageId]
+                        if (newUnreadCount != null) {
+                            msg.copy(unreadCount = newUnreadCount)
+                        } else {
+                            msg
+                        }
+                    }
+
+                    // 실시간 메시지 업데이트
+                    _messageList.value = _messageList.value.map { msg ->
+                        val newUnreadCount = latestUnreadCounts[msg.messageId]
+                        if (newUnreadCount != null) {
+                            msg.copy(unreadCount = newUnreadCount)
+                        } else {
+                            msg
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "❌ Error refreshing unreadCounts", e)
             }
         }
     }
@@ -202,7 +385,7 @@ class SNSChattingViewModel @Inject constructor(
                     }
 
                     override fun onMessage(webSocket: WebSocket, text: String) {
-                        Log.d("SNSChatting", "WebSocket Message: $text")
+                        Log.d("SNSChatting", "📩 WebSocket Raw Message: $text")
                         messageSubject.onNext(text)
                     }
 
@@ -228,7 +411,8 @@ data class ChatMessageDto(
     val senderId: String,
     val senderName: String,
     val content: String,
-    val sendAt: String
+    val sendAt: String,
+    var unreadCount: Int = 0
 )
 
 data class MemberProfile(

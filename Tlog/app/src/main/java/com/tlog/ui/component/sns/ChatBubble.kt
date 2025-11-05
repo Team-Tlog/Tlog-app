@@ -71,40 +71,73 @@ fun ChatBubble(message: ChatMessageDto, myId: String, profileImageUrl: String? =
 
                     Spacer(modifier = Modifier.width(4.dp))
 
-                    // 메시지 말풍선
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = Color(0xFFE8E8E8),
-                                shape = RoundedCornerShape(12.dp)
-                            )
-                            .padding(horizontal = 16.dp, vertical = 10.dp)
+                    // 메시지 말풍선과 unreadCount
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        horizontalArrangement = Arrangement.Start
                     ) {
-                        Text(
-                            text = message.content,
-                            fontSize = 14.sp,
-                            fontFamily = MainFont,
-                            color = Color.Black
-                        )
+                        // 메시지 말풍선
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color(0xFFE8E8E8),
+                                    shape = RoundedCornerShape(12.dp)
+                                )
+                                .padding(horizontal = 16.dp, vertical = 10.dp)
+                        ) {
+                            Text(
+                                text = message.content,
+                                fontSize = 14.sp,
+                                fontFamily = MainFont,
+                                color = Color.Black
+                            )
+                        }
+
+                        // unreadCount 표시 (0이 아닌 경우에만)
+                        if (message.unreadCount > 0) {
+                            Text(
+                                text = message.unreadCount.toString(),
+                                fontSize = 12.sp,
+                                fontFamily = MainFont,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(start = 6.dp)
+                            )
+                        }
                     }
                 }
             }
         } else {
             // 내 메시지 - 오른쪽 (파란색 말풍선)
-            Box(
-                modifier = Modifier
-                    .background(
-                        color = Color(0xFF5B8CFF),
-                        shape = RoundedCornerShape(12.dp)
-                    )
-                    .padding(horizontal = 16.dp, vertical = 10.dp)
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = message.content,
-                    fontSize = 14.sp,
-                    fontFamily = MainFont,
-                    color = Color.White
-                )
+                // unreadCount 표시 (0이 아닌 경우에만)
+                if (message.unreadCount > 0) {
+                    Text(
+                        text = message.unreadCount.toString(),
+                        fontSize = 12.sp,
+                        fontFamily = MainFont,
+                        color = Color(0xFF5B8CFF),
+                        modifier = Modifier.padding(end = 6.dp)
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = Color(0xFF5B8CFF),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                ) {
+                    Text(
+                        text = message.content,
+                        fontSize = 14.sp,
+                        fontFamily = MainFont,
+                        color = Color.White
+                    )
+                }
             }
         }
     }

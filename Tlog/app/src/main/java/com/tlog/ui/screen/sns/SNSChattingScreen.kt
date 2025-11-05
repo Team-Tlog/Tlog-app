@@ -39,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -51,6 +52,8 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.viewmodel.sns.MemberProfile
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 
 @Composable
 fun SNSChattingScreen(
@@ -60,9 +63,17 @@ fun SNSChattingScreen(
     viewModel: SNSChattingViewModel = hiltViewModel(),
 ) {
     val messages by viewModel.messageList.collectAsState()
+    val historyMessages by viewModel.displayedHistoryMessages.collectAsState()
+    val isLoadingHistory by viewModel.isLoadingHistory.collectAsState()
+    val hasMoreHistory by viewModel.hasMoreHistory.collectAsState()
     val memberProfiles by viewModel.memberProfiles.collectAsState()
     var myId by remember { mutableStateOf<String?>(null) }
     var messageText by remember { mutableStateOf("") }
+
+    // 모든 메시지를 하나로 합치기 (히스토리 + 실시간)
+    val allMessages = remember(historyMessages, messages) {
+        (historyMessages + messages).sortedByDescending { it.messageId }
+    }
 
     LaunchedEffect(chatRoomId) {
         myId = viewModel.getMyId()
@@ -72,8 +83,33 @@ fun SNSChattingScreen(
 
     val listState = rememberLazyListState()
 
+    // 새로운 실시간 메시지가 도착하면 스크롤
     LaunchedEffect(messages.size) {
-        listState.animateScrollToItem(0)
+        if (messages.isNotEmpty() && listState.firstVisibleItemIndex < 3) {
+            listState.animateScrollToItem(0)
+        }
+    }
+
+    // 스크롤 위치 감지 - 리스트 끝에 도달하면 더 로드
+    LaunchedEffect(listState) {
+        snapshotFlow {
+            val layoutInfo = listState.layoutInfo
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+
+            Pair(lastVisibleItemIndex, totalItemsCount)
+        }
+            .distinctUntilChanged()
+            .collect { (lastVisibleItemIndex, totalItemsCount) ->
+                // 리스트 끝에서 3개 이내에 도달하면 더 로드
+                if (totalItemsCount > 0 &&
+                    lastVisibleItemIndex >= totalItemsCount - 3 &&
+                    !isLoadingHistory &&
+                    hasMoreHistory) {
+                    android.util.Log.d("SNSChatting", "🔄 Near end - last=$lastVisibleItemIndex, total=$totalItemsCount, historySize=${historyMessages.size}, loading=$isLoadingHistory, hasMore=$hasMoreHistory")
+                    viewModel.loadMoreHistory()
+                }
+            }
     }
 
     Column(
@@ -142,10 +178,17 @@ fun SNSChattingScreen(
                 .fillMaxSize()
                 .weight(1f)
                 .padding(horizontal = 12.dp),
+            state = listState,
             reverseLayout = true, // 최신 메시지를 아래로
             contentPadding = PaddingValues(vertical = 12.dp)
         ) {
-            items(messages.reversed()) { message ->
+            // 모든 메시지 표시 (이미 최신순으로 정렬됨)
+            items(
+                count = allMessages.size,
+                key = { index -> allMessages[index].messageId }
+            ) { index ->
+                val message = allMessages[index]
+
                 // 메시지가 표시될 때 읽음 처리
                 LaunchedEffect(message.messageId) {
                     viewModel.markMessageAsRead(message.messageId)
@@ -160,6 +203,25 @@ fun SNSChattingScreen(
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
+            }
+
+            // 로딩 인디케이터 (가장 위, reverseLayout이므로 아래에 위치)
+            if (isLoadingHistory && hasMoreHistory) {
+                item(key = "loading") {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "메시지 로딩 중...",
+                            fontSize = 12.sp,
+                            color = Color.Gray,
+                            fontFamily = MainFont
+                        )
+                    }
+                }
             }
         }
 
