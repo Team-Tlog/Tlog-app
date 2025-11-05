@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -29,9 +30,8 @@ import androidx.compose.ui.unit.dp
 import com.tlog.ui.component.sns.ChatBubble
 import com.tlog.viewmodel.sns.SNSChattingViewModel
 import androidx.compose.runtime.getValue
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -53,8 +53,7 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.viewmodel.sns.MemberProfile
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
-
+import com.tlog.ui.component.sns.ChatInputBox
 @Composable
 fun SNSChattingScreen(
     chatRoomId: Long,
@@ -106,7 +105,6 @@ fun SNSChattingScreen(
                     lastVisibleItemIndex >= totalItemsCount - 3 &&
                     !isLoadingHistory &&
                     hasMoreHistory) {
-                    android.util.Log.d("SNSChatting", "🔄 Near end - last=$lastVisibleItemIndex, total=$totalItemsCount, historySize=${historyMessages.size}, loading=$isLoadingHistory, hasMore=$hasMoreHistory")
                     viewModel.loadMoreHistory()
                 }
             }
@@ -119,11 +117,15 @@ fun SNSChattingScreen(
             .windowInsetsPadding(WindowInsets.systemBars)
             .imePadding()
     ) {
-        // 상단 헤더
+        Spacer(modifier = Modifier.height(6.dp))
+
+        // 상단 헤더 (360*60, box-shadow)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 14.dp, end = 21.dp, top = 19.dp, bottom = 19.dp),
+                .height(60.dp)
+                .background(Color.White)
+                .padding(start = 24.dp, end = 21.dp, top = 19.dp, bottom = 19.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -132,11 +134,11 @@ fun SNSChattingScreen(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 fontFamily = MainFont,
-                modifier = Modifier.padding(start = 10.dp)
+                maxLines = 1
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy((-9).dp) // 살짝 겹쳐 보이게 (6이 맞는거같은데 추후 물어보고 수정)
+                horizontalArrangement = Arrangement.spacedBy((-6).dp) // 살짝 겹쳐 보이게
             ) {
                 val profileImages = members.map { it.profileImageUrl ?: "" }
 
@@ -146,7 +148,7 @@ fun SNSChattingScreen(
                         contentDescription = "팀원 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(30.dp)
+                            .size(20.dp)
                             .clip(CircleShape)
                             .background(Color.LightGray),
                         error = painterResource(id = R.drawable.destination_img)
@@ -155,21 +157,35 @@ fun SNSChattingScreen(
             }
         }
 
-        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+        Spacer(modifier = Modifier.height(15.dp))
 
         // Today 라벨
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 12.dp),
+                .padding(vertical = 5.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Today",
-                fontSize = 14.sp,
-                color = Color.Gray,
-                fontFamily = MainFont
-            )
+            Box(
+                modifier = Modifier
+                    .width(47.dp)
+                    .height(24.dp)
+                    .background(
+                        color = Color(0xFFF1F4FD),
+                        shape = RoundedCornerShape(5.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Today",
+                    fontSize = 11.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = Color.Black,
+                    fontFamily = MainFont,
+                    maxLines = 1
+                )
+            }
         }
 
         // 채팅 리스트
@@ -196,13 +212,16 @@ fun SNSChattingScreen(
 
                 val senderProfile = memberProfiles[message.senderId]
 
+                // 이전 메시지와 같은 사용자인지 확인
+                val previousMessage = if (index < allMessages.size - 1) allMessages[index + 1] else null
+                val isConsecutive = previousMessage?.senderId == message.senderId
+
                 ChatBubble(
                     message = message,
                     myId = myId.toString(),
-                    profileImageUrl = senderProfile?.profileImageUrl
+                    profileImageUrl = senderProfile?.profileImageUrl,
+                    showProfile = !isConsecutive
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
             }
 
             // 로딩 인디케이터 (가장 위, reverseLayout이므로 아래에 위치)
@@ -226,43 +245,16 @@ fun SNSChattingScreen(
         }
 
         // 입력창과 전송 버튼
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = messageText,
-                onValueChange = { messageText = it },
-                modifier = Modifier.weight(1f),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    disabledContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.LightGray,
-                    unfocusedIndicatorColor = Color.LightGray,
-                ),
-                singleLine = true
-            )
-            
-            IconButton(
-                onClick = {
-                    val id = myId
-
-                    if (!messageText.isBlank() && id != null) {
-                        viewModel.sendMessage(id, chatRoomId = chatRoomId, content = messageText)
-                        messageText = ""
-                    }
+        ChatInputBox(
+            messageText = messageText,
+            onMessageChange = { messageText = it },
+            onSendClick = {
+                val id = myId
+                if (!messageText.isBlank() && id != null) {
+                    viewModel.sendMessage(id, chatRoomId = chatRoomId, content = messageText)
+                    messageText = ""
                 }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Send,
-                    contentDescription = "전송",
-                    tint = Color(0xFF5B8CFF),
-                    modifier = Modifier.size(28.dp)
-                )
             }
-        }
+        )
     }
 }
