@@ -42,7 +42,8 @@ class SnsViewModel @Inject constructor(
             action = {
                 val result = repository.getFollowingPostList(lastPostId = lastPostId, size = size)
                 _postList.value = result.data.content
-                lastPostId = _postList.value[_postList.value.size - 1].postId
+                if (_postList.value.isNotEmpty())
+                    lastPostId = _postList.value[_postList.value.size - 1].postId
             }
         )
     }
