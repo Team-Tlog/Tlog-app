@@ -123,7 +123,7 @@ fun SNSChattingScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(65.dp)
                 .background(Color.White)
                 .padding(start = 24.dp, end = 21.dp, top = 19.dp, bottom = 19.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -148,7 +148,7 @@ fun SNSChattingScreen(
                         contentDescription = "팀원 이미지",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(20.dp)
+                            .size(30.dp)
                             .clip(CircleShape)
                             .background(Color.LightGray),
                         error = painterResource(id = R.drawable.destination_img)
@@ -169,7 +169,7 @@ fun SNSChattingScreen(
             Box(
                 modifier = Modifier
                     .width(47.dp)
-                    .height(24.dp)
+                    .height(30.dp)
                     .background(
                         color = Color(0xFFF1F4FD),
                         shape = RoundedCornerShape(5.dp)

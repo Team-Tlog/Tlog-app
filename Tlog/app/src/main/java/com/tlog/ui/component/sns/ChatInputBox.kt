@@ -41,21 +41,21 @@ fun ChatInputBox(
         Box(
             modifier = Modifier
                 .width(336.dp)
-                .height(43.dp)
-                .clip(RoundedCornerShape(15.dp))
+                .height(50.dp)
+                .clip(RoundedCornerShape(50.dp))
                 .background(Color.White)
                 .padding(horizontal = 8.dp),
             contentAlignment = Alignment.CenterStart
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
                 TextField(
                     value = messageText,
                     onValueChange = onMessageChange,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     placeholder = { Text("", fontSize = 14.sp) },
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color(0x36EFEFEF),
@@ -71,6 +71,7 @@ fun ChatInputBox(
                     painter = painterResource(id = R.drawable.send_ic),
                     contentDescription = "보내기",
                     modifier = Modifier
+                        .align(Alignment.CenterEnd)
                         .padding(top = 9.5.dp, bottom = 9.5.dp, end = 16.dp)
                         .size(24.dp)
                         .clickable { onSendClick() }
