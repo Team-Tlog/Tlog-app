@@ -1,7 +1,9 @@
 package com.tlog.ui.screen.share
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -52,6 +54,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
@@ -911,6 +914,10 @@ fun MainScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .padding(horizontal = 28.dp, vertical = 20.dp)
+                                    .clickable {
+                                        val intent = Intent(Intent.ACTION_VIEW, issue.infoUrl.toUri())
+                                        context.startActivity(intent)
+                                    }
                             ) {
                                 Column(
                                     modifier = Modifier
