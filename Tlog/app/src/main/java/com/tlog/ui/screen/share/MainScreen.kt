@@ -1,5 +1,9 @@
 package com.tlog.ui.screen.share
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,6 +33,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,6 +43,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,8 +51,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
@@ -57,11 +67,39 @@ import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.MainViewModel
 
 
+
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val context = LocalContext.current
+
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
+            viewModel.getCurrentLocation(context)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            viewModel.getCurrentLocation(context)
+        } else {
+            locationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
     Scaffold(
         topBar = {
             MainTopBar(
@@ -850,115 +888,81 @@ fun MainScreen(
 
                 // ISSUE
 
-                data class TmpIssue(
-                    val title: String,
-                    val content: String,
-                    val image: Int,
-                    val hashTagList: List<String>
-                )
-
-                val tmpIssueList = listOf(
-                    TmpIssue(
-                        title = "더현대 서울 팝업스토어",
-                        content = "000과 000의 만남",
-                        image = R.drawable.tmp_jeju,
-                        hashTagList = listOf("팝업스토어", "서울")
-                    ),
-                    TmpIssue(
-                        title = "영남대학교 맛집 소개",
-                        content = "불맛 제육의 1티어 !!",
-                        image = R.drawable.destination_img,
-                        hashTagList = listOf("맛집", "한식")
-                    ),
-                    TmpIssue(
-                        title = "광안리 회 축제",
-                        content = "회 무한리필",
-                        image = R.drawable.tmp_flower,
-                        hashTagList = listOf("회", "부산")
-                    )
-                )
                 Spacer(modifier = Modifier.height(43.dp))
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = "ISSUE",
-                        style = BodyTitle,
+                val localGuides by viewModel.localGuides.collectAsState()
+
+                localGuides.let { localGuides ->
+                    Column(
                         modifier = Modifier
-                            .padding(start = 24.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    tmpIssueList.forEach { tmpIssue ->
-                        Box(
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "ISSUE",
+                            style = BodyTitle,
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 28.dp, vertical = 20.dp)
-                        ) {
-                            Column (
+                                .padding(start = 24.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        localGuides.forEach { issue ->
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
+                                    .padding(horizontal = 28.dp, vertical = 20.dp)
                             ) {
-                                Box(
+                                Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .height(158.dp)
-                                        .clip(RoundedCornerShape(10.dp))
                                 ) {
-                                    Image(
-                                        painter = painterResource(id = tmpIssue.image),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
+                                    Box(
                                         modifier = Modifier
-                                            .fillMaxSize()
+                                            .fillMaxWidth()
+                                            .height(158.dp)
+                                            .clip(RoundedCornerShape(10.dp))
+                                    ) {
+                                        AsyncImage(
+                                            model = issue.imageUrl,
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            error = painterResource(R.drawable.tmp_jeju),
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.height(14.dp))
+
+                                    Text(
+                                        text = issue.title,
+                                        style = TextStyle(
+                                            fontFamily = MainFont,
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
                                     )
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    Text(
+                                        text = issue.description,
+                                        style = TextStyle(
+                                            fontFamily = MainFont,
+                                            fontSize = 13.sp,
+                                            fontWeight = FontWeight.Light
+                                        )
+                                    )
+
+                                    Spacer(modifier = Modifier.height(8.dp))
+
+                                    BlueHashTagGroup(issue.property)
                                 }
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
-                                Text(
-                                    text = tmpIssue.title,
-                                    style = TextStyle(
-                                        fontFamily = MainFont,
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(
-                                    text = tmpIssue.content,
-                                    style = TextStyle(
-                                        fontFamily = MainFont,
-                                        fontSize = 13.sp,
-                                        fontWeight = FontWeight.Light
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                BlueHashTagGroup(tmpIssue.hashTagList)
                             }
                         }
                     }
                 }
             }
-
-
-
-
         }
-
     }
-
-
-
-
-
-
-
 }
