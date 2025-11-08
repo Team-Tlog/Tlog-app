@@ -9,6 +9,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.LocalGuide
+import com.tlog.data.model.share.LocationData
 import com.tlog.data.repository.MainRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,11 +17,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-
-data class LocationData(
-    val latitude: Double,
-    val longitude: Double
-)
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
