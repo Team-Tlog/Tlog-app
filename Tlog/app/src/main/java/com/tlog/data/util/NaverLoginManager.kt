@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.tlog.BuildConfig
 
 class NaverLoginManager(
     private val context: Context,
@@ -22,12 +23,13 @@ class NaverLoginManager(
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
-                Log.d("NaverLoginManager", """
-                    네이버 로그인 실패
-                    httpStatus: $httpStatus
-                    message: '$message'
-                    NaverIdLoginSDK.getState(): ${NaverIdLoginSDK.getState()}
-                """.trimIndent())
+                Log.e("NaverLoginManager", """
+    네이버 로그인 실패
+    httpStatus: $httpStatus
+    message: '$message'
+    state: ${NaverIdLoginSDK.getState()}
+    clientId: ${BuildConfig.NAVER_CLIENT_ID}
+""".trimIndent())
             }
 
             override fun onError(errorCode: Int, message: String) {
