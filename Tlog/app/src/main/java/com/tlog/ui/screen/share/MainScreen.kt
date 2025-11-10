@@ -1,12 +1,9 @@
 package com.tlog.ui.screen.share
 
 import android.Manifest
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +25,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -41,42 +37,33 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData
-import com.tlog.data.model.share.Post
+import com.tlog.ui.component.main.BannerSection
 import com.tlog.ui.component.main.IssueSection
 import com.tlog.ui.component.main.RecommendDestinationSection
 import com.tlog.ui.component.main.RecommendPostSection
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
-import com.tlog.ui.component.travel.BlueHashTagGroup
 import com.tlog.ui.navigation.Screen
-import com.tlog.ui.style.BodyTitle
-import com.tlog.ui.theme.Essential
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.MainViewModel
-
 
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
 ) {
     val context = LocalContext.current
 
@@ -106,6 +93,7 @@ fun MainScreen(
     }
 
     LaunchedEffect(Unit) {
+        viewModel.getRecommendBanner()
         viewModel.getRecommendPosts()
         viewModel.getRecommendDestinations()
     }
@@ -121,7 +109,10 @@ fun MainScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(60.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding())
+                    .height(
+                        60.dp + WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding()
+                    )
                     .windowInsetsPadding(WindowInsets.navigationBars)
             ) {
                 BottomBar(
@@ -143,64 +134,11 @@ fun MainScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(top = 10.dp)
             ) {
+                val bannerList by viewModel.bannerList.collectAsState()
 
-
-                // 추천 박스
-                val recommendList = listOf(
-                    "RENA를 위한 9월\n추천 여행지",
-                    "ABCD를 위한 9월\n추천 여행지",
-                    "지금 핫한\n제주 여행지"
-                )
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(208.dp)
-                        .padding(horizontal = 24.dp, vertical = 10.dp),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
-                ) {
-                    items(
-                        items = recommendList,
-                        key = { recommend -> recommend }
-                    ) { recommend ->
-                        Box(
-                            modifier = Modifier
-                                .size(width = 312.dp, height = 188.dp)
-                                .clickable {
-                                    //navController.navigate("detail")
-                                }
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.destination_img),
-                                contentDescription = recommend,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .clip(RoundedCornerShape(10.dp))
-
-                            )
-
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 26.dp, bottom = 20.dp, start = 29.dp)
-                            ) {
-                                Text(
-                                    text = recommend,
-                                    style = TextStyle(
-                                        fontSize = 22.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Color.White
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.weight(1f))
-                            }
-                        }
-                    }
-                }
+                BannerSection(bannerList)
 
                 Spacer(modifier = Modifier.height(49.dp))
-
 
                 // 아이콘 배너
                 val iconList = mapOf(
@@ -230,18 +168,31 @@ fun MainScreen(
                                         "리뷰 쓰기" -> {
                                             navController.navigate(Screen.SearchReview)
                                         }
+
                                         "지도에서 보기" -> {
                                             navController.navigate(Screen.Map)
                                         }
+
                                         "내 팀보기" -> {
                                             navController.navigate(Screen.TeamList)
                                         }
+
                                         "스크랩" -> {
                                             navController.navigate(Screen.ScrapAndCart)
                                         }
+
                                         "식당/카페" -> {
-                                            val location = viewModel.currentLocation.value ?: LocationData(37.715133, 126.734086) // default = 서울시청
-                                            navController.navigate(Screen.Restaurant(latitude = location.latitude.toString(), longitude = location.longitude.toString()))
+                                            val location =
+                                                viewModel.currentLocation.value ?: LocationData(
+                                                    37.715133,
+                                                    126.734086
+                                                ) // default = 서울시청
+                                            navController.navigate(
+                                                Screen.Restaurant(
+                                                    latitude = location.latitude.toString(),
+                                                    longitude = location.longitude.toString()
+                                                )
+                                            )
                                         }
                                     }
                                 }
@@ -273,9 +224,7 @@ fun MainScreen(
                     }
                 }
 
-
                 Spacer(modifier = Modifier.height(38.dp))
-
 
                 // 지역 별 여행지
                 val cityMap = mapOf(
@@ -331,7 +280,12 @@ fun MainScreen(
                                         verticalArrangement = Arrangement.spacedBy(space = 5.dp),
                                         modifier = Modifier
                                             .clickable {
-                                                navController.navigate(Screen.TravelList(name, name))
+                                                navController.navigate(
+                                                    Screen.TravelList(
+                                                        name,
+                                                        name
+                                                    )
+                                                )
                                             }
                                     ) {
                                         Icon(
@@ -360,13 +314,7 @@ fun MainScreen(
                 }
 
 
-
-
-
-
-
-
-
+//                현재 사용 X
 //                Spacer(modifier = Modifier.height(height = 49.dp))
 //
 //
@@ -468,10 +416,6 @@ fun MainScreen(
 //                    }
 //                }
 
-
-
-
-
                 // 추천 여행지
 
                 Spacer(modifier = Modifier.height(42.dp))
@@ -480,9 +424,6 @@ fun MainScreen(
 
                 RecommendDestinationSection(recommendDestinations)
 
-
-
-
                 // 인기 게시글
 
                 val recommendPosts by viewModel.recommendPosts.collectAsState()
@@ -490,8 +431,6 @@ fun MainScreen(
                 Spacer(modifier = Modifier.height(43.dp))
 
                 RecommendPostSection(recommendPosts)
-
-
 
                 // ISSUE
 
@@ -504,4 +443,3 @@ fun MainScreen(
         }
     }
 }
-

@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.model.share.Banner
 import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData
 import com.tlog.data.model.share.Post
@@ -26,6 +27,8 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ): BaseViewModel() {
     var userId: String? = null
+    private val _bannerList = MutableStateFlow<List<Banner>>(emptyList())
+    val bannerList: StateFlow<List<Banner>> = _bannerList.asStateFlow()
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
     val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
@@ -99,6 +102,16 @@ class MainViewModel @Inject constructor(
                     longitude = location.longitude
                 )
                 _localGuides.value = response.data.content
+            }
+        )
+    }
+
+    fun getRecommendBanner() {
+        launchSafeCall(
+            action = {
+                val response = mainRepository.getRecommendBanner()
+
+                _bannerList.value = response.data
             }
         )
     }

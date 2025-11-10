@@ -4,5 +4,5 @@ data class Banner(
     val id: String,
     val imageUrl: String,
     val title: String,
-    val hashTags: List<String>
+    val hashtags: List<String>
 )

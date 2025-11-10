@@ -1,7 +1,5 @@
 package com.tlog.ui.component.tmp
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
@@ -78,7 +76,7 @@ fun TmpTravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(hashTags) // 태그 예시임
+            LazyHashTagsGroup(hashTags) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))
