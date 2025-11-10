@@ -11,6 +11,7 @@ import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData
 import com.tlog.data.model.share.Post
+import com.tlog.data.model.share.RecommendDestination
 import com.tlog.data.repository.MainRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +35,9 @@ class MainViewModel @Inject constructor(
 
     private val _recommendPosts = MutableStateFlow<List<Post>>(emptyList())
     val recommendPosts: StateFlow<List<Post>> = _recommendPosts.asStateFlow()
+
+    private val _recommendDestinations = MutableStateFlow<List<RecommendDestination>>(emptyList())
+    val recommendDestinations: StateFlow<List<RecommendDestination>> = _recommendDestinations.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
@@ -67,12 +71,22 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendPost() {
+    fun getRecommendPosts() {
         launchSafeCall(
             action = {
                 val response = mainRepository.getRecommendPost()
 
                 _recommendPosts.value = response.data
+            }
+        )
+    }
+
+    fun getRecommendDestinations() {
+        launchSafeCall(
+            action = {
+                val response = mainRepository.getRecommendDestination()
+
+                _recommendDestinations.value = response.data
             }
         )
     }
