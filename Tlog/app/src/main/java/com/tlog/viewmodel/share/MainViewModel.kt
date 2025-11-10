@@ -10,6 +10,7 @@ import com.google.android.gms.location.Priority
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData
+import com.tlog.data.model.share.Post
 import com.tlog.data.repository.MainRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,6 +31,9 @@ class MainViewModel @Inject constructor(
 
     private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
     val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
+
+    private val _recommendPosts = MutableStateFlow<List<Post>>(emptyList())
+    val recommendPosts: StateFlow<List<Post>> = _recommendPosts.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
@@ -61,6 +65,16 @@ class MainViewModel @Inject constructor(
                 UiEvent.ShowToast("위치를 가져올 수 없습니다")
             }
         }
+    }
+
+    fun getRecommendPost() {
+        launchSafeCall(
+            action = {
+                val response = mainRepository.getRecommendPost()
+
+                _recommendPosts.value = response.data
+            }
+        )
     }
 
     private fun sendLocationToServer(location: LocationData) {

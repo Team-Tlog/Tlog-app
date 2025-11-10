@@ -59,6 +59,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.share.LocationData
+import com.tlog.data.model.share.Post
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.component.travel.BlueHashTagGroup
@@ -101,6 +102,10 @@ fun MainScreen(
                 )
             )
         }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getRecommendPost()
     }
 
     Scaffold(
@@ -738,36 +743,7 @@ fun MainScreen(
 
                 // 인기 게시글
 
-                data class TmpPostTmp(
-                    val title: String,
-                    val content: String,
-                    val image: Int,
-                    val image2: Int,
-                    val hashTagList: List<String>
-                )
-                val tmpPostList = listOf(
-                    TmpPostTmp(
-                        title = "오늘의 출근길",
-                        content = "오늘 출근길에 느낀 점들을 나누고 싶어요.",
-                        image = R.drawable.tmp_jeju,
-                        image2 = R.drawable.tmp_flower,
-                        hashTagList = listOf(
-                            "출근길",
-                            "느낀점"
-                        )
-                    ),
-                    TmpPostTmp(
-                        title = "대구콩",
-                        content = "대구~입니다~",
-                        image = R.drawable.tmp_flower,
-                        image2 = R.drawable.tmp_jeju,
-                        hashTagList = listOf(
-                            "출근길",
-                            "느낀점"
-                        )
-                    )
-                )
-
+                val recommendPosts by viewModel.recommendPosts.collectAsState()
 
                 Spacer(modifier = Modifier.height(43.dp))
 
@@ -792,70 +768,10 @@ fun MainScreen(
                         horizontalArrangement = Arrangement.spacedBy(30.dp)
                     ) {
                         items(
-                            items = tmpPostList,
+                            items = recommendPosts,
                             key = { post -> post.title }
                         ) { post ->
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                ) {
-                                    Image(
-                                        painter = painterResource(post.image),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .height(158.dp)
-                                            .width(150.dp)
-                                            .clip(RoundedCornerShape(10.dp))
-                                    )
-
-                                    Image(
-                                        painter = painterResource(post.image2),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
-                                        modifier = Modifier
-                                            .height(158.dp)
-                                            .width(150.dp)
-                                            .clip(RoundedCornerShape(10.dp))
-                                    )
-                                }
-
-                                Spacer(modifier = Modifier.height(14.dp))
-
-
-                                Text(
-                                    text = post.title,
-                                    style = TextStyle(
-                                        fontFamily = MainFont,
-                                        fontSize = 16.sp,
-                                        fontWeight = FontWeight.Bold
-                                    )
-                                )
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                Text(
-                                    text = post.content,
-                                    style = TextStyle(
-                                        fontFamily = MainFont,
-                                        fontSize = 14.sp,
-                                        color = Color.Gray
-                                    ),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-
-                                Spacer(modifier = Modifier.height(8.dp))
-
-                                BlueHashTagGroup(post.hashTagList)
-
-                            }
-
+                            RecommendPostCard(post)
                         }
                     }
 
@@ -886,10 +802,6 @@ fun MainScreen(
                         )
                     }
                 }
-
-
-
-
 
 
                 // ISSUE
@@ -974,5 +886,68 @@ fun MainScreen(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun RecommendPostCard(
+    post: Post
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = post.imageUrls.firstOrNull() ?: "",
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                error = painterResource(id = R.drawable.tmp_jeju),
+                modifier = Modifier
+                    .height(158.dp)
+                    .width(150.dp)
+                    .clip(RoundedCornerShape(10.dp))
+            )
+            if (post.imageUrls.size > 1) {
+                AsyncImage(
+                    model = post.imageUrls[1],
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    error = painterResource(id = R.drawable.tmp_jeju),
+                    modifier = Modifier
+                        .height(158.dp)
+                        .width(150.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Text(
+            text = post.title,
+            style = TextStyle(
+                fontFamily = MainFont,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = post.description,
+            style = TextStyle(
+                fontFamily = MainFont,
+                fontSize = 14.sp,
+                color = Color.Gray
+            ),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
