@@ -30,7 +30,7 @@ data class MinimalListPage<T> (
 
 
 data class BaseListResponse<T>(
-    val ststus: Int,
+    val status: Int,
     val message: String,
     val data: BaseListPage<T>
 )
