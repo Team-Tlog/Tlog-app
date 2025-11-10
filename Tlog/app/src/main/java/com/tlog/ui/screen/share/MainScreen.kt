@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.share
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,8 +56,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData
 import com.tlog.data.model.share.Post
+import com.tlog.ui.component.main.IssueSection
 import com.tlog.ui.component.main.RecommendDestinationSection
 import com.tlog.ui.component.main.RecommendPostSection
 import com.tlog.ui.component.share.BottomBar
@@ -496,80 +499,7 @@ fun MainScreen(
 
                 val localGuides by viewModel.localGuides.collectAsState()
 
-                localGuides.let { localGuides ->
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "ISSUE",
-                            style = BodyTitle,
-                            modifier = Modifier
-                                .padding(start = 24.dp)
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        localGuides.forEach { issue ->
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 28.dp, vertical = 20.dp)
-                                    .clickable {
-                                        val intent = Intent(Intent.ACTION_VIEW, issue.infoUrl.toUri())
-                                        context.startActivity(intent)
-                                    }
-                            ) {
-                                Column(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                ) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(158.dp)
-                                            .clip(RoundedCornerShape(10.dp))
-                                    ) {
-                                        AsyncImage(
-                                            model = issue.imageUrl,
-                                            contentDescription = null,
-                                            contentScale = ContentScale.Crop,
-                                            error = painterResource(R.drawable.tmp_jeju),
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                        )
-                                    }
-
-                                    Spacer(modifier = Modifier.height(14.dp))
-
-                                    Text(
-                                        text = issue.title,
-                                        style = TextStyle(
-                                            fontFamily = MainFont,
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    )
-
-                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                    Text(
-                                        text = issue.description,
-                                        style = TextStyle(
-                                            fontFamily = MainFont,
-                                            fontSize = 13.sp,
-                                            fontWeight = FontWeight.Light
-                                        )
-                                    )
-
-                                    Spacer(modifier = Modifier.height(8.dp))
-
-                                    BlueHashTagGroup(issue.property)
-                                }
-                            }
-                        }
-                    }
-                }
+                IssueSection(localGuides, context)
             }
         }
     }
