@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import com.tlog.data.api.TravelDestinationResponse
@@ -123,7 +123,7 @@ fun DestinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    HashTagsGroup(hashTags = destination.tagCountList.map { it.tagName })
+                    LazyHashTagsGroup(hashTags = destination.tagCountList.map { it.tagName })
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(

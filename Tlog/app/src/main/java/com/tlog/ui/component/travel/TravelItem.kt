@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,7 +32,7 @@ import com.tlog.data.api.SearchTravel
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.travel.Travel
-import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.share.ScrapAndCartViewModel
@@ -94,7 +93,7 @@ fun TravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(travel.customTags)
+            LazyHashTagsGroup(travel.customTags)
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -184,7 +183,7 @@ fun CartItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -261,7 +260,7 @@ fun ScrapTravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            HashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -331,7 +330,7 @@ fun SearchTravelItem(
 
             Spacer(modifier = Modifier.height(11.dp))
 
-            HashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
+            LazyHashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))

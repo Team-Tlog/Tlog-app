@@ -32,6 +32,7 @@ import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
 import com.tlog.ui.screen.share.ReportToDeveloperScreen
+import com.tlog.ui.screen.share.RestaurantScreen
 import com.tlog.ui.screen.sns.ChatListScreen
 import com.tlog.ui.screen.sns.SNSChattingScreen
 import com.tlog.ui.screen.sns.SnsIdCreateScreen
@@ -184,6 +185,15 @@ fun NavHost(
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)
         }
+
+        composable<Screen.Restaurant> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.Restaurant>()
+
+            RestaurantScreen(latitude = args.latitude.toDouble(), longitude = args.longitude.toDouble())
+        }
+
+
+
 
         // Chatting
         composable("chatList") {

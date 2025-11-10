@@ -3,6 +3,7 @@ package com.tlog.ui.component.share
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun HashTagsGroup(
+fun LazyHashTagsGroup(
     hashTags: List<String>,
     space: Dp = 8.dp
 ) {
@@ -48,6 +49,42 @@ fun HashTagsGroup(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .background(Color.White)
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "#$tag",
+                        fontSize = 8.sp,
+                        fontFamily = MainFont,
+                        fontWeight = FontWeight.Normal,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun HashTagsGroup(
+    hashTags: List<String>,
+    space: Dp = 8.dp
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(space)
+    ) {
+        hashTags.forEach { tag ->
+            Surface(
+                shape = RoundedCornerShape(50),
+                modifier = Modifier
+                    .padding(1.dp) // 상하좌우 그림자 짤리기 방지
+                    .shadow(2.dp, RoundedCornerShape(50))
+                    .background(Color.White)
+            ) {
+
+                Box(
+                    modifier = Modifier
                         .background(Color.White)
                         .padding(horizontal = 10.dp, vertical = 5.dp),
                     contentAlignment = Alignment.Center

@@ -1,4 +1,4 @@
-package com.tlog.ui.screen.share
+package com.tlog.ui.component.share
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -35,7 +35,7 @@ import com.tlog.ui.theme.MainFont
 
 @Preview
 @Composable
-fun LoadingScreen() {
+fun LoadingItem() {
 
     val infiniteTransition = rememberInfiniteTransition(label = "loading")   //무한 반복 애니메이션 만듬
 
