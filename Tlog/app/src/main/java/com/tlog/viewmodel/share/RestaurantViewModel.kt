@@ -29,22 +29,22 @@ class RestaurantViewModel @Inject constructor(
         _selectedTab.value = tab
     }
 
+    private var _isLoading = mutableStateOf(false)
+    val isLoading: State<Boolean> = _isLoading
+
+
     fun getRestaurants(latitude: Double, longitude: Double) {
         launchSafeCall(
             action = {
-                val response = repository.getEateryList(latitude, longitude)
+                val restaurantResponse = repository.getEateryList(latitude, longitude)
 
-                _restaurants.value = response.data
-            }
-        )
-    }
+                _restaurants.value = restaurantResponse.data
 
-    fun getCafes(latitude: Double, longitude: Double) {
-        launchSafeCall(
-            action = {
-                val response = repository.getCafeList(latitude, longitude)
+                val cafeResponse = repository.getCafeList(latitude, longitude)
 
-                _cafes.value = response.data
+                _cafes.value = cafeResponse.data
+
+                _isLoading.value = true
             }
         )
     }

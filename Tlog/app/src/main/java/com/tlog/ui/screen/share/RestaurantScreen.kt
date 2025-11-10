@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.share
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -34,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tlog.ui.component.share.LoadingItem
 import com.tlog.ui.component.share.RestaurantItem
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
@@ -62,7 +61,6 @@ fun RestaurantScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getRestaurants(latitude, longitude)
-        viewModel.getCafes(latitude, longitude)
     }
 
     Column(
@@ -150,20 +148,26 @@ fun RestaurantScreen(
             viewModel.cafes.collectAsState().value
 
         LazyColumn {
-            itemsIndexed(
-                items = restaurants,
-                key = { _, item -> item.placeName }
-            ) { index, item ->
-                Log.d("DEBUG_ITEM", "restaurant=$item")
-                RestaurantItem(
-                    restaurant = item,
-                    context = context
-                )
+            if (!viewModel.isLoading.value) {
+                item {
+                    LoadingItem()
+                }
+            } else {
+                itemsIndexed(
+                    items = restaurants,
+                    key = { _, item -> item.placeName }
+                ) { index, item ->
 
-                if (index == restaurants.lastIndex) {
-                    Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
-                } else {
-                    Spacer(modifier = Modifier.height(24.dp))
+                    RestaurantItem(
+                        restaurant = item,
+                        context = context
+                    )
+
+                    if (index == restaurants.lastIndex) {
+                        Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
+                    } else {
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
                 }
             }
 
