@@ -1,6 +1,7 @@
 package com.tlog.di.module
 
 import com.tlog.api.MainApi
+import com.tlog.api.RestaurantApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +16,12 @@ object MainModule {
         retrofit: Retrofit
     ): MainApi {
         return retrofit.create(MainApi::class.java)
+    }
+
+    @Provides
+    fun provideRestaurantApi(
+        retrofit: Retrofit
+    ): RestaurantApi {
+        return retrofit.create(RestaurantApi::class.java)
     }
 }

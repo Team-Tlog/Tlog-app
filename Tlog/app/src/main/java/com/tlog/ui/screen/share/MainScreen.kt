@@ -3,7 +3,6 @@ package com.tlog.ui.screen.share
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -59,6 +58,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.model.share.LocationData
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.component.travel.BlueHashTagGroup
@@ -202,7 +202,7 @@ fun MainScreen(
                     "지도에서 보기" to R.drawable.main_ic_map,
                     "내 팀보기" to R.drawable.main_ic_team,
                     "스크랩" to R.drawable.scrap,
-                    "지도 채우기" to R.drawable.main_ic_fill_map
+                    "식당/카페" to R.drawable.main_ic_fill_map
                 )
 
                 LazyRow(
@@ -232,7 +232,10 @@ fun MainScreen(
                                         "스크랩" -> {
                                             navController.navigate(Screen.ScrapAndCart)
                                         }
-                                        "지도 채우기" -> {}
+                                        "식당/카페" -> {
+                                            val location = viewModel.currentLocation.value ?: LocationData(37.715133, 126.734086) // default = 서울시청
+                                            navController.navigate(Screen.Restaurant(latitude = location.latitude.toString(), longitude = location.longitude.toString()))
+                                        }
                                     }
                                 }
                             //.size(height = 62.dp, width = 70.dp)

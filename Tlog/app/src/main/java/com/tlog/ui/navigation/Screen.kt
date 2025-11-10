@@ -1,5 +1,6 @@
 package com.tlog.ui.navigation
 
+import com.tlog.data.model.share.LocationData
 import kotlinx.serialization.Serializable
 
 sealed interface Screen {
@@ -116,4 +117,7 @@ sealed interface Screen {
 
     @Serializable
     data object Notification: Screen
+
+    @Serializable
+    data class Restaurant(val latitude: String, val longitude: String): Screen
 }

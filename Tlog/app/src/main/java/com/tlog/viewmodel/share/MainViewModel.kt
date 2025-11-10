@@ -26,6 +26,7 @@ class MainViewModel @Inject constructor(
     var userId: String? = null
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
+    val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
 
     private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
     val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
