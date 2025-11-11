@@ -61,6 +61,9 @@ class SNSChattingViewModel @Inject constructor(
     private val _hasMoreHistory = MutableStateFlow(true)
     val hasMoreHistory: StateFlow<Boolean> get() = _hasMoreHistory
 
+    // 다음 커서 저장 (페이지네이션용)
+    private var nextCursor: Long? = null
+
     // 멤버 프로필 정보 저장 (userId -> profileImageUrl)
     private val _memberProfiles = MutableStateFlow<Map<String, MemberProfile>>(emptyMap())
     val memberProfiles: StateFlow<Map<String, MemberProfile>> get() = _memberProfiles
@@ -118,11 +121,17 @@ class SNSChattingViewModel @Inject constructor(
 
                     // 서버에서 받은 메시지를 바로 전부 표시
                     _displayedHistoryMessages.value = messages
+                    Log.d("SNSChatting", "🔍 After setting _displayedHistoryMessages: ${_displayedHistoryMessages.value.size} messages")
+                    Log.d("SNSChatting", "🔍 First 3 message IDs: ${_displayedHistoryMessages.value.take(3).map { it.messageId }}")
 
-                    // hasNext가 false이면 더 이상 히스토리가 없음
-                    _hasMoreHistory.value = response.data.hasNext
+                    // nextCursor 저장
+                    nextCursor = response.data.nextCursor
 
-                    Log.d("SNSChatting", "✅ Initial load: ${messages.size} messages displayed, hasNext: ${response.data.hasNext}")
+                    // nextCursor가 null이면 더 이상 히스토리가 없음 (hasNext 대신 nextCursor로 판단)
+                    _hasMoreHistory.value = response.data.nextCursor != null
+
+                    Log.d("SNSChatting", "✅ Initial load: ${messages.size} messages displayed, hasNext: ${response.data.hasNext}, nextCursor: ${response.data.nextCursor}")
+                    Log.d("SNSChatting", "   Using nextCursor != null for hasMore: ${_hasMoreHistory.value}")
                 }
             } catch (e: Exception) {
                 Log.e("SNSChatting", "❌ Error loading message history", e)
@@ -143,15 +152,15 @@ class SNSChattingViewModel @Inject constructor(
             try {
                 _isLoadingHistory.value = true
 
-                // 현재 표시된 히스토리 메시지 중 가장 오래된 메시지 ID를 beforeMessageId로 사용
-                val oldestMessageId = _displayedHistoryMessages.value.lastOrNull()?.messageId
+                // nextCursor를 beforeMessageId로 사용
+                val cursorToUse = nextCursor
 
-                Log.d("SNSChatting", "🔄 Loading more from server - beforeMessageId: $oldestMessageId")
+                Log.d("SNSChatting", "🔄 Loading more from server - using cursor: $cursorToUse")
 
                 val response = snsApi.getChatMessageHistory(
                     roomId = currentChatRoomId,
                     size = 50,
-                    beforeMessageId = oldestMessageId
+                    beforeMessageId = cursorToUse
                 )
 
                 if (response.status == 200) {
@@ -167,13 +176,22 @@ class SNSChattingViewModel @Inject constructor(
                         )
                     }
 
+                    Log.d("SNSChatting", "📥 Received ${newMessages.size} messages")
+                    Log.d("SNSChatting", "   First 5 IDs: ${newMessages.map { it.messageId }.take(5)}")
+                    Log.d("SNSChatting", "   Last 5 IDs: ${newMessages.map { it.messageId }.takeLast(5)}")
+
                     // 기존 메시지에 새로운 메시지 추가
                     _displayedHistoryMessages.value = _displayedHistoryMessages.value + newMessages
 
-                    // hasNext가 false이면 더 이상 히스토리가 없음
-                    _hasMoreHistory.value = response.data.hasNext
+                    // nextCursor 업데이트
+                    nextCursor = response.data.nextCursor
 
-                    Log.d("SNSChatting", "✅ Loaded ${newMessages.size} more messages, total: ${_displayedHistoryMessages.value.size}, hasNext: ${response.data.hasNext}")
+                    // nextCursor가 null이면 더 이상 히스토리가 없음 (hasNext 대신 nextCursor로 판단)
+                    _hasMoreHistory.value = response.data.nextCursor != null
+
+                    Log.d("SNSChatting", "✅ Loaded ${newMessages.size} more messages, total: ${_displayedHistoryMessages.value.size}, hasNext: ${response.data.hasNext}, nextCursor: ${response.data.nextCursor}")
+                    Log.d("SNSChatting", "   Using nextCursor != null for hasMore: ${_hasMoreHistory.value}")
+                    Log.d("SNSChatting", "📋 Current message IDs range: ${_displayedHistoryMessages.value.minOfOrNull { it.messageId }} to ${_displayedHistoryMessages.value.maxOfOrNull { it.messageId }}")
                 }
             } catch (e: Exception) {
                 Log.e("SNSChatting", "❌ Error loading more message history", e)
@@ -282,8 +300,7 @@ class SNSChattingViewModel @Inject constructor(
                     val response = snsApi.markMessageAsRead(request)
                     if (response.status == 200) {
                         Log.d("SNSChatting", "Message $messageId marked as read")
-                        // 읽음 처리 후 unreadCount 새로고침
-                        refreshUnreadCounts()
+                        // refreshUnreadCounts() 호출 제거 - 히스토리를 계속 요청하는 문제 해결
                     }
                 }
             } catch (e: Exception) {
