@@ -18,9 +18,10 @@ import kotlinx.coroutines.flow.asStateFlow
 class BannerViewModel @Inject constructor(
     private val repository: BannerRepository,
     private val scrapManager: ScrapManager,
-    tokenProvider: TokenProvider,
-    private var userId: String? = null
+    tokenProvider: TokenProvider
 ): BaseViewModel() {
+    private var userId: String? = null
+
     init {
         userId = tokenProvider.getUserId()
     }
