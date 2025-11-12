@@ -14,6 +14,7 @@ import com.tlog.data.model.share.LocationData
 import com.tlog.data.model.share.Post
 import com.tlog.data.model.share.RecommendDestination
 import com.tlog.data.repository.MainRepository
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -114,5 +115,9 @@ class MainViewModel @Inject constructor(
                 _bannerList.value = response.data
             }
         )
+    }
+
+    fun navToTravel(travelId: String) {
+        navigate(Screen.TravelInfo(travelId))
     }
 }
