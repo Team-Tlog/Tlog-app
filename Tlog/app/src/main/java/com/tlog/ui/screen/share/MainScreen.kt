@@ -154,7 +154,12 @@ fun MainScreen(
             ) {
                 val bannerList by viewModel.bannerList.collectAsState()
 
-                BannerSection(bannerList)
+                BannerSection(
+                    bannerList = bannerList,
+                    onBannerClick = { title, bannerId ->
+                        viewModel.navToBannerDetail(title, bannerId)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(49.dp))
 
