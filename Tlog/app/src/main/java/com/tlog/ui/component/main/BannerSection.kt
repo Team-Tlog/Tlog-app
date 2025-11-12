@@ -31,7 +31,10 @@ import com.tlog.ui.component.share.HashTagsGroup
 
 
 @Composable
-fun BannerSection(bannerList: List<Banner>) {
+fun BannerSection(
+    bannerList: List<Banner>,
+    onBannerClick: (String, String) -> Unit
+) {
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
@@ -48,7 +51,7 @@ fun BannerSection(bannerList: List<Banner>) {
                     .fillParentMaxWidth()
                     .height(188.dp)
                     .clickable {
-                        //navController.navigate("detail")
+                        onBannerClick(banner.title, banner.id)
                     }
             ) {
                 AsyncImage(

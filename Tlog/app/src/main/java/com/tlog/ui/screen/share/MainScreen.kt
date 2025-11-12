@@ -2,6 +2,7 @@ package com.tlog.ui.screen.share
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -57,6 +58,7 @@ import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.navigation.Screen
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.share.MainViewModel
 
 
@@ -72,6 +74,22 @@ fun MainScreen(
     ) { permissions ->
         if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true) {
             viewModel.getCurrentLocation(context)
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
         }
     }
 
@@ -136,7 +154,12 @@ fun MainScreen(
             ) {
                 val bannerList by viewModel.bannerList.collectAsState()
 
-                BannerSection(bannerList)
+                BannerSection(
+                    bannerList = bannerList,
+                    onBannerClick = { title, bannerId ->
+                        viewModel.navToBannerDetail(title, bannerId)
+                    }
+                )
 
                 Spacer(modifier = Modifier.height(49.dp))
 
@@ -422,7 +445,10 @@ fun MainScreen(
 
                 val recommendDestinations by viewModel.recommendDestinations.collectAsState()
 
-                RecommendDestinationSection(recommendDestinations)
+                RecommendDestinationSection(
+                    recommendDestinations = recommendDestinations,
+                    onDestinationClick = { viewModel.navToTravel(it) }
+                )
 
                 // 인기 게시글
 
@@ -430,7 +456,10 @@ fun MainScreen(
 
                 Spacer(modifier = Modifier.height(43.dp))
 
-                RecommendPostSection(recommendPosts)
+                RecommendPostSection(
+                    recommendPosts = recommendPosts,
+                    onPostClick = { viewModel.navToPost(it) }
+                )
 
                 // ISSUE
 

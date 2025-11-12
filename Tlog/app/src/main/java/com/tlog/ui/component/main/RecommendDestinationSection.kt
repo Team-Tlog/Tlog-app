@@ -2,6 +2,7 @@ package com.tlog.ui.component.main
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,12 +44,14 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun DestinationItem(
-    travel: Destination
+    travel: Destination,
+    onDestinationClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .height(34.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onDestinationClick() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -87,7 +90,8 @@ fun DestinationItem(
 
 @Composable
 fun DestinationCard(
-    destination: RecommendDestination
+    destination: RecommendDestination,
+    onDestinationClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -157,39 +161,39 @@ fun DestinationCard(
                     )
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                Box(
-                    modifier = Modifier
-                        .size(height = 31.dp, width = 63.dp)
-                        .clip(RoundedCornerShape(50.dp))
-                        .background(Color(0xFFF0F5FF)),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "더보기",
-                            style = TextStyle(
-                                fontFamily = MainFont,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.SemiBold,
-                                color = Color(0xFF676767)
-                            )
-                        )
-
-                        Spacer(modifier = Modifier.width(4.dp))
-
-                        // 더보기
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_add_circle),
-                            contentDescription = "plus",
-                            tint = Color(0xFF676767),
-                            modifier = Modifier.size(11.dp)
-                        )
-                    }
-                }
+//                Spacer(modifier = Modifier.weight(1f))
+//
+//                Box(
+//                    modifier = Modifier
+//                        .size(height = 31.dp, width = 63.dp)
+//                        .clip(RoundedCornerShape(50.dp))
+//                        .background(Color(0xFFF0F5FF)),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Row(
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Text(
+//                            text = "더보기",
+//                            style = TextStyle(
+//                                fontFamily = MainFont,
+//                                fontSize = 10.sp,
+//                                fontWeight = FontWeight.SemiBold,
+//                                color = Color(0xFF676767)
+//                            )
+//                        )
+//
+//                        Spacer(modifier = Modifier.width(4.dp))
+//
+//                        // 더보기
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.ic_add_circle),
+//                            contentDescription = "plus",
+//                            tint = Color(0xFF676767),
+//                            modifier = Modifier.size(11.dp)
+//                        )
+//                    }
+//                }
             }
 
             Spacer(modifier = Modifier.height(18.dp))
@@ -201,7 +205,10 @@ fun DestinationCard(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 destination.destinations.forEach { travel ->
-                    DestinationItem(travel)
+                    DestinationItem(
+                        travel = travel,
+                        onDestinationClick = { onDestinationClick(travel.id) }
+                    )
                 }
             }
         }
@@ -210,7 +217,8 @@ fun DestinationCard(
 
 @Composable
 fun RecommendDestinationSection(
-    recommendDestinations: List<RecommendDestination>
+    recommendDestinations: List<RecommendDestination>,
+    onDestinationClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -237,7 +245,7 @@ fun RecommendDestinationSection(
                 items = recommendDestinations,
                 key = { travel -> travel.title }
             ) { item ->
-                DestinationCard(item)
+                DestinationCard(item, onDestinationClick)
             }
         }
     }
