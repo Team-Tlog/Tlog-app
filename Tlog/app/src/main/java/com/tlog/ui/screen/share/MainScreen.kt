@@ -451,7 +451,10 @@ fun MainScreen(
 
                 Spacer(modifier = Modifier.height(43.dp))
 
-                RecommendPostSection(recommendPosts)
+                RecommendPostSection(
+                    recommendPosts = recommendPosts,
+                    onPostClick = { viewModel.navToPost(it) }
+                )
 
                 // ISSUE
 

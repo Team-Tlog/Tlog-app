@@ -120,4 +120,8 @@ class MainViewModel @Inject constructor(
     fun navToTravel(travelId: String) {
         navigate(Screen.TravelInfo(travelId))
     }
+
+    fun navToPost(postId: String) {
+        navigate(Screen.SnsPostDetail(postId))
+    }
 }

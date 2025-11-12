@@ -1,5 +1,6 @@
 package com.tlog.ui.component.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,11 +35,13 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun RecommendPostCard(
-    post: Post
+    post: Post,
+    onPostClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onPostClick() }
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -97,7 +100,8 @@ fun RecommendPostCard(
 
 @Composable
 fun RecommendPostSection(
-    recommendPosts: List<Post>
+    recommendPosts: List<Post>,
+    onPostClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -122,7 +126,10 @@ fun RecommendPostSection(
                 items = recommendPosts,
                 key = { post -> post.title }
             ) { post ->
-                RecommendPostCard(post)
+                RecommendPostCard(
+                    post = post,
+                    onPostClick = { onPostClick(post.id) }
+                )
             }
         }
 
