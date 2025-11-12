@@ -26,6 +26,7 @@ import com.tlog.ui.screen.review.AddTravelScreen
 import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWriteScreen
 import com.tlog.ui.screen.review.ReviewSearchScreen
+import com.tlog.ui.screen.share.BannerDetailScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
@@ -87,6 +88,18 @@ fun NavHost(
         composable<Screen.SelectTravel> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.SelectTravel>()
             ChooseMyTypeDestinationScreen(tbtiValue = args.tbtiValue, navController = navController)
+        }
+
+        composable<Screen.Restaurant> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.Restaurant>()
+
+            RestaurantScreen(latitude = args.latitude.toDouble(), longitude = args.longitude.toDouble())
+        }
+
+        composable<Screen.BannerDetail> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.BannerDetail>()
+
+            BannerDetailScreen(title = args.title, bannerId = args.bannerId, navController = navController)
         }
 
         // SNS
@@ -185,15 +198,6 @@ fun NavHost(
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)
         }
-
-        composable<Screen.Restaurant> { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.Restaurant>()
-
-            RestaurantScreen(latitude = args.latitude.toDouble(), longitude = args.longitude.toDouble())
-        }
-
-
-
 
         // Chatting
         composable("chatList") {

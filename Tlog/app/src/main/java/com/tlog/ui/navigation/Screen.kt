@@ -16,6 +16,12 @@ sealed interface Screen {
     @Serializable
     data class SelectTravel(val tbtiValue: String): Screen
 
+    @Serializable
+    data class Restaurant(val latitude: String, val longitude: String): Screen
+
+    @Serializable
+    data class BannerDetail(val title: String, val bannerId: String): Screen
+
     // Sns
     @Serializable
     data object SnsMain: Screen
@@ -117,7 +123,4 @@ sealed interface Screen {
 
     @Serializable
     data object Notification: Screen
-
-    @Serializable
-    data class Restaurant(val latitude: String, val longitude: String): Screen
 }
