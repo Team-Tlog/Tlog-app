@@ -211,57 +211,97 @@ class SNSChattingViewModel @Inject constructor(
 
         // 채팅 메시지 구독
         topic = stomp.topic("/sub/chat/room/$currentChatRoomId").subscribe({ message ->
-            Log.d("SNSChatting", "Received message: ${message.payload}")
+            Log.d("SNSChatting", "📩 Received WebSocket message: ${message.payload}")
 
-            val json = JSONObject(message.payload)
-            val messageIdValue = json.optLong("id", 0L)
-            val unreadCountValue = json.optInt("unreadCount", 0)
+            try {
+                val json = JSONObject(message.payload)
+                Log.d("SNSChatting", "📝 Full JSON keys: ${json.keys().asSequence().toList()}")
 
-            Log.d("SNSChatting", "📊 Message ID: $messageIdValue, unreadCount: $unreadCountValue")
+                // 메시지 타입 구분: 읽음 처리 업데이트 vs 새 메시지
+                val isReadUpdate = json.has("messageId") && json.has("newUnreadCount")
 
-            // 기존 메시지 찾기 (히스토리 + 실시간)
-            val existingInHistory = _displayedHistoryMessages.value.find { it.messageId == messageIdValue }
-            val existingInRealtime = _messageList.value.find { it.messageId == messageIdValue }
+                if (isReadUpdate) {
+                    // 읽음 처리 업데이트: {messageId, newUnreadCount}
+                    val messageIdValue = json.getLong("messageId")
+                    val newUnreadCount = json.getInt("newUnreadCount")
 
-            if (existingInHistory != null || existingInRealtime != null) {
-                // 이미 존재하는 메시지 -> unreadCount 업데이트 (다른 사람이 읽음)
-                Log.d("SNSChatting", "🔄 Updating unreadCount for message $messageIdValue to $unreadCountValue")
+                    Log.d("SNSChatting", "📖 Read update received - messageId: $messageIdValue, newUnreadCount: $newUnreadCount")
 
-                // 히스토리 메시지 업데이트
-                _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
-                    if (msg.messageId == messageIdValue) {
-                        msg.copy(unreadCount = unreadCountValue)
+                    // 히스토리 메시지 업데이트
+                    _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
+                        if (msg.messageId == messageIdValue) {
+                            Log.d("SNSChatting", "✅ History message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $newUnreadCount")
+                            msg.copy(unreadCount = newUnreadCount)
+                        } else {
+                            msg
+                        }
+                    }
+
+                    // 실시간 메시지 업데이트
+                    _messageList.value = _messageList.value.map { msg ->
+                        if (msg.messageId == messageIdValue) {
+                            Log.d("SNSChatting", "✅ Realtime message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $newUnreadCount")
+                            msg.copy(unreadCount = newUnreadCount)
+                        } else {
+                            msg
+                        }
+                    }
+                } else {
+                    // 새 메시지 또는 메시지 업데이트: {id, senderId, senderName, chatRoomId, content, sendAt, unreadCount}
+                    val messageIdValue = json.optLong("id", 0L)
+                    val unreadCountValue = json.optInt("unreadCount", 0)
+
+                    Log.d("SNSChatting", "📊 Chat message - ID: $messageIdValue, unreadCount: $unreadCountValue")
+
+                    // 기존 메시지 찾기 (히스토리 + 실시간)
+                    val existingInHistory = _displayedHistoryMessages.value.find { it.messageId == messageIdValue }
+                    val existingInRealtime = _messageList.value.find { it.messageId == messageIdValue }
+
+                    if (existingInHistory != null || existingInRealtime != null) {
+                        // 이미 존재하는 메시지 -> unreadCount 업데이트
+                        Log.d("SNSChatting", "🔄 Updating existing message $messageIdValue unreadCount to $unreadCountValue")
+
+                        // 히스토리 메시지 업데이트
+                        _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
+                            if (msg.messageId == messageIdValue) {
+                                Log.d("SNSChatting", "✅ History message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $unreadCountValue")
+                                msg.copy(unreadCount = unreadCountValue)
+                            } else {
+                                msg
+                            }
+                        }
+
+                        // 실시간 메시지 업데이트
+                        _messageList.value = _messageList.value.map { msg ->
+                            if (msg.messageId == messageIdValue) {
+                                Log.d("SNSChatting", "✅ Realtime message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $unreadCountValue")
+                                msg.copy(unreadCount = unreadCountValue)
+                            } else {
+                                msg
+                            }
+                        }
                     } else {
-                        msg
+                        // 새로운 메시지 추가
+                        Log.d("SNSChatting", "✨ New message $messageIdValue with unreadCount: $unreadCountValue")
+
+                        val chatMessage = ChatMessageDto(
+                            messageId = messageIdValue,
+                            chatRoomId = json.getLong("chatRoomId"),
+                            senderId = json.getString("senderId"),
+                            senderName = json.getString("senderName"),
+                            content = json.getString("content"),
+                            sendAt = json.getString("sendAt"),
+                            unreadCount = unreadCountValue
+                        )
+
+                        _messageList.value = _messageList.value + chatMessage
+
+                        // 새 메시지 읽음 처리 호출
+                        markMessageAsRead(chatMessage.messageId)
                     }
                 }
-
-                // 실시간 메시지 업데이트
-                _messageList.value = _messageList.value.map { msg ->
-                    if (msg.messageId == messageIdValue) {
-                        msg.copy(unreadCount = unreadCountValue)
-                    } else {
-                        msg
-                    }
-                }
-            } else {
-                // 새로운 메시지 추가
-                Log.d("SNSChatting", "✨ New message $messageIdValue with unreadCount: $unreadCountValue")
-
-                val chatMessage = ChatMessageDto(
-                    messageId = messageIdValue,
-                    chatRoomId = json.getLong("chatRoomId"),
-                    senderId = json.getString("senderId"),
-                    senderName = json.getString("senderName"),
-                    content = json.getString("content"),
-                    sendAt = json.getString("sendAt"),
-                    unreadCount = unreadCountValue
-                )
-
-                _messageList.value = _messageList.value + chatMessage
-
-                // 새 메시지 읽음 처리 호출
-                markMessageAsRead(chatMessage.messageId)
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "❌ Error parsing WebSocket message: ${message.payload}", e)
             }
         }, { error ->
             Log.e("SNSChatting", "Error receiving message", error)
@@ -287,24 +327,39 @@ class SNSChattingViewModel @Inject constructor(
         }
     }
 
-    // 메시지 읽음 처리
+    // 메시지 읽음 처리 (WebSocket만 사용)
     fun markMessageAsRead(messageId: Long) {
         viewModelScope.launch {
             try {
                 val readerId = userPreferences.getUserId()
                 if (readerId != null) {
-                    val request = com.tlog.data.api.MessageReadRequest(
-                        readerId = readerId,
-                        messageId = messageId
-                    )
-                    val response = snsApi.markMessageAsRead(request)
-                    if (response.status == 200) {
-                        Log.d("SNSChatting", "Message $messageId marked as read")
-                        // refreshUnreadCounts() 호출 제거 - 히스토리를 계속 요청하는 문제 해결
-                    }
+                    // WebSocket으로 읽음 처리 메시지 전송
+                    // 서버가 받아서 처리하고 /sub/chat/room/{chatRoomId}로 브로드캐스트할 것임
+                    sendReadMessage(readerId, messageId)
                 }
             } catch (e: Exception) {
                 Log.e("SNSChatting", "Error marking message as read", e)
+            }
+        }
+    }
+
+    // WebSocket으로 읽음 처리 메시지 전송
+    private fun sendReadMessage(readerId: String, messageId: Long) {
+        viewModelScope.launch {
+            try {
+                val readMessageJson = JSONObject().apply {
+                    put("readerId", readerId)
+                    put("messageId", messageId)
+                }
+                Log.d("SNSChatting", "Sending read message: $readMessageJson")
+                stomp.send("/pub/chat/read", readMessageJson.toString())
+                    .subscribe({
+                        Log.d("SNSChatting", "Read message sent successfully for messageId: $messageId")
+                    }, { error ->
+                        Log.e("SNSChatting", "Error sending read message", error)
+                    })
+            } catch (e: Exception) {
+                Log.e("SNSChatting", "Error in sendReadMessage", e)
             }
         }
     }

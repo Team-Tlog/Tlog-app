@@ -91,3 +91,8 @@ data class ChatMessageHistoryResponse(
     val nextCursor: Long?,
     val hasNext: Boolean
 )
+
+data class ChatMessageReadDto(
+    val readerId: String,
+    val messageId: Long
+)
