@@ -121,8 +121,6 @@ class SNSChattingViewModel @Inject constructor(
 
                     // 서버에서 받은 메시지를 바로 전부 표시
                     _displayedHistoryMessages.value = messages
-                    Log.d("SNSChatting", "🔍 After setting _displayedHistoryMessages: ${_displayedHistoryMessages.value.size} messages")
-                    Log.d("SNSChatting", "🔍 First 3 message IDs: ${_displayedHistoryMessages.value.take(3).map { it.messageId }}")
 
                     // nextCursor 저장
                     nextCursor = response.data.nextCursor
@@ -130,11 +128,9 @@ class SNSChattingViewModel @Inject constructor(
                     // nextCursor가 null이면 더 이상 히스토리가 없음 (hasNext 대신 nextCursor로 판단)
                     _hasMoreHistory.value = response.data.nextCursor != null
 
-                    Log.d("SNSChatting", "✅ Initial load: ${messages.size} messages displayed, hasNext: ${response.data.hasNext}, nextCursor: ${response.data.nextCursor}")
-                    Log.d("SNSChatting", "   Using nextCursor != null for hasMore: ${_hasMoreHistory.value}")
                 }
             } catch (e: Exception) {
-                Log.e("SNSChatting", "❌ Error loading message history", e)
+                Log.e("SNSChatting", "Error loading message history", e)
             } finally {
                 _isLoadingHistory.value = false
             }
@@ -145,7 +141,6 @@ class SNSChattingViewModel @Inject constructor(
     fun loadMoreHistory() {
         viewModelScope.launch {
             if (_isLoadingHistory.value || !_hasMoreHistory.value) {
-                Log.d("SNSChatting", "⚠️ Skip loading - loading: ${_isLoadingHistory.value}, hasMore: ${_hasMoreHistory.value}")
                 return@launch
             }
 
@@ -154,8 +149,6 @@ class SNSChattingViewModel @Inject constructor(
 
                 // nextCursor를 beforeMessageId로 사용
                 val cursorToUse = nextCursor
-
-                Log.d("SNSChatting", "🔄 Loading more from server - using cursor: $cursorToUse")
 
                 val response = snsApi.getChatMessageHistory(
                     roomId = currentChatRoomId,
@@ -176,10 +169,6 @@ class SNSChattingViewModel @Inject constructor(
                         )
                     }
 
-                    Log.d("SNSChatting", "📥 Received ${newMessages.size} messages")
-                    Log.d("SNSChatting", "   First 5 IDs: ${newMessages.map { it.messageId }.take(5)}")
-                    Log.d("SNSChatting", "   Last 5 IDs: ${newMessages.map { it.messageId }.takeLast(5)}")
-
                     // 기존 메시지에 새로운 메시지 추가
                     _displayedHistoryMessages.value = _displayedHistoryMessages.value + newMessages
 
@@ -189,12 +178,9 @@ class SNSChattingViewModel @Inject constructor(
                     // nextCursor가 null이면 더 이상 히스토리가 없음 (hasNext 대신 nextCursor로 판단)
                     _hasMoreHistory.value = response.data.nextCursor != null
 
-                    Log.d("SNSChatting", "✅ Loaded ${newMessages.size} more messages, total: ${_displayedHistoryMessages.value.size}, hasNext: ${response.data.hasNext}, nextCursor: ${response.data.nextCursor}")
-                    Log.d("SNSChatting", "   Using nextCursor != null for hasMore: ${_hasMoreHistory.value}")
-                    Log.d("SNSChatting", "📋 Current message IDs range: ${_displayedHistoryMessages.value.minOfOrNull { it.messageId }} to ${_displayedHistoryMessages.value.maxOfOrNull { it.messageId }}")
                 }
             } catch (e: Exception) {
-                Log.e("SNSChatting", "❌ Error loading more message history", e)
+                Log.e("SNSChatting", "Error loading more message history", e)
             } finally {
                 _isLoadingHistory.value = false
             }
@@ -211,11 +197,10 @@ class SNSChattingViewModel @Inject constructor(
 
         // 채팅 메시지 구독
         topic = stomp.topic("/sub/chat/room/$currentChatRoomId").subscribe({ message ->
-            Log.d("SNSChatting", "📩 Received WebSocket message: ${message.payload}")
+            Log.d("SNSChatting", "Received WebSocket message: ${message.payload}")
 
             try {
                 val json = JSONObject(message.payload)
-                Log.d("SNSChatting", "📝 Full JSON keys: ${json.keys().asSequence().toList()}")
 
                 // 메시지 타입 구분: 읽음 처리 업데이트 vs 새 메시지
                 val isReadUpdate = json.has("messageId") && json.has("newUnreadCount")
@@ -225,12 +210,11 @@ class SNSChattingViewModel @Inject constructor(
                     val messageIdValue = json.getLong("messageId")
                     val newUnreadCount = json.getInt("newUnreadCount")
 
-                    Log.d("SNSChatting", "📖 Read update received - messageId: $messageIdValue, newUnreadCount: $newUnreadCount")
+                    Log.d("SNSChatting", "Read update received - messageId: $messageIdValue, newUnreadCount: $newUnreadCount")
 
                     // 히스토리 메시지 업데이트
                     _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
                         if (msg.messageId == messageIdValue) {
-                            Log.d("SNSChatting", "✅ History message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $newUnreadCount")
                             msg.copy(unreadCount = newUnreadCount)
                         } else {
                             msg
@@ -240,7 +224,7 @@ class SNSChattingViewModel @Inject constructor(
                     // 실시간 메시지 업데이트
                     _messageList.value = _messageList.value.map { msg ->
                         if (msg.messageId == messageIdValue) {
-                            Log.d("SNSChatting", "✅ Realtime message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $newUnreadCount")
+                            Log.d("SNSChatting", "Realtime message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $newUnreadCount")
                             msg.copy(unreadCount = newUnreadCount)
                         } else {
                             msg
@@ -251,20 +235,15 @@ class SNSChattingViewModel @Inject constructor(
                     val messageIdValue = json.optLong("id", 0L)
                     val unreadCountValue = json.optInt("unreadCount", 0)
 
-                    Log.d("SNSChatting", "📊 Chat message - ID: $messageIdValue, unreadCount: $unreadCountValue")
-
                     // 기존 메시지 찾기 (히스토리 + 실시간)
                     val existingInHistory = _displayedHistoryMessages.value.find { it.messageId == messageIdValue }
                     val existingInRealtime = _messageList.value.find { it.messageId == messageIdValue }
 
                     if (existingInHistory != null || existingInRealtime != null) {
-                        // 이미 존재하는 메시지 -> unreadCount 업데이트
-                        Log.d("SNSChatting", "🔄 Updating existing message $messageIdValue unreadCount to $unreadCountValue")
 
                         // 히스토리 메시지 업데이트
                         _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
                             if (msg.messageId == messageIdValue) {
-                                Log.d("SNSChatting", "✅ History message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $unreadCountValue")
                                 msg.copy(unreadCount = unreadCountValue)
                             } else {
                                 msg
@@ -274,15 +253,12 @@ class SNSChattingViewModel @Inject constructor(
                         // 실시간 메시지 업데이트
                         _messageList.value = _messageList.value.map { msg ->
                             if (msg.messageId == messageIdValue) {
-                                Log.d("SNSChatting", "✅ Realtime message updated: ${msg.messageId}, unreadCount: ${msg.unreadCount} -> $unreadCountValue")
                                 msg.copy(unreadCount = unreadCountValue)
                             } else {
                                 msg
                             }
                         }
                     } else {
-                        // 새로운 메시지 추가
-                        Log.d("SNSChatting", "✨ New message $messageIdValue with unreadCount: $unreadCountValue")
 
                         val chatMessage = ChatMessageDto(
                             messageId = messageIdValue,
@@ -301,7 +277,7 @@ class SNSChattingViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("SNSChatting", "❌ Error parsing WebSocket message: ${message.payload}", e)
+                Log.e("SNSChatting", "Error parsing WebSocket message: ${message.payload}", e)
             }
         }, { error ->
             Log.e("SNSChatting", "Error receiving message", error)
@@ -378,8 +354,6 @@ class SNSChattingViewModel @Inject constructor(
                         it.id to it.unreadCount
                     }
 
-                    Log.d("SNSChatting", "🔄 Refreshing unreadCounts for ${latestUnreadCounts.size} messages")
-
                     // 히스토리 메시지 업데이트
                     _displayedHistoryMessages.value = _displayedHistoryMessages.value.map { msg ->
                         val newUnreadCount = latestUnreadCounts[msg.messageId]
@@ -401,7 +375,7 @@ class SNSChattingViewModel @Inject constructor(
                     }
                 }
             } catch (e: Exception) {
-                Log.e("SNSChatting", "❌ Error refreshing unreadCounts", e)
+                Log.e("SNSChatting", "Error refreshing unreadCounts", e)
             }
         }
     }
@@ -457,7 +431,7 @@ class SNSChattingViewModel @Inject constructor(
                     }
 
                     override fun onMessage(webSocket: WebSocket, text: String) {
-                        Log.d("SNSChatting", "📩 WebSocket Raw Message: $text")
+                        Log.d("SNSChatting", "WebSocket Raw Message: $text")
                         messageSubject.onNext(text)
                     }
 
@@ -476,7 +450,6 @@ class SNSChattingViewModel @Inject constructor(
     }
 }
 
-//나중에 실제로 사용할 Data Class
 data class ChatMessageDto(
     val messageId: Long,
     val chatRoomId: Long,

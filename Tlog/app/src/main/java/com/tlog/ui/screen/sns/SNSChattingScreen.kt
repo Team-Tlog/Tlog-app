@@ -100,7 +100,6 @@ fun SNSChattingScreen(
             .distinctBy { it.messageId } // messageId로 중복 제거
             .sortedByDescending { it.messageId }
 
-        android.util.Log.d("SNSChatting", "📦 Total messages: history=${historyMessages.size}, realtime=${messages.size}, combined=${combined.size}")
         combined
     }
 
@@ -111,7 +110,6 @@ fun SNSChattingScreen(
         val items = mutableListOf<MessageItem>()
         var lastDate: String? = null
 
-        android.util.Log.d("SNSChatting", "🎨 Creating messageItems from ${allMessages.size} messages")
 
         // reverseLayout이므로 역순으로 처리해서 날짜 라벨이 위에 오도록
         allMessages.forEachIndexed { index, message ->
@@ -128,13 +126,11 @@ fun SNSChattingScreen(
             }
         }
 
-        android.util.Log.d("SNSChatting", "🎨 Created ${items.size} messageItems (messages + date labels)")
         items
     }
 
     LaunchedEffect(chatRoomId) {
         myId = viewModel.getMyId()
-        android.util.Log.d("SNSChatting", "🆔 My ID loaded: $myId")
         viewModel.setMemberProfiles(members)
         viewModel.initChatRoom(chatRoomId)
     }
@@ -159,7 +155,6 @@ fun SNSChattingScreen(
         }
             .distinctUntilChanged()
             .collect { (lastVisibleItemIndex, totalItemsCount, visibleItemsCount) ->
-                android.util.Log.d("SNSChatting", "📍 Scroll detected - last=$lastVisibleItemIndex, total=$totalItemsCount, visible=$visibleItemsCount, isLoading=$isLoadingHistory, hasMore=$hasMoreHistory")
 
                 // reverseLayout이므로 리스트 끝(위로 스크롤)은 큰 인덱스
                 // 리스트 끝에서 5개 이내에 도달하면 더 로드
@@ -169,10 +164,9 @@ fun SNSChattingScreen(
                     hasMoreHistory
 
                 if (shouldLoadMore) {
-                    android.util.Log.d("SNSChatting", "🔥 Infinite scroll triggered! Loading more history...")
                     viewModel.loadMoreHistory()
                 } else if (totalItemsCount > 0) {
-                    android.util.Log.d("SNSChatting", "⏸️ Scroll condition not met: needMore=${lastVisibleItemIndex >= totalItemsCount - 5}, notLoading=${!isLoadingHistory}, hasMore=$hasMoreHistory")
+                    android.util.Log.d("SNSChatting", "Scroll condition not met: needMore=${lastVisibleItemIndex >= totalItemsCount - 5}, notLoading=${!isLoadingHistory}, hasMore=$hasMoreHistory")
                 }
             }
     }
