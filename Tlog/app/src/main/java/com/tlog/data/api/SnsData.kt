@@ -71,11 +71,6 @@ data class ChatRoom(
     val unreadCount: Int
 )
 
-data class MessageReadRequest(
-    val readerId: String,
-    val messageId: Long
-)
-
 data class ChatMessageHistory(
     val id: Long,
     val chatRoomId: Long,
