@@ -6,6 +6,7 @@ import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.TravelPlan
+import com.tlog.data.local.RegionCode
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -115,7 +116,9 @@ class TeamInfoViewModel @Inject constructor(
                         creator = safeUserId,
                         travelPlan = TravelPlan(
                             city = city.value,
-                            regionList = checkedDistrict.value.toList(),
+                            regionList = checkedDistrict.value.map {
+                                RegionCode.fromStringOrNull(it).toString()
+                            },
                             hasPet = hasPet.value,
                             hasTransport = hasCar.value,
                             startDate = startDate.value.toString(),

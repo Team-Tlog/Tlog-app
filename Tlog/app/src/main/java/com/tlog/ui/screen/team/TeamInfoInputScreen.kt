@@ -118,7 +118,6 @@ fun TeamInfoInputScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
             Row (
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
@@ -153,7 +152,7 @@ fun TeamInfoInputScreen(
                 // 시군구 필드
                 DropDownCheckBox(
                     city = viewModel.city.value,
-                    options = RegionData.regionMap[viewModel.city.value] ?: emptyList(),
+                    options = listOf("전체") + (RegionData.regionMap[viewModel.city.value] ?: emptyList()),
                     value = viewModel.district.value,
                     checkedSet = viewModel.checkedDistrict.value,
                     onClick = {
