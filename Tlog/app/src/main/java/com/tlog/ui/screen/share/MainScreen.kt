@@ -251,22 +251,22 @@ fun MainScreen(
 
                 // 지역 별 여행지
                 val cityMap = mapOf(
-                    "서울" to R.drawable.login_ic_google,
-                    "경기" to R.drawable.login_ic_google,
-                    "인천" to R.drawable.login_ic_google,
-                    "부산" to R.drawable.login_ic_google,
-                    "대구" to R.drawable.login_ic_google,
-                    "대전" to R.drawable.login_ic_google,
-                    "광주" to R.drawable.login_ic_google,
-                    "울산" to R.drawable.login_ic_google,
-                    "충북" to R.drawable.login_ic_google,
-                    "충남" to R.drawable.login_ic_google,
-                    "경북" to R.drawable.login_ic_google,
-                    "경남" to R.drawable.login_ic_google,
-                    "전북" to R.drawable.login_ic_google,
-                    "전남" to R.drawable.login_ic_google,
-                    "강원" to R.drawable.login_ic_google,
-                    "제주" to R.drawable.login_ic_google
+                    "서울" to R.drawable.place_seoul,
+                    "경기" to R.drawable.place_gyeonggi,
+                    "인천" to R.drawable.place_incheon,
+                    "부산" to R.drawable.place_busan,
+                    "대구" to R.drawable.place_daegu,
+                    "대전" to R.drawable.place_daejeon,
+                    "광주" to R.drawable.place_gwangju,
+                    "울산" to R.drawable.place_ulsan,
+                    "충북" to R.drawable.place_chungcheongbuk,
+                    "충남" to R.drawable.place_chungcheongnam,
+                    "경북" to R.drawable.place_gyeongsangbuk,
+                    "경남" to R.drawable.place_gyeongsangnam,
+                    "전북" to R.drawable.place_jeollabuk,
+                    "전남" to R.drawable.place_jeollanam,
+                    "강원" to R.drawable.place_gangwon,
+                    "제주" to R.drawable.place_jeju
                     // 세종 어카지?
                 )
                 Column(
@@ -316,7 +316,7 @@ fun MainScreen(
                                             contentDescription = null,
                                             tint = Color.Unspecified,
                                             modifier = Modifier
-                                                .size(size = 60.dp)
+                                                .size(size = 120.dp)
                                                 .clip(shape = CircleShape)
                                         )
 
