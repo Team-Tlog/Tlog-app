@@ -316,7 +316,7 @@ fun MainScreen(
                                             contentDescription = null,
                                             tint = Color.Unspecified,
                                             modifier = Modifier
-                                                .size(size = 120.dp)
+                                                .size(size = 80.dp)
                                                 .clip(shape = CircleShape)
                                         )
 
