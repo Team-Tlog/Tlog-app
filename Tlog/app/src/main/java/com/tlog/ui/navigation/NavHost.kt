@@ -47,6 +47,7 @@ import com.tlog.ui.screen.team.TeamDetailScreen
 import com.tlog.ui.screen.team.TeamJoinScreen
 import com.tlog.ui.screen.team.TeamCreateScreen
 import com.tlog.ui.screen.team.TeamInfoInputScreen
+import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
@@ -241,6 +242,9 @@ fun NavHost(
                 members = members
             )
         }
+
+        // AI
+        composable<Screen.AiCourseSelectCart> { AiCourseSelectCartScreen() }
     }
 }
 

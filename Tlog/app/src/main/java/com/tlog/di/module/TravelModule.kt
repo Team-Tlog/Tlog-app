@@ -1,5 +1,6 @@
 package com.tlog.di.module
 
+import com.tlog.api.AiApi
 import com.tlog.api.TravelApi
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,13 @@ object TravelModule {
         retrofit: Retrofit
     ): TravelApi {
         return retrofit.create(TravelApi::class.java)
+    }
+
+    @Provides
+    fun provideAiApi(
+        retrofit: Retrofit
+    ): AiApi {
+        return retrofit.create(AiApi::class.java)
     }
 
 }
