@@ -1,6 +1,9 @@
 package com.tlog.viewmodel.travel
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.CourseIdManager
 import com.tlog.data.model.travel.AiTravel
 import com.tlog.data.model.travel.CourseSaveRequest
 import com.tlog.data.model.travel.DailySchedule
@@ -12,6 +15,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 
@@ -19,6 +23,7 @@ import java.time.LocalDate
 class AiRecommendCourseResultViewModel @Inject constructor(
     val repository: AiRecommendCourseResultRepository,
     val tokenProvider: TokenProvider,
+    val courseManager: CourseIdManager
 ) : BaseViewModel() {
     private var userId = ""
     private var startDate = ""
@@ -131,7 +136,12 @@ class AiRecommendCourseResultViewModel @Inject constructor(
                     ownerType = "USER",
                     courseSaveRequest = courseSave
                 )
-
+            },
+            onSuccess = {
+                viewModelScope.launch {
+                    courseManager.saveCourseId(it.data)
+                }
+                showToast("코스가 저장되었습니다.")
                 navToMain()
             }
         )

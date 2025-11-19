@@ -54,13 +54,15 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun launchSafeCall(
-        action: suspend () -> Unit,
+    protected fun <T>  launchSafeCall(
+        action: suspend () -> (T),
+        onSuccess: (T) -> Unit = {},
         onError: (String) -> Unit = { showToast(it) }
     ) {
         viewModelScope.launch {
             safeCall(
                 action = action,
+                onSuccess = onSuccess,
                 onError = onError
             )
         }
