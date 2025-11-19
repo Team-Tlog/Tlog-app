@@ -108,7 +108,11 @@ fun AiRecommendCourseResultScreen(
                 }
             }
 
+            item {
+                Spacer(modifier = Modifier.height(145.dp))
+            }
         }
+
 
         Box(
             modifier = Modifier
