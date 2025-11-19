@@ -17,9 +17,6 @@ class ScrapAndCartViewModel @Inject constructor(
     private val repository: ScrapAndCartRepository,
     tokenProvider: TokenProvider
 ): BaseViewModel() {
-
-
-
     private var userId: String = ""
 
     private var _cartList = mutableStateOf<List<Cart>>(emptyList())
@@ -27,6 +24,13 @@ class ScrapAndCartViewModel @Inject constructor(
 
     private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
     val scrapList: State<List<Scrap>> = _scrapList
+
+    private var _selectedTab = mutableStateOf("스크랩")
+    val selectedTab: State<String> = _selectedTab
+
+    private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
+    val checkedTravelList: State<List<String>> = _checkedTravelList
+
 
     init {
         userId = tokenProvider.getUserId()?: ""
@@ -42,14 +46,9 @@ class ScrapAndCartViewModel @Inject constructor(
         )
     }
 
-    private var _selectedTab = mutableStateOf("스크랩")
-    val selectedTab: State<String> = _selectedTab
-
     fun updateSelectedTab(tab: String) {
         _selectedTab.value = tab
     }
-
-
 
     fun fetchScrapList() {
         launchSafeCall(
@@ -98,12 +97,6 @@ class ScrapAndCartViewModel @Inject constructor(
     }
 
 
-
-
-    // checkBox
-    private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
-    val checkedTravelList: State<List<String>> = _checkedTravelList
-
     fun updateCheckedTravelList(travelName: String) {
         if (_checkedTravelList.value.contains(travelName))
             _checkedTravelList.value -= travelName
@@ -133,6 +126,10 @@ class ScrapAndCartViewModel @Inject constructor(
 
     fun navToTravelInfo(travelId: String) {
         navigate(Screen.TravelInfo(travelId))
+    }
+
+    fun navToAiCourse() {
+        navigate(Screen.AiCourseInput)
     }
 }
 

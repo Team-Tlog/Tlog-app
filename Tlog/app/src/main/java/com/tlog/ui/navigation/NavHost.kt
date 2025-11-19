@@ -141,7 +141,12 @@ fun NavHost(
         }
 
         // Travel
-        composable<Screen.ScrapAndCart> { ScrapAndCartScreen(navController = navController) }
+        composable<Screen.ScrapAndCart> {
+            ScrapAndCartScreen(
+                navController = navController,
+                sharedViewModel = sharedCourseViewModel
+            )
+        }
         composable<Screen.AddTravel> { AddTravelScreen(navController = navController) }
         composable<Screen.TravelList> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.TravelList>()
