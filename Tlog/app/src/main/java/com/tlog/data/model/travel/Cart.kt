@@ -9,5 +9,7 @@ data class Cart(
     val imageUrl: String,
     val description: String,
     val tagCountList: List<TagCount>,
-    val location: Location
+    val location: Location,
+    val city: String,
+    val district: String
 )

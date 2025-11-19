@@ -1,34 +1,63 @@
 package com.tlog.ui.screen.travel
 
 import CityTravelList
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
-import com.tlog.ui.component.travel.RetryButton
 import com.tlog.ui.style.BodyTitle
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
+import com.tlog.viewmodel.travel.AiRecommendCourseResultViewModel
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 
-@Preview(showBackground = true)
 @Composable
 fun AiRecommendCourseResultScreen(
-//    viewModel: TmpCartViewModel = viewModel()
+    viewModel: AiRecommendCourseResultViewModel = hiltViewModel(),
+    sharedViewModel: CourseSharedViewModel,
+    navController: NavController
 ) {
-//    val travelList by viewModel.travelList
-    var selectedDay by remember { mutableStateOf(1) }
+    val context = LocalContext.current
+    val selectedDay by viewModel.selectedDay.collectAsState()
+    val uiTravels by viewModel.uiTravels.collectAsState()
+    val cityGrouped = uiTravels.groupBy { it.city }
 
-    // 도시별로 묶기
-//    val cityGrouped = travelList.groupBy { it.city }
+
+    LaunchedEffect(Unit) {
+        viewModel.setAiTravelMap(
+            map = sharedViewModel.aiTravelMap.value,
+            dayOfCount = sharedViewModel.getDayOfCount(),
+            startDate = sharedViewModel.getStartDate(),
+            endDate = sharedViewModel.getEndDate()
+        )
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .windowInsetsPadding(WindowInsets.systemBars)) {
+        .windowInsetsPadding(WindowInsets.systemBars)
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -51,38 +80,33 @@ fun AiRecommendCourseResultScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     DayToggleBar(
+                        size = viewModel.getDayCount(),
                         selectedDay = selectedDay,
-                        onDaySelected = { selectedDay = it }
+                        onDaySelected = { viewModel.updateSelectedDay(it) }
                     )
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                RetryButton(
-                    onClick = { /* 다시 추천 로직 */ },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.CenterHorizontally)
-                )
+//                Spacer(modifier = Modifier.height(20.dp))
+//
+//                RetryButton(
+//                    onClick = { /* 다시 추천 로직 */ },
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .wrapContentWidth(Alignment.CenterHorizontally)
+//                )
 
                 Spacer(modifier = Modifier.height(41.dp))
             }
 
-//            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
-//                item {
-//                    CityTravelList(
-//                        city = city,
-//                        travelItems = list,
-//                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-//                        onDeleteClick = { travelItem ->
-//                            // 여행지 삭제 로직
-//                        },
-//                        onUpdateChecked = { i, checked ->
-//                            viewModel.updateChecked(i, checked)
-//                        }
-//                    )
-//                }
-//            }
+            cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+                item {
+                    CityTravelList(
+                        city = city,
+                        travelItems = list,
+                        onDeleteClick = { viewModel.deleteTravelByName(it) }
+                    )
+                }
+            }
 
         }
 
@@ -94,7 +118,7 @@ fun AiRecommendCourseResultScreen(
         ) {
             MainButton(
                 text = "저장하기",
-                onClick = { /* 저장 로직 처리*/ },
+                onClick = { viewModel.saveCourse() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)

@@ -123,4 +123,15 @@ sealed interface Screen {
 
     @Serializable
     data object Notification: Screen
+
+    // AI
+    @Serializable
+    data object AiCourseSelectCart: Screen
+
+    @Serializable
+    data object AiCourseInput: Screen
+
+    @Serializable
+    data object AiCourseResult: Screen
+
 }

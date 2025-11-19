@@ -117,6 +117,72 @@ fun TravelItem(
 }
 
 @Composable
+fun CheckedCartItem(
+    travel: Cart,
+    onClick: (String) -> Unit,
+    isChecked: (String) -> Boolean
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+    ) {
+        AsyncImage(
+            model = travel.imageUrl,
+            contentDescription = "${travel.name} 사진",
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.destination_img),
+            modifier = Modifier
+                .size(99.dp)
+                .clip(RoundedCornerShape(15.dp))
+        )
+
+        Spacer(modifier = Modifier.width(15.dp))
+
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
+            Text(
+                text = travel.name,
+                style = Body1Bold,
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = travel.description,
+                fontFamily = MainFont,
+                fontWeight = FontWeight.Light,
+                fontSize = 10.sp,
+                modifier = Modifier
+                    .height(30.dp)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
+        }
+
+        Spacer(modifier = Modifier.width(25.dp))
+
+        IconButton(
+            onClick = { onClick(travel.name) },
+            modifier = Modifier.fillMaxHeight()
+        ) {
+            Icon(
+                painter =
+                    if (isChecked(travel.name))
+                        painterResource(R.drawable.ic_checkbox_checked)
+                    else
+                        painterResource(R.drawable.ic_checkbox_unchecked),
+                contentDescription = if (isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                tint = Color.Unspecified
+            )
+        }
+    }
+}
+
+@Composable
 fun CartItem(
     viewModel: ScrapAndCartViewModel = viewModel(),
     travel: Cart,

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,20 +17,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
-import com.tlog.data.api.UserCourseDestination
-import com.tlog.ui.component.tmp.TmpTravelItem
+import com.tlog.data.model.travel.AiTravel
+import com.tlog.ui.component.tmp.AiTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 
 @Composable
 fun CityTravelList(
     city: String,
-    travelItems: List<UserCourseDestination>,
-    isLastCity: Boolean,
-    onDeleteClick: (UserCourseDestination) -> Unit,
-    onUpdateChecked: (Int, Boolean) -> Unit
+    travelItems: List<AiTravel>,
+    onDeleteClick: (String) -> Unit
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(start = 15.dp, bottom = 4.dp, top = 12.dp)
@@ -43,7 +43,9 @@ fun CityTravelList(
                 modifier = Modifier
                     .size(width = 18.dp, height = 22.dp)
             )
+
             Spacer(modifier = Modifier.width(16.dp))
+
             Text(
                 text = city,
                 style = Body1Bold
@@ -66,38 +68,17 @@ fun CityTravelList(
 
             Column {
                 travelItems.forEachIndexed { index, item ->
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        TmpTravelItem(
-                            index = index,
-                            travelName = item.name,
-                            travelDescription = //item.description,
-                                "서버에 연락바랍니다",
-                            hashTags = item.tagCountList.map { it.tagName },
-                            checked = false,
-                            setCheckBox = { i, checked ->
-                                onUpdateChecked(i, checked)
-                            },
-                            showCheckbox = false,
-                            travelImageUrl = item.imageUrl
-                        )
-                        IconButton(
-                            onClick = { onDeleteClick(item) },
-                            modifier = Modifier
-                                .align(Alignment.CenterEnd)
-                                .padding(end = 20.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_x_circle),
-                                contentDescription = "삭제 아이콘",
-                                tint = Color.Unspecified
-                            )
-                        }
+                    AiTravelItem(
+                        travelName = item.name,
+                        travelDescription = item.description,
+                        hashTags = item.tagCountList?.map { it.tagName } ?: emptyList(),
+                        travelImageUrl = item.imageUrl ?: "",
+                        onDeleteClick = { onDeleteClick(item.name) }
+                    )
 
-                        if (isLastCity && index == travelItems.lastIndex)
-                            Spacer(modifier = Modifier.height(145.dp))
-                    }
                     Spacer(modifier = Modifier.height(24.dp))
                 }
+                Spacer(modifier = Modifier.height(145.dp))
             }
         }
     }

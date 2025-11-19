@@ -46,6 +46,7 @@ fun TravelingCourse(
             contentAlignment = Alignment.Center
         ) {
             DayToggleBar(
+                size = 3,
                 selectedDay = selectedDay,
                 onDaySelected = onDaySelected
             )
@@ -59,18 +60,18 @@ fun TravelingCourse(
                 .padding(bottom = 60.dp)
                 .padding(horizontal = 12.dp)
         ) {
-            itemsIndexed (
-                items = cityGrouped.toList(),
-                key = { idx, (city, _) -> "$idx$city" },
-            ) { cityIndex, (city, list) ->
-                    CityTravelList(
-                        city = city,
-                        travelItems = list,
-                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
-                        onDeleteClick = { /* 삭제 로직 */ },
-                        onUpdateChecked = onUpdateChecked
-                    )
-            }
+//            itemsIndexed (
+//                items = cityGrouped.toList(),
+//                key = { idx, (city, _) -> "$idx$city" },
+//            ) { cityIndex, (city, list) ->
+//                    CityTravelList(
+//                        city = city,
+//                        travelItems = list,
+//                        isLastCity = cityIndex == cityGrouped.toList().lastIndex,
+//                        onDeleteClick = { /* 삭제 로직 */ },
+//                        onUpdateChecked = onUpdateChecked
+//                    )
+//            }
 
             item {
                 Spacer(modifier = Modifier.height(12.dp))

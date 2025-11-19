@@ -1,39 +1,21 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.api.TravelPlan
-import com.tlog.data.repository.TeamRepository
+import com.tlog.data.local.RegionCode
+import com.tlog.data.model.travel.AiRequest
+import com.tlog.data.model.travel.DailyPlan
+import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class CourseInputViewModel @Inject constructor(
-    private val teamRepository: TeamRepository,
     private val tokenProvider: TokenProvider
-): ViewModel() {
-
-    // 팀 생성용 상태
-    private val _teamName = mutableStateOf("")
-    val teamName: State<String> = _teamName
-
-    sealed class UiEvent {
-        object ApiSuccess: UiEvent()
-        data class ApiError(val message: String): UiEvent()
-    }
-
-    private val _eventFlow = MutableSharedFlow<UiEvent>()
-    val eventFlow = _eventFlow.asSharedFlow()
-
+): BaseViewModel() {
     private val _city = mutableStateOf("지역")
     val city: State<String> = _city
 
@@ -111,51 +93,31 @@ class CourseInputViewModel @Inject constructor(
         }
     }
 
-    fun setTeamName(name: String) {
-        _teamName.value = name
-    }
-
-    fun createTeam() {
-        viewModelScope.launch {
-            val userId = tokenProvider.getUserId() ?: return@launch
-
-            try {
-                // regionList 생성 (checkedDistrict의 값들)
-                val regionList = _checkedDistrict.value.toList()
-
-                // visitCountPerDay 생성 (날짜 순서대로 1부터 매핑)
-                val visitCountPerDay = mutableMapOf<String, Int>()
-                val sortedDates = _travelCountByDate.value.keys.sorted()
-                sortedDates.forEachIndexed { index, date ->
-                    visitCountPerDay[(index + 1).toString()] = _travelCountByDate.value[date] ?: 0
-                }
-
-                val travelPlan = TravelPlan(
-                    city = _city.value,
-                    regionList = regionList,
-                    hasPet = _hasPet.value,
-                    hasTransport = _hasCar.value,
-                    startDate = _startDate.value?.toString() ?: "",
-                    endDate = _endDate.value?.toString() ?: "",
-                    visitCountPerDay = visitCountPerDay
-                )
-
-                val result = teamRepository.createTeam(
-                    CreateTeamRequest(
-                        name = _teamName.value,
-                        creator = userId,
-                        travelPlan = travelPlan
-                    )
-                )
-                when (result.status) {
-                    201 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    200 -> _eventFlow.emit(UiEvent.ApiSuccess)
-                    else -> _eventFlow.emit(UiEvent.ApiError(result.message))
-                }
-            } catch (e: Exception) {
-                Log.d("CourseInputViewModel", "Error creating team: ${e.message}")
-                _eventFlow.emit(UiEvent.ApiError("네트워크 오류가 발생했습니다."))
-            }
+    fun getAiRequest(): AiRequest {
+        val regionList = checkedDistrict.value.map {
+            RegionCode.fromStringOrNull(it)
         }
+
+        val dailyPlan = _travelCountByDate.value.map {
+            val date = it.key
+            val placeCount = it.value
+
+            DailyPlan(
+                date = date.toString(),
+                placeCount = placeCount
+            )
+        }
+
+        return AiRequest(
+            city = city.value,
+            region_codes = regionList,
+            dailyPlans = dailyPlan,
+            wishlist = emptyList()
+        )
     }
+
+    fun navToAiCourseSelectCart() {
+        navigate(Screen.AiCourseSelectCart)
+    }
+
 }
