@@ -31,6 +31,7 @@ import com.tlog.R
 import com.tlog.data.model.user.User
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -64,7 +65,7 @@ fun UserInfoGroup(
                     model = userInfo.profileImageUrl,
                     contentDescription = "프로필 사진",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(R.drawable.tmp_jeju),
+                    error = painterResource(DefaultImage),
                     modifier = Modifier
                         .size(86.dp)
                         .clip(RoundedCornerShape(50))

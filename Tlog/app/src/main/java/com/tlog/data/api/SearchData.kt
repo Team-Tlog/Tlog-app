@@ -33,3 +33,9 @@ data class SearchTravel(
     val description: String,
     val tagCountList: List<TagCount> = emptyList(),
 )
+
+data class PopularDestination(
+    val region: String,
+    val imageUrl: String,
+    val destinationId: String
+)

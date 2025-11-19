@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
+import com.tlog.ui.theme.DefaultImage
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 
@@ -37,7 +38,7 @@ fun TeamMemberImageGroup(
                     .size(30.dp)
                     .clip(CircleShape)
                     .background(Color.LightGray),
-                error = painterResource(id = R.drawable.destination_img)
+                error = painterResource(id = DefaultImage)
             )
         }
         Icon(

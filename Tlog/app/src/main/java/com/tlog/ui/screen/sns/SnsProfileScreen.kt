@@ -35,6 +35,7 @@ import com.tlog.data.api.SnsUserProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
+import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun SnsProfileScreen(
@@ -157,7 +158,7 @@ fun ProfileSection(
                     contentDescription = "Profile Image",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
-                    error = painterResource(id = R.drawable.destination_img)
+                    error = painterResource(id = DefaultImage)
                 )
             }
 
@@ -297,7 +298,7 @@ fun PostsGrid(
                     model = post.previewImageUrl,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    error = painterResource(id = R.drawable.tmp_jeju),
+                    error = painterResource(id = DefaultImage),
                     modifier = Modifier
                         .aspectRatio(1f)
                         .clickable {

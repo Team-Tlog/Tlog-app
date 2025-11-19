@@ -86,11 +86,18 @@ fun TravelSearchScreen(
 
                    Spacer(modifier = Modifier.height(25.dp))
 
-                   PopularDestinations()
+                   PopularDestinations(
+                       destinations = viewModel.popularDestinations.value
+                   )
 
                    Spacer(modifier = Modifier.height(32.dp))
 
-                   RecentSearches()
+                   RecentSearches(
+                       recentSearches = viewModel.recentSearches.value,
+                       onSearchClick = { searchText ->
+                           viewModel.onRecentSearchClick(searchText)
+                       }
+                   )
                }
             }
             else {

@@ -40,6 +40,7 @@ import com.tlog.data.model.share.RecommendDestination
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -58,7 +59,7 @@ fun DestinationItem(
             model = travel.imageUrl,
             contentDescription = "travel",
             contentScale = ContentScale.Crop,
-            error = painterResource(R.drawable.tmp_jeju),
+            error = painterResource(DefaultImage),
             modifier = Modifier
                 .size(34.dp)
                 .clip(CircleShape)

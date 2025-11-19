@@ -32,6 +32,7 @@ import com.tlog.data.model.share.Post
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.Essential
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun RecommendPostCard(
@@ -52,7 +53,7 @@ fun RecommendPostCard(
                 model = post.imageUrls.firstOrNull() ?: "",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                error = painterResource(id = R.drawable.tmp_jeju),
+                error = painterResource(id = DefaultImage),
                 modifier = Modifier
                     .height(158.dp)
                     .width(150.dp)
@@ -63,7 +64,7 @@ fun RecommendPostCard(
                     model = post.imageUrls[1],
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    error = painterResource(id = R.drawable.tmp_jeju),
+                    error = painterResource(id = DefaultImage),
                     modifier = Modifier
                         .height(158.dp)
                         .width(150.dp)

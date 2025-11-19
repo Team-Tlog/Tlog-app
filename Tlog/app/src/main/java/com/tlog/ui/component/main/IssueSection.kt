@@ -29,6 +29,7 @@ import com.tlog.ui.component.travel.BlueHashTagGroup
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainFont
 import kotlin.collections.forEach
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -73,7 +74,7 @@ fun IssueSection(
                             model = issue.imageUrl,
                             contentDescription = null,
                             contentScale = ContentScale.Crop,
-                            error = painterResource(R.drawable.tmp_jeju),
+                            error = painterResource(DefaultImage),
                             modifier = Modifier
                                 .fillMaxSize()
                         )

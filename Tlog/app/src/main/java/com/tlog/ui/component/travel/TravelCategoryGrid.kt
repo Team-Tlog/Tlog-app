@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun TravelCategoryGrid(
@@ -55,7 +56,7 @@ fun TravelCategoryGrid(
                         .fillMaxHeight()
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.tmp_jeju),
+                        painter = painterResource(id = DefaultImage),
                         contentDescription = "임시 이미지",
                         modifier = Modifier
                             .size(96.dp)

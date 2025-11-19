@@ -30,6 +30,7 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.api.SearchTravel
 import com.tlog.data.model.travel.Scrap
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.LazyHashTagsGroup
@@ -61,7 +62,7 @@ fun TravelItem(
         }
         else {
             Image( // 사진이 없을 때 이미지
-                painter = painterResource(id = R.drawable.destination_img),
+                painter = painterResource(id = DefaultImage),
                 contentDescription = "${travel.name} 기본 사진",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -126,11 +127,11 @@ fun CartItem(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
     ) {
-        if (travel.imageUrl != "NaN") {
             AsyncImage(
                 model = travel.imageUrl,
                 contentDescription = "${travel.name} 사진",
                 contentScale = ContentScale.Crop,
+                error = painterResource(id = DefaultImage),
                 modifier = Modifier
                     .size(99.dp)
                     .clip(RoundedCornerShape(15.dp))
@@ -138,20 +139,6 @@ fun CartItem(
                         onClick(travel.id)
                     }
             )
-        }
-        else {
-            Image( // 사진이 없을 때 이미지
-                painter = painterResource(id = R.drawable.destination_img),
-                contentDescription = "${travel.name} 기본 사진",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(99.dp)
-                    .clip(RoundedCornerShape(15.dp))
-                    .clickable {
-                        onClick(travel.id)
-                    }
-            )
-        }
 
         Spacer(modifier = Modifier.width(15.dp))
 
@@ -221,7 +208,7 @@ fun ScrapTravelItem(
             model = travel.imageUrl,
             contentDescription = "${travel.name} 사진",
             contentScale = ContentScale.Crop,
-            error = painterResource(id = R.drawable.destination_img),
+            error = painterResource(id = DefaultImage),
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp))
@@ -299,7 +286,7 @@ fun SearchTravelItem(
             model = travel.imageUrl,
             contentDescription = travel.name,
             contentScale = ContentScale.Crop,
-            error = painterResource(id = R.drawable.destination_img),
+            error = painterResource(id = DefaultImage),
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp))

@@ -50,6 +50,7 @@ import com.tlog.ui.component.sns.PostContentAndInteractions
 import com.tlog.ui.component.sns.PostImage
 import com.tlog.ui.navigation.Screen
 import com.tlog.ui.style.Body1Regular
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.TextSubdued
 import com.tlog.viewmodel.sns.SnsDetailViewModel
@@ -177,8 +178,8 @@ fun CommentItem(
         AsyncImage(
             model = comment.authorProfileImageUrl,
             contentDescription = null,
-            placeholder = painterResource(id = R.drawable.destination_img),
-            error = painterResource(id = R.drawable.destination_img),
+            placeholder = painterResource(id = DefaultImage),
+            error = painterResource(id = DefaultImage),
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(38.dp)

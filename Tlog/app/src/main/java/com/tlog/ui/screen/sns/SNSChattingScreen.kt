@@ -45,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.viewmodel.sns.MemberProfile
 import kotlinx.coroutines.flow.distinctUntilChanged
 import com.tlog.ui.component.sns.ChatInputBox
@@ -212,7 +213,7 @@ fun SNSChattingScreen(
                             .size(30.dp)
                             .clip(CircleShape)
                             .background(Color.LightGray),
-                        error = painterResource(id = R.drawable.destination_img)
+                        error = painterResource(id = DefaultImage)
                     )
                 }
             }

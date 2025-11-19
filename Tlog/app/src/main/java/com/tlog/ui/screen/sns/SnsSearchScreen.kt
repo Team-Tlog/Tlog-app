@@ -75,7 +75,10 @@ fun SnsSearchScreen(
                 Spacer(modifier = Modifier.height(26.dp))
 
             if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
-                    RecentSearches()
+                    RecentSearches(
+                        recentSearches = emptyList(),
+                        onSearchClick = { }
+                    )
             }
             else {
                     PostsGrid(

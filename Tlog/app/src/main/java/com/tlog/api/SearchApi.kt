@@ -2,6 +2,7 @@ package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.Pageable
+import com.tlog.data.api.PopularDestination
 import com.tlog.data.api.SearchResponse
 import com.tlog.data.api.SearchTravel
 import com.tlog.data.api.TravelDestinationResponse
@@ -34,6 +35,8 @@ interface SearchApi {
         @Query("address") address: String
     ): BaseResponse<List<TravelDestinationResponse>>
 
+    @GET("/api/search/destination/popular-destination") // 인기 여행지 조회
+    suspend fun getPopularDestinations(): BaseResponse<List<PopularDestination>>
 
 }
 

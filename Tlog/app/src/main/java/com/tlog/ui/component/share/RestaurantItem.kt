@@ -27,6 +27,7 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.restaurant.Restaurant
 import com.tlog.ui.style.Body1Bold
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 
 
@@ -49,7 +50,7 @@ fun RestaurantItem(
             model = restaurant.images.firstOrNull()?.link ?: "",
             contentDescription = "${restaurant.placeName} 사진",
             contentScale = ContentScale.Crop,
-            error = painterResource(id = R.drawable.destination_img),
+            error = painterResource(id = DefaultImage),
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp))

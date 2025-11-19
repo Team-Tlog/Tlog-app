@@ -28,6 +28,7 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.share.Banner
 import com.tlog.ui.component.share.HashTagsGroup
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -58,7 +59,7 @@ fun BannerSection(
                     model = banner.imageUrl,
                     contentDescription = "배너",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(id = R.drawable.tmp_jeju),
+                    error = painterResource(id = DefaultImage),
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(10.dp))
