@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.travel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,26 +18,48 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.CheckCartList
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.MainColor
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.travel.AiCourseSelectCartViewModel
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 
 
-@Preview
 @Composable
 fun AiCourseSelectCartScreen(
-    viewModel: AiCourseSelectCartViewModel = hiltViewModel()
+    viewModel: AiCourseSelectCartViewModel = hiltViewModel(),
+    navController: NavController,
+    sharedViewModel: CourseSharedViewModel,
 ) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -90,7 +113,7 @@ fun AiCourseSelectCartScreen(
         MainButton(
             text = "AI 코스 추천받기",
             onClick = {
-                viewModel.getAiCourse()
+                viewModel.getAiCourse(sharedViewModel.aiRequest.value!!)
             },
             modifier = Modifier
                 .fillMaxWidth()

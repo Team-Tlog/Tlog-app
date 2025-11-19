@@ -1,6 +1,7 @@
 package com.tlog.ui.screen.travel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,20 +23,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.tlog.data.local.RegionData
+import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.share.TwoColumnRadioGroup
-import com.tlog.ui.component.share.Calendar
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.share.DropDownCheckBox
 import com.tlog.ui.component.travel.DayTravelCounter
@@ -43,14 +46,37 @@ import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.BackgroundBlue
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.travel.CourseInputViewModel
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 
-@Preview
 @Composable
-fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
+fun CourseInputScreen(
+    viewModel: CourseInputViewModel = hiltViewModel(),
+    navController: NavController,
+    sharedViewModel: CourseSharedViewModel
+) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> Unit
+            }
+        }
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -162,10 +188,12 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-//            Calendar(
-//                today = LocalDate.now(),
-//                viewModel = viewModel
-//            )
+            Calendar(
+                today = LocalDate.now(),
+                startDate = viewModel.startDate.value,
+                endDate = viewModel.endDate.value,
+                updateDateRange = { viewModel.updateDateRange(it) }
+            )
 
             Spacer(modifier = Modifier.height(30.dp))
 
@@ -224,7 +252,8 @@ fun CourseInputScreen(viewModel: CourseInputViewModel = viewModel()) {
                 MainButton(
                     text = "다음",
                     onClick = {
-                        Log.d("course next button", "my click!!")
+                        sharedViewModel.setAiRequest(viewModel.getAiRequest())
+                        viewModel.navToAiCourseSelectCart()
                     },
                     modifier = Modifier
                         .height(55.dp)

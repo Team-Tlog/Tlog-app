@@ -3,12 +3,14 @@ package com.tlog.viewmodel.travel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.api.AiRequest
-import com.tlog.api.DailyPlan
+import com.tlog.api.AiTravel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.AiCourseSelectCartRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 import kotlin.collections.minus
 import kotlin.collections.plus
@@ -27,6 +29,8 @@ class AiCourseSelectCartViewModel @Inject constructor(
     private val _checkedTravelList = mutableStateOf<List<String>>(emptyList())
     val checkedTravelList: State<List<String>> = _checkedTravelList
 
+    private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
+    val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
 
 
     init {
@@ -37,29 +41,20 @@ class AiCourseSelectCartViewModel @Inject constructor(
         }
     }
 
-    fun getAiCourse() {
+    fun getAiCourse(aiRequest: AiRequest) {
         launchSafeCall(
             action = {
-                repository.getAiCourseRecommendations(
+                val response = repository.getAiCourseRecommendations(
                     ownerId = userId!!,
                     ownerType = "USER",
-                    aiRequest = AiRequest(
-                        city = "서울",
-                        region_codes = listOf(100, 101),
-                        dailyPlans = listOf(DailyPlan(
-                                date = "2025-11-20",
-                                placeCount = 3
-                            ),
-                            DailyPlan(
-                                date = "2025-11-21",
-                                placeCount = 3
-                            )
-                        ),
+                    aiRequest = aiRequest.copy(
                         wishlist = _cartList.value.filter {
                             _checkedTravelList.value.contains(it.name)
                         }
                     )
                 )
+
+                _aiTravelMap.value = response.data
             }
         )
     }

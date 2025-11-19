@@ -187,7 +187,9 @@ fun MainScreen(
                                 .width(70.dp)
                                 .clickable {
                                     when (entry.key) {
-                                        "AI 추천 코스" -> {}
+                                        "AI 추천 코스" -> {
+                                            navController.navigate(Screen.AiCourseInput)
+                                        }
                                         "리뷰 쓰기" -> {
                                             navController.navigate(Screen.SearchReview)
                                         }

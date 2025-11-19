@@ -1,6 +1,8 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.share.Location
+import com.tlog.data.model.share.TagCount
 import com.tlog.data.model.travel.Cart
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -12,7 +14,7 @@ interface AiApi {
         @Query("ownerId") ownerId: String,
         @Query("ownerType") ownerType: String,
         @Body aiRequest: AiRequest
-    ): BaseResponse<Unit>
+    ): BaseResponse<Map<String, List<AiTravel>>>
 }
 
 data class AiRequest(
@@ -25,4 +27,18 @@ data class AiRequest(
 data class DailyPlan(
     val date: String,
     val placeCount: Int
+)
+
+data class AiTravel(
+    val id: String,
+    val name: String,
+    val description: String,
+    val city: String,
+    val district: String,
+    val location: Location,
+    val imageUrl: String,
+    val tags: List<String>,
+    val tagCountList: List<TagCount>,
+    val similarityScore: Double,
+    val isFromWishlist: Boolean
 )

@@ -128,4 +128,7 @@ sealed interface Screen {
     @Serializable
     data object AiCourseSelectCart: Screen
 
+    @Serializable
+    data object AiCourseInput: Screen
+
 }

@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.travel
 
-import CityTravelList
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
@@ -9,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.component.share.MainButton
 import com.tlog.ui.component.travel.RetryButton

@@ -48,11 +48,13 @@ import com.tlog.ui.screen.team.TeamJoinScreen
 import com.tlog.ui.screen.team.TeamCreateScreen
 import com.tlog.ui.screen.team.TeamInfoInputScreen
 import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
+import com.tlog.ui.screen.travel.CourseInputScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.LoginViewModel
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -66,6 +68,8 @@ fun NavHost(
     googleSignInClient: GoogleSignInClient
 ) {
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
+    val sharedCourseViewModel: CourseSharedViewModel = hiltViewModel()
+
 
 
     NavHost(navController = navController, startDestination = startScreen) {
@@ -243,8 +247,21 @@ fun NavHost(
             )
         }
 
+
         // AI
-        composable<Screen.AiCourseSelectCart> { AiCourseSelectCartScreen() }
+        composable<Screen.AiCourseSelectCart> {
+            AiCourseSelectCartScreen(
+                navController = navController,
+                sharedViewModel = sharedCourseViewModel
+            )
+        }
+
+        composable<Screen.AiCourseInput> {
+            CourseInputScreen(
+                navController = navController,
+                sharedViewModel = sharedCourseViewModel
+            )
+        }
     }
 }
 
