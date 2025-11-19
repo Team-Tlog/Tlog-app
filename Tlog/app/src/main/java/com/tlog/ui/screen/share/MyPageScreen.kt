@@ -212,7 +212,7 @@ fun MyPageScreen(
                                     }
 
                                     "개발자에게 피드백 해주기" -> {
-                                        Log.d(text, "my click!!")
+                                        viewModel.navToFeedback()
                                     }
                                 }
                             },
