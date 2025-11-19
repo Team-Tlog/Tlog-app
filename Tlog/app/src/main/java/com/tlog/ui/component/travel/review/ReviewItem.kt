@@ -30,6 +30,7 @@ import com.tlog.R
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 
 
@@ -72,7 +73,7 @@ fun ReviewItem(
                     modifier = Modifier
                         .size(36.dp)
                         .clip(RoundedCornerShape(100)),
-                    error = painterResource(id = R.drawable.tmp_jeju)
+                    error = painterResource(id = DefaultImage)
                 )
 
                 Spacer(modifier = Modifier.width(10.dp))
@@ -129,7 +130,7 @@ fun ReviewItem(
                     .size(70.dp)
                     .clip(RoundedCornerShape(5.dp)),
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = R.drawable.tmp_jeju)
+                placeholder = painterResource(id = DefaultImage)
             )
         }
     }

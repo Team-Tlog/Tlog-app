@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.ui.component.share.LazyHashTagsGroup
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import com.tlog.data.api.TravelDestinationResponse
@@ -44,24 +45,14 @@ fun DestinationCard(
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            if (destination.imageUrl == "NaN") {
-                Image(
-                    painter = painterResource(id = R.drawable.destination_img),
-                    contentDescription = "",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
-            else {
                 AsyncImage(
                     model = destination.imageUrl,
                     contentDescription = destination.name,
                     contentScale = ContentScale.Crop,
+                    error = painterResource(id = DefaultImage),
                     modifier = Modifier
                         .fillMaxWidth()
                 )
-            }
 
             Column(
                 modifier = Modifier

@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.api.PopularDestination
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 
 @Composable
@@ -72,6 +73,7 @@ fun PopularDestinations(
                             AsyncImage(
                                 model = destination.imageUrl,
                                 contentDescription = destination.region,
+                                error = painterResource(id = DefaultImage),
                                 modifier = Modifier
                                     .size(96.dp)
                                     .clip(RoundedCornerShape(15.dp))
@@ -81,7 +83,7 @@ fun PopularDestinations(
                             )
                         } else {
                             Image(
-                                painter = painterResource(id = R.drawable.tmp_jeju),
+                                painter = painterResource(id = DefaultImage),
                                 contentDescription = destination.region,
                                 modifier = Modifier
                                     .size(96.dp)

@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.tlog.R
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.sns.ChatMessageDto
 
@@ -64,7 +65,7 @@ fun ChatBubble(
                             .clip(CircleShape)
                             .background(Color.LightGray),
                         contentScale = ContentScale.Crop,
-                        error = painterResource(id = R.drawable.destination_img)
+                        error = painterResource(id = DefaultImage)
                     )
 
                     Spacer(modifier = Modifier.width(4.dp))

@@ -21,6 +21,7 @@ import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.model.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -44,7 +45,7 @@ fun SimilarTravelSpots(
                     model = travel.imageUrl,
                     contentDescription = "여행지 사진",
                     contentScale = ContentScale.Crop,
-                    error = painterResource(id = R.drawable.tmp_jeju),
+                    error = painterResource(id = DefaultImage),
                     modifier = Modifier
                         .matchParentSize()
                         .clip(RoundedCornerShape(14))

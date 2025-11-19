@@ -31,6 +31,7 @@ import com.tlog.data.model.team.Member
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
+import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
@@ -337,7 +338,7 @@ fun DetailMember(
                         .size(24.dp)
                         .clip(CircleShape)
                         .background(Color.LightGray),
-                    error = painterResource(id = R.drawable.destination_img)
+                    error = painterResource(id = DefaultImage)
                 )
 
                 Spacer(modifier = Modifier.width(15.dp))

@@ -31,6 +31,7 @@ import com.tlog.R
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun PostAuthorInfo(
@@ -53,7 +54,7 @@ fun PostAuthorInfo(
         AsyncImage(
             model = userProfileImageUrl,
             contentDescription = null,
-            error = painterResource(id = R.drawable.tmp_jeju),
+            error = painterResource(id = DefaultImage),
             modifier = Modifier
                 .size(44.dp)
                 .clip(CircleShape)

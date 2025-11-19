@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.R
 import com.tlog.data.model.sns.TravelCourse
+import com.tlog.ui.theme.DefaultImage
 
 
 class SnsPostViewModel: BaseViewModel() {
@@ -14,56 +15,56 @@ class SnsPostViewModel: BaseViewModel() {
             TravelCourse(
                 city = "제주",
                 pictureList = listOf(
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage
                 )
             ),
             TravelCourse(
                 city = "부산",
                 pictureList = listOf(
                     R.drawable.test_image,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage
                 )
             ),
             TravelCourse(
                 city = "대구",
                 pictureList = listOf(
-                    R.drawable.destination_img,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage
                 )
             ),
             TravelCourse(
                 city = "서울",
                 pictureList = listOf(
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage
                 )
             ),
             TravelCourse(
                 city = "광주",
                 pictureList = listOf(
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju,
-                    R.drawable.tmp_jeju
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage,
+                    DefaultImage
                 )
             )
         )

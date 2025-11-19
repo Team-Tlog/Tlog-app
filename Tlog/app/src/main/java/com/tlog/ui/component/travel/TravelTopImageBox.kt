@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
@@ -33,7 +34,7 @@ fun TravelTopImageBox(
             contentDescription = "여행지 사진",
             contentScale = ContentScale.Crop,
             modifier = Modifier.matchParentSize(),
-            error = painterResource(id = R.drawable.tmp_jeju)
+            error = painterResource(id = DefaultImage)
         )
 
         TravelInfoTopBar(
