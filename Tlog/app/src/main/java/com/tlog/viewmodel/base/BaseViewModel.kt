@@ -45,8 +45,6 @@ abstract class BaseViewModel : ViewModel() {
         try {
             val result = action() // 추후 바꿉시다~ 이거 사용하는 쪽으로
             onSuccess(result)
-
-            action()
         } catch (e: HttpException) {
             Log.d("ERROR!!!", e.message.toString())
             onError(e.toErrorMessage())
