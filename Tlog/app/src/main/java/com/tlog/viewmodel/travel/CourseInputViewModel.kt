@@ -2,10 +2,10 @@ package com.tlog.viewmodel.travel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.tlog.api.AiRequest
-import com.tlog.api.DailyPlan
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.RegionCode
+import com.tlog.data.model.travel.AiRequest
+import com.tlog.data.model.travel.DailyPlan
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.base
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.model.share.toErrorMessage
@@ -42,12 +43,15 @@ abstract class BaseViewModel : ViewModel() {
         onError: (String) -> Unit = { showToast(it) }
     ) {
         try {
-//            val result = action()
-//            onSuccess(result)
+            val result = action() // 추후 바꿉시다~ 이거 사용하는 쪽으로
+            onSuccess(result)
+
             action()
         } catch (e: HttpException) {
+            Log.d("ERROR!!!", e.message.toString())
             onError(e.toErrorMessage())
         } catch (e: Exception) {
+            Log.d("ERROR!!!", e.message.toString())
             onError(e.toErrorMessage())
         }
     }

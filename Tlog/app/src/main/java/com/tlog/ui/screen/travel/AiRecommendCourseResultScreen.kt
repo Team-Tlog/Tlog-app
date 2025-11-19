@@ -34,7 +34,9 @@ fun AiRecommendCourseResultScreen(
     LaunchedEffect(Unit) {
         viewModel.setAiTravelMap(
             map = sharedViewModel.aiTravelMap.value,
-            dayOfCount = sharedViewModel.getDayOfCount()
+            dayOfCount = sharedViewModel.getDayOfCount(),
+            startDate = sharedViewModel.getStartDate(),
+            endDate = sharedViewModel.getEndDate()
         )
 
         viewModel.uiEvent.collect { event ->
@@ -116,7 +118,7 @@ fun AiRecommendCourseResultScreen(
         ) {
             MainButton(
                 text = "저장하기",
-                onClick = { /* 저장 로직 처리*/ },
+                onClick = { viewModel.saveCourse() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)

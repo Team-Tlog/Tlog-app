@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
-import com.tlog.api.AiTravel
+import com.tlog.data.model.travel.AiTravel
 import com.tlog.ui.component.tmp.AiTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
@@ -79,8 +78,8 @@ fun CityTravelList(
 
                     Spacer(modifier = Modifier.height(24.dp))
                 }
-            }
                 Spacer(modifier = Modifier.height(145.dp))
+            }
         }
     }
 }

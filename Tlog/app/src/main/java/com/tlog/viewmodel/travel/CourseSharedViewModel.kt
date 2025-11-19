@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.ViewModel
-import com.tlog.api.AiRequest
-import com.tlog.api.AiTravel
+import com.tlog.data.model.travel.AiRequest
+import com.tlog.data.model.travel.AiTravel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,5 +29,17 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
         val ret = _aiRequest.value ?: return emptyList()
 
         return ret.dailyPlans.map { it.placeCount }
+    }
+
+    fun getStartDate(): String {
+        val ret = _aiRequest.value ?: return ""
+
+        return ret.dailyPlans.first().date
+    }
+
+    fun getEndDate(): String {
+        val ret = _aiRequest.value ?: return ""
+
+        return ret.dailyPlans.last().date
     }
 }

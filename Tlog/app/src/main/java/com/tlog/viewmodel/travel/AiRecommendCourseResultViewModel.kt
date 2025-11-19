@@ -1,19 +1,29 @@
 package com.tlog.viewmodel.travel
 
-import com.tlog.api.AiTravel
+import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.model.travel.AiTravel
+import com.tlog.data.model.travel.CourseSaveRequest
+import com.tlog.data.model.travel.DailySchedule
 import com.tlog.data.repository.AiRecommendCourseResultRepository
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.time.LocalDate
 
 
 @HiltViewModel
 class AiRecommendCourseResultViewModel @Inject constructor(
-    val repository: AiRecommendCourseResultRepository
+    val repository: AiRecommendCourseResultRepository,
+    val tokenProvider: TokenProvider,
 ) : BaseViewModel() {
+    private var userId = ""
+    private var startDate = ""
+    private var endDate = ""
+
     private val _selectedDay = MutableStateFlow(1)
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
@@ -29,8 +39,9 @@ class AiRecommendCourseResultViewModel @Inject constructor(
     private val _uiTravels = MutableStateFlow<List<AiTravel>>(emptyList())
     val uiTravels: StateFlow<List<AiTravel>> = _uiTravels.asStateFlow()
 
-
-
+    init {
+        userId = tokenProvider.getUserId() ?: ""
+    }
 
     fun updateSelectedDay(idx: Int) {
         _selectedDay.value = idx
@@ -38,7 +49,12 @@ class AiRecommendCourseResultViewModel @Inject constructor(
         updateUiTravels()
     }
 
-    fun setAiTravelMap(map: Map<String, List<AiTravel>>, dayOfCount: List<Int>) {
+    fun setAiTravelMap(
+        map: Map<String, List<AiTravel>>,
+        dayOfCount: List<Int>,
+        startDate: String,
+        endDate: String,
+    ) {
         _aiTravelMap.value = map
         _dayOfCount.value = dayOfCount
 
@@ -56,6 +72,9 @@ class AiRecommendCourseResultViewModel @Inject constructor(
             }
             index = end
         }
+
+        this.startDate = startDate
+        this.endDate = endDate
 
         _dailyTravels.value = split
 
@@ -86,5 +105,39 @@ class AiRecommendCourseResultViewModel @Inject constructor(
         } else {
             _uiTravels.value = emptyList()
         }
+    }
+
+    fun saveCourse() {
+        val targetDate = LocalDate.parse(startDate)
+        val dailySchedules = List(getDayCount()) { i ->
+            DailySchedule(
+                dayNumber = i,
+                date = targetDate.plusDays(i.toLong()).toString(),
+                destinationIds = _dailyTravels.value[i].map { it.id }
+            )
+        }
+
+        val courseSave = CourseSaveRequest(
+            startDate = startDate,
+            endDate = endDate,
+            dailySchedules = dailySchedules
+        )
+
+
+        launchSafeCall(
+            action = {
+                repository.saveCourse(
+                    ownerId = userId,
+                    ownerType = "USER",
+                    courseSaveRequest = courseSave
+                )
+
+                navToMain()
+            }
+        )
+    }
+
+    private fun navToMain() {
+        navigate(target = Screen.Main, clearBackStack = true)
     }
 }
