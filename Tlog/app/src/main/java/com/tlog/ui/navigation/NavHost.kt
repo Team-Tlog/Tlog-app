@@ -48,6 +48,7 @@ import com.tlog.ui.screen.team.TeamJoinScreen
 import com.tlog.ui.screen.team.TeamCreateScreen
 import com.tlog.ui.screen.team.TeamInfoInputScreen
 import com.tlog.ui.screen.travel.AiCourseSelectCartScreen
+import com.tlog.ui.screen.travel.AiRecommendCourseResultScreen
 import com.tlog.ui.screen.travel.CourseInputScreen
 import com.tlog.ui.screen.travel.MyTravelingCourseScreen
 import com.tlog.ui.screen.travel.TravelSearchScreen
@@ -260,6 +261,13 @@ fun NavHost(
             CourseInputScreen(
                 navController = navController,
                 sharedViewModel = sharedCourseViewModel
+            )
+        }
+
+        composable<Screen.AiCourseResult> {
+            AiRecommendCourseResultScreen(
+                sharedViewModel = sharedCourseViewModel,
+                navController = navController
             )
         }
     }

@@ -61,6 +61,16 @@ fun AiCourseSelectCartScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.aiTravelMap.collect { map ->
+            if (map.isNotEmpty()) {
+                sharedViewModel.setAiTravelMap(map)
+                viewModel.navToAiCourseResult()
+                Log.d("AiCourse", "Data transferred to shared: $map")
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()

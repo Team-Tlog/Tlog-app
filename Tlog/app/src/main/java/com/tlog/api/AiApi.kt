@@ -36,9 +36,9 @@ data class AiTravel(
     val city: String,
     val district: String,
     val location: Location,
-    val imageUrl: String,
+    val imageUrl: String?,
     val tags: List<String>,
-    val tagCountList: List<TagCount>,
+    val tagCountList: List<TagCount>?,
     val similarityScore: Double,
     val isFromWishlist: Boolean
 )

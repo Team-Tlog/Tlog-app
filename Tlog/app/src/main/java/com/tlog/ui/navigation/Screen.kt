@@ -131,4 +131,7 @@ sealed interface Screen {
     @Serializable
     data object AiCourseInput: Screen
 
+    @Serializable
+    data object AiCourseResult: Screen
+
 }

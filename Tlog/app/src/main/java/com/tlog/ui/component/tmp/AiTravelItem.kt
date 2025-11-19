@@ -3,7 +3,6 @@ package com.tlog.ui.component.tmp
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,36 +13,34 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.R
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
+import com.tlog.R
 
 @Composable
-fun TmpTravelItem(
-    index: Int,
+fun AiTravelItem(
     travelName: String,
     travelDescription: String,
     hashTags: List<String>,
-    checked: Boolean = false,
-    setCheckBox: (Int, Boolean) -> Unit,
-    showCheckbox: Boolean = true,
-    travelImageUrl: String
+    travelImageUrl: String,
+    onDeleteClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .height(101.dp)
-            .padding(horizontal = 20.dp)
+            .padding(start = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = travelImageUrl,
@@ -51,14 +48,13 @@ fun TmpTravelItem(
             modifier = Modifier
                 .size(99.dp)
                 .clip(RoundedCornerShape(15.dp)),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            error = painterResource(id = R.drawable.tmp_jeju)
         )
 
         Spacer(modifier = Modifier.width(15.dp))
 
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
+        Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = travelName,
                 style = Body1Bold
@@ -71,7 +67,8 @@ fun TmpTravelItem(
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
-                modifier = Modifier.height(30.dp)
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Spacer(modifier = Modifier.height(5.dp))
@@ -79,23 +76,16 @@ fun TmpTravelItem(
             LazyHashTagsGroup(hashTags) // 태그 예시임
         }
 
-        Spacer(modifier = Modifier.width(25.dp))
-
         IconButton(
-            onClick = { setCheckBox(index, !checked) },
-            modifier = Modifier.fillMaxHeight()
+            modifier = Modifier
+                .padding(end = 24.dp),
+            onClick = { onDeleteClick() }
         ) {
-            if (showCheckbox) {
-                Icon(
-                    painter =
-                        if (checked)
-                            painterResource(R.drawable.ic_filled_checkbox_checked)
-                        else
-                            painterResource(R.drawable.ic_filled_checkbox_unchecked),
-                    contentDescription = if (checked) "$travelName 체크됨" else "$travelName 체크안됨",
-                    tint = Color.Unspecified
-                )
-            }
+            Icon(
+                painter = painterResource(id = R.drawable.ic_x_circle),
+                contentDescription = "삭제 아이콘",
+                tint = Color.Unspecified
+            )
         }
     }
 }

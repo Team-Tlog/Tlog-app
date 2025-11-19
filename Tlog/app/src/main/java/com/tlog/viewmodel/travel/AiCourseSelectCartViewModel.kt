@@ -1,5 +1,6 @@
 package com.tlog.viewmodel.travel
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.api.AiRequest
@@ -7,6 +8,7 @@ import com.tlog.api.AiTravel
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.AiCourseSelectCartRepository
+import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -55,6 +57,8 @@ class AiCourseSelectCartViewModel @Inject constructor(
                 )
 
                 _aiTravelMap.value = response.data
+
+                Log.d("AiCourse", _aiTravelMap.value.toString())
             }
         )
     }
@@ -89,6 +93,10 @@ class AiCourseSelectCartViewModel @Inject constructor(
 
     private fun clearChecked() {
         _checkedTravelList.value = emptyList()
+    }
+
+    fun navToAiCourseResult() {
+        navigate(Screen.AiCourseResult)
     }
 
 }
