@@ -2,6 +2,7 @@ package com.tlog.ui.component.travel
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +36,8 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun PopularDestinations(
     destinations: List<PopularDestination>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDestinationClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -62,7 +64,9 @@ fun PopularDestinations(
             ) { destination ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(end = 14.dp)
+                    modifier = Modifier
+                        .padding(end = 14.dp)
+                        .clickable { onDestinationClick(destination.destinationId) }
                 ) {
                     Row(
                         modifier = Modifier

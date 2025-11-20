@@ -1,6 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.FeedbackRequest
 import com.tlog.data.api.ProfileImageRequest
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.user.User
@@ -40,6 +41,12 @@ interface UserApi {
     suspend fun updateProfileImage(
         @Body request: ProfileImageRequest
     ): BaseResponse<String>
+
+    // 피드백 제출
+    @POST("api/operation/feedback")
+    suspend fun submitFeedback(
+        @Body request: FeedbackRequest
+    ): BaseResponse<Unit>
 }
 
 

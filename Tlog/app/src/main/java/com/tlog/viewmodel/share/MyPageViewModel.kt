@@ -115,4 +115,8 @@ class MyPageViewModel @Inject constructor(
     fun navToTbtiTest() {
         navigate(Screen.TbtiIntro)
     }
+
+    fun navToFeedback() {
+        navigate(Screen.Feedback)
+    }
 }

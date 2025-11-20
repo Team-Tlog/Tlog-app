@@ -119,6 +119,9 @@ sealed interface Screen {
     data object Report: Screen
 
     @Serializable
+    data object Feedback: Screen
+
+    @Serializable
     data object Course: Screen
 
     @Serializable
