@@ -26,7 +26,8 @@ import com.tlog.ui.theme.MainColor
 fun CityTravelList(
     city: String,
     travelItems: List<AiTravel>,
-    onDeleteClick: (String) -> Unit
+    showDeleteIcon: Boolean = true,
+    onDeleteClick: (String) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -38,7 +39,7 @@ fun CityTravelList(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_destination),
-                contentDescription = "화살표 아이콘",
+                contentDescription = "지역 아이콘",
                 tint = MainColor,
                 modifier = Modifier
                     .size(width = 18.dp, height = 22.dp)
@@ -73,6 +74,7 @@ fun CityTravelList(
                         travelDescription = item.description,
                         hashTags = item.tagCountList?.map { it.tagName } ?: emptyList(),
                         travelImageUrl = item.imageUrl ?: "",
+                        showDeleteIcon = showDeleteIcon,
                         onDeleteClick = { onDeleteClick(item.name) }
                     )
 

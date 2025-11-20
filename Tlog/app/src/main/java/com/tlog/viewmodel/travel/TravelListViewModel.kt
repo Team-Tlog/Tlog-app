@@ -51,6 +51,8 @@ class TravelListViewModel @Inject constructor(
     fun setCategory(category: String) {
         _selectedCategory.value = category
 
+        clearTravelList()
+
         currentCity?.let { city ->
             page = 0
             isLastPage = false
@@ -166,6 +168,10 @@ class TravelListViewModel @Inject constructor(
                 _destinations.value += response.data.content
             }
         )
+    }
+
+    private fun clearTravelList() {
+        _destinations.value = emptyList()
     }
 
     fun searchTravelToCity(city: String) {

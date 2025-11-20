@@ -7,6 +7,7 @@ import com.tlog.data.api.ChatRoom
 import com.tlog.data.api.CreateCommentRequest
 import com.tlog.data.api.FollowRequest
 import com.tlog.data.api.PostWriteBody
+import com.tlog.data.api.ReportRequest
 import com.tlog.data.api.SnsDescription
 import com.tlog.data.api.SnsPost
 import com.tlog.data.api.SnsPostPreview
@@ -19,6 +20,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -96,7 +98,18 @@ interface SnsApi {
     ): BaseResponse<ChatMessageHistoryResponse>
 
 
+    // 좋아요
+    @POST("/api/post/{postId}/like")
+    suspend fun postLikeToggle(
+        @Path("postId") postId: String
+    ): BaseResponse<Unit>
 
+
+    // 신고하기
+    @POST("/api/operation/report/post")
+    suspend fun postReport(
+        @Body postId: ReportRequest
+    ): BaseResponse<Unit>
 
 
 

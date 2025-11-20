@@ -81,7 +81,11 @@ fun RecommendPostCard(
                 fontFamily = MainFont,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
-            )
+            ),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .width(300.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -125,7 +129,7 @@ fun RecommendPostSection(
         ) {
             items(
                 items = recommendPosts,
-                key = { post -> post.title }
+                key = { post -> post.id }
             ) { post ->
                 RecommendPostCard(
                     post = post,
@@ -134,31 +138,31 @@ fun RecommendPostSection(
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 16.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Text(
-                text = "게시글 더 보러가기",
-                style = TextStyle(
-                    fontFamily = MainFont,
-                    fontSize = 13.sp,
-                    color = Essential,
-                    fontWeight = FontWeight.SemiBold
-                )
-            )
-
-            Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_right),
-                contentDescription = "right_arrow",
-                tint = Essential,
-                modifier = Modifier
-                    .size(20.dp)
-            )
-        }
+//        Spacer(modifier = Modifier.height(28.dp))
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(end = 16.dp),
+//            horizontalArrangement = Arrangement.End
+//        ) {
+//            Text(
+//                text = "게시글 더 보러가기",
+//                style = TextStyle(
+//                    fontFamily = MainFont,
+//                    fontSize = 13.sp,
+//                    color = Essential,
+//                    fontWeight = FontWeight.SemiBold
+//                )
+//            )
+//
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_arrow_right),
+//                contentDescription = "right_arrow",
+//                tint = Essential,
+//                modifier = Modifier
+//                    .size(20.dp)
+//            )
+//        }
     }
 }

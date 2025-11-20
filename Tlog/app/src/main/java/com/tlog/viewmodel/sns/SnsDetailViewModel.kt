@@ -34,6 +34,11 @@ class SnsDetailViewModel @Inject constructor(
     private var _comment = mutableStateOf("")
     val comment: State<String> = _comment
 
+    private val _isLike = mutableStateOf(false)
+    val isLike: State<Boolean> = _isLike
+
+
+
     fun getPostDetail(postId: String) {
         launchSafeCall(
             action = {
@@ -71,5 +76,27 @@ class SnsDetailViewModel @Inject constructor(
 
     fun navToSnsMyPage(userId: String) {
         navigate(Screen.SnsMyPage(userId))
+    }
+
+    fun clickLike(postId: String) {
+        _isLike.value = !_isLike.value
+
+        postLike(postId = postId)
+    }
+
+    fun postLike(postId: String) {
+        launchSafeCall(
+            action = {
+                repository.postLikeToggle(postId)
+            }
+        )
+    }
+
+    fun postReport(postId: String) {
+        launchSafeCall(
+            action = {
+                repository.postReport(postId)
+            }
+        )
     }
 }

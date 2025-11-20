@@ -77,7 +77,7 @@ fun PostContentAndInteractions(
                     .clickable { onLikeClick() }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_heart),
+                    painter = if (isLiked) painterResource(id = R.drawable.ic_filled_heart) else painterResource(id = R.drawable.ic_heart),
                     contentDescription = "좋아요",
                     modifier = Modifier.size(30.dp),
                     tint = if (isLiked) Color.Red else Color.Black

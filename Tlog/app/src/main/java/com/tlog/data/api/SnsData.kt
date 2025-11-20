@@ -24,7 +24,7 @@ data class SnsPost(
     val courseDistrics: List<String>,
     val authorId: String,
     val authorName: String,
-    val authorProfileImageUrl: String,
+    val authorProfileImageUrl: String? = "",
     val contentImageUrls: List<String>,
     val content: String,
     val replies: List<Comment>
@@ -98,4 +98,8 @@ data class PostWriteBody(
     val courseId: String,
     val content: String,
     val imageUrls: List<String>
+)
+
+data class ReportRequest(
+    val postId: String
 )

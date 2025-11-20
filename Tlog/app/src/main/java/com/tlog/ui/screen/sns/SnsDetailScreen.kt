@@ -99,7 +99,7 @@ fun SnsDetailScreen(
                 post.value?.let { post ->
                     PostAuthorInfo(
                         userId = post.authorName,
-                        userProfileImageUrl = post.authorProfileImageUrl,
+                        userProfileImageUrl = post.authorProfileImageUrl ?: "",
                         isFollowing = followingList.contains(post.authorId),
                         isMyPost = viewModel.userId == post.authorId,
                         onFollowToggle = {
@@ -118,15 +118,15 @@ fun SnsDetailScreen(
 
                     PostContentAndInteractions(
                         content = post.content,
-                        isLiked = false,
+                        isLiked = viewModel.isLike.value,
                         onLikeClick = {
-                            // 좋아요
+                            viewModel.clickLike(postId)
                         },
                         onShareClick = {
                             Log.d("공유 아이콘", "공유 아이콘")
                         },
                         onReportClick = {
-                            Log.d("신고하기", "신고하기")
+                            viewModel.postReport(postId)
                         },
                         isSingleLine = false
                     )

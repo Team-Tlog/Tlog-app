@@ -35,7 +35,8 @@ fun AiTravelItem(
     travelDescription: String,
     hashTags: List<String>,
     travelImageUrl: String,
-    onDeleteClick: () -> Unit
+    showDeleteIcon: Boolean = true,
+    onDeleteClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -76,16 +77,20 @@ fun AiTravelItem(
             LazyHashTagsGroup(hashTags) // 태그 예시임
         }
 
-        IconButton(
-            modifier = Modifier
-                .padding(end = 24.dp),
-            onClick = { onDeleteClick() }
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_x_circle),
-                contentDescription = "삭제 아이콘",
-                tint = Color.Unspecified
-            )
+        if (showDeleteIcon) {
+            IconButton(
+                modifier = Modifier
+                    .padding(end = 24.dp),
+                onClick = { onDeleteClick() }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_x_circle),
+                    contentDescription = "삭제 아이콘",
+                    tint = Color.Unspecified
+                )
+            }
+        } else {
+            Spacer(modifier = Modifier.width(48.dp))
         }
     }
 }

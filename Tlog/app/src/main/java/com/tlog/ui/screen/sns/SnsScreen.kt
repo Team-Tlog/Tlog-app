@@ -23,6 +23,7 @@ import com.tlog.R
 import com.tlog.ui.component.sns.PostItem
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
+import com.tlog.ui.component.share.NotFound
 import com.tlog.ui.navigation.Screen
 import com.tlog.ui.style.Body1Bold
 import com.tlog.viewmodel.sns.SnsViewModel
@@ -85,7 +86,10 @@ fun SnsScreen(
                     selectedIndex = 2
                 )
             }
-        }
+        },
+        modifier = Modifier
+            .fillMaxSize(),
+        containerColor = Color.White
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -94,28 +98,12 @@ fun SnsScreen(
         ) {
             Log.d("postList", postList.size.toString())
             if (postList.isEmpty()) {
-                Column(
-                    modifier = Modifier
-                        .align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.height(30.dp))
-
-                    Image(
-                        painter = painterResource(id = R.drawable.character_error),
-                        contentDescription = null,
+                    NotFound(
                         modifier = Modifier
-                            .size(150.dp)
+                            .fillMaxSize()
+                            .align(Alignment.Center),
+                        text = "게시글이 없습니다."
                     )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Text(
-                        text = "게시물이 없습니다.",
-                        style = Body1Bold
-                    )
-
-                }
             } else {
                 postList.let { postList ->
                     LazyColumn(

@@ -122,16 +122,21 @@ fun ReviewItem(
 
         Spacer(modifier = Modifier.height(11.dp))
 
-        review.reviewImageUrl.forEach { imageUrl ->
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(5.dp)),
-                contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = DefaultImage)
-            )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            review.reviewImageUrl.forEach { imageUrl ->
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(70.dp)
+                        .clip(RoundedCornerShape(5.dp)),
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = DefaultImage)
+                )
+            }
         }
     }
 }

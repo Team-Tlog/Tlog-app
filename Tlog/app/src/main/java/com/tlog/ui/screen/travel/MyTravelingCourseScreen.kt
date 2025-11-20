@@ -11,6 +11,7 @@ import com.tlog.ui.component.share.BottomBar
 import androidx.navigation.NavController
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tlog.ui.component.share.NotFound
 import com.tlog.ui.component.travel.DayToggleBar
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.MyTravelingCourseViewModel
@@ -65,20 +66,29 @@ fun MyTravelingCourseScreen(
                     Spacer(modifier = Modifier.height(41.dp))
                 }
 
-                cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+                if (cityGrouped.isEmpty()) {
                     item {
-                        CityTravelList(
-                            city = city,
-                            travelItems = list,
-                            onDeleteClick = {
-
-                            }
+                        NotFound(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .align(Alignment.Center),
+                            text = "여행중인 코스가 없습니다."
                         )
                     }
-                }
+                } else {
+                    cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+                        item {
+                            CityTravelList(
+                                city = city,
+                                travelItems = list,
+                                showDeleteIcon = false
+                            )
+                        }
+                    }
 
-                item {
-                    Spacer(modifier = Modifier.height(145.dp))
+                    item {
+                        Spacer(modifier = Modifier.height(145.dp))
+                    }
                 }
             }
 

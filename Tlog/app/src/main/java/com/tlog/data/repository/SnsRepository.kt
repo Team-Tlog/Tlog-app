@@ -5,6 +5,7 @@ import com.tlog.data.api.BaseListResponse
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.api.CreateCommentRequest
 import com.tlog.data.api.FollowRequest
+import com.tlog.data.api.ReportRequest
 import com.tlog.data.api.SnsDescription
 import com.tlog.data.api.SnsPost
 import com.tlog.data.api.SnsPostPreview
@@ -69,5 +70,13 @@ class SnsRepository @Inject constructor(
 
     suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessage> {
         return retrofitInstance.followUser(FollowRequest(from_userId = userId, to_userId = toUserId))
+    }
+
+    suspend fun postLikeToggle(postId: String): BaseResponse<Unit> {
+        return retrofitInstance.postLikeToggle(postId)
+    }
+
+    suspend fun postReport(postId: String): BaseResponse<Unit> {
+        return retrofitInstance.postReport(ReportRequest(postId))
     }
 }

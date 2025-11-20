@@ -35,13 +35,13 @@ import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun PostAuthorInfo(
+    modifier: Modifier = Modifier,
     userId: String,
     userProfileImageUrl: String,
     isFollowing: Boolean,
     clickUser: () -> Unit = {},
     onFollowToggle: () -> Unit,
     isMyPost: Boolean = false,
-    modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(16.dp)
 ) {
     Row(
@@ -75,7 +75,7 @@ fun PostAuthorInfo(
         Spacer(modifier = Modifier.weight(1f))
 
         // 팔로우 버튼
-        if (isMyPost == false) {
+        if (!isMyPost) {
             Button(
                 onClick = { onFollowToggle() },
                 modifier = Modifier
