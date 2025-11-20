@@ -27,6 +27,7 @@ import com.tlog.ui.screen.review.ReviewListScreen
 import com.tlog.ui.screen.review.ReviewWriteScreen
 import com.tlog.ui.screen.review.ReviewSearchScreen
 import com.tlog.ui.screen.share.BannerDetailScreen
+import com.tlog.ui.screen.share.FeedbackScreen
 import com.tlog.ui.screen.share.ScrapAndCartScreen
 import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
@@ -199,6 +200,7 @@ fun NavHost(
         // MyPage
         composable<Screen.MyPage> { MyPageScreen(navController = navController) }
         composable<Screen.Report> { ReportToDeveloperScreen() }
+        composable<Screen.Feedback> { FeedbackScreen(navController = navController) }
         composable<Screen.Course> { MyTravelingCourseScreen(navController) }
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)

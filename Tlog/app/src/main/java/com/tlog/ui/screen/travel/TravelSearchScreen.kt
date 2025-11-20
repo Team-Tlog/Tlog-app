@@ -82,12 +82,15 @@ fun TravelSearchScreen(
 
             if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
                item {
-                   TravelCategoryGrid()
-
-                   Spacer(modifier = Modifier.height(25.dp))
+//                   TravelCategoryGrid()
+//
+//                   Spacer(modifier = Modifier.height(25.dp))
 
                    PopularDestinations(
-                       destinations = viewModel.popularDestinations.value
+                       destinations = viewModel.popularDestinations.value,
+                       onDestinationClick = { destinationId ->
+                           viewModel.navToTravelInfo(destinationId)
+                       }
                    )
 
                    Spacer(modifier = Modifier.height(32.dp))
