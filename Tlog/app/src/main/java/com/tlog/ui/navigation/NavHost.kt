@@ -204,7 +204,7 @@ fun NavHost(
         // MyPage
         composable<Screen.MyPage> { MyPageScreen(navController = navController) }
         composable<Screen.Report> { ReportToDeveloperScreen() }
-        composable<Screen.Course> { MyTravelingCourseScreen(navController) }
+        composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)
         }
