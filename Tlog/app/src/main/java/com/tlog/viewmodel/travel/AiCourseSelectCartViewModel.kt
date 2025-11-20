@@ -29,7 +29,6 @@ class AiCourseSelectCartViewModel @Inject constructor(
     val cartList: State<List<Cart>> = _cartList
 
     private val _checkedTravelList = mutableStateOf<List<String>>(emptyList())
-    val checkedTravelList: State<List<String>> = _checkedTravelList
 
     private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
     val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
@@ -99,4 +98,7 @@ class AiCourseSelectCartViewModel @Inject constructor(
         navigate(Screen.AiCourseResult)
     }
 
+    fun setCheckedList(names: List<String>) {
+        _checkedTravelList.value = names
+    }
 }

@@ -142,7 +142,12 @@ fun NavHost(
         }
 
         // Travel
-        composable<Screen.ScrapAndCart> { ScrapAndCartScreen(navController = navController) }
+        composable<Screen.ScrapAndCart> {
+            ScrapAndCartScreen(
+                navController = navController,
+                sharedViewModel = sharedCourseViewModel
+            )
+        }
         composable<Screen.AddTravel> { AddTravelScreen(navController = navController) }
         composable<Screen.TravelList> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.TravelList>()
@@ -200,8 +205,9 @@ fun NavHost(
         // MyPage
         composable<Screen.MyPage> { MyPageScreen(navController = navController) }
         composable<Screen.Report> { ReportToDeveloperScreen() }
+        composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
         composable<Screen.Feedback> { FeedbackScreen(navController = navController) }
-        composable<Screen.Course> { MyTravelingCourseScreen(navController) }
+        composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
         composable<Screen.Notification> {
             NotificationScreen(navController = navController)
         }

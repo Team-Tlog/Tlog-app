@@ -47,11 +47,13 @@ import com.tlog.R
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 
 
 @Composable
 fun ScrapAndCartScreen(
     viewModel: ScrapAndCartViewModel = hiltViewModel(),
+    sharedViewModel: CourseSharedViewModel,
     navController: NavHostController
 ) {
     val context = LocalContext.current
@@ -222,7 +224,6 @@ fun ScrapAndCartScreen(
                     scrapTravelList = viewModel.scrapList.value,
                     onClick = { travelId ->
                         viewModel.navToTravelInfo(travelId)
-//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             } else {
@@ -230,7 +231,6 @@ fun ScrapAndCartScreen(
                     travelList = viewModel.cartList.value,
                     onClick = { travelId ->
                         viewModel.navToTravelInfo(travelId)
-//                        navController.navigate("travelInfo/$travelId")
                     }
                 )
             }
@@ -246,19 +246,28 @@ fun ScrapAndCartScreen(
                 .padding(bottom = 15.dp)
         ) {
             if (viewModel.selectedTab.value == "스크랩") {
-                TwoMainButtons(
-                    onLeftClick = {
-                        viewModel.addSelectedTravelToCart()
-                    },
-                    onRightClick = {
-                        // AI 코스 짜기 버튼
-                    }
+//                TwoMainButtons(
+//                    onLeftClick = {
+//                        viewModel.addSelectedTravelToCart()
+//                    },
+//                    onRightClick = {
+//                        // AI 코스 짜기 버튼
+//                    }
+//                )
+                MainButton(
+                    text = "장바구니에 넣기",
+                    onClick = { viewModel.addSelectedTravelToCart() },
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp, vertical = 15.dp)
                 )
             } else {
                 MainButton(
-                    text = "코스 짜기",
+                    text = "AI 코스 짜기",
                     onClick = {
-
+                        sharedViewModel.setSelectedTravelName(
+                            names = viewModel.checkedTravelList.value,
+                            onFinish = { viewModel.navToAiCourse() }
+                        )
                     },
                     modifier = Modifier
                         .padding(horizontal = 24.dp, vertical = 15.dp)

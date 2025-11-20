@@ -17,6 +17,10 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
     private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
     val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
 
+    private val _selectedTravelNames = MutableStateFlow<List<String>>(emptyList())
+    val selectedTravelNames = _selectedTravelNames.asStateFlow()
+
+
 
     fun setAiTravelMap(map: Map<String, List<AiTravel>>) {
         _aiTravelMap.value = map
@@ -41,5 +45,11 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
         val ret = _aiRequest.value ?: return ""
 
         return ret.dailyPlans.last().date
+    }
+
+    fun setSelectedTravelName(names: List<String>, onFinish: () -> Unit) {
+        _selectedTravelNames.value = names
+
+        onFinish()
     }
 }

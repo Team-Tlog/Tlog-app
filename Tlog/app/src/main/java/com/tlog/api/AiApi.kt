@@ -3,9 +3,12 @@ package com.tlog.api
 import com.tlog.data.api.BaseResponse
 import com.tlog.data.model.travel.AiRequest
 import com.tlog.data.model.travel.AiTravel
+import com.tlog.data.model.travel.CourseResponse
 import com.tlog.data.model.travel.CourseSaveRequest
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AiApi {
@@ -22,6 +25,11 @@ interface AiApi {
         @Query("ownerType") ownerType: String,
         @Body courseSaveRequest: CourseSaveRequest
     ): BaseResponse<String>
+
+    @GET("/api/course/{courseId}")
+    suspend fun getCourse(
+        @Path("courseId") courseId: String
+    ): BaseResponse<CourseResponse>
 }
 
 

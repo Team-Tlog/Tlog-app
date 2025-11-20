@@ -45,8 +45,6 @@ abstract class BaseViewModel : ViewModel() {
         try {
             val result = action() // 추후 바꿉시다~ 이거 사용하는 쪽으로
             onSuccess(result)
-
-            action()
         } catch (e: HttpException) {
             Log.d("ERROR!!!", e.message.toString())
             onError(e.toErrorMessage())
@@ -56,13 +54,15 @@ abstract class BaseViewModel : ViewModel() {
         }
     }
 
-    protected fun launchSafeCall(
-        action: suspend () -> Unit,
+    protected fun <T>  launchSafeCall(
+        action: suspend () -> (T),
+        onSuccess: (T) -> Unit = {},
         onError: (String) -> Unit = { showToast(it) }
     ) {
         viewModelScope.launch {
             safeCall(
                 action = action,
+                onSuccess = onSuccess,
                 onError = onError
             )
         }
