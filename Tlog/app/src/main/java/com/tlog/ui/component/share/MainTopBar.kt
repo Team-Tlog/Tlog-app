@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
+import com.tlog.ui.theme.Logo
 
 
 @Composable
@@ -42,8 +43,8 @@ fun MainTopBar(
                 .fillMaxWidth()
         ) {
             Icon(
-                painter = painterResource(R.drawable.login_ic_google),
-                contentDescription = "Logo",
+                painter = painterResource(Logo),
+                contentDescription = "Tlog 로고",
                 modifier = Modifier.size(38.dp),
                 tint = Color.Unspecified
             )

@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
+import com.tlog.ui.theme.Logo
 
 @Composable
 fun TeamTopBar(
@@ -29,12 +30,11 @@ fun TeamTopBar(
             .padding(horizontal = 14.dp)
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_filled_star),
-            contentDescription = "팀 대표 이미지",
+            painter = painterResource(id = Logo),
+            contentDescription = "Tlog 로고",
+            tint = Color.Unspecified,
             modifier = Modifier
                 .size(38.dp)
-                .clip(CircleShape)
-                .background(Color.White)
         )
 
         Spacer(modifier = Modifier.weight(1f))
