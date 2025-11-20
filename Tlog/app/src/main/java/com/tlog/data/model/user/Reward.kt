@@ -1,7 +1,7 @@
 package com.tlog.data.model.user
 
 data class Reward(
-    val rewardId: String,
+    val rewardId: Long,
     val name: String,
     val description: String,
     val iconImageUrl: String,

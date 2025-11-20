@@ -1,6 +1,5 @@
 package com.tlog.ui.component.mypage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
 import com.tlog.data.model.user.User
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -97,7 +95,7 @@ fun UserInfoGroup(
                     }
 
                     Text(
-                        text = "업적 멘트",
+                        text = userInfo.defaultRewardPhrase,
                         fontFamily = MainFont,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Normal,
@@ -124,18 +122,33 @@ fun UserInfoGroup(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    // 최대 3개의 업적만 표시
+                    val displayRewards = userInfo.userRewards.take(3)
 
-                    val tmpList = listOf(1, 2, 3)
-
-                    tmpList.forEach { idx ->
-                        Box(
-                            modifier = Modifier
-                                .size(90.dp)
-                                .background(Color(0xFFD9D9D9))
-                        ) {
-                            Image(
-                                painter = painterResource(R.drawable.test_image),
-                                contentDescription = "업적 이미지"
+                    // 3개 슬롯을 채우기 위해 빈 슬롯 추가
+                    repeat(3) { index ->
+                        if (index < displayRewards.size) {
+                            val reward = displayRewards[index]
+                            Box(
+                                modifier = Modifier
+                                    .size(90.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color(0xFFD9D9D9))
+                            ) {
+                                AsyncImage(
+                                    model = reward.iconImageUrl,
+                                    contentDescription = reward.name,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        } else {
+                            // 빈 슬롯
+                            Box(
+                                modifier = Modifier
+                                    .size(90.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(Color(0xFFD9D9D9))
                             )
                         }
                     }
