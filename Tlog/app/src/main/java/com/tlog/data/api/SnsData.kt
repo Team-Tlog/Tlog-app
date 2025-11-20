@@ -1,6 +1,7 @@
 package com.tlog.data.api
 
 import com.tlog.data.model.sns.Comment
+import retrofit2.http.Body
 
 data class UpdateSnsIdRequest(
     val snsId: String
@@ -90,4 +91,11 @@ data class ChatMessageHistoryResponse(
 data class ChatMessageReadDto(
     val readerId: String,
     val messageId: Long
+)
+
+data class PostWriteBody(
+    val author: String,
+    val courseId: String,
+    val content: String,
+    val imageUrls: List<String>
 )

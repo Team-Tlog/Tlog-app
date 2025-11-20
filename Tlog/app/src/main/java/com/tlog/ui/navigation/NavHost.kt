@@ -42,6 +42,7 @@ import com.tlog.ui.screen.sns.SnsScreen
 import com.tlog.ui.screen.sns.SnsDetailScreen
 import com.tlog.ui.screen.sns.SnsProfileScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
+import com.tlog.ui.screen.sns.SnsPostWriteScreen
 import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
@@ -56,6 +57,7 @@ import com.tlog.ui.screen.travel.TravelSearchScreen
 import com.tlog.ui.screen.travel.TravelListScreen
 import com.tlog.ui.screen.travel.TravelDetailScreen
 import com.tlog.viewmodel.beginning.LoginViewModel
+import com.tlog.viewmodel.sns.SnsPostViewModel
 import com.tlog.viewmodel.travel.CourseSharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -71,6 +73,8 @@ fun NavHost(
 ) {
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
     val sharedCourseViewModel: CourseSharedViewModel = hiltViewModel()
+    val snsPostWriteViewModel: SnsPostViewModel = hiltViewModel()
+
 
 
 
@@ -128,7 +132,8 @@ fun NavHost(
             val args = backStackEntry.toRoute<Screen.SnsMyPage>()
             SnsProfileScreen(navController = navController, userId = args.userId)
         }
-        composable<Screen.SnsPostWrite> { SnsPostWriteDetailScreen() }
+        composable<Screen.SnsPostWrite> { SnsPostWriteScreen(viewModel = snsPostWriteViewModel, navController = navController) }
+        composable<Screen.SnsPostWriteDetail> { SnsPostWriteDetailScreen(viewModel = snsPostWriteViewModel, navController = navController) }
 
         // Review
         composable<Screen.ReviewWrite> { backStackEntry ->

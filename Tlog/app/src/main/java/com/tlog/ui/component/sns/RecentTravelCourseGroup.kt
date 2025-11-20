@@ -29,15 +29,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.tlog.R
+import com.tlog.data.api.CourseItem
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.sns.SnsPostViewModel
 
 
 @Composable
 fun RecentTravelCourseGroup(
+    courses: List<CourseItem>,
+    selectedClick: (Int) -> Unit,
+    selectedCourse: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -51,15 +55,21 @@ fun RecentTravelCourseGroup(
                 .padding(start = 4.dp)
         )
 
-        RecentTravelCourse()
+        RecentTravelCourse(
+            courses = courses,
+            selectedCourse = selectedCourse,
+            selectedClick = selectedClick
+        )
 
-        OtherCourseSection()
+//        OtherCourseSection()
     }
 }
 
 @Composable
 fun RecentTravelCourse(
-    viewModel: SnsPostViewModel = viewModel()
+    courses: List<CourseItem>,
+    selectedCourse: Int,
+    selectedClick: (Int) -> Unit
 ) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -67,33 +77,33 @@ fun RecentTravelCourse(
             .padding(vertical = 10.dp)
     ) {
         itemsIndexed(
-            items = viewModel.recentTravelCourses.value,
-            key = { idx, course -> "$idx${course.city}" }
+            items = courses,
+            key = { idx, course -> "$idx${course.id}" }
         ) { idx, item ->
             Column(
                 modifier = Modifier
                     .padding(vertical = 10.dp)
                     .clickable {
-                        viewModel.updateSelectedCourse(idx)
+                        selectedClick(idx)
                     }
             ) {
-                Image(
-                    painter = painterResource(item.pictureList[0]),
-                    contentDescription = "{${item.city}여행지}",
+                AsyncImage(
+                    model = item.dates.first().destinationGroups.first().destinations.first().imageUrl ?: "",
+                    contentDescription = "",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(15.dp))
                         .background(Color.Gray)
-                        .border(2.dp, if (viewModel.selectedCourse.value == idx) MainColor else Color.Unspecified, RoundedCornerShape(15.dp))
+                        .border(2.dp, if (selectedCourse == idx) MainColor else Color.Unspecified, RoundedCornerShape(15.dp))
                 )
 
                 Spacer(modifier = Modifier.height(7.dp))
 
                 Text(
-                    text = item.city,
+                    text = item.dates.first().destinationGroups.first().destinations.first().city,
                         style =
-                            if (viewModel.selectedCourse.value == idx)
+                            if (selectedCourse == idx)
                                 TextStyle(
                                     fontFamily = MainFont,
                                     fontSize = 12.sp,

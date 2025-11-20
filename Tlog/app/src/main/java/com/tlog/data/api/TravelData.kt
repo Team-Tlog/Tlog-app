@@ -101,3 +101,32 @@ data class ReviewList(
     val empty: Boolean
 )
 
+// 코스 목록
+data class CourseItem(
+    val id: String,
+    val startDate: String,
+    val endDate: String,
+    val dates: List<DateItem>
+)
+
+data class DateItem(
+    val destinationGroups: List<Destinations>
+)
+
+data class Destinations(
+    val groupName: String,
+    val destinations: List<CoursesDestination>
+)
+
+data class CoursesDestination(
+    val id: String,
+    val name: String,
+    val city: String,
+    val location: Location,
+    val reviewCount: Int,
+    val averageRating: Int,
+    val imageUrl: String?,
+    val description: String,
+    val tagCountList: List<TagCount>?
+)
+

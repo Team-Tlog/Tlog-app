@@ -1,6 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.api.BaseResponse
+import com.tlog.data.api.CourseItem
 import com.tlog.data.model.travel.AiRequest
 import com.tlog.data.model.travel.AiTravel
 import com.tlog.data.model.travel.CourseResponse
@@ -31,6 +32,11 @@ interface AiApi {
         @Query("ownerId") ownerId: String,
         @Query("ownerType") ownerType: String = "USER"
     ): BaseResponse<CourseResponse>
+
+    @GET("/api/course/user/{userId}")
+    suspend fun getUserCourses(
+        @Path("userId") userId: String
+    ): BaseResponse<List<CourseItem>>
 }
 
 

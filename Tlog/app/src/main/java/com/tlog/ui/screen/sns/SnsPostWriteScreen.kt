@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -37,6 +38,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,9 +51,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -65,13 +65,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.core.content.FileProvider
+import androidx.navigation.NavController
 import com.tlog.ui.component.share.TextButtonTopBar
+import com.tlog.ui.navigation.Screen
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import java.io.File
 
-@Preview
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun SnsPostWriteScreen(viewModel: SnsPostViewModel = viewModel()) {
+fun SnsPostWriteScreen(
+    viewModel: SnsPostViewModel,
+    navController: NavController
+) {
     // 31 이하 / 32 이상 권한 요청이 달라서 다르게 표시
     val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         Manifest.permission.READ_MEDIA_IMAGES
@@ -88,6 +93,8 @@ fun SnsPostWriteScreen(viewModel: SnsPostViewModel = viewModel()) {
 
     val coroutineScope = rememberCoroutineScope() // 코루틴 사용
 
+    val recentTravelCourses by viewModel.recentTravelCourses.collectAsState()
+
     // 스크린 시작 시 1번만 실행 (갤러리 접근)
     LaunchedEffect(permissionState.status.isGranted) {
         if (permissionState.status.isGranted) {
@@ -97,6 +104,24 @@ fun SnsPostWriteScreen(viewModel: SnsPostViewModel = viewModel()) {
             }
         } else {
             permissionState.launchPermissionRequest()
+        }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> {
+                    navController.popBackStack()
+                }
+            }
         }
     }
 
@@ -111,23 +136,27 @@ fun SnsPostWriteScreen(viewModel: SnsPostViewModel = viewModel()) {
             title = "게시글 작성",
             btnText = "다음",
             btnClickable = {
-                Log.d("다음", "my click!!")
+                navController.navigate(Screen.SnsPostWriteDetail)
             }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         RecentTravelCourseGroup( // 최근 다녀온 코스
+            courses = recentTravelCourses,
+            selectedClick = { viewModel.updateSelectedCourse(it) },
+            selectedCourse = viewModel.selectedCourse.value,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        SelectedImageView() // 선택된 이미지 보여주는 부분
+        SelectedImageView(viewModel) // 선택된 이미지 보여주는 부분
 
-        galleryImageView( // 갤러리 사진 보여주는 부분
+        GalleryImageView( // 갤러리 사진 보여주는 부분
             images = images,
+            viewModel = viewModel,
             modifier = Modifier
                 .fillMaxSize())
 
@@ -137,7 +166,7 @@ fun SnsPostWriteScreen(viewModel: SnsPostViewModel = viewModel()) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SelectedImageView(viewModel: SnsPostViewModel = viewModel()) { // 비율만 맞으면 SNS와 써도 될 듯?
+fun SelectedImageView(viewModel: SnsPostViewModel) { // 비율만 맞으면 SNS와 써도 될 듯?
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -182,8 +211,8 @@ fun SelectedImageView(viewModel: SnsPostViewModel = viewModel()) { // 비율만 
 }
 
 @Composable
-fun galleryImageView(
-    viewModel: SnsPostViewModel = viewModel(),
+fun GalleryImageView(
+    viewModel: SnsPostViewModel,
     images: List<Uri>,
     modifier: Modifier = Modifier
 ) {

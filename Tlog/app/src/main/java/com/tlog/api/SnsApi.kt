@@ -6,6 +6,7 @@ import com.tlog.data.api.ChatMessageHistoryResponse
 import com.tlog.data.api.ChatRoom
 import com.tlog.data.api.CreateCommentRequest
 import com.tlog.data.api.FollowRequest
+import com.tlog.data.api.PostWriteBody
 import com.tlog.data.api.SnsDescription
 import com.tlog.data.api.SnsPost
 import com.tlog.data.api.SnsPostPreview
@@ -132,10 +133,7 @@ interface SnsApi {
     // SNS 코스 리뷰 (게시물)
     @POST("/api/post")
     suspend fun createPost(
-        @Body author: String,
-        @Body courseId: String,
-        @Body content: String,
-        @Body imageUrls: List<String>
+        @Body postWriteBody: PostWriteBody,
     ): BaseResponse<SnsPost>
 
     // 사용자의 코스 리뷰 미리보기 정보

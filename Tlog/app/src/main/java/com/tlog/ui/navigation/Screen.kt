@@ -44,6 +44,8 @@ sealed interface Screen {
     @Serializable
     data object SnsPostWrite: Screen
 
+    @Serializable
+    data object SnsPostWriteDetail: Screen
 
     // Review
     @Serializable
