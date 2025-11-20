@@ -125,7 +125,7 @@ class MainViewModel @Inject constructor(
         navigate(Screen.SnsPostDetail(postId))
     }
 
-    fun navToBannerDetail(title: String, bannerId: String) {
-        navigate(Screen.BannerDetail(title, bannerId))
+    fun navToBannerDetail(bannerId: String) {
+        navigate(Screen.BannerDetail(bannerId))
     }
 }

@@ -105,7 +105,7 @@ fun NavHost(
         composable<Screen.BannerDetail> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.BannerDetail>()
 
-            BannerDetailScreen(title = args.title, bannerId = args.bannerId, navController = navController)
+            BannerDetailScreen(bannerId = args.bannerId, navController = navController)
         }
 
         // SNS

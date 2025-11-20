@@ -20,7 +20,7 @@ sealed interface Screen {
     data class Restaurant(val latitude: String, val longitude: String): Screen
 
     @Serializable
-    data class BannerDetail(val title: String, val bannerId: String): Screen
+    data class BannerDetail(val bannerId: String): Screen
 
     // Sns
     @Serializable

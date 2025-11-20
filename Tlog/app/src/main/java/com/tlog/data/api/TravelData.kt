@@ -80,8 +80,14 @@ data class TravelDestinationResponse(
     val tagCountList: List<TagCount>
 )
 
+data class BannerTravelResponse(
+    val title: String,
+    val destinations: BannerDestinationsWrapper
+)
 
-
+data class BannerDestinationsWrapper(
+    val content: List<TravelDestinationResponse>
+)
 
 data class ReviewList(
     val content: List<Review>,

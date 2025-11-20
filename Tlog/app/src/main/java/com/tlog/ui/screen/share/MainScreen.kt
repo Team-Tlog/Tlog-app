@@ -156,8 +156,8 @@ fun MainScreen(
 
                 BannerSection(
                     bannerList = bannerList,
-                    onBannerClick = { title, bannerId ->
-                        viewModel.navToBannerDetail(title, bannerId)
+                    onBannerClick = { bannerId ->
+                        viewModel.navToBannerDetail(bannerId)
                     }
                 )
 

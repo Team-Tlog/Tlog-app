@@ -34,7 +34,7 @@ import com.tlog.ui.theme.DefaultImage
 @Composable
 fun BannerSection(
     bannerList: List<Banner>,
-    onBannerClick: (String, String) -> Unit
+    onBannerClick: (String) -> Unit
 ) {
     LazyRow(
         modifier = Modifier
@@ -52,7 +52,7 @@ fun BannerSection(
                     .fillParentMaxWidth()
                     .height(188.dp)
                     .clickable {
-                        onBannerClick(banner.title, banner.id)
+                        onBannerClick(banner.id)
                     }
             ) {
                 AsyncImage(
