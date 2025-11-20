@@ -23,12 +23,14 @@ import com.tlog.viewmodel.travel.CourseSharedViewModel
 fun AiRecommendCourseResultScreen(
     viewModel: AiRecommendCourseResultViewModel = hiltViewModel(),
     sharedViewModel: CourseSharedViewModel,
+    isTeam: Boolean,
     navController: NavController
 ) {
     val context = LocalContext.current
     val selectedDay by viewModel.selectedDay.collectAsState()
     val uiTravels by viewModel.uiTravels.collectAsState()
     val cityGrouped = uiTravels.groupBy { it.city }
+    val teamId by sharedViewModel.teamId.collectAsState()
 
 
     LaunchedEffect(Unit) {
@@ -122,12 +124,11 @@ fun AiRecommendCourseResultScreen(
         ) {
             MainButton(
                 text = "저장하기",
-                onClick = { viewModel.saveCourse() },
+                onClick = { viewModel.saveCourse(isTeam = isTeam, teamId = teamId) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(55.dp)
             )
         }
-
     }
 }

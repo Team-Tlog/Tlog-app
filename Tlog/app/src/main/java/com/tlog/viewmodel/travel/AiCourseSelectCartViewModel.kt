@@ -42,12 +42,12 @@ class AiCourseSelectCartViewModel @Inject constructor(
         }
     }
 
-    fun getAiCourse(aiRequest: AiRequest) {
+    fun getAiCourse(aiRequest: AiRequest, isTeam: Boolean, teamId: String = "") {
         launchSafeCall(
             action = {
                 val response = repository.getAiCourseRecommendations(
-                    ownerId = userId!!,
-                    ownerType = "USER",
+                    ownerId = if (isTeam) teamId else userId!!,
+                    ownerType = if (isTeam) "TEAM" else "USER",
                     aiRequest = aiRequest.copy(
                         wishlist = _cartList.value.filter {
                             _checkedTravelList.value.contains(it.name)
@@ -56,8 +56,6 @@ class AiCourseSelectCartViewModel @Inject constructor(
                 )
 
                 _aiTravelMap.value = response.data
-
-                Log.d("AiCourse", _aiTravelMap.value.toString())
             }
         )
     }
@@ -94,8 +92,8 @@ class AiCourseSelectCartViewModel @Inject constructor(
         _checkedTravelList.value = emptyList()
     }
 
-    fun navToAiCourseResult() {
-        navigate(Screen.AiCourseResult)
+    fun navToAiCourseResult(isTeam: Boolean) {
+        navigate(Screen.AiCourseResult(isTeam))
     }
 
     fun setCheckedList(names: List<String>) {

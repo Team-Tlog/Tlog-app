@@ -129,12 +129,17 @@ sealed interface Screen {
 
     // AI
     @Serializable
-    data object AiCourseSelectCart: Screen
+    data class AiCourseSelectCart(
+        val isTeam: Boolean = false
+    ): Screen
+    @Serializable
+    data class AiCourseInput(
+        val isTeam: Boolean = false
+    ): Screen
 
     @Serializable
-    data object AiCourseInput: Screen
-
-    @Serializable
-    data object AiCourseResult: Screen
+    data class AiCourseResult(
+        val isTeam: Boolean = false
+    ): Screen
 
 }

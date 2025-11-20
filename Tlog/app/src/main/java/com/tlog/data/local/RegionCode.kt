@@ -555,7 +555,15 @@ object RegionCode {
         "제주서귀포시" to JEJU_SEOGWIPO
     )
 
+    private val reverseRegionMap = regionMap.entries.associate { (name, code) ->
+        code to name
+    }
+
     fun fromStringOrNull(region: String): Int {
         return regionMap[region] ?: 0 // 추후 가드 ?
+    }
+
+    fun toRegionNameOrNull(code: Int): String {
+        return reverseRegionMap[code] ?: ""
     }
 }

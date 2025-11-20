@@ -167,7 +167,7 @@ fun NavHost(
         }
         composable<Screen.TeamDetail> { backStackEntry ->
             val args = backStackEntry.toRoute<Screen.TeamDetail>()
-            TeamDetailScreen(teamId = args.teamId, navController = navController)
+            TeamDetailScreen(teamId = args.teamId, navController = navController, sharedViewModel = sharedCourseViewModel)
         }
         composable<Screen.JoinTeam> { TeamJoinScreen(navController = navController) }
 
@@ -258,23 +258,32 @@ fun NavHost(
 
 
         // AI
-        composable<Screen.AiCourseSelectCart> {
+        composable<Screen.AiCourseSelectCart> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.AiCourseInput>()
+
             AiCourseSelectCartScreen(
                 navController = navController,
+                isTeam = args.isTeam,
                 sharedViewModel = sharedCourseViewModel
             )
         }
 
-        composable<Screen.AiCourseInput> {
+        composable<Screen.AiCourseInput> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.AiCourseInput>()
+
             CourseInputScreen(
                 navController = navController,
+                isTeam = args.isTeam,
                 sharedViewModel = sharedCourseViewModel
             )
         }
 
-        composable<Screen.AiCourseResult> {
+        composable<Screen.AiCourseResult> { backStackEntry ->
+            val args = backStackEntry.toRoute<Screen.AiCourseInput>()
+
             AiRecommendCourseResultScreen(
                 sharedViewModel = sharedCourseViewModel,
+                isTeam = args.isTeam,
                 navController = navController
             )
         }
