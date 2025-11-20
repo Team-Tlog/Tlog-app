@@ -279,6 +279,7 @@ object RegionCode {
 
     // 변환 맵
     private val regionMap = mapOf(
+        "서울" to SEOUL,
         "서울전체" to SEOUL,
         "서울강남구" to SEOUL_GANGNAM,
         "서울강동구" to SEOUL_GANGDONG,
@@ -306,6 +307,7 @@ object RegionCode {
         "서울중구" to SEOUL_JUNG,
         "서울중랑구" to SEOUL_JUNGNANG,
 
+        "경기" to GYEONGGI,
         "경기전체" to GYEONGGI,
         "경기수원시" to GYEONGGI_SUWON,
         "경기성남시" to GYEONGGI_SEONGNAM,
@@ -338,6 +340,7 @@ object RegionCode {
         "경기포천시" to GYEONGGI_POCHEON,
         "경기연천군" to GYEONGGI_YEONCHEON,
 
+        "인천" to INCHEON,
         "인천전체" to INCHEON,
         "인천계양구" to INCHEON_GYEYANG,
         "인천남동구" to INCHEON_NAMDONG,
@@ -348,6 +351,7 @@ object RegionCode {
         "인천연수구" to INCHEON_YEONSU,
         "인천중구" to INCHEON_JUNG,
 
+        "부산" to BUSAN,
         "부산전체" to BUSAN,
         "부산강서구" to BUSAN_GANGSEO,
         "부산금정구" to BUSAN_GEUMJEONG,
@@ -366,6 +370,7 @@ object RegionCode {
         "부산중구" to BUSAN_JUNG,
         "부산해운대구" to BUSAN_HAEUNDAE,
 
+        "대구" to DAEGU,
         "대구전체" to DAEGU,
         "대구남구" to DAEGU_NAM,
         "대구달서구" to DAEGU_DALSEO,
@@ -376,6 +381,7 @@ object RegionCode {
         "대구수성구" to DAEGU_SUSEONG,
         "대구중구" to DAEGU_JUNG,
 
+        "광주" to GWANGJU,
         "광주전체" to GWANGJU,
         "광주광산구" to GWANGJU_GWANGSAN,
         "광주남구" to GWANGJU_NAM,
@@ -383,6 +389,7 @@ object RegionCode {
         "광주북구" to GWANGJU_BUK,
         "광주서구" to GWANGJU_SEO,
 
+        "대전" to DAEJEON,
         "대전전체" to DAEJEON,
         "대전대덕구" to DAEJEON_DAEDEOK,
         "대전동구" to DAEJEON_DONG,
@@ -390,6 +397,7 @@ object RegionCode {
         "대전유성구" to DAEJEON_YUSEONG,
         "대전중구" to DAEJEON_JUNG,
 
+        "울산" to ULSAN,
         "울산전체" to ULSAN,
         "울산남구" to ULSAN_NAM,
         "울산동구" to ULSAN_DONG,
@@ -399,6 +407,7 @@ object RegionCode {
 
         "세종전체" to SEJONG,
 
+        "강원" to GANGWON,
         "강원전체" to GANGWON,
         "강원춘천시" to GANGWON_CHUNCHEON,
         "강원원주시" to GANGWON_WONJU,
@@ -419,6 +428,7 @@ object RegionCode {
         "강원고성군" to GANGWON_GOSEONG,
         "강원양양군" to GANGWON_YANGYANG,
 
+        "충북" to CHUNGBUK,
         "충북전체" to CHUNGBUK,
         "충북청주시" to CHUNGBUK_CHEONGJU,
         "충북충주시" to CHUNGBUK_CHUNGJU,
@@ -432,6 +442,7 @@ object RegionCode {
         "충북음성군" to CHUNGBUK_EUMSEONG,
         "충북단양군" to CHUNGBUK_DANYANG,
 
+        "충남" to CHUNGNAM,
         "충남전체" to CHUNGNAM,
         "충남천안시" to CHUNGNAM_CHEONAN,
         "충남공주시" to CHUNGNAM_GONGJU,
@@ -449,6 +460,7 @@ object RegionCode {
         "충남예산군" to CHUNGNAM_YESAN,
         "충남태안군" to CHUNGNAM_TAEAN,
 
+        "경북" to GYEONGBUK,
         "경북전체" to GYEONGBUK,
         "경북포항시" to GYEONGBUK_POHANG,
         "경북경주시" to GYEONGBUK_GYEONGJU,
@@ -474,6 +486,7 @@ object RegionCode {
         "경북울릉군" to GYEONGBUK_ULLEUNG,
         "경북군위군" to GYEONGBUK_GUNWI,
 
+        "경남" to GYEONGNAM,
         "경남전체" to GYEONGNAM,
         "경남창원시" to GYEONGNAM_CHANGWON,
         "경남진주시" to GYEONGNAM_JINJU,
@@ -494,6 +507,7 @@ object RegionCode {
         "경남거창군" to GYEONGNAM_GEOCHANG,
         "경남합천군" to GYEONGNAM_HAPCHEON,
 
+        "전북" to JEONBUK,
         "전북전체" to JEONBUK,
         "전북전주시" to JEONBUK_JEONJU,
         "전북군산시" to JEONBUK_GUNSAN,
@@ -510,6 +524,7 @@ object RegionCode {
         "전북고창군" to JEONBUK_GOCHANG,
         "전북부안군" to JEONBUK_BUAN,
 
+        "전남" to JEONNAM,
         "전남전체" to JEONNAM,
         "전남목포시" to JEONNAM_MOKPO,
         "전남여수시" to JEONNAM_YEOSU,
@@ -534,6 +549,7 @@ object RegionCode {
         "전남진도군" to JEONNAM_JINDO,
         "전남신안군" to JEONNAM_SINAN,
 
+        "제주" to JEJU,
         "제주전체" to JEJU,
         "제주제주시" to JEJU_JEJU,
         "제주서귀포시" to JEJU_SEOGWIPO

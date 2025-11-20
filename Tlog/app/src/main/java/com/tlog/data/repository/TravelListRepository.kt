@@ -16,16 +16,14 @@ class TravelListRepository @Inject constructor(
         size: Int,
         sort: List<String>,
         city: String,
-        sortType: String? = null,
-        tbti: String? = null
+        sortType: String? = null
     ): BaseResponse<TravelRecommendPagedResponse>{
         return travelRetrofitInstance.getDestinations(
             page = page,
             size = size,
             sort = sort,
             city = city,
-            sortType = sortType,
-            tbti = tbti
+            sortType = sortType
         )
     }
     

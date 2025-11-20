@@ -51,8 +51,7 @@ fun TravelListScreen(
             lastVisibleItem?.index == totalItemCount - 3 // 마지막에서 2번째 친구면
         }.collect { isLastItemVisible ->
             if (isLastItemVisible) {
-                if (city != null)
-                    viewModel.getNextPage(city)
+                viewModel.getNextPage()
             }
 
         }
