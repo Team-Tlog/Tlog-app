@@ -146,6 +146,8 @@ fun SNSChattingScreen(
     }
 
     // 스크롤 위치 감지 - 리스트 끝에 도달하면 더 로드
+    // 주석처리: 최초 50개만 표시하고 자동 로딩 비활성화
+    /*
     LaunchedEffect(listState, messageItems.size) {
         snapshotFlow {
             val layoutInfo = listState.layoutInfo
@@ -171,6 +173,7 @@ fun SNSChattingScreen(
                 }
             }
     }
+    */
 
     Column(
         modifier = Modifier
