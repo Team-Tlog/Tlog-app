@@ -259,7 +259,7 @@ fun NavHost(
 
         // AI
         composable<Screen.AiCourseSelectCart> { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.AiCourseInput>()
+            val args = backStackEntry.toRoute<Screen.AiCourseSelectCart>()
 
             AiCourseSelectCartScreen(
                 navController = navController,
@@ -279,7 +279,7 @@ fun NavHost(
         }
 
         composable<Screen.AiCourseResult> { backStackEntry ->
-            val args = backStackEntry.toRoute<Screen.AiCourseInput>()
+            val args = backStackEntry.toRoute<Screen.AiCourseResult>()
 
             AiRecommendCourseResultScreen(
                 sharedViewModel = sharedCourseViewModel,

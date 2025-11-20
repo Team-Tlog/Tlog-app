@@ -1,6 +1,7 @@
 package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.viewModelScope
+import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.CourseIdManager
 import com.tlog.data.model.travel.AiTravel
 import com.tlog.data.model.travel.CourseDailySchedule
@@ -17,16 +18,10 @@ import javax.inject.Inject
 @HiltViewModel
 class MyTravelingCourseViewModel @Inject constructor(
     private val repository: MyTravelingCourseRepository,
-    private val courseIdManager: CourseIdManager
+    tokenProvider: TokenProvider
 ) : BaseViewModel() {
+    private var userId = ""
 
-    init {
-        viewModelScope.launch {
-            val courseId = courseIdManager.getCourseId()
-
-            getCourse(courseId)
-        }
-    }
     private val _selectedDay = MutableStateFlow(1)
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
@@ -36,16 +31,24 @@ class MyTravelingCourseViewModel @Inject constructor(
     private val _uiTravels = MutableStateFlow<List<AiTravel>>(emptyList())
     val uiTravels: StateFlow<List<AiTravel>> = _uiTravels.asStateFlow()
 
+    init {
+        userId = tokenProvider.getUserId() ?: ""
+
+        viewModelScope.launch {
+            getCourse()
+        }
+    }
+
     fun updateSelectedDay(idx: Int) {
         _selectedDay.value = idx
 
         updateUiTravels()
     }
 
-    fun getCourse(courseId: String) {
+    fun getCourse() {
         launchSafeCall(
             action = {
-                repository.getCourse(courseId)
+                repository.getCourse(userId)
             },
             onSuccess = {
                 _courses.value = it.data.dailySchedules

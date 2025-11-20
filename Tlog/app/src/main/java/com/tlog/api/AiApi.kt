@@ -26,9 +26,10 @@ interface AiApi {
         @Body courseSaveRequest: CourseSaveRequest
     ): BaseResponse<String>
 
-    @GET("/api/course/{courseId}")
+    @GET("/api/course/closest")
     suspend fun getCourse(
-        @Path("courseId") courseId: String
+        @Query("ownerId") ownerId: String,
+        @Query("ownerType") ownerType: String = "USER"
     ): BaseResponse<CourseResponse>
 }
 
