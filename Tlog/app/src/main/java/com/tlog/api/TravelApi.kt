@@ -22,8 +22,7 @@ interface TravelApi {
         @Query("size") size: Int,
         @Query("sort") sort: List<String>,
         @Query("city") city: String,
-        @Query("sortType") sortType: String? = null,
-        @Query("tbti") tbti: String? = null
+        @Query("sortType") sortType: String? = null
     ): BaseResponse<TravelRecommendPagedResponse>
 
     @GET("/api/destinations/{id}")
