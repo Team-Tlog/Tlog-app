@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.CourseIdManager
