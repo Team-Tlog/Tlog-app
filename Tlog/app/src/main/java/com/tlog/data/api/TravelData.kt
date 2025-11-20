@@ -80,8 +80,14 @@ data class TravelDestinationResponse(
     val tagCountList: List<TagCount>
 )
 
+data class BannerTravelResponse(
+    val title: String,
+    val destinations: BannerDestinationsWrapper
+)
 
-
+data class BannerDestinationsWrapper(
+    val content: List<TravelDestinationResponse>
+)
 
 data class ReviewList(
     val content: List<Review>,
@@ -93,5 +99,34 @@ data class ReviewList(
     val first: Boolean,
     val last: Boolean,
     val empty: Boolean
+)
+
+// 코스 목록
+data class CourseItem(
+    val id: String,
+    val startDate: String,
+    val endDate: String,
+    val dates: List<DateItem>
+)
+
+data class DateItem(
+    val destinationGroups: List<Destinations>
+)
+
+data class Destinations(
+    val groupName: String,
+    val destinations: List<CoursesDestination>
+)
+
+data class CoursesDestination(
+    val id: String,
+    val name: String,
+    val city: String,
+    val location: Location,
+    val reviewCount: Int,
+    val averageRating: Int,
+    val imageUrl: String?,
+    val description: String,
+    val tagCountList: List<TagCount>?
 )
 

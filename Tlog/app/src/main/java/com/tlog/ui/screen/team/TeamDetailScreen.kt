@@ -18,6 +18,7 @@ import com.tlog.viewmodel.team.TeamDetailViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.team.SmallDesign
@@ -25,6 +26,7 @@ import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
 import com.tlog.ui.component.travel.TravelList
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
+import com.tlog.viewmodel.travel.CourseSharedViewModel
 
 
 enum class PageState { DEFAULT, SMALL, BIG }
@@ -32,8 +34,9 @@ enum class PageState { DEFAULT, SMALL, BIG }
 @Composable
 fun TeamDetailScreen(
     viewModel: TeamDetailViewModel = hiltViewModel(),
+    sharedViewModel: CourseSharedViewModel,
     teamId: String,
-    navController: androidx.navigation.NavHostController
+    navController: NavHostController
 ) {
     val context = LocalContext.current
 
@@ -48,7 +51,13 @@ fun TeamDetailScreen(
 
         viewModel.uiEvent.collect { event ->
             when (event) {
-                is UiEvent.Navigate -> Unit // 화면 이동 없음
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
                 is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                 is UiEvent.PopBackStack -> Unit
             }
@@ -321,7 +330,24 @@ fun TeamDetailScreen(
             MainButton(
                 text = "AI 코스 탐색 시작",
                 onClick = {
-                    Log.d("AI Start", "my click!!")
+                    val data = viewModel.teamData.value
+                    Log.d("hihihi", "1")
+
+                    if (data != null) {
+                        sharedViewModel.setTeamInfo(
+                            teamId = teamId,
+                            city = data.travelPlanDto.city,
+                            district = data.travelPlanDto.regionList,
+                            startDate = data.travelPlanDto.startDate,
+                            endDate = data.travelPlanDto.endDate,
+                            hasPet = data.travelPlanDto.hasPet,
+                            hasTransport = data.travelPlanDto.hasTransport,
+                            visitedCountPerDay = data.travelPlanDto.visitCountPerDay
+                        )
+                    }
+                    Log.d("hihihi", "2")
+
+                    viewModel.navToAiCourse()
                 },
                 modifier = Modifier
                     .height(55.dp)

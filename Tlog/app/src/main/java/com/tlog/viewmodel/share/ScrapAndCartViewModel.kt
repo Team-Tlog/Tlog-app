@@ -129,7 +129,7 @@ class ScrapAndCartViewModel @Inject constructor(
     }
 
     fun navToAiCourse() {
-        navigate(Screen.AiCourseInput)
+        navigate(Screen.AiCourseInput())
     }
 }
 

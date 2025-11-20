@@ -71,4 +71,8 @@ class SnsViewModel @Inject constructor(
     fun navToNotification() {
         navigate(Screen.Notification)
     }
+
+    fun navToSnsPostWrite() {
+        navigate(Screen.SnsPostWrite)
+    }
 }

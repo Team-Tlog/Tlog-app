@@ -31,13 +31,13 @@ import com.tlog.viewmodel.share.BannerViewModel
 
 @Composable
 fun BannerDetailScreen(
-    title: String,
     bannerId: String,
     viewModel: BannerViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
     val context = LocalContext.current
     val destinations by viewModel.destinations.collectAsState()
+    val title by viewModel.title.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getBannerDetail(bannerId)

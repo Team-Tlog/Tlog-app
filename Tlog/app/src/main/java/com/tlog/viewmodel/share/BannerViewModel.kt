@@ -30,12 +30,17 @@ class BannerViewModel @Inject constructor(
     private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
     val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
 
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
+
     fun getBannerDetail(bannerId: String) {
         launchSafeCall(
             action = {
                 val response = repository.getBannerDetail(bannerId)
 
-                _destinations.value = response.data.content
+                _destinations.value = response.data.destinations.content
+                _title.value = response.data.title
             }
         )
     }

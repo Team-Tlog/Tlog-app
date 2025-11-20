@@ -12,7 +12,6 @@ import androidx.navigation.NavController
 import androidx.compose.ui.Alignment
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tlog.ui.component.travel.DayToggleBar
-import com.tlog.ui.component.travel.TravelingCourse
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.travel.MyTravelingCourseViewModel
 
@@ -43,7 +42,7 @@ fun MyTravelingCourseScreen(
                 item {
                     Spacer(modifier = Modifier.height(103.dp))
                     Text(
-                        text = "AI추천 코스결과",
+                        text = "여행중인 코스",
                         style = BodyTitle,
                         modifier = Modifier
                             .fillMaxWidth()

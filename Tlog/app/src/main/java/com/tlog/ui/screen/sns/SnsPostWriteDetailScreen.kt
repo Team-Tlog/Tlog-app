@@ -1,7 +1,7 @@
 package com.tlog.ui.screen.sns
 
-import android.util.Log
-import androidx.compose.foundation.Image
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,32 +26,58 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.tlog.data.model.sns.TravelCourse
+import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.tlog.data.api.CourseItem
 import com.tlog.ui.component.share.TextButtonTopBar
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
+import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.sns.SnsPostViewModel
 
-@Preview(showBackground = true)
 @Composable
 fun SnsPostWriteDetailScreen(
-    viewModel: SnsPostViewModel = viewModel()
+    viewModel: SnsPostViewModel,
+    navController: NavController
 ) {
+    val context = LocalContext.current
+
     val courseIdx = viewModel.selectedCourse.value
-    val selectedCourse = viewModel.recentTravelCourses.value[courseIdx]
+    val recentCourses by viewModel.recentTravelCourses.collectAsState()
+
+    val selectedCourse = recentCourses.getOrNull(courseIdx)
+
+    LaunchedEffect(Unit) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                is UiEvent.Navigate -> {
+                    navController.navigate(event.target) {
+                        if (event.clearBackStack) popUpTo(navController.graph.id) { inclusive = true }
+                        launchSingleTop = true
+                        restoreState = false
+                    }
+                }
+                is UiEvent.ShowToast -> Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                is UiEvent.PopBackStack -> {
+                    navController.popBackStack()
+                }
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -64,17 +90,22 @@ fun SnsPostWriteDetailScreen(
             title = "게시글 작성",
             btnText = "완료",
             btnClickable = {
-                Log.d("게시글 작성 완료", "my click!!")
+                viewModel.postWrite(context)
+
+                Toast.makeText(context, "게시물 등록 성공", Toast.LENGTH_SHORT).show()
+
+                navController.popBackStack()
+                navController.popBackStack()
             }
         )
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        SelectedCourse(selectedCourse)
+        SelectedCourse(selectedCourse!!)
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        CoursePictures(selectedCourse)
+        CoursePictures(viewModel.selectImages.value)
 
         HorizontalDivider(
             color = Color(0xFFF4F4F4),
@@ -121,7 +152,7 @@ fun SnsPostWriteDetailScreen(
 
 @Composable
 fun SelectedCourse(
-    selectedCourse: TravelCourse
+    selectedCourse: CourseItem
 ) {
     Row(
         modifier = Modifier
@@ -136,8 +167,8 @@ fun SelectedCourse(
                 .clip(RoundedCornerShape(15.dp))
                 .background(MainColor) // 크기 체크 용임
         ) {
-            Image(
-                painter = painterResource(selectedCourse.pictureList.first()),
+            AsyncImage(
+                model = selectedCourse.dates.first().destinationGroups.first().destinations.first().imageUrl,
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()
@@ -145,7 +176,7 @@ fun SelectedCourse(
         }
 
         Text(
-            text = selectedCourse.city,
+            text = selectedCourse.dates.first().destinationGroups.first().destinations.first().city,
             style = Body1Regular
         )
     }
@@ -153,7 +184,7 @@ fun SelectedCourse(
 
 @Composable
 fun CoursePictures(
-    selectedCourse: TravelCourse
+    pictureList: List<Uri>
 ) {
     LazyRow(
         modifier = Modifier
@@ -162,7 +193,7 @@ fun CoursePictures(
         horizontalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         items(
-            count = selectedCourse.pictureList.size,
+            count = pictureList.size,
             key = { idx -> idx } // pictureList가 삭제되거나 수정되지 않음 -> idx를 키로 사용해도 무관
         ) { idx ->
             Box(
@@ -170,8 +201,8 @@ fun CoursePictures(
                     .width(94.dp)
                     .height(105.dp)
             ) {
-                Image(
-                    painter = painterResource(selectedCourse.pictureList[idx]),
+                AsyncImage(
+                    model =pictureList[idx],
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize(),

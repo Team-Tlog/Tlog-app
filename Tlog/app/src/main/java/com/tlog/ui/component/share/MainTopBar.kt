@@ -26,11 +26,12 @@ import com.tlog.ui.theme.Logo
 @Composable
 fun MainTopBar(
     searchIconClickable: () -> Unit,
-    notificationIconClickable: () -> Unit
+    notificationIconClickable: () -> Unit,
+    isWrite: Boolean = false,
+    writeIconClickable: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
-            .fillMaxWidth()
             .background(Color.White)
             .height(42.dp + WindowInsets.statusBars.asPaddingValues().calculateTopPadding())
             .windowInsetsPadding(WindowInsets.statusBars)
@@ -71,6 +72,19 @@ fun MainTopBar(
                     modifier = Modifier.size(40.dp),
                     tint = Color.Black
                 )
+            }
+
+            if (isWrite) {
+                IconButton(onClick = {
+                    writeIconClickable()
+                }) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_review_write),
+                        contentDescription = "게시글 작성",
+                        modifier = Modifier.size(25.dp),
+                        tint = Color.Black
+                    )
+                }
             }
         }
     }

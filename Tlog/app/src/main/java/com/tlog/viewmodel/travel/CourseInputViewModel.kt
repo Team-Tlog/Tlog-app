@@ -116,8 +116,32 @@ class CourseInputViewModel @Inject constructor(
         )
     }
 
-    fun navToAiCourseSelectCart() {
-        navigate(Screen.AiCourseSelectCart)
+    fun navToAiCourseSelectCart(isTeam: Boolean) {
+        navigate(Screen.AiCourseSelectCart(isTeam))
     }
 
+    fun setSelectedInfo(
+        city: String,
+        district: List<String>,
+        startDate: String,
+        endDate: String,
+        hasPet: Boolean,
+        hasTransport: Boolean,
+        visitedCountPerDay: Map<String, Int>
+    ) {
+        val travelCountByDate = visitedCountPerDay.toSortedMap().map {
+            LocalDate.parse(startDate).plusDays(it.key.toLong() - 1L) to it.value
+        }.toMap()
+
+
+        _city.value = city
+        _startDate.value = LocalDate.parse(startDate)
+        _endDate.value = LocalDate.parse(endDate)
+        _hasPet.value = hasPet
+        _hasCar.value = hasTransport
+        _travelCountByDate.value = travelCountByDate
+        _checkedDistrict.value = district.map { RegionCode.toRegionNameOrNull(it.toInt()) }.toSet()
+
+
+    }
 }

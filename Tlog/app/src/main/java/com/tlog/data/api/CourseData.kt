@@ -14,7 +14,7 @@ data class UserCourseResponse(
 
 
 data class DateGroup(
-    val destinationGroups: List<DestinationGroup>
+    val destinationGroups: List<Destinations>
 )
 
 data class DestinationGroup(

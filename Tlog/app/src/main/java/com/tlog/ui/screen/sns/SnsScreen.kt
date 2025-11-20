@@ -1,6 +1,8 @@
 package com.tlog.ui.screen.sns
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,16 +11,20 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.tlog.R
 import com.tlog.ui.component.sns.PostItem
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
 import com.tlog.ui.navigation.Screen
+import com.tlog.ui.style.Body1Bold
 import com.tlog.viewmodel.sns.SnsViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
@@ -29,6 +35,8 @@ fun SnsScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
+    val followingList = viewModel.followingList.collectAsState().value
+    val postList = viewModel.postList.collectAsState().value
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -47,9 +55,6 @@ fun SnsScreen(
     }
 
 
-    val followingList = viewModel.followingList.collectAsState().value
-    val postList = viewModel.postList.collectAsState().value
-
     Scaffold(
         topBar = {
             MainTopBar(
@@ -58,6 +63,10 @@ fun SnsScreen(
                 },
                 notificationIconClickable = {
                     viewModel.navToNotification()
+                },
+                isWrite = true,
+                writeIconClickable = {
+                    viewModel.navToSnsPostWrite()
                 }
             )
         },
@@ -83,30 +92,56 @@ fun SnsScreen(
                 .fillMaxWidth()
                 .padding(innerPadding)
         ) {
-            postList.let { postList ->
-                LazyColumn(
+            Log.d("postList", postList.size.toString())
+            if (postList.isEmpty()) {
+                Column(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.White)
+                        .align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(
-                        items = postList,
-                        key = { post -> post.postId }
-                    ) { post ->
-                        PostItem(
-                            post = post,
-                            isFollowing = followingList.contains(post.authorId),
-                            clickUser = { userId ->
-                                viewModel.navToSnsMyPage(userId)
-                            },
-                            courseClick = { postId ->
-                                viewModel.navToSnsPostDetail(postId)
-                            },
-                            followClick = {
-                                viewModel.followUser(post.authorId)
-                            }
-                        )
+                    Spacer(modifier = Modifier.height(30.dp))
 
+                    Image(
+                        painter = painterResource(id = R.drawable.character_error),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(150.dp)
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Text(
+                        text = "게시물이 없습니다.",
+                        style = Body1Bold
+                    )
+
+                }
+            } else {
+                postList.let { postList ->
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.White)
+                    ) {
+                        items(
+                            items = postList,
+                            key = { post -> post.postId }
+                        ) { post ->
+                            PostItem(
+                                post = post,
+                                isFollowing = followingList.contains(post.authorId),
+                                clickUser = { userId ->
+                                    viewModel.navToSnsMyPage(userId)
+                                },
+                                courseClick = { postId ->
+                                    viewModel.navToSnsPostDetail(postId)
+                                },
+                                followClick = {
+                                    viewModel.followUser(post.authorId)
+                                }
+                            )
+
+                        }
                     }
                 }
             }

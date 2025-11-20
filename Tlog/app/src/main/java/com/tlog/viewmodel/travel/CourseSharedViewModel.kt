@@ -21,10 +21,56 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
     val selectedTravelNames = _selectedTravelNames.asStateFlow()
 
 
+    // TEAM 공유 부분
+    private val _teamId = MutableStateFlow<String>("")
+    val teamId: StateFlow<String> = _teamId.asStateFlow()
+
+    private val _city = MutableStateFlow<String>("")
+    val city: StateFlow<String> = _city.asStateFlow()
+
+    private val _district = MutableStateFlow<List<String>>(emptyList())
+    val district: StateFlow<List<String>> = _district.asStateFlow()
+
+    private val _startDate = MutableStateFlow<String>("")
+    val startDate: StateFlow<String> = _startDate.asStateFlow()
+
+    private val _endDate = MutableStateFlow<String>("")
+    val endDate: StateFlow<String> = _endDate
+
+    private val _hasPet = MutableStateFlow<Boolean>(false)
+    val hasPet: StateFlow<Boolean> = _hasPet.asStateFlow()
+
+    private val _hasTransport = MutableStateFlow<Boolean>(false)
+    val hasTransport: StateFlow<Boolean> = _hasTransport.asStateFlow()
+
+    private val _visitedCountPerDay = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val visitedCountPerDay: StateFlow<Map<String, Int>> = _visitedCountPerDay.asStateFlow()
+
+
+    fun setTeamInfo(
+        teamId: String,
+        city: String,
+        district: List<String>,
+        startDate: String,
+        endDate: String,
+        hasPet: Boolean,
+        hasTransport: Boolean,
+        visitedCountPerDay: Map<String, Int>
+    ) {
+        _teamId.value = teamId
+        _city.value = city
+        _district.value = district
+        _startDate.value = startDate
+        _endDate.value = endDate
+        _hasPet.value = hasPet
+        _hasTransport.value = hasTransport
+        _visitedCountPerDay.value = visitedCountPerDay
+    }
 
     fun setAiTravelMap(map: Map<String, List<AiTravel>>) {
         _aiTravelMap.value = map
     }
+
     fun setAiRequest(request: AiRequest) {
         _aiRequest.value = request
     }

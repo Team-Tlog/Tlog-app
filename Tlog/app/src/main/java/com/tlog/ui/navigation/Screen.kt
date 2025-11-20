@@ -20,7 +20,7 @@ sealed interface Screen {
     data class Restaurant(val latitude: String, val longitude: String): Screen
 
     @Serializable
-    data class BannerDetail(val title: String, val bannerId: String): Screen
+    data class BannerDetail(val bannerId: String): Screen
 
     // Sns
     @Serializable
@@ -44,6 +44,8 @@ sealed interface Screen {
     @Serializable
     data object SnsPostWrite: Screen
 
+    @Serializable
+    data object SnsPostWriteDetail: Screen
 
     // Review
     @Serializable
@@ -129,12 +131,17 @@ sealed interface Screen {
 
     // AI
     @Serializable
-    data object AiCourseSelectCart: Screen
+    data class AiCourseSelectCart(
+        val isTeam: Boolean = false
+    ): Screen
+    @Serializable
+    data class AiCourseInput(
+        val isTeam: Boolean = false
+    ): Screen
 
     @Serializable
-    data object AiCourseInput: Screen
-
-    @Serializable
-    data object AiCourseResult: Screen
+    data class AiCourseResult(
+        val isTeam: Boolean = false
+    ): Screen
 
 }

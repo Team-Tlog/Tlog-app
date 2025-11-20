@@ -34,9 +34,6 @@ class TeamDetailViewModel @Inject constructor(
         return _checkTravelList.contains(travelName)
     }
 
-
-
-
     fun getTeamDetail(teamId: String) {
         launchSafeCall(
             action = {
@@ -44,5 +41,9 @@ class TeamDetailViewModel @Inject constructor(
                 _teamData.value = result.data
             }
         )
+    }
+
+    fun navToAiCourse() {
+        navigate(Screen.AiCourseInput(isTeam = true))
     }
 }

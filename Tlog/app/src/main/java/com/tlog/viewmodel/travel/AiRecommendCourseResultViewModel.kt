@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.travel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.local.CourseIdManager
@@ -112,7 +111,7 @@ class AiRecommendCourseResultViewModel @Inject constructor(
         }
     }
 
-    fun saveCourse() {
+    fun saveCourse(isTeam: Boolean, teamId: String = "") {
         val targetDate = LocalDate.parse(startDate)
         val dailySchedules = List(getDayCount()) { i ->
             DailySchedule(
@@ -132,8 +131,8 @@ class AiRecommendCourseResultViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 repository.saveCourse(
-                    ownerId = userId,
-                    ownerType = "USER",
+                    ownerId = if (isTeam) teamId else userId,
+                    ownerType = if (isTeam) "TEAM" else "USER",
                     courseSaveRequest = courseSave
                 )
             },

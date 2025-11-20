@@ -56,10 +56,25 @@ import java.time.temporal.ChronoUnit
 @Composable
 fun CourseInputScreen(
     viewModel: CourseInputViewModel = hiltViewModel(),
+    isTeam: Boolean,
     navController: NavController,
     sharedViewModel: CourseSharedViewModel
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        if (isTeam) {
+            viewModel.setSelectedInfo(
+                city = sharedViewModel.city.value,
+                district = sharedViewModel.district.value,
+                startDate = sharedViewModel.startDate.value,
+                endDate = sharedViewModel.endDate.value,
+                hasPet = sharedViewModel.hasPet.value,
+                hasTransport = sharedViewModel.hasTransport.value,
+                visitedCountPerDay = sharedViewModel.visitedCountPerDay.value
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -253,7 +268,7 @@ fun CourseInputScreen(
                     text = "다음",
                     onClick = {
                         sharedViewModel.setAiRequest(viewModel.getAiRequest())
-                        viewModel.navToAiCourseSelectCart()
+                        viewModel.navToAiCourseSelectCart(isTeam)
                     },
                     modifier = Modifier
                         .height(55.dp)
