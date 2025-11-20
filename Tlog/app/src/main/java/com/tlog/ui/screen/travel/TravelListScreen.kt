@@ -26,6 +26,7 @@ import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
 import com.tlog.ui.component.travel.DestinationCard
 import com.tlog.ui.style.BodyTitle
+import com.tlog.ui.theme.Logo
 import com.tlog.viewmodel.travel.TravelListViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import androidx.compose.runtime.snapshotFlow
@@ -108,11 +109,11 @@ fun TravelListScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(36.dp)
-                                    .clip(RoundedCornerShape(18.dp))
-                                    .background(Color.LightGray)
+                            Icon(
+                                painter = painterResource(id = Logo),
+                                contentDescription = "Tlog 로고",
+                                tint = Color.Unspecified,
+                                modifier = Modifier.size(36.dp)
                             )
 
                             Row {

@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tlog.R
+import com.tlog.ui.theme.Logo
 
 
 @Composable
@@ -39,8 +40,9 @@ fun TravelInfoTopBar(
                 .padding(top = topBarPadding)
         ) {
             Icon(
-                painter = painterResource(R.drawable.test_logo),
-                contentDescription = "메인 로고",
+                painter = painterResource(Logo),
+                contentDescription = "Tlog 로고",
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(38.dp)
             )

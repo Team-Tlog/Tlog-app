@@ -4,3 +4,4 @@ import com.tlog.R
 
 // Default Images
 val DefaultImage = R.drawable.default_image
+val Logo = R.drawable.logo
