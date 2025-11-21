@@ -144,7 +144,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = teamData.tbtiString,
+                    text = teamData.members.firstOrNull()?.tbtiString ?: "SONA", //teamData.tbtiString,
                     style = BodyTitle,
                     color = Color.White
                 )
@@ -292,7 +292,7 @@ fun BigDesign(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = teamData.tbtiString,
+                    text = teamData.members.firstOrNull()?.tbtiString ?: "SONA", //teamData.tbtiString,
                     style = BodyTitle,
                     color = Color.White
                 )
