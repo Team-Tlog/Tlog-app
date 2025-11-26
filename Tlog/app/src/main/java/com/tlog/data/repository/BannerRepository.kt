@@ -1,9 +1,8 @@
 package com.tlog.data.repository
 
 import com.tlog.api.BannerApi
-import com.tlog.data.api.BannerTravelResponse
-import com.tlog.data.api.BaseListResponse
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.travel.BannerTravelResponse
+import com.tlog.data.model.response.base.BaseResponse
 import jakarta.inject.Inject
 
 

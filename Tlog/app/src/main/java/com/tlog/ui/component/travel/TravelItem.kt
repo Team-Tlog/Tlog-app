@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.response.travel.TravelDestination
+import com.tlog.data.model.response.travel.TravelSearch
 import com.tlog.data.model.travel.Scrap
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.data.model.travel.Cart
@@ -337,7 +338,7 @@ fun ScrapTravelItem(
 
 @Composable
 fun SearchTravelItem(
-    travel: SearchTravel,
+    travel: TravelSearch,
     onClick: (String, String) -> Unit
 ) {
     Row(

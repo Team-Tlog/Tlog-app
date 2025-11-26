@@ -5,7 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.data.util.FirebaseImageUploader

@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.travel
 
 import androidx.compose.runtime.State
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.TravelDestinationResponse
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.RegionCode
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.TravelListRepository
@@ -24,8 +24,8 @@ class TravelListViewModel @Inject constructor(
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
 
-    private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
-    val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
+    private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
+    val destinations: StateFlow<List<TravelDestination>> = _destinations.asStateFlow()
 
     val scrapList: State<List<String>> = scrapManager.scrapList
 
@@ -174,15 +174,15 @@ class TravelListViewModel @Inject constructor(
         _destinations.value = emptyList()
     }
 
-    fun searchTravelToCity(city: String) {
-        launchSafeCall(
-            action = {
-                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
-                _destinations.value = response.data.content
-                isLastPage = response.data.last
-            }
-        )
-    }
+//    fun searchTravelToCity(city: String) {
+//        launchSafeCall(
+//            action = {
+//                val response = repository.getSearchToCity(page = page, size = pageSize, sort = sort, query = city)
+//                _destinations.value = response.data.content
+//                isLastPage = response.data.last
+//            }
+//        )
+//    }
 
 
     fun navToTravelInfo(travelId: String) {

@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.api.TravelDetailResponse
+import com.tlog.data.model.response.travel.TravelDetailResponse
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular

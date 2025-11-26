@@ -28,8 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
-import com.tlog.data.api.PopularDestination
+import com.tlog.data.model.response.travel.PopularDestination
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 

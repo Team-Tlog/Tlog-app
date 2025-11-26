@@ -3,8 +3,8 @@ package com.tlog.viewmodel.share
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.api.PopularDestination
-import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.response.travel.PopularDestination
+import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.RecentSearchPreferences
 import com.tlog.data.repository.SearchRepository
 import com.tlog.ui.navigation.Screen
@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
+import com.tlog.data.model.response.travel.TravelSearch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,8 +26,8 @@ class SearchViewModel @Inject constructor(
     private val recentSearchPreferences: RecentSearchPreferences
 ): BaseViewModel() {
 
-    private var _searchResult = mutableStateOf<List<SearchTravel>>(emptyList())
-    val searchResult: State<List<SearchTravel>> = _searchResult
+    private var _searchResult = mutableStateOf<List<TravelSearch>>(emptyList())
+    val searchResult: State<List<TravelSearch>> = _searchResult
 
     // 인기 여행지
     private var _popularDestinations = mutableStateOf<List<PopularDestination>>(emptyList())

@@ -1,5 +1,7 @@
 package com.tlog.data.api
 
+import com.tlog.data.model.response.page.Pageable
+import com.tlog.data.model.response.page.Sort
 import com.tlog.data.model.tbti.TbtiQuestion
 
 data class TbtiQuestionResponse(

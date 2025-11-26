@@ -1,5 +1,6 @@
-package com.tlog.api.retrofit
+package com.tlog.di
 
+import com.tlog.data.remote.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

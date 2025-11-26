@@ -1,8 +1,8 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseListPage
-import com.tlog.data.api.BaseListResponse
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseListPage
+import com.tlog.data.model.response.base.BaseListResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.share.Banner
 import com.tlog.data.model.share.BannerItem
 import com.tlog.data.model.share.LocalGuide

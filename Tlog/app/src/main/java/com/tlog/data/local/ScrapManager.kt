@@ -9,7 +9,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.tlog.api.ScrapApi
-import com.tlog.api.retrofit.TokenProvider
 import com.tlog.data.repository.ScrapRepository
 import dagger.Module
 import dagger.Provides

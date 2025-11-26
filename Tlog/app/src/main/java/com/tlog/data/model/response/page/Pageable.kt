@@ -1,10 +1,4 @@
-package com.tlog.data.api
-
-data class Sort(
-    val empty: Boolean,
-    val sorted: Boolean,
-    val unsorted: Boolean
-)
+package com.tlog.data.model.response.page
 
 data class Pageable(
     val offset: Long,

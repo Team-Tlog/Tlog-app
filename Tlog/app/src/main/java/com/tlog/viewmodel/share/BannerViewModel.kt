@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.State
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.TravelDestinationResponse
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.BannerRepository
 import com.tlog.ui.navigation.Screen
@@ -27,8 +27,8 @@ class BannerViewModel @Inject constructor(
     }
     val scrapList: State<List<String>> = scrapManager.scrapList
 
-    private val _destinations = MutableStateFlow<List<TravelDestinationResponse>>(emptyList())
-    val destinations: StateFlow<List<TravelDestinationResponse>> = _destinations.asStateFlow()
+    private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
+    val destinations: StateFlow<List<TravelDestination>> = _destinations.asStateFlow()
 
     private val _title = MutableStateFlow("")
     val title: StateFlow<String> = _title.asStateFlow()

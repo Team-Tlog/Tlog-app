@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart

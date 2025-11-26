@@ -1,7 +1,6 @@
 package com.tlog.ui.component.travel
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,14 +22,14 @@ import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
-import com.tlog.data.api.TravelDestinationResponse
+import com.tlog.data.model.response.travel.TravelDestination
 
 @Composable
 fun DestinationCard(
-    destination: TravelDestinationResponse,
+    destination: TravelDestination,
     isFavorite: Boolean,
     onFavoriteToggle: (String) -> Unit,
-    onClick: (TravelDestinationResponse) -> Unit
+    onClick: (TravelDestination) -> Unit
 ) {
     Card(
         modifier = Modifier

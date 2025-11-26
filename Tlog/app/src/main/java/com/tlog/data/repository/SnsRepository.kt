@@ -1,8 +1,8 @@
 package com.tlog.data.repository
 
 import com.tlog.api.SnsApi
-import com.tlog.data.api.BaseListResponse
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseListResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.api.CreateCommentRequest
 import com.tlog.data.api.FollowRequest
 import com.tlog.data.api.ReportRequest

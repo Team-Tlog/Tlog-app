@@ -2,7 +2,7 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TeamApi
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.JoinTeamRequest
 import com.tlog.data.api.TeamCreateResponse

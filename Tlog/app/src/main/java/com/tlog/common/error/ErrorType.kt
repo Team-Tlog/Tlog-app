@@ -1,4 +1,4 @@
-package com.tlog.data.model.share
+package com.tlog.common.error
 
 enum class ErrorType(val message: String) {
     // 네트워크

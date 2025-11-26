@@ -2,7 +2,7 @@ package com.tlog.viewmodel.sns
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.api.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository

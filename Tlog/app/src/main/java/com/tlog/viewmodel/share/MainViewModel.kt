@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.share.Banner
 import com.tlog.data.model.share.LocalGuide
 import com.tlog.data.model.share.LocationData

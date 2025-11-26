@@ -1,7 +1,7 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseListResponse
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseListResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.api.ChatMessageHistoryResponse
 import com.tlog.data.api.ChatRoom
 import com.tlog.data.api.CreateCommentRequest
@@ -20,7 +20,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 

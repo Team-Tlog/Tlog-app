@@ -3,12 +3,11 @@ package com.tlog.viewmodel.team
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.api.CreateTeamRequest
 import com.tlog.data.api.TravelPlan
 import com.tlog.data.local.RegionCode
 import com.tlog.data.repository.TeamRepository
-import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject

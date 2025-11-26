@@ -5,20 +5,14 @@ import android.net.Uri
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.R
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.CourseItem
-import com.tlog.data.model.sns.TravelCourse
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.course.CourseItem
 import com.tlog.data.repository.SnsPostRepository
 import com.tlog.data.util.FirebaseImageUploader
-import com.tlog.ui.theme.DefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import java.util.UUID
 
 

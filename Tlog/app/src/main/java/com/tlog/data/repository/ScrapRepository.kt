@@ -1,7 +1,7 @@
 package com.tlog.data.repository
 
 import com.tlog.api.ScrapApi
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.travel.Scrap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody

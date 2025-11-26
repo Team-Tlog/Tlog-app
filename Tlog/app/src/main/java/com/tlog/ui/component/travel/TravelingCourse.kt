@@ -8,9 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.material3.Text
 import com.tlog.ui.style.Body1Bold
-import CityTravelList
-import androidx.compose.foundation.lazy.itemsIndexed
-import com.tlog.data.api.UserCourseDestination
+import com.tlog.data.model.course.UserCourseDestination
 
 @Composable
 fun TravelingCourse(

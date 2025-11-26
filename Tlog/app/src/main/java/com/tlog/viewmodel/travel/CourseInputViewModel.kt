@@ -2,7 +2,7 @@ package com.tlog.viewmodel.travel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.RegionCode
 import com.tlog.data.model.travel.AiRequest
 import com.tlog.data.model.travel.DailyPlan

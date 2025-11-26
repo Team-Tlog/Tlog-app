@@ -6,14 +6,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import coil.network.HttpException
-import com.tlog.data.api.ReviewRequest
+import com.tlog.data.model.request.review.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import java.util.UUID
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.ui.navigation.Screen
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async

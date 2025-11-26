@@ -1,21 +1,14 @@
 package com.tlog.viewmodel.beginning
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.LoginApi
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.FcmTokenBody
-import com.tlog.data.api.RegisterRequest
-import com.tlog.data.api.UserProfileDto
-import com.tlog.data.local.UserPreferences
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.repository.TbtiRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.launch
 
 
 @HiltViewModel

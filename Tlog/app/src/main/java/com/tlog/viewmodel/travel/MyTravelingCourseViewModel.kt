@@ -1,8 +1,7 @@
 package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.local.CourseIdManager
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.travel.AiTravel
 import com.tlog.data.model.travel.CourseDailySchedule
 import com.tlog.data.repository.MyTravelingCourseRepository

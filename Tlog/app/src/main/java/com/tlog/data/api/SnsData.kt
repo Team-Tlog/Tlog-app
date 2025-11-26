@@ -1,7 +1,7 @@
 package com.tlog.data.api
 
+import com.tlog.data.model.response.base.BaseListPage
 import com.tlog.data.model.sns.Comment
-import retrofit2.http.Body
 
 data class UpdateSnsIdRequest(
     val snsId: String

@@ -1,7 +1,7 @@
 package com.tlog.data.repository
 
 import com.tlog.api.RestaurantApi
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.restaurant.Restaurant
 import javax.inject.Inject
 

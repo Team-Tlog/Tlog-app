@@ -1,7 +1,7 @@
 package com.tlog.data.repository
 
 import com.tlog.api.TbtiApi
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.api.UpdateTbtiResponse
 import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.model.tbti.TbtiQuestion

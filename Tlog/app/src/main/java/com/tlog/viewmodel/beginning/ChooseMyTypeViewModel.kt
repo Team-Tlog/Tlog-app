@@ -2,10 +2,10 @@ package com.tlog.viewmodel.beginning
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.FcmTokenBody
-import com.tlog.data.api.RegisterRequest
-import com.tlog.data.api.UserProfileDto
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.request.auth.FcmTokenRequest
+import com.tlog.data.model.request.auth.RegisterRequest
+import com.tlog.data.dto.UserProfileDto
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.ChooseMyTypeRepository
 import com.tlog.ui.navigation.Screen
@@ -61,7 +61,7 @@ class ChooseMyTypeViewModel @Inject constructor(
                             setCookieHeader,
                             response.body()!!.data.firebaseCustomToken
                         )
-                        repository.setFcmToken(FcmTokenBody(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
+                        repository.setFcmToken(FcmTokenRequest(userId = tokenProvider.getUserId()!!, firebaseToken = userPreferences.getFcmToken()!!))
 
 
                         showToast("회원가입 성공")

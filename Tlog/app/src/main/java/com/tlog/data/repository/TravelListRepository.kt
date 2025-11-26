@@ -2,9 +2,9 @@ package com.tlog.data.repository
 
 import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.SearchResponse
-import com.tlog.data.api.TravelRecommendPagedResponse
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.travel.SearchTravelResponse
+import com.tlog.data.model.response.travel.TravelRecommendPagedResponse
 import jakarta.inject.Inject
 
 class TravelListRepository @Inject constructor(
@@ -27,7 +27,7 @@ class TravelListRepository @Inject constructor(
         )
     }
     
-    suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchResponse> {
+    suspend fun getSearchToCity(page: Int, size: Int, sort: List<String>, query: String): BaseResponse<SearchTravelResponse> {
         return searchRetrofitInstance.searchTravelListByCity(
             page = page,
             size = size,

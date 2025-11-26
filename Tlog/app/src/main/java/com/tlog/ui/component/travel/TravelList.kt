@@ -9,7 +9,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.response.travel.TravelDestination
+import com.tlog.data.model.response.travel.TravelSearch
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.travel.Travel
@@ -130,7 +131,7 @@ fun ScrapTravelList(
 
 @Composable
 fun SearchTravelList(
-    travelList: List<SearchTravel>,
+    travelList: List<TravelSearch>,
     onClick: (String, String) -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {

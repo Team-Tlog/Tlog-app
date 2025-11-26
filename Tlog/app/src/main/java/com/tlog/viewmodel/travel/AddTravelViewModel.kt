@@ -5,8 +5,8 @@ import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import androidx.compose.runtime.State
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.AddTravelRequest
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.request.travel.AddTravelRequest
 import com.tlog.data.model.share.Location
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
