@@ -1,4 +1,4 @@
-package com.tlog.data.model.share
+package com.tlog.common.error
 
 import retrofit2.HttpException
 import java.io.IOException
