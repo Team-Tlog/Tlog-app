@@ -40,14 +40,17 @@ abstract class BaseViewModel : ViewModel() {
     protected suspend inline fun <T> safeCall(
         action: suspend () -> T,
         onSuccess: (T) -> Unit = {},
-        onError: (String) -> Unit = { showToast(it) }
+        onError: (String) -> Unit = { showToast(it) },
+        onHttpError: (HttpException) -> Boolean = { false }
     ) {
         try {
             val result = action() // 추후 바꿉시다~ 이거 사용하는 쪽으로
             onSuccess(result)
         } catch (e: HttpException) {
             Log.d("ERROR!!!", e.message.toString())
-            onError(e.toErrorMessage())
+            if (!onHttpError(e)) {
+                onError(e.toErrorMessage())
+            }
         } catch (e: Exception) {
             Log.d("ERROR!!!", e.message.toString())
             onError(e.toErrorMessage())
@@ -57,13 +60,15 @@ abstract class BaseViewModel : ViewModel() {
     protected fun <T>  launchSafeCall(
         action: suspend () -> (T),
         onSuccess: (T) -> Unit = {},
-        onError: (String) -> Unit = { showToast(it) }
+        onError: (String) -> Unit = { showToast(it) },
+        onHttpError: (HttpException) -> Boolean = { false }
     ) {
         viewModelScope.launch {
             safeCall(
                 action = action,
                 onSuccess = onSuccess,
-                onError = onError
+                onError = onError,
+                onHttpError = onHttpError
             )
         }
     }
