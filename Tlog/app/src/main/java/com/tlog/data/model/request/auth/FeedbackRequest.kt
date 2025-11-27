@@ -1,9 +1,4 @@
-package com.tlog.data.api
-
-
-data class ProfileImageRequest(
-    val imageUrl: String
-)
+package com.tlog.data.model.request.auth
 
 data class FeedbackRequest(
     val title: String,

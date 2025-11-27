@@ -4,8 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.api.TravelPlan
+import com.tlog.data.model.request.team.CreateTeamRequest
+import com.tlog.data.model.request.team.TravelPlanBody
 import com.tlog.data.local.RegionCode
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -113,7 +113,7 @@ class TeamInfoViewModel @Inject constructor(
                     CreateTeamRequest( //data에 팀아이디가 옴
                         name = teamName,
                         creator = safeUserId,
-                        travelPlan = TravelPlan(
+                        travelPlan = TravelPlanBody(
                             city = city.value,
                             regionList = checkedDistrict.value.map {
                                 RegionCode.fromStringOrNull(it).toString()

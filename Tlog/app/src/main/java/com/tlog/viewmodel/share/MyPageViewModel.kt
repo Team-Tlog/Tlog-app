@@ -14,7 +14,7 @@ import java.util.UUID
 import javax.inject.Inject
 import android.net.Uri
 import androidx.core.net.toUri
-import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.request.auth.ProfileImageRequest
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.data.local.ScrapManager

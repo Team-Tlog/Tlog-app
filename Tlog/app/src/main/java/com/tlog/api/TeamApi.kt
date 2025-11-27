@@ -1,9 +1,9 @@
 package com.tlog.api
 
 import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.api.JoinTeamRequest
-import com.tlog.data.api.TeamCreateResponse
+import com.tlog.data.model.request.team.CreateTeamRequest
+import com.tlog.data.model.request.team.JoinTeamRequest
+import com.tlog.data.model.response.team.TeamCreateResponse
 import com.tlog.data.model.team.DetailTeam
 import com.tlog.data.model.team.Team
 import retrofit2.http.Body
