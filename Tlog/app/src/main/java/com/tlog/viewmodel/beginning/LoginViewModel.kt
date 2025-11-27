@@ -25,10 +25,6 @@ class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : BaseViewModel() {
-
-
-
-
     // Kakao Manager 사용
     fun kakaoLogin(context: Context) {
         KakaoLoginManager(context) { token ->
@@ -109,8 +105,6 @@ class LoginViewModel @Inject constructor(
             }
         )
     }
-
-
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
         userPreferences.saveTokensAndUserId(

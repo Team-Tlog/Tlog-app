@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.beginning
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.share.TbtiDescription
@@ -9,6 +7,8 @@ import com.tlog.data.repository.TbtiRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @HiltViewModel
@@ -16,10 +16,8 @@ class TbtiResultViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository,
     tokenProvider: TokenProvider
 ): BaseViewModel() {
-
-
-    private val _tbtiDescription = mutableStateOf<TbtiDescription?>(null)
-    val tbtiDescription: State<TbtiDescription?> = _tbtiDescription
+    private val _tbtiDescription = MutableStateFlow<TbtiDescription?>(null)
+    val tbtiDescription: StateFlow<TbtiDescription?> = _tbtiDescription
 
     private var userId = ""
 

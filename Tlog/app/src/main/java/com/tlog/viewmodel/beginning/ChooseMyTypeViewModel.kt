@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.beginning
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.request.auth.FcmTokenRequest
 import com.tlog.data.model.request.auth.RegisterRequest
@@ -12,6 +10,8 @@ import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
 class ChooseMyTypeViewModel @Inject constructor(
@@ -19,8 +19,8 @@ class ChooseMyTypeViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val tokenProvider: TokenProvider
 ) : BaseViewModel() {
-    private val _selected = mutableStateOf(emptyList<Int>())
-    val selected: State<List<Int>> = _selected
+    private val _selected = MutableStateFlow(emptyList<Int>())
+    val selected: StateFlow<List<Int>> = _selected
 
     fun toggleSelection(idx: Int) {
         _selected.value = if (_selected.value.contains(idx))

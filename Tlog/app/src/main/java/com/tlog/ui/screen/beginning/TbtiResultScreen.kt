@@ -10,6 +10,8 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,10 +51,13 @@ fun TbtiResultScreen(
 
     val context = LocalContext.current
 
+    val tbtiDescription by viewModel.tbtiDescription.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchTbtiDescription(tbtiResult)
+    }
 
+    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -72,7 +77,8 @@ fun TbtiResultScreen(
         }
     }
 
-    viewModel.tbtiDescription.value?.let{ tbtiDescription ->2
+    val description = tbtiDescription
+    if (description != null) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -91,7 +97,7 @@ fun TbtiResultScreen(
 
             AsyncImage(
                 model = try {
-                    Tbti.valueOf(tbtiDescription.tbtiString).icon
+                    Tbti.valueOf(description.tbtiString).icon
                 } catch (e: IllegalArgumentException) {
                     R.drawable.character_error
                 },
@@ -106,13 +112,13 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = tbtiDescription.tbtiString,
+                text = description.tbtiString,
                 fontSize = 40.sp,
                 fontWeight = FontWeight.ExtraBold,
                 fontFamily = MainFont
             )
             Text(
-                text = tbtiDescription.secondName,
+                text = description.secondName,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Normal,
                 fontFamily = MainFont,
@@ -166,7 +172,7 @@ fun TbtiResultScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = tbtiDescription?.description ?: "",
+                text = description.description,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Normal,
                 lineHeight = 20.sp,
@@ -202,7 +208,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = tbtiDescription.preferredTbti,
+                        text = description.preferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -213,7 +219,7 @@ fun TbtiResultScreen(
 
                     AsyncImage(
                         model = try {
-                            Tbti.valueOf(tbtiDescription.preferredTbti).icon
+                            Tbti.valueOf(description.preferredTbti).icon
                         } catch (e: IllegalArgumentException) {
                             R.drawable.character_error
                         },
@@ -242,7 +248,7 @@ fun TbtiResultScreen(
                     Spacer(modifier = Modifier.height(5.dp))
 
                     Text(
-                        text = tbtiDescription.notPreferredTbti,
+                        text = description.notPreferredTbti,
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Medium,
                         fontSize = 18.sp,
@@ -253,7 +259,7 @@ fun TbtiResultScreen(
 
                     AsyncImage(
                         model = try {
-                            Tbti.valueOf(tbtiDescription.notPreferredTbti).icon
+                            Tbti.valueOf(description.notPreferredTbti).icon
                         } catch (e: IllegalArgumentException) {
                             R.drawable.character_error
                         },

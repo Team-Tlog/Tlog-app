@@ -11,6 +11,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import com.tlog.data.model.tbti.TbtiQuestion
 import com.tlog.ui.navigation.Screen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class TbtiTestViewModel @Inject constructor(
@@ -19,8 +21,8 @@ class TbtiTestViewModel @Inject constructor(
 
     private val _questions = mutableStateListOf<TbtiQuestion>()
 
-    private val _currentQuestionIndex = mutableIntStateOf(0)
-    val currentQuestionIndex get() = _currentQuestionIndex
+    private val _currentQuestionIndex = MutableStateFlow(1)
+    val currentQuestionIndex = _currentQuestionIndex.asStateFlow()
 
     val totalQuestions: Int
         get() = _questions.size
@@ -33,17 +35,21 @@ class TbtiTestViewModel @Inject constructor(
     private var _tbtiResult = mutableStateOf("")
     val tbtiResult: State<String> = _tbtiResult
 
-    private val _sValue = mutableIntStateOf(0)
-    val sValue: State<Int> = _sValue
+//    private val _sValue = mutableIntStateOf(0)
+//    private val _eValue = mutableIntStateOf(0)
+//    val eValue: State<Int> get() = _eValue
+//
+//    private val _lValue = mutableIntStateOf(0)
+//    val lValue: State<Int> get() = _lValue
+//
+//    private val _aValue = mutableIntStateOf(0)
+//    val aValue: State<Int> get() = _aValue
 
-    private val _eValue = mutableIntStateOf(0)
-    val eValue: State<Int> get() = _eValue
+    private var sValue = 0
+    private var eValue = 0
+    private var lValue = 0
+    private var aValue = 0
 
-    private val _lValue = mutableIntStateOf(0)
-    val lValue: State<Int> get() = _lValue
-
-    private val _aValue = mutableIntStateOf(0)
-    val aValue: State<Int> get() = _aValue
 
     private val _resultCode = mutableStateOf<String?>(null)
 
@@ -54,10 +60,9 @@ class TbtiTestViewModel @Inject constructor(
     private var alreadyFetchedQuestions = false
 
     // 선택한 답변 인덱스를 저장
-    val selectedAnswers = mutableListOf<Int?>()
-
-
-    val selectedIdx = mutableStateOf<Int?>(null)
+    private val selectedAnswers = mutableListOf<Int?>()
+    private val _selectedIdx = MutableStateFlow<Int?>(null)
+    val selectedIdx = _selectedIdx.asStateFlow()
 
 
     fun fetchAllQuestions() {
@@ -82,9 +87,8 @@ class TbtiTestViewModel @Inject constructor(
         )
     }
 
-
     private fun updateCurrentQuestion() {
-        val index = _currentQuestionIndex.intValue
+        val index = _currentQuestionIndex.value
         if (index in _questions.indices) {
             val questionItem = _questions[index]
             currentQuestion.value = questionItem.content
@@ -95,15 +99,18 @@ class TbtiTestViewModel @Inject constructor(
         }
     }
 
-
     fun onAnswerSelected(index: Int) {
-        selectedIdx.value = index
+        _selectedIdx.value = index
         // 현재 질문 인덱스에 사용자의 선택을 저장
-        if (selectedAnswers.size <= _currentQuestionIndex.intValue) {
+        if (selectedAnswers.size <= _currentQuestionIndex.value) {
             selectedAnswers.add(index)
         } else {
-            selectedAnswers[_currentQuestionIndex.intValue] = index
+            selectedAnswers[_currentQuestionIndex.value] = index
         }
+    }
+
+    fun clearSelectedIdx() {
+        _selectedIdx.value = null
     }
 
     fun calculateResultCode(
@@ -137,12 +144,12 @@ class TbtiTestViewModel @Inject constructor(
         _resultCode.value = resultCode
         _resultIntCode.intValue = resultIntCode.toInt()
 
-        _sValue.intValue = traitScores["RISK_TAKING"] ?: 0
-        _eValue.intValue = traitScores["LOCATION_PREFERENCE"] ?: 0
-        _lValue.intValue = traitScores["PLANNING_STYLE"] ?: 0
-        _aValue.intValue = traitScores["ACTIVITY_LEVEL"] ?: 0
+        sValue = traitScores["RISK_TAKING"] ?: 0
+        eValue = traitScores["LOCATION_PREFERENCE"] ?: 0
+        lValue = traitScores["PLANNING_STYLE"] ?: 0
+        aValue = traitScores["ACTIVITY_LEVEL"] ?: 0
 
-        val resultList = listOf(_sValue.intValue.toString(), _eValue.intValue.toString(), _lValue.intValue.toString(), _aValue.intValue.toString())
+        val resultList = listOf(sValue.toString(), eValue.toString(), lValue.toString(), aValue.toString())
         var retResultCode = ""
 
         resultList.forEachIndexed { idx, result ->
@@ -162,7 +169,7 @@ class TbtiTestViewModel @Inject constructor(
     }
 
     fun getIntCode(): Int {
-        return "${_sValue.intValue}${_eValue.intValue}${_lValue.intValue}${_aValue.intValue}".toInt()
+        return "${sValue}${eValue}${lValue}${aValue}".toInt()
     }
 
     fun getSRResultCode(
@@ -184,11 +191,9 @@ class TbtiTestViewModel @Inject constructor(
         return resultCode.toString()
     }
 
-
-
     fun moveToNextQuestion() {
-        if (_currentQuestionIndex.intValue < _questions.size - 1) {
-            _currentQuestionIndex.intValue++
+        if (_currentQuestionIndex.value < _questions.size - 1) {
+            _currentQuestionIndex.value++
             updateCurrentQuestion()
         } else {
             // 마지막 질문까지 답변했으면 결과 계산
@@ -207,10 +212,10 @@ class TbtiTestViewModel @Inject constructor(
             _tbtiResult.value = calculateResultCode(userSelections, categoryInitial)
             navigate(Screen.TbtiResult(
                 _tbtiResult.value,
-                sValue.value.toString(),
-                eValue.value.toString(),
-                lValue.value.toString(),
-                aValue.value.toString()
+                sValue.toString(),
+                eValue.toString(),
+                lValue.toString(),
+                aValue.toString()
             ), true)
         }
     }
