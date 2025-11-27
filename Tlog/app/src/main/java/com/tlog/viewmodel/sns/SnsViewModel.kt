@@ -34,9 +34,6 @@ class SnsViewModel @Inject constructor(
         getSnsPost()
     }
 
-
-
-
     fun getSnsPost() {
         launchSafeCall(
             action = {

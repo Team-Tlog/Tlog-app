@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -33,7 +32,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -44,10 +42,9 @@ import com.tlog.ui.theme.MainFont
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
-import com.tlog.R
+import com.tlog.data.model.team.ChatMessageDto
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.viewmodel.sns.MemberProfile
-import kotlinx.coroutines.flow.distinctUntilChanged
+import com.tlog.data.model.team.MemberProfile
 import com.tlog.ui.component.sns.ChatInputBox
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -105,7 +102,7 @@ fun SNSChattingScreen(
     }
 
     // 날짜별로 그룹화된 메시지 (날짜별로 구분하기 위해)
-    data class MessageItem(val date: String?, val message: com.tlog.viewmodel.sns.ChatMessageDto?)
+    data class MessageItem(val date: String?, val message: ChatMessageDto?)
 
     val messageItems = remember(allMessages) {
         val items = mutableListOf<MessageItem>()

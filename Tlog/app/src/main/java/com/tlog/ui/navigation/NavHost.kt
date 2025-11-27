@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.team.MemberProfile
 import com.tlog.ui.screen.beginning.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
@@ -237,9 +238,9 @@ fun NavHost(
             val membersJson = backStackEntry.arguments?.getString("membersJson")
 
             // JSON 파싱
-            val members: List<com.tlog.viewmodel.sns.MemberProfile> = try {
+            val members: List<MemberProfile> = try {
                 if (membersJson != null && membersJson != "null") {
-                    val type = object : TypeToken<List<com.tlog.viewmodel.sns.MemberProfile>>() {}.type
+                    val type = object : TypeToken<List<MemberProfile>>() {}.type
                     Gson().fromJson(membersJson, type) ?: emptyList()
                 } else {
                     emptyList()

@@ -95,6 +95,10 @@ fun SnsPostWriteScreen(
 
     val recentTravelCourses by viewModel.recentTravelCourses.collectAsState()
 
+    // viewModel
+    val selectedCourse by viewModel.selectedCourse.collectAsState()
+    val selectImages by viewModel.selectImages.collectAsState()
+
     // 스크린 시작 시 1번만 실행 (갤러리 접근)
     LaunchedEffect(permissionState.status.isGranted) {
         if (permissionState.status.isGranted) {
@@ -139,24 +143,24 @@ fun SnsPostWriteScreen(
                 navController.navigate(Screen.SnsPostWriteDetail)
             }
         )
-
         Spacer(modifier = Modifier.height(16.dp))
 
         RecentTravelCourseGroup( // 최근 다녀온 코스
             courses = recentTravelCourses,
             selectedClick = { viewModel.updateSelectedCourse(it) },
-            selectedCourse = viewModel.selectedCourse.value,
+            selectedCourse = selectedCourse,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
         )
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        SelectedImageView(viewModel) // 선택된 이미지 보여주는 부분
+        SelectedImageView(selectImages) // 선택된 이미지 보여주는 부분
 
         GalleryImageView( // 갤러리 사진 보여주는 부분
             images = images,
-            viewModel = viewModel,
+            updateSelectImages = { viewModel.updateSelectImages(it) },
+            selectImagesIn = { selectImages.contains(it) },
             modifier = Modifier
                 .fillMaxSize())
 
@@ -166,17 +170,19 @@ fun SnsPostWriteScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SelectedImageView(viewModel: SnsPostViewModel) { // 비율만 맞으면 SNS와 써도 될 듯?
+fun SelectedImageView(
+    selectImages: List<Uri>
+) { // 비율만 맞으면 SNS와 써도 될 듯?
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(LocalConfiguration.current.screenWidthDp.dp) // max width 값 (정사각형 만들기 위함) -> 일단 피그마는 height가 더 길지만 정사각형으로 처리했음
             .background(Color(0xFFD9D9D9))
     ) {
-        val size = viewModel.selectImages.value.size
-        if (viewModel.selectImages.value.isNotEmpty()) {
+        val size = selectImages.size
+        if (selectImages.isNotEmpty()) {
             val pagerState =
-                rememberPagerState(pageCount = { viewModel.selectImages.value.size })
+                rememberPagerState(pageCount = { selectImages.size })
 
             HorizontalPager(
                 state = pagerState,
@@ -189,7 +195,7 @@ fun SelectedImageView(viewModel: SnsPostViewModel) { // 비율만 맞으면 SNS�
                 ) {
 
                     AsyncImage(
-                        model = viewModel.selectImages.value[page],
+                        model = selectImages[page],
                         contentDescription = "선택한 사진",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
@@ -212,7 +218,8 @@ fun SelectedImageView(viewModel: SnsPostViewModel) { // 비율만 맞으면 SNS�
 
 @Composable
 fun GalleryImageView(
-    viewModel: SnsPostViewModel,
+    selectImagesIn: (Uri) -> Boolean,
+    updateSelectImages: (Uri) -> Unit,
     images: List<Uri>,
     modifier: Modifier = Modifier
 ) {
@@ -228,7 +235,7 @@ fun GalleryImageView(
         if (success) {
             capturedImageUri = photoUri
             cameraImages = listOf(photoUri!!) + cameraImages
-            viewModel.updateSelectImages(photoUri!!)
+            updateSelectImages(photoUri!!)
         }
     }
 
@@ -274,12 +281,12 @@ fun GalleryImageView(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .clickable {
-                        viewModel.updateSelectImages(uri)
+                        updateSelectImages(uri)
                     }
                     .border(
                         2.dp,
                         shape = RectangleShape,
-                        color = if (viewModel.selectImagesIn(uri)) MainColor else Color.Unspecified
+                        color = if (selectImagesIn(uri)) MainColor else Color.Unspecified
                     )
             )
         }
@@ -291,12 +298,12 @@ fun GalleryImageView(
                 modifier = Modifier
                     .aspectRatio(1f)
                     .clickable {
-                        viewModel.updateSelectImages(uri)
+                        updateSelectImages(uri)
                     }
                     .border(
                         2.dp,
                         shape = RectangleShape,
-                        color = if (viewModel.selectImagesIn(uri)) MainColor else Color.Unspecified
+                        color = if (selectImagesIn(uri)) MainColor else Color.Unspecified
                     )
             )
         }

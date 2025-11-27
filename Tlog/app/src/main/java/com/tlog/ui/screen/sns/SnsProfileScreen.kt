@@ -28,6 +28,7 @@ import com.tlog.R
 import com.tlog.ui.theme.MainColor
 import com.tlog.viewmodel.sns.SnsMyPageViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import com.tlog.data.model.response.sns.SnsPostPreview
@@ -44,12 +45,17 @@ fun SnsProfileScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val followingList = viewModel.followingList.collectAsState().value
 
+    val followingList = viewModel.followingList.collectAsState().value
+    val userProfile by viewModel.userProfileInfo.collectAsState()
+
+    val nowUserProfile = userProfile
 
     LaunchedEffect(Unit) {
         viewModel.getUserProfile(userId)
+    }
 
+    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -65,7 +71,6 @@ fun SnsProfileScreen(
         }
     }
 
-    val userProfile = viewModel.userProfileInfo.collectAsState()
 
     Column(
         modifier = Modifier
@@ -73,7 +78,7 @@ fun SnsProfileScreen(
             .windowInsetsPadding(WindowInsets.systemBars)
             .background(Color.White)
     ) {
-        userProfile.value?.let { profile ->
+        if (nowUserProfile != null) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -82,7 +87,7 @@ fun SnsProfileScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = profile.username,
+                    text = nowUserProfile.username,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -104,11 +109,11 @@ fun SnsProfileScreen(
                 }
             }
 
-            ProfileSection(profile)
+            ProfileSection(nowUserProfile)
 
             Spacer(modifier = Modifier.height(15.dp))
 
-            if (userId == viewModel.userId.value) {
+            if (viewModel.getIsMyProfile(userId)) {
                 ActionButtons()
             } else {
                 ActionButtons(
@@ -123,7 +128,7 @@ fun SnsProfileScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             PostsGrid(
-                postList = profile.posts.content,
+                postList = nowUserProfile.posts.content,
                 onClick = { postId ->
                     viewModel.navToSnsPostDetail(postId)
                 }

@@ -25,10 +25,9 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import com.tlog.R
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.sns.ChatMessageDto
+import com.tlog.data.model.team.ChatMessageDto
 
 @Composable
 fun ChatBubble(

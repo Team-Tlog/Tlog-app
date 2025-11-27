@@ -55,7 +55,6 @@ fun SnsScreen(
         }
     }
 
-
     Scaffold(
         topBar = {
             MainTopBar(
@@ -135,5 +134,4 @@ fun SnsScreen(
             }
         }
     }
-
 }

@@ -9,7 +9,7 @@ data class CoursesDestination(
     val city: String,
     val location: Location,
     val reviewCount: Int,
-    val averageRating: Int,
+    val averageRating: Double,
     val imageUrl: String?,
     val description: String,
     val tagCountList: List<TagCount>?

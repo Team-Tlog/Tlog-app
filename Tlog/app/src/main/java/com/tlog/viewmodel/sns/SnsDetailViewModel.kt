@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.sns
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.response.sns.SnsPost
 import com.tlog.data.local.FollowManager
@@ -11,6 +9,7 @@ import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 
@@ -23,21 +22,18 @@ class SnsDetailViewModel @Inject constructor(
 
     var userId: String? = ""
 
+    private val _post = MutableStateFlow<SnsPost?>(null)
+    val post: StateFlow<SnsPost?> = _post
+
+    private val _comment = MutableStateFlow("")
+    val comment = _comment.asStateFlow()
+
+    private val _isLike = MutableStateFlow(false)
+    val isLike = _isLike.asStateFlow()
+
     init {
         userId = tokenProvider.getUserId()
     }
-
-
-    private var _post = MutableStateFlow<SnsPost?>(null)
-    val post: StateFlow<SnsPost?> = _post
-
-    private var _comment = mutableStateOf("")
-    val comment: State<String> = _comment
-
-    private val _isLike = mutableStateOf(false)
-    val isLike: State<Boolean> = _isLike
-
-
 
     fun getPostDetail(postId: String) {
         launchSafeCall(

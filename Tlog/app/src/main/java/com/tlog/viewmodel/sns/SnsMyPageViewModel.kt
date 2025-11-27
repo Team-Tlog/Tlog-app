@@ -11,6 +11,7 @@ import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 
@@ -21,20 +22,17 @@ class SnsMyPageViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ): BaseViewModel() {
 
-    private val _userId = mutableStateOf<String?>(null)
-    val userId: State<String?> = _userId
+    private var userId: String? = ""
 
     init {
-        _userId.value = tokenProvider.getUserId()
+        userId = tokenProvider.getUserId()
     }
 
-
     private var _userProfileInfo = MutableStateFlow<SnsUserProfile?>(null)
-    val userProfileInfo: StateFlow<SnsUserProfile?> = _userProfileInfo
+    val userProfileInfo = _userProfileInfo.asStateFlow()
 
-
-
-
+    // 팔로우 매니저
+    val followingList: StateFlow<Set<String>> = followManager.followingList
 
     fun getUserProfile(userId: String) {
         launchSafeCall(
@@ -43,7 +41,6 @@ class SnsMyPageViewModel @Inject constructor(
             }
         )
     }
-
 
     // 페이지가 없음
     fun updateSnsDescription(description: String) {
@@ -54,8 +51,10 @@ class SnsMyPageViewModel @Inject constructor(
         )
     }
 
-    // 팔로우 매니저
-    val followingList: StateFlow<Set<String>> = followManager.followingList
+    fun getIsMyProfile(targetId: String): Boolean {
+        return userId == targetId
+    }
+
 
     fun followUser(toUserId: String) {
         launchSafeCall(

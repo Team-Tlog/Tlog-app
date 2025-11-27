@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import com.google.gson.Gson
-import com.tlog.viewmodel.sns.MemberProfile
+import com.tlog.data.model.team.MemberProfile
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
