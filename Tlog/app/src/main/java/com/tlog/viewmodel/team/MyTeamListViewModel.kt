@@ -1,13 +1,13 @@
 package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.team.Team
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,18 +15,14 @@ class MyTeamListViewModel @Inject constructor(
     private val teamRepository: TeamRepository,
     tokenProvider: TokenProvider,
 ) : BaseViewModel() {
-
-
     private var userId: String? = null
+
+    private val _teams = MutableStateFlow<List<Team>>(emptyList())
+    val teams = _teams.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
     }
-
-
-    private val _teamList = mutableStateOf<List<Team>>(emptyList())
-    val teamsList: State<List<Team>> = _teamList
-
 
     fun fetchTeamsFromServer() {
         launchSafeCall(
@@ -34,7 +30,7 @@ class MyTeamListViewModel @Inject constructor(
                 val safeUserId = userId ?: return@launchSafeCall
                 val result = teamRepository.getTeamList(safeUserId)
 
-                _teamList.value = result.data
+                _teams.value = result.data
             }
         )
     }
@@ -45,12 +41,12 @@ class MyTeamListViewModel @Inject constructor(
                 if (teamLeaderId == userId) {
                     teamRepository.deleteTeam(teamId)
 
-                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    _teams.value = _teams.value.filterNot { it.teamId == teamId }
                     showToast("팀 삭제 성공")
                 } else {
                     teamRepository.leaveTeam(teamId, userId!!)
 
-                    _teamList.value = _teamList.value.filterNot { it.teamId == teamId }
+                    _teams.value = _teams.value.filterNot { it.teamId == teamId }
                     showToast("팀 떠나기 성공")
                 }
             }

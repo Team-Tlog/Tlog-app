@@ -17,6 +17,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +43,8 @@ fun TeamJoinScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
-    val codeError = viewModel.codeError
-    val isCodeValid = viewModel.isCodeValid
+    val codeError by viewModel.codeError.collectAsState()
+    val isCodeValid by viewModel.isCodeValid.collectAsState()
     val textList = viewModel.textList
     val requesterList = viewModel.requesterList
 
@@ -61,8 +63,6 @@ fun TeamJoinScreen(
             }
         }
     }
-
-
 
     Surface(
         modifier = Modifier
@@ -113,8 +113,7 @@ fun TeamJoinScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            if (codeError.value) {
-                LaunchedEffect(key1 = codeError.value) {}
+            if (codeError) {
                 Text(
                     text = "올바른 코드를 입력해주세요.",
                     fontFamily = MainFont,
@@ -133,7 +132,7 @@ fun TeamJoinScreen(
             ) {
                 MainButton(
                     text = "확인",
-                    enabled = isCodeValid.value,
+                    enabled = isCodeValid,
                     onClick = {
                         viewModel.joinTeam()
                     },

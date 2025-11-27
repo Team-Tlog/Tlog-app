@@ -1,16 +1,16 @@
 package com.tlog.viewmodel.team
 
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamNameViewModel @Inject constructor() : BaseViewModel() {
-
-    private var _teamName = mutableStateOf("")
-    val teamName = _teamName
+    private val _teamName = MutableStateFlow("")
+    val teamName = _teamName.asStateFlow()
 
     fun updateTeamName(newTeamName: String) {
         _teamName.value = newTeamName

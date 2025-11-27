@@ -44,6 +44,7 @@ fun TeamDetailScreen(
     val listState = rememberLazyListState()
     var showPopup by remember { mutableStateOf(false) }
     val teamDataState = viewModel.teamData.collectAsState()
+    val checkTravels by viewModel.checkTravels.collectAsState()
 
 
     LaunchedEffect(Unit) {
@@ -308,12 +309,8 @@ fun TeamDetailScreen(
                                 )
                         ),
                         listState = listState,
-                        onClick = { travelName ->
-                            viewModel.updateCheckList(travelName)
-                        },
-                        isChecked = { travelName ->
-                            viewModel.isChecked(travelName)
-                        }
+                        onClick = { viewModel.updateCheckList(it) },
+                        isChecked = { checkTravels.contains(it) }
                     )
                 }
             }

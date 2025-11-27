@@ -24,6 +24,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -59,8 +61,16 @@ fun TeamInfoInputScreen(
 
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+    val city by viewModel.city.collectAsState()
+    val district by viewModel.district.collectAsState()
+    val checkedDistrict by viewModel.checkedDistrict.collectAsState()
+    val hasPet by viewModel.hasPet.collectAsState()
+    val hasCar by viewModel.hasCar.collectAsState()
+    val startDate by viewModel.startDate.collectAsState()
+    val endDate by viewModel.endDate.collectAsState()
+    val travelCountByDate by viewModel.travelCountByDate.collectAsState()
 
+    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -123,7 +133,7 @@ fun TeamInfoInputScreen(
             ) {
                 DropDown(
                     options = RegionData.regionMap.keys.toList(),
-                    value = viewModel.city.value,
+                    value = city,
                     selectedTextStyle = TextStyle(
                         fontFamily = MainFont,
                         fontSize = 13.sp,
@@ -151,10 +161,10 @@ fun TeamInfoInputScreen(
 
                 // 시군구 필드
                 DropDownCheckBox(
-                    city = viewModel.city.value,
+                    city = city,
                     options = listOf("전체") + (RegionData.regionMap[viewModel.city.value] ?: emptyList()),
-                    value = viewModel.district.value,
-                    checkedSet = viewModel.checkedDistrict.value,
+                    value = district,
+                    checkedSet = checkedDistrict,
                     onClick = {
                         if (it in viewModel.city.value + viewModel.checkedDistrict.value)
                             viewModel.deleteCheckedDistrict(it)
@@ -172,7 +182,7 @@ fun TeamInfoInputScreen(
             TwoColumnRadioGroup(
                 title = "반려견 유무",
                 options = listOf("있음", "없음"),
-                selectedOption = if(viewModel.hasPet.value) "있음" else "없음",
+                selectedOption = if(hasPet) "있음" else "없음",
                 onOptionSelected = {
                     viewModel.updatePet(if (it == "있음") true else false)
                 }
@@ -181,7 +191,7 @@ fun TeamInfoInputScreen(
             TwoColumnRadioGroup(
                 title = "이동수단",
                 options = listOf("있음", "없음"),
-                selectedOption = if(viewModel.hasCar.value) "있음" else "없음",
+                selectedOption = if(hasCar) "있음" else "없음",
                 onOptionSelected = {
                     viewModel.updateCar(if (it == "있음") true else false)
                 }
@@ -198,8 +208,8 @@ fun TeamInfoInputScreen(
 
             Calendar(
                 today = LocalDate.now(),
-                startDate = viewModel.startDate.value,
-                endDate = viewModel.endDate.value,
+                startDate = startDate,
+                endDate = endDate,
                 updateDateRange = { viewModel.updateDateRange(it) }
             )
 
@@ -229,7 +239,7 @@ fun TeamInfoInputScreen(
                             viewModel.startDate.value,
                             day
                         ).toInt() + 1,
-                        travelCnt = viewModel.travelCountByDate.value[day] ?: 0,
+                        travelCnt = travelCountByDate[day] ?: 0,
                         minusClick = {date, count -> viewModel.updatePlaceCount(date, count)},
                         plusClick = {date, count -> viewModel.updatePlaceCount(date, count)},
                         date = day

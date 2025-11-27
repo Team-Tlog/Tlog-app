@@ -9,6 +9,8 @@ import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,8 +18,20 @@ class TeamJoinViewModel @Inject constructor(
     private val repository: TeamRepository,
     tokenProvider: TokenProvider
 ) : BaseViewModel() {
-
     private var userId: String? = null
+
+    private val _codeError = MutableStateFlow(false)
+    val codeError = _codeError.asStateFlow()
+    private val _isCodeValid = MutableStateFlow(false)
+    val isCodeValid = _isCodeValid.asStateFlow()
+
+    val textList = mutableStateListOf<MutableState<TextFieldValue>>().apply {
+        repeat(6) {
+            add(mutableStateOf(TextFieldValue("")))
+        }
+    }
+
+    val requesterList = List(6) { FocusRequester() }
 
     init {
         userId = tokenProvider.getUserId()
@@ -37,21 +51,6 @@ class TeamJoinViewModel @Inject constructor(
         )
     }
 
-
-
-
-
-    val codeError = mutableStateOf(false)
-    val isCodeValid = mutableStateOf(false)
-
-    val textList = mutableStateListOf<MutableState<TextFieldValue>>().apply {
-        repeat(6) {
-            add(mutableStateOf(TextFieldValue("")))
-        }
-    }
-
-    val requesterList = List(6) { FocusRequester() }
-
     fun checkCodeValid() {
         val code = textList.joinToString(separator = "") { it.value.text }
 
@@ -67,15 +66,15 @@ class TeamJoinViewModel @Inject constructor(
 
     fun onCodeEntered(code: String) {
         if (code.isEmpty()) {
-            isCodeValid.value = false
-            codeError.value = false
+            _isCodeValid.value = false
+            _codeError.value = false
         }
         else if (validateCode(code)) {
-            isCodeValid.value = true
-            codeError.value = false
+            _isCodeValid.value = true
+            _codeError.value = false
         } else {
-            isCodeValid.value = false
-            codeError.value = true
+            _isCodeValid.value = false
+            _codeError.value = true
         }
     }
 }
