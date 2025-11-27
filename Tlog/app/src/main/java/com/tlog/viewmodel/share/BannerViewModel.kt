@@ -21,7 +21,8 @@ class BannerViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ): BaseViewModel() {
     private var userId: String? = null
-    val scrapList: State<List<String>> = scrapManager.scrapList
+    private val _scraps = MutableStateFlow<List<String>>(emptyList())
+    val scraps = _scraps.asStateFlow()
 
     private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
     val destinations: StateFlow<List<TravelDestination>> = _destinations.asStateFlow()
@@ -48,6 +49,8 @@ class BannerViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 scrapManager.toggleScrap(destinationId)
+
+                _scraps.value = scrapManager.scrapList.value
             }
         )
     }

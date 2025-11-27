@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -39,10 +37,13 @@ fun TravelListScreen(
     city: String? = null,
     navController: NavHostController
 ) {
+    val context = LocalContext.current
+
     val listState = rememberLazyListState()
+
     val selectedCategory by viewModel.selectedCategory.collectAsState()
     val destinations by viewModel.destinations.collectAsState()
-    val context = LocalContext.current
+    val scraps by viewModel.scraps.collectAsState()
 
 
     LaunchedEffect(listState) {
@@ -182,11 +183,9 @@ fun TravelListScreen(
                             .fillMaxWidth()
                             .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                     ) {
-                        val isFavorite = viewModel.scrapList.value.contains(destination.id)
-
                         DestinationCard(
                             destination = destination,
-                            isFavorite = isFavorite,
+                            isFavorite = { scraps.contains(destination.id) },
                             onFavoriteToggle = {
                                 viewModel.toggleScrap(destination.id)
                             },

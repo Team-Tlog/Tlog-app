@@ -60,10 +60,6 @@ class TravelInfoViewModel @Inject constructor(
         navigate(Screen.TravelInfo(travelId))
     }
 
-    fun navToSnsMyPage(userId: String) {
-        navigate(Screen.SnsMyPage(userId))
-    }
-
     fun navToReviewWrite(travelId: String, destinationName: String) {
         navigate(Screen.ReviewWrite(travelId, destinationName))
     }

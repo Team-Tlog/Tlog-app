@@ -127,7 +127,6 @@ class AiRecommendCourseResultViewModel @Inject constructor(
             dailySchedules = dailySchedules
         )
 
-
         launchSafeCall(
             action = {
                 repository.saveCourse(

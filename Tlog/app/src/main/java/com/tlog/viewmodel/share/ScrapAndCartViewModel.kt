@@ -102,10 +102,6 @@ class ScrapAndCartViewModel @Inject constructor(
                 current + travelName
     }
 
-    fun isChecked(travelName: String): Boolean {
-        return _checkedTravelList.value.contains(travelName)
-    }
-
     fun clearChecked() {
         _checkedTravelList.value = emptyList()
     }

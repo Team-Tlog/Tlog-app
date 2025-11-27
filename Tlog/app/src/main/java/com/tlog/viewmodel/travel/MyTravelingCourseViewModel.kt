@@ -70,6 +70,4 @@ class MyTravelingCourseViewModel @Inject constructor(
     fun getDayCount(): Int {
         return _courses.value.size
     }
-
-
 }

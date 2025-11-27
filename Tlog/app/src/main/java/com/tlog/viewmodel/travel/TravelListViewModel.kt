@@ -1,6 +1,5 @@
 package com.tlog.viewmodel.travel
 
-import androidx.compose.runtime.State
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.RegionCode
@@ -11,7 +10,6 @@ import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
@@ -22,22 +20,28 @@ class TravelListViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val _selectedCategory = MutableStateFlow("추천순")
-    val selectedCategory: StateFlow<String> = _selectedCategory.asStateFlow()
+    val selectedCategory = _selectedCategory.asStateFlow()
 
     private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
-    val destinations: StateFlow<List<TravelDestination>> = _destinations.asStateFlow()
+    val destinations = _destinations.asStateFlow()
 
-    val scrapList: State<List<String>> = scrapManager.scrapList
+    private val _scraps = MutableStateFlow<List<String>>(emptyList())
+    val scraps = _scraps.asStateFlow()
 
     private var userId: String? = null
     private var currentCity: String? = null
     private var currentSortType: String? = "RECOMMEND"
+    private var page = 0
+    private val pageSize = 10
+    private val sort = emptyList<String>()
+    private var isLastPage = false
 
 
     init {
         userId = tokenProvider.getUserId()
-    }
 
+        _scraps.value = scrapManager.scrapList.value
+    }
 
     fun initUserIdAndScrapList() {
         launchSafeCall(
@@ -80,16 +84,11 @@ class TravelListViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 scrapManager.toggleScrap(destinationId)
+
+                _scraps.value = scrapManager.scrapList.value
             }
         )
     }
-
-
-
-    private var page = 0
-    private val pageSize = 10
-    private val sort = emptyList<String>()
-    private var isLastPage = false
 
     fun getTravelList(
         city: String,

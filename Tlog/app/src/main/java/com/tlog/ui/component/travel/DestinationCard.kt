@@ -27,7 +27,7 @@ import com.tlog.data.model.response.travel.TravelDestination
 @Composable
 fun DestinationCard(
     destination: TravelDestination,
-    isFavorite: Boolean,
+    isFavorite: () -> Boolean,
     onFavoriteToggle: (String) -> Unit,
     onClick: (TravelDestination) -> Unit
 ) {
@@ -94,15 +94,15 @@ fun DestinationCard(
                     }
 
                     Icon(
-                        painter = painterResource(if(isFavorite) R.drawable.ic_filled_heart else R.drawable.ic_heart),
-                        contentDescription = "스크랩" + if (isFavorite) "됨" else "버튼",
+                        painter = painterResource(if(isFavorite()) R.drawable.ic_filled_heart else R.drawable.ic_heart),
+                        contentDescription = "스크랩" + if (isFavorite()) "됨" else "버튼",
                         modifier = Modifier
                             .size(31.dp)
                             .clickable {
                                 Log.d("스크랩", "hihi")
                                 onFavoriteToggle(destination.id)
                             },
-                        tint = if (isFavorite) Color.Red else Color.Unspecified,
+                        tint = if (isFavorite()) Color.Red else Color.Unspecified,
                     )
                 }
 

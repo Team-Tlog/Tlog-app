@@ -123,7 +123,8 @@ fun CheckedCartItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = travel.imageUrl,
@@ -170,9 +171,9 @@ fun CheckedCartItem(
             Icon(
                 painter =
                     if (isChecked(travel.name))
-                        painterResource(R.drawable.ic_checkbox_checked)
+                        painterResource(R.drawable.ic_filled_checkbox_checked)
                     else
-                        painterResource(R.drawable.ic_checkbox_unchecked),
+                        painterResource(R.drawable.ic_filled_checkbox_unchecked),
                 contentDescription = if (isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
                 tint = Color.Unspecified
             )
