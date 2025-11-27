@@ -24,6 +24,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -60,9 +61,15 @@ fun ReviewWriteScreen(
     travelName: String, // id로 api 호출하기엔 이름만 필요해서 이렇게 하고 등록할 때 id 이용해서 등록하는게 좋을 것 같습니다
     navController: NavHostController
 ) {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     var showHelp by remember { mutableStateOf(false) }
-    val context = LocalContext.current
+
+    val rating by viewModel.rating.collectAsState()
+    val review by viewModel.review.collectAsState()
+    val images by viewModel.images.collectAsState()
+    val hashtag by viewModel.hashTag.collectAsState()
+    val hashTags by viewModel.hashTags.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -116,7 +123,7 @@ fun ReviewWriteScreen(
                 Spacer(modifier = Modifier.height(22.dp))
 
                 StarRating(
-                    rating = viewModel.rating.value,
+                    rating = rating,
                     onStarClicked = {
                         viewModel.updateRating(it)
                         Log.d("starCnt", viewModel.rating.value.toString())
@@ -152,7 +159,7 @@ fun ReviewWriteScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 BottomLineInputField(
-                    value = viewModel.review.value,
+                    value = review,
                     onValueChange = { viewModel.updateReview(it) },
                     placeholder = "이번 여행은 어땠나요?",
                     singleLine = false,
@@ -171,7 +178,7 @@ fun ReviewWriteScreen(
                     }
 
                 PhotoUploadBox(
-                    images = viewModel.imageList.value,
+                    images = images,
                     onAddClick = {
                         imagePickerLauncher.launch("image/*")
                     }
@@ -180,9 +187,9 @@ fun ReviewWriteScreen(
                 Spacer(modifier = Modifier.height(25.dp))
 
                 HashtagInputGroup(
-                    value = viewModel.hashTag.value,
+                    value = hashtag,
                     placeholderText = "입력해주세요",
-                    hashTags = viewModel.hashTags.value,
+                    hashTags = hashTags,
                     onValueChange = { viewModel.updateHashTag(it) },
                     keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(
