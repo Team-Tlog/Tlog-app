@@ -68,5 +68,4 @@ object FirebaseImageUploader {
         val downloadUri = storageRef.downloadUrl.await()
         return@withContext downloadUri.toString()
     }
-
 }

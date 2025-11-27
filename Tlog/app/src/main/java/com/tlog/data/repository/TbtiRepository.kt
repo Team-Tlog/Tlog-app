@@ -27,5 +27,4 @@ class TbtiRepository @Inject constructor(
     suspend fun updateTbti(tbtiValue: String): BaseResponse<UpdateTbtiResponse> {
         return retrofitInstance.updateTbti(tbtiValue.toInt())
     }
-
 }

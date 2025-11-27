@@ -1,4 +1,4 @@
-package com.tlog.ui.component.travel.review
+package com.tlog.ui.component.review
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

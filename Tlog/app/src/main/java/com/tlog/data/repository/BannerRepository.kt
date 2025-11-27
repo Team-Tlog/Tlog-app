@@ -12,7 +12,7 @@ class BannerRepository @Inject constructor(
     suspend fun getBannerDetail(
         bannerId: String,
         page: Int = 0,
-        size: Int = 10
+        size: Int = 10,
     ): BaseResponse<BannerTravelResponse> {
         return retrofitInstance.getBanner(bannerId, page, size)
     }

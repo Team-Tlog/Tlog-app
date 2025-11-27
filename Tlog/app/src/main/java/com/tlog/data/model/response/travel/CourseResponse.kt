@@ -1,4 +1,6 @@
-package com.tlog.data.model.travel
+package com.tlog.data.model.response.travel
+
+import com.tlog.data.model.response.travel.AiTravel
 
 data class CourseResponse(
     val id: String,
@@ -8,9 +10,4 @@ data class CourseResponse(
     val endDate: String,
     val duration: Int,
     val dailySchedules: List<CourseDailySchedule>
-)
-
-data class CourseDailySchedule(
-    val dayNumber: Int,
-    val groupedDestinations: Map<String, List<AiTravel>>
 )

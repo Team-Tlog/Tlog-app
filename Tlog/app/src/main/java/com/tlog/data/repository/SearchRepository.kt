@@ -17,5 +17,4 @@ class SearchRepository @Inject constructor (
     suspend fun getPopularDestinations(): BaseResponse<List<PopularDestination>> {
         return retrofitInstance.getPopularDestinations()
     }
-
 }

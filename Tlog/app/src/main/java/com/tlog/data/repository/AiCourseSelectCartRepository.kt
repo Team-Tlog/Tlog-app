@@ -3,14 +3,14 @@ package com.tlog.data.repository
 import com.tlog.api.AiApi
 import com.tlog.api.UserApi
 import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.travel.AiRequest
-import com.tlog.data.model.travel.AiTravel
+import com.tlog.data.model.request.travel.AiRequest
+import com.tlog.data.model.response.travel.AiTravel
 import com.tlog.data.model.travel.Cart
 import jakarta.inject.Inject
 
 class AiCourseSelectCartRepository @Inject constructor(
     private val userApi: UserApi,
-    private val aiApi: AiApi,
+    private val aiApi: AiApi
 ) {
     suspend fun getUserCart(userId: String): List<Cart> {
         return userApi.getUserCart(userId).data

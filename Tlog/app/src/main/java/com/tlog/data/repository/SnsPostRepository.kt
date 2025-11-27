@@ -19,6 +19,4 @@ class SnsPostRepository@Inject constructor (
     suspend fun postWrite(userId: String, courseId: String, content: String, imageUrls: List<String>): BaseResponse<SnsPost> {
         return snsApi.createPost(PostWriteBody(userId, courseId, content, imageUrls))
     }
-
-
 }

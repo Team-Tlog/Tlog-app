@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ScrapRepository @Inject constructor(
     private val retrofitInstance: ScrapApi
-){
+) {
     suspend fun scrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
         val plainBody: RequestBody = destinationId.toRequestBody("text/plain".toMediaTypeOrNull())
         return retrofitInstance.scrapDestination(userId, plainBody)

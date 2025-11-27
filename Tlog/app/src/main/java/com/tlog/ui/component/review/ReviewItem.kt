@@ -1,6 +1,5 @@
-package com.tlog.ui.component.travel.review
+package com.tlog.ui.component.review
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont

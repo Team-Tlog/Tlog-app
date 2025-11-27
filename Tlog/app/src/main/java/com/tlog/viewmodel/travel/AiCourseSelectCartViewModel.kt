@@ -3,8 +3,8 @@ package com.tlog.viewmodel.travel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.travel.AiRequest
-import com.tlog.data.model.travel.AiTravel
+import com.tlog.data.model.request.travel.AiRequest
+import com.tlog.data.model.response.travel.AiTravel
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.AiCourseSelectCartRepository
 import com.tlog.ui.navigation.Screen

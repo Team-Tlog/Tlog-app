@@ -1,4 +1,4 @@
-package com.tlog.data.model.restaurant
+package com.tlog.data.model.response.restaurant
 
 import com.google.gson.annotations.SerializedName
 
@@ -19,24 +19,4 @@ data class Restaurant(
     val distance: String,
     val images: List<PlaceImage> = emptyList(),
     val blogs: List<BlogPost> = emptyList()
-)
-
-data class PlaceImage(
-    val title: String,
-    val link: String,
-    val thumbnail: String,
-    @SerializedName("sizeheight")
-    val sizeHeight: String,
-    @SerializedName("sizewidth")
-    val sizeWidth: String
-)
-
-data class BlogPost(
-    val title: String,
-    val link: String,
-    val description: String,
-    @SerializedName("bloggername")
-    val bloggerName: String,
-    @SerializedName("postdate")
-    val postDate: String
 )

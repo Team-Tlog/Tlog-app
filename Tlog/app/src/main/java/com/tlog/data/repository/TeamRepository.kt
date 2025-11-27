@@ -42,4 +42,3 @@ class TeamRepository @Inject constructor(
         return result
     }
 }
-

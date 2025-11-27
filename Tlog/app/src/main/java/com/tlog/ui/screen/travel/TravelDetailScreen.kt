@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.tlog.ui.component.travel.review.ReviewSection
+import com.tlog.ui.component.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox

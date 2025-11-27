@@ -2,7 +2,7 @@ package com.tlog.data.repository
 
 import com.tlog.api.AiApi
 import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.travel.CourseResponse
+import com.tlog.data.model.response.travel.CourseResponse
 import javax.inject.Inject
 
 
