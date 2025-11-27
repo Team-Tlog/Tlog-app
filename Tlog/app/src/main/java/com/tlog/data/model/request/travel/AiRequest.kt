@@ -1,4 +1,6 @@
-package com.tlog.data.model.travel
+package com.tlog.data.model.request.travel
+
+import com.tlog.data.model.travel.Cart
 
 data class AiRequest(
     val city: String,

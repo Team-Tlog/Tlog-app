@@ -1,4 +1,4 @@
-package com.tlog.data.model.travel
+package com.tlog.data.model.response.travel
 
 import com.tlog.data.model.share.Location
 import com.tlog.data.model.share.TagCount

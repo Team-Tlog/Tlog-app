@@ -1,4 +1,4 @@
-package com.tlog.data.model.travel
+package com.tlog.data.model.request.travel
 
 data class DailySchedule(
     val dayNumber: Int,
