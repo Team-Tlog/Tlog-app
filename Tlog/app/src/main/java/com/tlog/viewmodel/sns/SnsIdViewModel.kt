@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.sns
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
