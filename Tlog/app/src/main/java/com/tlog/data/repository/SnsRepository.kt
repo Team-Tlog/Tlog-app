@@ -3,16 +3,16 @@ package com.tlog.data.repository
 import com.tlog.api.SnsApi
 import com.tlog.data.model.response.base.BaseListResponse
 import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.api.CreateCommentRequest
-import com.tlog.data.api.FollowRequest
-import com.tlog.data.api.ReportRequest
-import com.tlog.data.api.SnsDescription
-import com.tlog.data.api.SnsPost
-import com.tlog.data.api.SnsPostPreview
-import com.tlog.data.api.SnsUser
-import com.tlog.data.api.SnsUserProfile
-import com.tlog.data.api.StatusMessage
-import com.tlog.data.api.UpdateSnsIdRequest
+import com.tlog.data.model.response.sns.CommentRequest
+import com.tlog.data.model.request.sns.FollowRequest
+import com.tlog.data.model.request.sns.ReportRequest
+import com.tlog.data.model.request.sns.SnsDescription
+import com.tlog.data.model.response.sns.SnsPost
+import com.tlog.data.model.response.sns.SnsPostPreview
+import com.tlog.data.model.response.sns.SnsUser
+import com.tlog.data.model.response.sns.SnsUserProfile
+import com.tlog.data.model.request.sns.StatusMessage
+import com.tlog.data.model.request.sns.UpdateSnsIdRequest
 import com.tlog.data.model.sns.Comment
 import javax.inject.Inject
 
@@ -61,7 +61,7 @@ class SnsRepository @Inject constructor(
         author: String,
         content: String
     ): BaseResponse<Comment>{
-        return retrofitInstance.addComment(postId, CreateCommentRequest(author = author, content = content))
+        return retrofitInstance.addComment(postId, CommentRequest(author = author, content = content))
     }
 
     suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUser>> {

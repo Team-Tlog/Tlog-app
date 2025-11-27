@@ -3,7 +3,7 @@ package com.tlog.viewmodel.sns
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.api.SnsPostPreview
+import com.tlog.data.model.response.sns.SnsPostPreview
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

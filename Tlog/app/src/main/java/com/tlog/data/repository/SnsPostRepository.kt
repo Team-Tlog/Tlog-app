@@ -4,8 +4,8 @@ import com.tlog.api.AiApi
 import com.tlog.api.SnsApi
 import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.response.course.CourseItem
-import com.tlog.data.api.PostWriteBody
-import com.tlog.data.api.SnsPost
+import com.tlog.data.model.request.sns.PostWriteBody
+import com.tlog.data.model.response.sns.SnsPost
 import javax.inject.Inject
 
 class SnsPostRepository@Inject constructor (
