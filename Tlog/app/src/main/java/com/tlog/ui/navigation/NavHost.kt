@@ -33,7 +33,6 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
-import com.tlog.ui.screen.share.ReportToDeveloperScreen
 import com.tlog.ui.screen.share.RestaurantScreen
 import com.tlog.ui.screen.sns.ChatListScreen
 import com.tlog.ui.screen.sns.SNSChattingScreen
@@ -74,9 +73,6 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
     val sharedCourseViewModel: CourseSharedViewModel = hiltViewModel()
     val snsPostWriteViewModel: SnsPostViewModel = hiltViewModel()
-
-
-
 
     NavHost(navController = navController, startDestination = startScreen) {
         // TypeSafety
@@ -209,7 +205,6 @@ fun NavHost(
 
         // MyPage
         composable<Screen.MyPage> { MyPageScreen(navController = navController) }
-        composable<Screen.Report> { ReportToDeveloperScreen() }
         composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
         composable<Screen.Feedback> { FeedbackScreen(navController = navController) }
         composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }

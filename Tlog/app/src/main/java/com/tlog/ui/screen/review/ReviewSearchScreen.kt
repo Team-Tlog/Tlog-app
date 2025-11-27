@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,6 +48,9 @@ fun ReviewSearchScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+
+    val searchResult by viewModel.searchResult.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -82,7 +86,7 @@ fun ReviewSearchScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             SearchBar(
-                value = viewModel.searchText.collectAsState().value,
+                value = searchText,
                 onValueChange = {
                     viewModel.updateSearchText(it)
                     Log.d("SearchText", viewModel.searchText.value)
@@ -97,7 +101,7 @@ fun ReviewSearchScreen(
             )
 
 
-            if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
+            if (searchResult.isEmpty() || !viewModel.checkSearchText()) {
                 Spacer(modifier = Modifier.height(201.dp))
 
                 Box(
@@ -133,7 +137,7 @@ fun ReviewSearchScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 SearchTravelList(
-                    travelList = viewModel.searchResult.value,
+                    travelList = searchResult,
                     onClick = { travelId, travelName ->
                         viewModel.navToReviewWrite(travelId, travelName)
                     }
@@ -141,6 +145,4 @@ fun ReviewSearchScreen(
             }
         }
     }
-
-
 }

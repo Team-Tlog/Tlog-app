@@ -20,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -48,6 +49,9 @@ fun RestaurantScreen(
     viewModel: RestaurantViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+
+    val selectedTab by viewModel.selectedTab.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -81,7 +85,7 @@ fun RestaurantScreen(
                         val strokeWidth = 2.dp.toPx()
                         val y = size.height - strokeWidth / 2
                         drawLine(
-                            color = if (viewModel.selectedTab.value == "식당") MainColor else Color.Transparent,
+                            color = if (selectedTab == "식당") MainColor else Color.Transparent,
                             start = Offset(0f, y),
                             end = Offset(size.width, y),
                             strokeWidth = strokeWidth
@@ -99,8 +103,8 @@ fun RestaurantScreen(
                     text = "식당",
                     fontFamily = MainFont,
                     fontSize = 18.sp,
-                    fontWeight = if (viewModel.selectedTab.value == "식당") FontWeight.Bold else FontWeight.Medium,
-                    color = if (viewModel.selectedTab.value == "식당") MainColor else Color.Gray,
+                    fontWeight = if (selectedTab == "식당") FontWeight.Bold else FontWeight.Medium,
+                    color = if (selectedTab == "식당") MainColor else Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = (11.5).dp)
@@ -114,14 +118,14 @@ fun RestaurantScreen(
                         val strokeWidth = 2.dp.toPx()
                         val y = size.height - strokeWidth / 2
                         drawLine(
-                            color = if (viewModel.selectedTab.value == "카페") MainColor else Color.Transparent,
+                            color = if (selectedTab == "카페") MainColor else Color.Transparent,
                             start = Offset(0f, y),
                             end = Offset(size.width, y),
                             strokeWidth = strokeWidth
                         )
                     }
                     .clickable {
-                        if (viewModel.selectedTab.value != "카페") {
+                        if (selectedTab != "카페") {
                             viewModel.updateSelectedTab("카페")
                             viewModel
                         }
@@ -132,8 +136,8 @@ fun RestaurantScreen(
                     text = "카페",
                     fontSize = 18.sp,
                     fontFamily = MainFont,
-                    fontWeight = if (viewModel.selectedTab.value == "카페") FontWeight.Bold else FontWeight.Medium,
-                    color = if (viewModel.selectedTab.value == "카페") MainColor else Color.Gray,
+                    fontWeight = if (selectedTab == "카페") FontWeight.Bold else FontWeight.Medium,
+                    color = if (selectedTab == "카페") MainColor else Color.Gray,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .padding(horizontal = 10.dp, vertical = (11.5).dp)
@@ -142,7 +146,7 @@ fun RestaurantScreen(
             }
         }
 
-        val restaurants = if (viewModel.selectedTab.value == "식당")
+        val restaurants = if (selectedTab == "식당")
             viewModel.restaurants.collectAsState().value
         else
             viewModel.cafes.collectAsState().value

@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.travel.Scrap
@@ -9,8 +7,9 @@ import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-
 
 @HiltViewModel
 class ScrapAndCartViewModel @Inject constructor(
@@ -19,17 +18,17 @@ class ScrapAndCartViewModel @Inject constructor(
 ): BaseViewModel() {
     private var userId: String = ""
 
-    private var _cartList = mutableStateOf<List<Cart>>(emptyList())
-    val cartList: State<List<Cart>> = _cartList
+    private val _carts = MutableStateFlow<List<Cart>>(emptyList())
+    val carts = _carts.asStateFlow()
 
-    private var _scrapList = mutableStateOf<List<Scrap>>(emptyList())
-    val scrapList: State<List<Scrap>> = _scrapList
+    private val _scraps = MutableStateFlow<List<Scrap>>(emptyList())
+    val scraps = _scraps.asStateFlow()
 
-    private var _selectedTab = mutableStateOf("스크랩")
-    val selectedTab: State<String> = _selectedTab
+    private val _selectedTab = MutableStateFlow("스크랩")
+    val selectedTab = _selectedTab.asStateFlow()
 
-    private var _checkedTravelList = mutableStateOf<List<String>>(emptyList())
-    val checkedTravelList: State<List<String>> = _checkedTravelList
+    private val _checkedTravelList = MutableStateFlow<List<String>>(emptyList())
+    val checkedTravelList = _checkedTravelList.asStateFlow()
 
 
     init {
@@ -41,7 +40,7 @@ class ScrapAndCartViewModel @Inject constructor(
     fun fetchCart() {
         launchSafeCall(
             action = {
-                _cartList.value = repository.getUserCart(userId)
+                _carts.value = repository.getUserCart(userId)
             }
         )
     }
@@ -53,22 +52,20 @@ class ScrapAndCartViewModel @Inject constructor(
     fun fetchScrapList() {
         launchSafeCall(
             action = {
-                _scrapList.value = repository.getUserScrap(userId)
+                _scraps.value = repository.getUserScrap(userId)
             }
         )
     }
-
-
 
     fun deleteSelectedItems(selectedTab: String) {
         launchSafeCall(
             action = {
                 checkedTravelList.value.forEach { destName ->
                     if (selectedTab == "스크랩") {
-                        val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                        val destinationId = scraps.value.find { it.name == destName }?.id ?: return@forEach
                         repository.deleteScrapDestination(userId, destinationId)
                     } else {
-                        val destinationId = cartList.value.find { it.name == destName }?.id ?: return@forEach
+                        val destinationId = carts.value.find { it.name == destName }?.id ?: return@forEach
                         repository.deleteTravelFromCart(userId, destinationId)
                     }
                 }
@@ -82,12 +79,11 @@ class ScrapAndCartViewModel @Inject constructor(
         )
     }
 
-
     fun addSelectedTravelToCart() {
         launchSafeCall(
             action = {
                 checkedTravelList.value.forEach { destName ->
-                    val destinationId = scrapList.value.find { it.name == destName }?.id ?: return@forEach
+                    val destinationId = scraps.value.find { it.name == destName }?.id ?: return@forEach
                     repository.addDestinationToCart(userId, destinationId)
                 }
                 clearChecked()
@@ -96,12 +92,14 @@ class ScrapAndCartViewModel @Inject constructor(
         )
     }
 
-
     fun updateCheckedTravelList(travelName: String) {
-        if (_checkedTravelList.value.contains(travelName))
-            _checkedTravelList.value -= travelName
-        else
-            _checkedTravelList.value += travelName
+        val current = _checkedTravelList.value
+
+        _checkedTravelList.value =
+            if (current.contains(travelName))
+                current - travelName
+            else
+                current + travelName
     }
 
     fun isChecked(travelName: String): Boolean {
@@ -114,9 +112,9 @@ class ScrapAndCartViewModel @Inject constructor(
 
     fun allChecked(selectedTab: String) {
         val allItems = if (selectedTab == "스크랩") {
-            scrapList.value.map { it.name }
+            scraps.value.map { it.name }
         } else {
-            cartList.value.map { it.name }
+            carts.value.map { it.name }
         }
         if (_checkedTravelList.value.size != allItems.size)
             _checkedTravelList.value = allItems
@@ -132,5 +130,3 @@ class ScrapAndCartViewModel @Inject constructor(
         navigate(Screen.AiCourseInput())
     }
 }
-
-

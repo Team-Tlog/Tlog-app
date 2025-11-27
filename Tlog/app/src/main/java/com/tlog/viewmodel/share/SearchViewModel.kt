@@ -1,10 +1,7 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.model.response.travel.PopularDestination
-import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.RecentSearchPreferences
 import com.tlog.data.repository.SearchRepository
 import com.tlog.ui.navigation.Screen
@@ -16,6 +13,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.model.response.travel.TravelSearch
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,21 +23,20 @@ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     private val recentSearchPreferences: RecentSearchPreferences
 ): BaseViewModel() {
-
-    private var _searchResult = mutableStateOf<List<TravelSearch>>(emptyList())
-    val searchResult: State<List<TravelSearch>> = _searchResult
+    private val _searchResult = MutableStateFlow<List<TravelSearch>>(emptyList())
+    val searchResult = _searchResult.asStateFlow()
 
     // 인기 여행지
-    private var _popularDestinations = mutableStateOf<List<PopularDestination>>(emptyList())
-    val popularDestinations: State<List<PopularDestination>> = _popularDestinations
+    private val _popularDestinations = MutableStateFlow<List<PopularDestination>>(emptyList())
+    val popularDestinations = _popularDestinations.asStateFlow()
 
     // 최근 검색어 (최대 5개)
-    private var _recentSearches = mutableStateOf<List<String>>(emptyList())
-    val recentSearches: State<List<String>> = _recentSearches
+    private val _recentSearches = MutableStateFlow<List<String>>(emptyList())
+    val recentSearches = _recentSearches.asStateFlow()
 
     // 검색어
-    private var _searchText = MutableStateFlow("")
-    val searchText = _searchText
+    private val _searchText = MutableStateFlow("")
+    val searchText = _searchText.asStateFlow()
 
     init {
         // 저장된 최근 검색어 로드
@@ -76,7 +73,6 @@ class SearchViewModel @Inject constructor(
             }
         }
     }
-
 
     suspend fun searchTravel(searchText: String) {
         val response = repository.searchTravel(searchText)

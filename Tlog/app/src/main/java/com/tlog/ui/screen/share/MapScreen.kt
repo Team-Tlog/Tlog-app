@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -32,7 +34,8 @@ import java.lang.Exception
 fun MapScreen(
     viewModel: MapViewModel = hiltViewModel()
 ) {
-
+    val carts by viewModel.carts.collectAsState()
+    val scraps by viewModel.scraps.collectAsState()
 
     Column(
         modifier = Modifier
@@ -42,10 +45,10 @@ fun MapScreen(
         TopBar(
             text = "지도에서 보기"
         )
-        if (viewModel.cartList.value != null && viewModel.scrapList.value != null) {
+        if (carts != null && scraps != null) {
             KakaoMapView(
-                cartList = viewModel.cartList.value!!,
-                scrapList = viewModel.scrapList.value!!
+                cartList = carts!!,
+                scrapList = scraps!!
             )
         }
     }
