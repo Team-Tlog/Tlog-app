@@ -109,7 +109,7 @@ fun KakaoMapView(
 
                                 val layer = kakaoMap.labelManager?.getLayer()
 
-                                layer?.addLabel(options);
+                                layer?.addLabel(options)
                             }
                         }
                     }

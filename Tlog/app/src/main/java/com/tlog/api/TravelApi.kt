@@ -1,6 +1,5 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseListResponse
 import com.tlog.data.model.request.travel.AddTravelRequest
 import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.response.review.ReviewsResponse

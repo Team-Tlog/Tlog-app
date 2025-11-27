@@ -21,7 +21,7 @@ fun ReviewStar(
     Row(
         horizontalArrangement = Arrangement.spacedBy(spaceBy)
     ) {
-        for (i in 1..starCnt) {
+        repeat (starCnt) {
             Icon(
                 painter = painterResource(R.drawable.ic_filled_star),
                 contentDescription = "",

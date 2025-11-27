@@ -25,10 +25,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.model.response.travel.TravelSearch
 import com.tlog.data.model.travel.Scrap
 import com.tlog.ui.theme.DefaultImage
@@ -36,9 +34,7 @@ import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
-import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.ScrapAndCartViewModel
 
 
 @Composable

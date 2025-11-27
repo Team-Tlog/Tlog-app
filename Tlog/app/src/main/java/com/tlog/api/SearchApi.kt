@@ -4,7 +4,6 @@ import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.response.page.Pageable
 import com.tlog.data.model.response.travel.PopularDestination
 import com.tlog.data.model.response.travel.SearchTravelResponse
-import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.model.response.travel.TravelSearch
 import retrofit2.http.GET
 import retrofit2.http.Query

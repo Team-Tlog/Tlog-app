@@ -12,7 +12,6 @@ import com.google.firebase.storage.StorageMetadata
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import java.util.UUID
 
 object FirebaseImageUploader {
 

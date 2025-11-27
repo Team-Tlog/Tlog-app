@@ -13,9 +13,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class CourseInputViewModel @Inject constructor(
-    private val tokenProvider: TokenProvider
-): BaseViewModel() {
+class CourseInputViewModel @Inject constructor(): BaseViewModel() {
     private val _city = mutableStateOf("지역")
     val city: State<String> = _city
 

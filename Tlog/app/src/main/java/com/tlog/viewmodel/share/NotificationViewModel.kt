@@ -1,12 +1,10 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import com.tlog.data.model.notification.NotificationItem
 import com.tlog.data.model.notification.TSnsNotificationItem
 import dagger.hilt.android.lifecycle.HiltViewModel

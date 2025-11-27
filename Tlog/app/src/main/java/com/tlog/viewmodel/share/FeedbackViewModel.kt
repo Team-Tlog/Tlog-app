@@ -1,7 +1,5 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.data.model.request.auth.FeedbackRequest
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.viewmodel.base.BaseViewModel
