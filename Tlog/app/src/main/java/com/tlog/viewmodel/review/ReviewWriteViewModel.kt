@@ -2,46 +2,41 @@ package com.tlog.viewmodel.review
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import coil.network.HttpException
-import com.tlog.data.api.ReviewRequest
+import com.tlog.data.model.request.review.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import java.util.UUID
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.ui.navigation.Screen
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @HiltViewModel
 class ReviewWriteViewModel @Inject constructor(
     private val repository: ReviewRepository,
     tokenProvider: TokenProvider
 ): BaseViewModel() {
-
     private var userId: String? = null
+    private val _rating = MutableStateFlow(0)
+    val rating = _rating.asStateFlow()
+    private val _review = MutableStateFlow("")
+    val review = _review.asStateFlow()
+    private val _hashTag = MutableStateFlow("")
+    val hashTag = _hashTag.asStateFlow()
+    private val _hashTags = MutableStateFlow<List<String>>(emptyList())
+    val hashTags = _hashTags.asStateFlow()
+    private val _images = MutableStateFlow<List<Uri>>(emptyList())
+    val images = _images.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
     }
-
-    private var _rating = mutableIntStateOf(0)
-    val rating: State<Int> = _rating
-    private var _review = mutableStateOf("")
-    val review: State<String> = _review
-    private var _hashTag = mutableStateOf("")
-    val hashTag: State<String> = _hashTag
-    private var _hashTags = mutableStateOf<List<String>>(emptyList()) // 테스트용 2개 추후 로직 생성 시 삭제할 것
-    val hashTags: State<List<String>> = _hashTags
-    private var _imageList = mutableStateOf<List<Uri>>(emptyList())
-    val imageList: State<List<Uri>> = _imageList
-
 
     suspend fun imageUpload(context: Context, imageUriList: List<Uri>): List<String> {
         // 이미지 업로드를 병렬로 처리
@@ -77,7 +72,7 @@ class ReviewWriteViewModel @Inject constructor(
 
         launchSafeCall(
             action = {
-                val imageUrlList = imageUpload(context, imageList.value)
+                val imageUrlList = imageUpload(context, images.value)
                 repository.addReview(
                     ReviewRequest(
                         userId = safeUserId,
@@ -96,7 +91,7 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun inputCheck(): Int {
-        if (_rating.intValue == 0)
+        if (_rating.value == 0)
             return 1
         if (_review.value.isEmpty() || _review.value.isBlank())
             return 2
@@ -105,7 +100,7 @@ class ReviewWriteViewModel @Inject constructor(
 
 
     fun updateRating(newRating: Int) {
-        _rating.intValue = newRating
+        _rating.value = newRating
     }
 
     fun updateReview(newReview: String) {
@@ -121,11 +116,11 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun addImage(uri: Uri) {
-        _imageList.value += uri
+        _images.value += uri
     }
 
     fun checkInput(): Int {
-        if (_imageList.value.isEmpty())
+        if (_images.value.isEmpty())
             return 1
         if (_rating.value == 0)
             return 2
@@ -139,6 +134,6 @@ class ReviewWriteViewModel @Inject constructor(
     }
 
     fun clearImages() {
-        _imageList.value = emptyList()
+        _images.value = emptyList()
     }
 }

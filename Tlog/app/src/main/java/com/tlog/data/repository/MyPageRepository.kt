@@ -3,9 +3,9 @@ package com.tlog.data.repository
 import android.util.Log
 import com.tlog.api.LoginApi
 import com.tlog.api.UserApi
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.FeedbackRequest
-import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.request.auth.FeedbackRequest
+import com.tlog.data.model.request.auth.ProfileImageRequest
 import com.tlog.data.model.user.User
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package com.tlog.data.repository
 
 import com.tlog.api.ScrapApi
-import com.tlog.data.api.BaseResponse
+import com.tlog.data.model.response.base.BaseResponse
 import com.tlog.data.model.travel.Scrap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ScrapRepository @Inject constructor(
     private val retrofitInstance: ScrapApi
-){
+) {
     suspend fun scrapDestination(userId: String, destinationId: String): BaseResponse<Unit> {
         val plainBody: RequestBody = destinationId.toRequestBody("text/plain".toMediaTypeOrNull())
         return retrofitInstance.scrapDestination(userId, plainBody)

@@ -48,6 +48,8 @@ fun AiCourseSelectCartScreen(
 ) {
     val context = LocalContext.current
     val selectedNames by sharedViewModel.selectedTravelNames.collectAsState()
+    val cartList by viewModel.cartList.collectAsState()
+    val checkedTravelList by viewModel.checkedTravelList.collectAsState()
 
     LaunchedEffect(selectedNames) {
         viewModel.setCheckedList(selectedNames)
@@ -128,9 +130,9 @@ fun AiCourseSelectCartScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             CheckCartList(
-                travelList = viewModel.cartList.value,
+                travelList = cartList,
                 onClick = { viewModel.updateCheckedTravelList(it) },
-                isChecked = { viewModel.isChecked(it) },
+                isChecked = { checkedTravelList.contains(it) },
             )
         }
 

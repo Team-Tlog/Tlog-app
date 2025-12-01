@@ -23,13 +23,16 @@ class NaverLoginManager(
             }
 
             override fun onFailure(httpStatus: Int, message: String) {
-                Log.e("NaverLoginManager", """
-    네이버 로그인 실패
-    httpStatus: $httpStatus
-    message: '$message'
-    state: ${NaverIdLoginSDK.getState()}
-    clientId: ${BuildConfig.NAVER_CLIENT_ID}
-""".trimIndent())
+                Log.e(
+                    "NaverLoginManager",
+                    """
+                    네이버 로그인 실패
+                    httpStatus: $httpStatus
+                    message: '$message'
+                    state: ${NaverIdLoginSDK.getState()}
+                    clientId: ${BuildConfig.NAVER_CLIENT_ID}
+                    """.trimIndent()
+                )
             }
 
             override fun onError(errorCode: Int, message: String) {

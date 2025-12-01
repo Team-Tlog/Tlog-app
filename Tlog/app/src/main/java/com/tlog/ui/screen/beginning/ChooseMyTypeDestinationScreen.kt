@@ -12,6 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -52,6 +54,8 @@ fun ChooseMyTypeDestinationScreen(
     }
 
     val context = LocalContext.current
+
+    val selected by viewModel.selected.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -118,7 +122,7 @@ fun ChooseMyTypeDestinationScreen(
                 key = { idx -> "travel$idx"} ) { idx ->
                 val name = destinations[idx]
                 val image = images[idx]
-                val isSelected = viewModel.selected.value.contains(idx)
+                val isSelected = selected.contains(idx)
 
                 DestinationCard(
                     name = name.toString(),

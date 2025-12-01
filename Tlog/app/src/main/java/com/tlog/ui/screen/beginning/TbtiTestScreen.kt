@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.beginning
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +13,8 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,12 +32,15 @@ fun TbtiTestScreen(
     navController: NavController,
     viewModel: TbtiTestViewModel = hiltViewModel()
 ) {
-
     val context = LocalContext.current
-    // 최초 화면 진입 시 한 번만 호출
+
+    val selectedIdx by viewModel.selectedIdx.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.fetchAllQuestions()
+    }
 
+    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -77,13 +81,11 @@ fun TbtiTestScreen(
 
             MainButton(
                 text = "다음",
-                enabled = viewModel.selectedIdx.value != null,
+                enabled = selectedIdx != null,
                 onClick = {
-                    viewModel.selectedIdx.value?.let { index ->
-                        viewModel.onAnswerSelected(index)
+                        viewModel.onAnswerSelected(selectedIdx!!)
                         viewModel.moveToNextQuestion()
-                        viewModel.selectedIdx.value = null
-                    }
+                        viewModel.clearSelectedIdx()
                 },
                 modifier = Modifier.padding(horizontal = 20.dp)
             )

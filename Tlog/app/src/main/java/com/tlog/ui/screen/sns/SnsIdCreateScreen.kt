@@ -34,6 +34,8 @@ fun SnsIdCreateScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
+    val snsId by viewModel.snsId.collectAsState()
+    val isDuplicated by viewModel.isDuplicated.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -69,7 +71,7 @@ fun SnsIdCreateScreen(
                 .fillMaxWidth()
                 .padding(horizontal = 24.dp),
             text = "사용할 ID를 정해주세요",
-            value = viewModel.snsId.value,
+            value = snsId,
             onValueChange = {
                 viewModel.updateId(it)
             },
@@ -78,7 +80,7 @@ fun SnsIdCreateScreen(
         )
 
         // 중복 여부 메시지 표시
-            if (viewModel.isDuplicated.value == true) {
+            if (isDuplicated == true) {
                 Row(
                     modifier = Modifier
                         .padding(top = 43.dp)
@@ -117,7 +119,7 @@ fun SnsIdCreateScreen(
                 Log.d("SNS ID 생성", "입력한 ID: ${viewModel.snsId.value}")
                 viewModel.updateSnsId(viewModel.snsId.value)
             },
-            enabled = viewModel.snsId.value.isNotEmpty() && viewModel.snsId.value.length >= 3,
+            enabled = snsId.isNotEmpty() && snsId.length >= 3,
             modifier = Modifier
                 .height(85.dp)
                 .padding(start = 24.dp, end = 24.dp, top = 15.dp, bottom = 15.dp)

@@ -31,6 +31,11 @@ fun NotificationScreen(
 ) {
     val context = LocalContext.current
 
+    val notificationList by viewModel.notificationList.collectAsState()
+    val tSnsNotificationList by viewModel.tSnsNotificationList.collectAsState()
+    val selectedTab by viewModel.selectedTab.collectAsState()
+    val followingList by viewModel.followingList.collectAsState()
+
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -48,11 +53,6 @@ fun NotificationScreen(
             }
         }
     }
-
-    val notificationList by viewModel.notificationList.collectAsState()
-    val tSnsNotificationList by viewModel.tSnsNotificationList.collectAsState()
-    val selectedTab by viewModel.selectedTab
-    val followingList by viewModel.followingList.collectAsState()
 
     Column(modifier = Modifier
         .fillMaxSize()

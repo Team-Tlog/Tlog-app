@@ -20,9 +20,9 @@ fun TbtiQuestionSection(
     answers: List<String>,
     viewModel: TbtiTestViewModel = viewModel()
 ) {
-    val questionNumber = viewModel.currentQuestionIndex.value + 1
+    val questionNumber by viewModel.currentQuestionIndex.collectAsState()
     val totalQuestions = viewModel.totalQuestions
-    val selectedIndex = viewModel.selectedIdx.value
+    val selectedIndex by viewModel.selectedIdx.collectAsState()
 
     Column(
         modifier = Modifier

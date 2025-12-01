@@ -31,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -59,8 +60,13 @@ fun MyPageScreen(
     viewModel: MyPageViewModel = hiltViewModel(),
     navController: NavController
 ) {
+    val myPageItems = listOf("개인정보처리방침", "고객센터", "개발자에게 피드백 해주기")
 
     val context = LocalContext.current
+
+    val userInfo by viewModel.userInfo.collectAsState()
+    val notification by viewModel.notification.collectAsState()
+    val nowUserInfo = userInfo
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -115,12 +121,11 @@ fun MyPageScreen(
                                 .fillMaxWidth(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-
                             Spacer(modifier = Modifier.height(25.dp))
 
-                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
+                            if (isGetUserApiSuccess.value && nowUserInfo != null)
                                 MyPageTbtiGroup(
-                                    userInfo = viewModel.userInfo.value!!,
+                                    userInfo = nowUserInfo,
                                     tbtiTestClick = {
                                         viewModel.navToTbtiTest()
                                     }
@@ -137,18 +142,18 @@ fun MyPageScreen(
                                 }
                             }
 
-                            if (isGetUserApiSuccess.value && viewModel.userInfo.value != null)
+                            if (isGetUserApiSuccess.value && nowUserInfo != null) {
                                 UserInfoGroup(
-                                    userInfo = viewModel.userInfo.value!!,
+                                    userInfo = nowUserInfo,
                                     onImageClick = {
                                         imagePickerLauncher.launch("image/*")
                                     }
                                 )
+                            }
                         }
                     }
                 }
             }
-
 
             Spacer(modifier = Modifier.height(40.dp))
 
@@ -180,7 +185,7 @@ fun MyPageScreen(
                             .width(42.dp)
                     ) {
                         Switch(
-                            checked = viewModel.notification.value,
+                            checked = notification,
                             onCheckedChange = { viewModel.changeNotification() },
                             colors = SwitchDefaults.colors(
                                 uncheckedTrackColor = Color(0xFFE1E1E1),
@@ -195,9 +200,7 @@ fun MyPageScreen(
                     }
                 }
 
-                val tmpList = listOf("개인정보처리방침", "고객센터", "개발자에게 피드백 해주기")
-
-                tmpList.forEach { text ->
+                myPageItems.forEach { text ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

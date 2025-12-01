@@ -1,11 +1,11 @@
 package com.tlog.api
 
-import com.tlog.data.api.AddTravelRequest
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ReviewListResponse
-import com.tlog.data.api.ReviewRequest
-import com.tlog.data.api.TravelDetailResponse
-import com.tlog.data.api.TravelRecommendPagedResponse
+import com.tlog.data.model.request.travel.AddTravelRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.review.ReviewsResponse
+import com.tlog.data.model.request.review.ReviewRequest
+import com.tlog.data.model.response.travel.TravelDetailResponse
+import com.tlog.data.model.response.travel.TravelRecommendPagedResponse
 import com.tlog.data.model.travel.Scrap
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -49,7 +49,7 @@ interface TravelApi {
         @Query("page") page: Int,
         @Query("size") size: Int,
         @Query("sort") sort: List<String>
-    ): BaseResponse<ReviewListResponse>
+    ): BaseResponse<ReviewsResponse>
 
     @DELETE("/api/scrap/user/{userId}/destination/{destId}")
     suspend fun deleteScrapDestination(

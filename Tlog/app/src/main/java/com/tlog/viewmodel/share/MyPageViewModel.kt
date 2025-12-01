@@ -1,11 +1,8 @@
 package com.tlog.viewmodel.share
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.data.util.FirebaseImageUploader
@@ -14,7 +11,7 @@ import java.util.UUID
 import javax.inject.Inject
 import android.net.Uri
 import androidx.core.net.toUri
-import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.request.auth.ProfileImageRequest
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.data.local.ScrapManager
@@ -33,20 +30,13 @@ class MyPageViewModel @Inject constructor(
     private val followManager: FollowManager,
     private val scrapManager: ScrapManager
 ): BaseViewModel() {
+    private val _notification = MutableStateFlow(true)
+    val notification =_notification.asStateFlow()
 
-
-    private val _notification = mutableStateOf(true)
-    val notification: State<Boolean> = _notification
-
-    private val _userInfo: MutableState<User?> = mutableStateOf(null)
-    val userInfo: State<User?> = _userInfo
-
-    private val _image = mutableStateOf("")
-    val imageUri = _image
-
-
-
-
+    private val _userInfo = MutableStateFlow<User?>(null)
+    val userInfo = _userInfo.asStateFlow()
+    private val _imageUri = MutableStateFlow("")
+    val imageUri = _imageUri
     private val _getUserInfo = MutableStateFlow(false)
     val getUserInfo = _getUserInfo.asStateFlow()
 
@@ -78,7 +68,6 @@ class MyPageViewModel @Inject constructor(
                 followManager.clearAllFollowData()
 
                 navigate(Screen.Login, true)
-
             }
         )
     }

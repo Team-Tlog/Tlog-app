@@ -1,26 +1,25 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseListResponse
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ChatMessageHistoryResponse
-import com.tlog.data.api.ChatRoom
-import com.tlog.data.api.CreateCommentRequest
-import com.tlog.data.api.FollowRequest
-import com.tlog.data.api.PostWriteBody
-import com.tlog.data.api.ReportRequest
-import com.tlog.data.api.SnsDescription
-import com.tlog.data.api.SnsPost
-import com.tlog.data.api.SnsPostPreview
-import com.tlog.data.api.SnsUser
-import com.tlog.data.api.SnsUserProfile
-import com.tlog.data.api.StatusMessage
-import com.tlog.data.api.UpdateSnsIdRequest
+import com.tlog.data.model.response.base.BaseListResponse
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.sns.ChatMessageHistoryResponse
+import com.tlog.data.model.response.sns.ChatRoom
+import com.tlog.data.model.response.sns.CommentRequest
+import com.tlog.data.model.request.sns.FollowRequest
+import com.tlog.data.model.request.sns.PostWriteBody
+import com.tlog.data.model.request.sns.ReportRequest
+import com.tlog.data.model.request.sns.SnsDescription
+import com.tlog.data.model.response.sns.SnsPost
+import com.tlog.data.model.response.sns.SnsPostPreview
+import com.tlog.data.model.response.sns.SnsUser
+import com.tlog.data.model.response.sns.SnsUserProfile
+import com.tlog.data.model.request.sns.StatusMessage
+import com.tlog.data.model.request.sns.UpdateSnsIdRequest
 import com.tlog.data.model.sns.Comment
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -68,7 +67,7 @@ interface SnsApi {
     @POST("/api/post/{postId}/reply")
     suspend fun addComment(
         @Path("postId") postId: String,
-        @Body request: CreateCommentRequest
+        @Body request: CommentRequest
     ): BaseResponse<Comment>
 
     // 팔로잉 목록

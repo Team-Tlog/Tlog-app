@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.tlog.data.api.CourseItem
+import com.tlog.data.model.response.course.CourseItem
 import com.tlog.ui.component.share.TextButtonTopBar
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainColor
@@ -56,8 +56,10 @@ fun SnsPostWriteDetailScreen(
 ) {
     val context = LocalContext.current
 
-    val courseIdx = viewModel.selectedCourse.value
+    val courseIdx by viewModel.selectedCourse.collectAsState()
     val recentCourses by viewModel.recentTravelCourses.collectAsState()
+    val selectImages by viewModel.selectImages.collectAsState()
+    val postContent by viewModel.postContent.collectAsState()
 
     val selectedCourse = recentCourses.getOrNull(courseIdx)
 
@@ -105,7 +107,7 @@ fun SnsPostWriteDetailScreen(
 
         Spacer(modifier = Modifier.height(30.dp))
 
-        CoursePictures(viewModel.selectImages.value)
+        CoursePictures(selectImages)
 
         HorizontalDivider(
             color = Color(0xFFF4F4F4),
@@ -115,7 +117,7 @@ fun SnsPostWriteDetailScreen(
         )
 
         TextField(
-            value = viewModel.postContent.value,
+            value = postContent,
             onValueChange = {
                 viewModel.updatePostContent(it)
             },

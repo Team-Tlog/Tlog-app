@@ -2,23 +2,15 @@ package com.tlog.viewmodel.sns
 
 import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.R
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.CourseItem
-import com.tlog.data.model.sns.TravelCourse
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.course.CourseItem
 import com.tlog.data.repository.SnsPostRepository
 import com.tlog.data.util.FirebaseImageUploader
-import com.tlog.ui.theme.DefaultImage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.UUID
 
 
@@ -29,16 +21,16 @@ class SnsPostViewModel @Inject constructor(
 ) : BaseViewModel() {
     private var userId = ""
     private var _recentTravelCourses = MutableStateFlow<List<CourseItem>>(emptyList())
-    val recentTravelCourses: StateFlow<List<CourseItem>> = _recentTravelCourses
+    val recentTravelCourses = _recentTravelCourses.asStateFlow()
 
-    private var _selectImages = mutableStateOf<List<Uri>>(emptyList())
-    val selectImages: State<List<Uri>> = _selectImages
+    private var _selectImages = MutableStateFlow<List<Uri>>(emptyList())
+    val selectImages = _selectImages.asStateFlow()
 
-    private var _selectedCourse = mutableStateOf(1)
-    val selectedCourse = _selectedCourse
+    private var _selectedCourse = MutableStateFlow(1)
+    val selectedCourse = _selectedCourse.asStateFlow()
 
-    private var _postContent = mutableStateOf("")
-    val postContent: State<String> = _postContent
+    private var _postContent = MutableStateFlow("")
+    val postContent = _postContent.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId() ?: ""
@@ -66,12 +58,6 @@ class SnsPostViewModel @Inject constructor(
             _selectImages.value = _selectImages.value - uri // += ?
         else
             _selectImages.value = _selectImages.value + uri // += ?
-    }
-
-    fun selectImagesIn(uri: Uri): Boolean {
-        if (_selectImages.value.contains(uri))
-            return true
-        return false
     }
 
     fun updateSelectedCourse(idx: Int) {

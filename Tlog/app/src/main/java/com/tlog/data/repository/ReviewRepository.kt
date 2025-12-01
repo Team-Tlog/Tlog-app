@@ -2,15 +2,15 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TravelApi
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.ReviewListResponse
-import com.tlog.data.api.ReviewRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.review.ReviewsResponse
+import com.tlog.data.model.request.review.ReviewRequest
 import jakarta.inject.Inject
 
 class ReviewRepository @Inject constructor(
     private val retrofitInstance: TravelApi
 ) {
-    suspend fun addReview(review: ReviewRequest): BaseResponse<String?>{
+    suspend fun addReview(review: ReviewRequest): BaseResponse<String?> {
         val result = retrofitInstance.addReview(review)
         Log.d("ReviewRepository", "addReview: $result")
         return result
@@ -22,7 +22,7 @@ class ReviewRepository @Inject constructor(
         page: Int,
         size: Int,
         sort: List<String>
-    ): BaseResponse<ReviewListResponse> {
+    ): BaseResponse<ReviewsResponse> {
         return retrofitInstance.getReviewList(travelId, sortType, page, size, sort)
     }
 }

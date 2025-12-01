@@ -1,7 +1,6 @@
 package com.tlog.ui.component.travel
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -23,14 +22,14 @@ import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
-import com.tlog.data.api.TravelDestinationResponse
+import com.tlog.data.model.response.travel.TravelDestination
 
 @Composable
 fun DestinationCard(
-    destination: TravelDestinationResponse,
-    isFavorite: Boolean,
+    destination: TravelDestination,
+    isFavorite: () -> Boolean,
     onFavoriteToggle: (String) -> Unit,
-    onClick: (TravelDestinationResponse) -> Unit
+    onClick: (TravelDestination) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -95,15 +94,15 @@ fun DestinationCard(
                     }
 
                     Icon(
-                        painter = painterResource(if(isFavorite) R.drawable.ic_filled_heart else R.drawable.ic_heart),
-                        contentDescription = "스크랩" + if (isFavorite) "됨" else "버튼",
+                        painter = painterResource(if(isFavorite()) R.drawable.ic_filled_heart else R.drawable.ic_heart),
+                        contentDescription = "스크랩" + if (isFavorite()) "됨" else "버튼",
                         modifier = Modifier
                             .size(31.dp)
                             .clickable {
                                 Log.d("스크랩", "hihi")
                                 onFavoriteToggle(destination.id)
                             },
-                        tint = if (isFavorite) Color.Red else Color.Unspecified,
+                        tint = if (isFavorite()) Color.Red else Color.Unspecified,
                     )
                 }
 

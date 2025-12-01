@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +32,7 @@ fun SnsSearchScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
+    val searchResult by viewModel.searchResult.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -48,45 +50,44 @@ fun SnsSearchScreen(
         }
     }
 
-
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         Column (
             modifier = Modifier.fillMaxSize()
         ) {
-                Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(42.dp))
 
-                SearchBar(
-                    value = viewModel.searchText.collectAsState().value,
-                    onValueChange = {
-                        viewModel.updateSearchText(it)
-                        Log.d("SearchText", viewModel.searchText.value)
-                    },
-                    leadingIcon = {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_search),
-                            contentDescription = "검색",
-                            tint = Color(0xFF676767)
-                        )
-                    }
-                )
-
-                Spacer(modifier = Modifier.height(26.dp))
-
-            if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
-                    RecentSearches(
-                        recentSearches = emptyList(),
-                        onSearchClick = { }
+            SearchBar(
+                value = viewModel.searchText.collectAsState().value,
+                onValueChange = {
+                    viewModel.updateSearchText(it)
+                    Log.d("SearchText", viewModel.searchText.value)
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentDescription = "검색",
+                        tint = Color(0xFF676767)
                     )
+                }
+            )
+
+            Spacer(modifier = Modifier.height(26.dp))
+
+            if (searchResult.isEmpty() || !viewModel.checkSearchText()) {
+                RecentSearches(
+                    recentSearches = emptyList(),
+                    onSearchClick = { }
+                )
             }
             else {
-                    PostsGrid(
-                        postList = viewModel.searchResult.value,
-                        onClick = { postId ->
-                            viewModel.navToPostDetail(postId)
-                        }
-                    )
+                PostsGrid(
+                    postList = searchResult,
+                    onClick = { postId ->
+                        viewModel.navToPostDetail(postId)
+                    }
+                )
             }
         }
     }

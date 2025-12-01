@@ -1,17 +1,14 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import coil.network.HttpException
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.viewmodel.base.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import com.tlog.data.model.notification.NotificationItem
 import com.tlog.data.model.notification.TSnsNotificationItem
-import com.tlog.data.model.share.toErrorMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,13 +19,13 @@ class NotificationViewModel @Inject constructor(
     private val followManager: FollowManager
 ): BaseViewModel() {
     private val _tSnsNotificationList = MutableStateFlow<List< TSnsNotificationItem>>(emptyList())
-    val tSnsNotificationList: StateFlow<List<TSnsNotificationItem>> = _tSnsNotificationList
+    val tSnsNotificationList = _tSnsNotificationList.asStateFlow()
 
     private val _notificationList = MutableStateFlow<List<NotificationItem>>(emptyList())
-    val notificationList: StateFlow<List<NotificationItem>> = _notificationList
+    val notificationList = _notificationList.asStateFlow()
 
-    private val _selectedTab = mutableStateOf("새 소식")
-    val selectedTab = _selectedTab
+    private val _selectedTab = MutableStateFlow("새 소식")
+    val selectedTab = _selectedTab.asStateFlow()
 
     val followingList = followManager.followingList
 
@@ -37,11 +34,9 @@ class NotificationViewModel @Inject constructor(
         fetchTSnsNotifications()
     }
 
-
     fun updateSelectedTab(tab: String) {
         _selectedTab.value = tab
     }
-
 
     private fun fetchNotifications() {
         viewModelScope.launch {

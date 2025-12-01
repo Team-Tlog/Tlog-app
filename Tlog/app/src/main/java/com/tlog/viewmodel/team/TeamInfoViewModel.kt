@@ -1,15 +1,14 @@
 package com.tlog.viewmodel.team
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.CreateTeamRequest
-import com.tlog.data.api.TravelPlan
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.request.team.CreateTeamRequest
+import com.tlog.data.model.request.team.TravelPlanBody
 import com.tlog.data.local.RegionCode
 import com.tlog.data.repository.TeamRepository
-import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.collections.set
@@ -20,40 +19,35 @@ class TeamInfoViewModel @Inject constructor(
     private val repository: TeamRepository,
     tokenProvider: TokenProvider
 ) : BaseViewModel() {
-
-
     private var userId: String? = null
+
+    private val _city = MutableStateFlow("지역")
+    val city = _city.asStateFlow()
+
+    private val _district = MutableStateFlow("지역을 선택해주세요")
+    val district = _district.asStateFlow()
+
+    private val _checkedDistrict = MutableStateFlow<Set<String>>(emptySet())
+    val checkedDistrict = _checkedDistrict.asStateFlow()
+
+    private val _hasPet = MutableStateFlow(false)
+    val hasPet = _hasPet.asStateFlow()
+
+    private val _hasCar = MutableStateFlow(false)
+    val hasCar = _hasCar.asStateFlow()
+
+    private val _startDate = MutableStateFlow<LocalDate?>(null)
+    val startDate = _startDate.asStateFlow()
+
+    private val _endDate = MutableStateFlow<LocalDate?>(null)
+    val endDate = _endDate.asStateFlow()
+
+    private val _travelCountByDate = MutableStateFlow<Map<LocalDate, Int>>(emptyMap())
+    val travelCountByDate = _travelCountByDate.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
     }
-
-    private val _city = mutableStateOf("지역")
-    val city: State<String> = _city
-
-    private val _district = mutableStateOf("지역을 선택해주세요")
-    val district: State<String> = _district
-
-    private val _checkedDistrict = mutableStateOf<Set<String>>(emptySet())
-    val checkedDistrict: State<Set<String>> = _checkedDistrict
-
-    private val _hasPet = mutableStateOf(false)
-    val hasPet: State<Boolean> = _hasPet
-
-    private val _hasCar = mutableStateOf(false)
-    val hasCar: State<Boolean> = _hasCar
-
-    private val _startDate = mutableStateOf<LocalDate?>(null)
-    val startDate: State<LocalDate?> = _startDate
-
-    private val _endDate = mutableStateOf<LocalDate?>(null)
-    val endDate: State<LocalDate?> = _endDate
-
-    private val _travelCountByDate = mutableStateOf<Map<LocalDate, Int>>(emptyMap())
-    val travelCountByDate: State<Map<LocalDate, Int>> = _travelCountByDate
-
-
-
 
     fun updateCheckedDistrict(district: String) {
         _checkedDistrict.value = _checkedDistrict.value + district
@@ -114,7 +108,7 @@ class TeamInfoViewModel @Inject constructor(
                     CreateTeamRequest( //data에 팀아이디가 옴
                         name = teamName,
                         creator = safeUserId,
-                        travelPlan = TravelPlan(
+                        travelPlan = TravelPlanBody(
                             city = city.value,
                             regionList = checkedDistrict.value.map {
                                 RegionCode.fromStringOrNull(it).toString()

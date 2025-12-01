@@ -6,9 +6,3 @@ data class RecommendDestination(
     val description: String,
     val destinations: List<Destination>
 )
-
-data class Destination(
-    val imageUrl: String,
-    val name: String,
-    val id: String
-)

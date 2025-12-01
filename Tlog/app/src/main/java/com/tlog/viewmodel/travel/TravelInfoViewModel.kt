@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.travel
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.TravelDetailResponse
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.travel.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.SearchOneDestinationRepository
 import com.tlog.ui.navigation.Screen
@@ -58,10 +58,6 @@ class TravelInfoViewModel @Inject constructor(
 
     fun navToTravelInfo(travelId: String) {
         navigate(Screen.TravelInfo(travelId))
-    }
-
-    fun navToSnsMyPage(userId: String) {
-        navigate(Screen.SnsMyPage(userId))
     }
 
     fun navToReviewWrite(travelId: String, destinationName: String) {

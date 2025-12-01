@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.response.travel.TravelSearch
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.travel.Travel
@@ -77,7 +77,9 @@ fun CheckCartList(
 fun CartList(
     travelList: List<Cart>,
     listState: LazyListState = rememberLazyListState(),
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    getIsChecked: (String) -> Boolean,
+    onCheckedClick: (String) -> Unit
 ) {
     LazyColumn(
         state = listState
@@ -88,7 +90,9 @@ fun CartList(
         ) { index, item ->
             CartItem(
                 travel = item,
-                onClick = onClick
+                onClick = onClick,
+                getIsChecked = getIsChecked,
+                onCheckedClick = onCheckedClick
             )
             if (index == travelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
@@ -104,7 +108,9 @@ fun CartList(
 fun ScrapTravelList(
     scrapTravelList: List<Scrap>,
     listState: LazyListState = rememberLazyListState(),
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
+    getIsChecked: (String) -> Boolean,
+    onCheckedClick: (String) -> Unit
 ) {
     LazyColumn(
         state = listState
@@ -115,7 +121,9 @@ fun ScrapTravelList(
         ) { index, item ->
             ScrapTravelItem(
                 travel = item,
-                onClick = onClick
+                onClick = onClick,
+                getIsChecked = getIsChecked,
+                checkedClick = onCheckedClick
             )
             if (index == scrapTravelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
@@ -130,7 +138,7 @@ fun ScrapTravelList(
 
 @Composable
 fun SearchTravelList(
-    travelList: List<SearchTravel>,
+    travelList: List<TravelSearch>,
     onClick: (String, String) -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {

@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.api.SnsPost
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.sns.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
@@ -33,9 +33,6 @@ class SnsViewModel @Inject constructor(
         userId = tokenProvider.getUserId()
         getSnsPost()
     }
-
-
-
 
     fun getSnsPost() {
         launchSafeCall(

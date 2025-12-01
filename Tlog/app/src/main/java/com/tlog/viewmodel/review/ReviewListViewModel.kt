@@ -1,18 +1,16 @@
 package com.tlog.viewmodel.review
 
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.collections.plus
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableDoubleStateOf
 import com.tlog.data.model.travel.Review
 import com.tlog.ui.navigation.Screen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
-
 
 @HiltViewModel
 class ReviewListViewModel @Inject constructor(
@@ -20,17 +18,17 @@ class ReviewListViewModel @Inject constructor(
     private val scrapManager: ScrapManager
 ): BaseViewModel() {
 
-    private val _reviewList = mutableStateOf<List<Review>>(emptyList())
-    val reviewList: State<List<Review>> = _reviewList
+    private val _reviews = MutableStateFlow<List<Review>>(emptyList())
+    val reviews = _reviews.asStateFlow()
 
-    private val _ratingDistribution = mutableStateOf<Map<String, Int>>(emptyMap())
-    val ratingDistribution: State<Map<String, Int>> = _ratingDistribution
+    private val _ratingDistribution = MutableStateFlow<Map<String, Int>>(emptyMap())
+    val ratingDistribution = _ratingDistribution.asStateFlow()
 
-    private val _rating = mutableDoubleStateOf(0.0)
-    val rating: State<Double> = _rating
+    private val _rating = MutableStateFlow(0.0)
+    val rating = _rating.asStateFlow()
 
-    private val _sortOption = mutableStateOf("날짜순")
-    val sortOption: State<String> = _sortOption
+    private val _sortOption = MutableStateFlow("날짜순")
+    val sortOption = _sortOption.asStateFlow()
 
     fun updateSelectOption(newOption: String) {
         _sortOption.value = newOption
@@ -45,7 +43,7 @@ class ReviewListViewModel @Inject constructor(
     fun resetPaging() {
         page = 0
         isLastPage = false
-        _reviewList.value = emptyList()
+        _reviews.value = emptyList()
     }
     fun getReviewList(
         id: String,
@@ -66,7 +64,7 @@ class ReviewListViewModel @Inject constructor(
                     sort = sort
                 )
                 _ratingDistribution.value = response.data.ratingDistribution
-                _reviewList.value = response.data.reviews.content
+                _reviews.value = response.data.reviews.content
                 getRating(reviewCount = response.data.ratingDistribution)
             },
             onError = { showToast("[리뷰] $it") }
@@ -84,7 +82,7 @@ class ReviewListViewModel @Inject constructor(
             totalReviews += count
         }
 
-        _rating.doubleValue = if (totalReviews > 0) {
+        _rating.value = if (totalReviews > 0) {
             String.format(Locale.US, "%.2f", sum.toDouble() / totalReviews).toDouble() // 소숫점 2자리
         } else {
             0.0
@@ -113,7 +111,7 @@ class ReviewListViewModel @Inject constructor(
                 )
 
                 isLastPage = response.data.reviews.last
-                _reviewList.value += response.data.reviews.content
+                _reviews.value += response.data.reviews.content
             },
             onError = { showToast("[리뷰] $it") }
         )

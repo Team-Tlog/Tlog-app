@@ -15,7 +15,8 @@ import androidx.navigation.toRoute
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tlog.api.retrofit.TokenProvider
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.team.MemberProfile
 import com.tlog.ui.screen.beginning.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen
@@ -33,7 +34,6 @@ import com.tlog.ui.screen.share.MainScreen
 import com.tlog.ui.screen.share.MapScreen
 import com.tlog.ui.screen.share.MyPageScreen
 import com.tlog.ui.screen.share.NotificationScreen
-import com.tlog.ui.screen.share.ReportToDeveloperScreen
 import com.tlog.ui.screen.share.RestaurantScreen
 import com.tlog.ui.screen.sns.ChatListScreen
 import com.tlog.ui.screen.sns.SNSChattingScreen
@@ -74,9 +74,6 @@ fun NavHost(
     val viewModel: MyNavViewModel = hiltViewModel() // 고민 좀 해볼건데 일단 이렇게
     val sharedCourseViewModel: CourseSharedViewModel = hiltViewModel()
     val snsPostWriteViewModel: SnsPostViewModel = hiltViewModel()
-
-
-
 
     NavHost(navController = navController, startDestination = startScreen) {
         // TypeSafety
@@ -209,7 +206,6 @@ fun NavHost(
 
         // MyPage
         composable<Screen.MyPage> { MyPageScreen(navController = navController) }
-        composable<Screen.Report> { ReportToDeveloperScreen() }
         composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
         composable<Screen.Feedback> { FeedbackScreen(navController = navController) }
         composable<Screen.Course> { MyTravelingCourseScreen(navController = navController) }
@@ -242,9 +238,9 @@ fun NavHost(
             val membersJson = backStackEntry.arguments?.getString("membersJson")
 
             // JSON 파싱
-            val members: List<com.tlog.viewmodel.sns.MemberProfile> = try {
+            val members: List<MemberProfile> = try {
                 if (membersJson != null && membersJson != "null") {
-                    val type = object : TypeToken<List<com.tlog.viewmodel.sns.MemberProfile>>() {}.type
+                    val type = object : TypeToken<List<MemberProfile>>() {}.type
                     Gson().fromJson(membersJson, type) ?: emptyList()
                 } else {
                     emptyList()

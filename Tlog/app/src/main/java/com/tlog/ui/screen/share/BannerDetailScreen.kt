@@ -36,8 +36,10 @@ fun BannerDetailScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+
     val destinations by viewModel.destinations.collectAsState()
     val title by viewModel.title.collectAsState()
+    val scraps by viewModel.scraps.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.getBannerDetail(bannerId)
@@ -85,11 +87,9 @@ fun BannerDetailScreen(
                         .fillMaxWidth()
                         .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                 ) {
-                    val isFavorite = viewModel.scrapList.value.contains(destination.id)
-
                     DestinationCard(
                         destination = destination,
-                        isFavorite = isFavorite,
+                        isFavorite = { scraps.contains(destination.id) },
                         onFavoriteToggle = {
                             viewModel.toggleScrap(destination.id)
                         },
@@ -100,8 +100,5 @@ fun BannerDetailScreen(
                 }
             }
         }
-
-
-
     }
 }

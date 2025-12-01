@@ -18,6 +18,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -42,6 +44,12 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
     val petOption = listOf("있음", "없음")
     val travelOption = listOf("가족여행", "홀로여행", "우정여행", "커플여행")
     val carOption = listOf("있음", "없음")
+
+    val nickname by viewModel.nickname.collectAsState()
+    val gender by viewModel.gender.collectAsState()
+    val hasPet by viewModel.hasPet.collectAsState()
+    val travelType by viewModel.travelType.collectAsState()
+    val hasCar by viewModel.hasCar.collectAsState()
 
     Surface(
         modifier = Modifier
@@ -70,10 +78,10 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 )
 
                 Spacer(modifier = Modifier.height(38.dp))
-                
+
                 OutLineMainInputField(
                     text = "닉네임",
-                    value = viewModel.nickname.value,
+                    value = nickname,
                     onValueChange = {
                         viewModel.updateNickname(it)
                         Log.d("nickname", it)
@@ -94,7 +102,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
 
                 DropDown(
                     options = genderOptions,
-                    value = viewModel.gender.value,
+                    value = gender,
                     valueChange = {
                         viewModel.updateGender(it)
                     },
@@ -108,7 +116,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "반려견 여부",
                     options = petOption,
-                    selectedOption = if (viewModel.hasPet.value) petOption[0] else petOption[1],
+                    selectedOption = if (hasPet) petOption[0] else petOption[1],
                     onOptionSelected = {
                         viewModel.updatePet(if (it == petOption[0]) true else false)
                         Log.d("petOption", viewModel.hasPet.toString())
@@ -119,7 +127,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "즐겨하는 여행 타입",
                     options = travelOption,
-                    selectedOption = viewModel.travelType.value,
+                    selectedOption = travelType,
                     onOptionSelected = {
                         viewModel.updateTravelType(it)
                         Log.d("travelOption", viewModel.travelType.value)
@@ -130,7 +138,7 @@ fun UserInfoInputScreen(viewModel: UserInfoViewModel = viewModel()) {
                 TwoColumnRadioGroup(
                     title = "자차유무",
                     options = carOption,
-                    selectedOption = if (viewModel.hasCar.value) carOption[0] else carOption[1],
+                    selectedOption = if (hasCar) carOption[0] else carOption[1],
                     onOptionSelected = {
                         viewModel.updateCar(if (it == carOption[0]) true else false)
                         Log.d("carOption", viewModel.hasCar.toString())

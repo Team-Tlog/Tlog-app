@@ -29,6 +29,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -64,6 +65,12 @@ fun SnsDetailScreen(
     postId: String,
 ) {
     val context = LocalContext.current
+    val post by viewModel.post.collectAsState()
+    val comment by viewModel.comment.collectAsState()
+    val isLike by viewModel.isLike.collectAsState()
+    val followingList = viewModel.followingList.collectAsState().value
+
+    val nowPost = post
 
     LaunchedEffect(Unit) {
         viewModel.getPostDetail(postId)
@@ -83,8 +90,6 @@ fun SnsDetailScreen(
         }
     }
 
-    val followingList = viewModel.followingList.collectAsState().value
-    val post = viewModel.post.collectAsState()
 
     Column(modifier = Modifier
             .fillMaxSize()
@@ -96,12 +101,12 @@ fun SnsDetailScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                post.value?.let { post ->
+                if (nowPost != null) {
                     PostAuthorInfo(
-                        userId = post.authorName,
-                        userProfileImageUrl = post.authorProfileImageUrl ?: "",
-                        isFollowing = followingList.contains(post.authorId),
-                        isMyPost = viewModel.userId == post.authorId,
+                        userId = nowPost.authorName,
+                        userProfileImageUrl = nowPost.authorProfileImageUrl ?: "",
+                        isFollowing = followingList.contains(nowPost.authorId),
+                        isMyPost = viewModel.userId == nowPost.authorId,
                         onFollowToggle = {
                             viewModel.followUser(viewModel.post.value!!.authorId)
                         },
@@ -111,14 +116,14 @@ fun SnsDetailScreen(
                     )
 
                     PostImage(
-                        images = post.contentImageUrls
+                        images = nowPost.contentImageUrls
                     )
 
                     Spacer(modifier = Modifier.height(26.dp))
 
                     PostContentAndInteractions(
-                        content = post.content,
-                        isLiked = viewModel.isLike.value,
+                        content = nowPost.content,
+                        isLiked = isLike,
                         onLikeClick = {
                             viewModel.clickLike(postId)
                         },
@@ -133,7 +138,7 @@ fun SnsDetailScreen(
 
                     Spacer(modifier = Modifier.height(26.dp))
 
-                    post.replies.forEach { comment ->
+                    nowPost.replies.forEach { comment ->
                         CommentItem(
                             comment = comment,
                             userClick = { targetUserId ->
@@ -150,12 +155,12 @@ fun SnsDetailScreen(
                     .padding(top = 14.dp, bottom = 32.dp, start = 8.dp, end = 8.dp)
             ) {
                 CommentField(
-                    value = viewModel.comment.value,
+                    value = comment,
                     onValueChange = { comment ->
                         viewModel.updateComment(comment)
                     },
                     sendClick = {
-                        if (viewModel.comment.value.isNotEmpty()) {
+                        if (comment.isNotEmpty()) {
                             viewModel.addComment()
                         }
                     }

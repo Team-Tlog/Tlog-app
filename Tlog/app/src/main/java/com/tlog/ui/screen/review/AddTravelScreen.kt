@@ -21,6 +21,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +51,16 @@ fun AddTravelScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+
+    val travelName by viewModel.travelName.collectAsState()
+    val travelAddress by viewModel.travelAddress.collectAsState()
+    val hasParking by viewModel.hasParking.collectAsState()
+    val isPetFriendly by viewModel.isPetFriendly.collectAsState()
+    val hashTag by viewModel.hashTag.collectAsState()
+    val hashTags by viewModel.hashTags.collectAsState()
+    val travelDescription by viewModel.travelDescription.collectAsState()
+    val imageUri by viewModel.imageUri.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -98,7 +110,7 @@ fun AddTravelScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             BottomLineInputField(
-                value = viewModel.travelName.value,
+                value = travelName,
                 onValueChange = { viewModel.updateTravelName(it) },
                 placeholder = "입력해주세요",
                 singleLine = true,
@@ -113,7 +125,7 @@ fun AddTravelScreen(
                 fontSize = 15.sp,
             )
             BottomLineInputField(
-                value = viewModel.travelAddress.value,
+                value = travelAddress,
                 onValueChange = { viewModel.updateTravelAddress(it) },
                 placeholder = "검색어를 입력하세요",
                 singleLine = true,
@@ -131,7 +143,7 @@ fun AddTravelScreen(
             TwoColumnRadioGroup(
                 title = "주차 가능여부",
                 options = listOf("가능", "불가능"),
-                selectedOption = if (viewModel.hasParking.value) "가능" else "불가능",
+                selectedOption = if (hasParking) "가능" else "불가능",
                 onOptionSelected = {
                     viewModel.updateHasParking(it == "가능")
                 }
@@ -140,22 +152,22 @@ fun AddTravelScreen(
             TwoColumnRadioGroup(
                 title = "반려견 가능여부",
                 options = listOf("가능", "불가능"),
-                selectedOption = if (viewModel.isPetFriendly.value) "가능" else "불가능",
+                selectedOption = if (isPetFriendly) "가능" else "불가능",
                 onOptionSelected = {
                     viewModel.updateIsPetFriendly(it == "가능")
                 }
             )
 
             HashtagInputGroup(
-                value = viewModel.hashTag.value,
+                value = hashTag,
                 placeholderText = "입력해주세요",
-                hashTags = viewModel.hashTags.value,
+                hashTags = hashTags,
                 onValueChange = { viewModel.updateHashTag(it) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        if (viewModel.hashTag.value.isNotBlank()) {
-                            viewModel.addHashTag(viewModel.hashTag.value.trim())
+                        if (hashTag.isNotBlank()) {
+                            viewModel.addHashTag(hashTag.trim())
                             viewModel.updateHashTag("")
                         }
                     }
@@ -174,7 +186,7 @@ fun AddTravelScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             BottomLineInputField(
-                value = viewModel.travelDescription.value,
+                value = travelDescription,
                 onValueChange = { viewModel.updateTravelDescription(it) },
                 placeholder = "입력해주세요",
                 singleLine = false,
@@ -193,8 +205,8 @@ fun AddTravelScreen(
             }
 
             PhotoUploadBox(
-                images = if (viewModel.imageUri.value == Uri.EMPTY) emptyList() else listOf(
-                    viewModel.imageUri.value
+                images = if (imageUri == Uri.EMPTY) emptyList() else listOf(
+                    imageUri
                 ),
                 maxImageCnt = 1,
                 onAddClick = {
@@ -214,6 +226,5 @@ fun AddTravelScreen(
             modifier = Modifier
                 .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
         )
-
     }
 }

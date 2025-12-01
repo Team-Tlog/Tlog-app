@@ -1,8 +1,8 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.FeedbackRequest
-import com.tlog.data.api.ProfileImageRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.request.auth.FeedbackRequest
+import com.tlog.data.model.request.auth.ProfileImageRequest
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.model.user.User
 import retrofit2.http.GET

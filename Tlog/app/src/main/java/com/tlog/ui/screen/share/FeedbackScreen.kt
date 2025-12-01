@@ -18,13 +18,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,13 +37,14 @@ import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.viewmodel.share.FeedbackViewModel
 
-@Preview(showBackground = true)
 @Composable
 fun FeedbackScreen(
     viewModel: FeedbackViewModel = hiltViewModel(),
-    navController: NavController? = null
+    navController: NavController
 ) {
     val context = LocalContext.current
+    val title by viewModel.title.collectAsState()
+    val content by viewModel.content.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -118,7 +120,7 @@ fun FeedbackScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             BottomLineInputField(
-                value = viewModel.title.value,
+                value = title,
                 onValueChange = {
                     viewModel.updateTitle(it)
                 },
@@ -139,7 +141,7 @@ fun FeedbackScreen(
             Spacer(modifier = Modifier.height(10.dp))
 
             BottomLineInputField(
-                value = viewModel.content.value,
+                value = content,
                 onValueChange = {
                     viewModel.updateContent(it)
                 },

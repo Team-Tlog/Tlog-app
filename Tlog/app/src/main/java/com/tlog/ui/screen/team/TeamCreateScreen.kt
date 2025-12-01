@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,6 +34,8 @@ fun TeamCreateScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
+
+    val teamName by viewModel.teamName.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -70,7 +74,7 @@ fun TeamCreateScreen(
             modifier = Modifier
                 .padding(horizontal = 24.dp),
             text = "팀 이름을 정해주세요!",
-            value = viewModel.teamName.value,
+            value = teamName,
             onValueChange = {
                 viewModel.updateTeamName(it)
             },

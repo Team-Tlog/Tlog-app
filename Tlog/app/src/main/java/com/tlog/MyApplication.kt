@@ -3,8 +3,7 @@ package com.tlog
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
 import com.navercorp.nid.NaverIdLoginSDK
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.local.ScrapManager
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.CoroutineScope

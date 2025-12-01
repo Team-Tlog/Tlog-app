@@ -8,10 +8,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tlog.api.LoginApi
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.FcmTokenBody
-import com.tlog.data.api.FirebaseTokenData
-import com.tlog.data.api.LoginRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.request.auth.FcmTokenRequest
+import com.tlog.data.model.response.auth.FirebaseTokenResponse
+import com.tlog.data.model.request.auth.LoginRequest
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager
@@ -25,10 +25,6 @@ class LoginViewModel @Inject constructor(
     private val userPreferences: UserPreferences,
     private val loginApi: LoginApi
 ) : BaseViewModel() {
-
-
-
-
     // Kakao Manager 사용
     fun kakaoLogin(context: Context) {
         KakaoLoginManager(context) { token ->
@@ -68,7 +64,7 @@ class LoginViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 val request = LoginRequest(type = type, accessToken = socialAccessToken)
-                val response: Response<BaseResponse<FirebaseTokenData>> = loginApi.ssoLogin(request)
+                val response: Response<BaseResponse<FirebaseTokenResponse>> = loginApi.ssoLogin(request)
                 val firebaseCustomToken = response.body()?.data?.firebaseCustomToken
 
                 // 회원가입을 위해 임시로 값 저장 (DataStore)
@@ -88,7 +84,7 @@ class LoginViewModel @Inject constructor(
 //                        Log.d("fcm token", fcmToken.toString())
                         if (userId != null && fcmToken != null)
                             loginApi.setFcmToken(
-                                FcmTokenBody(
+                                FcmTokenRequest(
                                     userId = userId,
                                     firebaseToken = fcmToken
                                 )
@@ -109,8 +105,6 @@ class LoginViewModel @Inject constructor(
             }
         )
     }
-
-
 
     private suspend fun saveTokens(accessToken: String, refreshToken: String, firebaseCustomToken: String) {
         userPreferences.saveTokensAndUserId(

@@ -2,7 +2,6 @@ package com.tlog.data.model.travel
 
 import com.tlog.data.model.share.Location
 
-
 data class Travel(
     val name: String,
     val address: String,
@@ -15,5 +14,3 @@ data class Travel(
     val description: String,
     val customTags: List<String>
 )
-
-

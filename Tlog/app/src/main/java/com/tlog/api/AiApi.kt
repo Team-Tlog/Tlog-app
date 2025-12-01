@@ -1,11 +1,11 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.api.CourseItem
-import com.tlog.data.model.travel.AiRequest
-import com.tlog.data.model.travel.AiTravel
-import com.tlog.data.model.travel.CourseResponse
-import com.tlog.data.model.travel.CourseSaveRequest
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.course.CourseItem
+import com.tlog.data.model.request.travel.AiRequest
+import com.tlog.data.model.response.travel.AiTravel
+import com.tlog.data.model.response.travel.CourseResponse
+import com.tlog.data.model.request.travel.CourseSaveRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

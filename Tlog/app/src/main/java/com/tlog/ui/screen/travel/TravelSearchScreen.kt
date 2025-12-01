@@ -1,6 +1,5 @@
 package com.tlog.ui.screen.travel
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -24,7 +24,6 @@ import com.tlog.ui.component.share.SearchBar
 import com.tlog.ui.component.travel.PopularDestinations
 import com.tlog.ui.component.travel.RecentSearches
 import com.tlog.ui.component.travel.SearchTravelItem
-import com.tlog.ui.component.travel.TravelCategoryGrid
 import com.tlog.viewmodel.share.SearchViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
@@ -34,6 +33,11 @@ fun TravelSearchScreen(
     navController: NavController
 ) {
     val context = LocalContext.current
+
+    val popularDestinations by viewModel.popularDestinations.collectAsState()
+    val recentSearches by viewModel.recentSearches.collectAsState()
+    val searchResult by viewModel.searchResult.collectAsState()
+    val searchText by viewModel.searchText.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -63,10 +67,9 @@ fun TravelSearchScreen(
                 Spacer(modifier = Modifier.height(42.dp))
 
                 SearchBar(
-                    value = viewModel.searchText.collectAsState().value,
+                    value = searchText,
                     onValueChange = {
                         viewModel.updateSearchText(it)
-                        Log.d("SearchText", viewModel.searchText.value)
                     },
                     leadingIcon = {
                         Icon(
@@ -80,14 +83,14 @@ fun TravelSearchScreen(
                 Spacer(modifier = Modifier.height(26.dp))
             }
 
-            if (viewModel.searchResult.value.isEmpty() || !viewModel.checkSearchText()) {
+            if (searchResult.isEmpty() || !viewModel.checkSearchText()) {
                item {
 //                   TravelCategoryGrid()
 //
 //                   Spacer(modifier = Modifier.height(25.dp))
 
                    PopularDestinations(
-                       destinations = viewModel.popularDestinations.value,
+                       destinations = popularDestinations,
                        onDestinationClick = { destinationId ->
                            viewModel.navToTravelInfo(destinationId)
                        }
@@ -96,7 +99,7 @@ fun TravelSearchScreen(
                    Spacer(modifier = Modifier.height(32.dp))
 
                    RecentSearches(
-                       recentSearches = viewModel.recentSearches.value,
+                       recentSearches = recentSearches,
                        onSearchClick = { searchText ->
                            viewModel.onRecentSearchClick(searchText)
                        }
@@ -111,7 +114,7 @@ fun TravelSearchScreen(
                             viewModel.navToTravelInfo(travelId)
                         }
                     )
-                    if (index == viewModel.searchResult.value.lastIndex) {
+                    if (index == searchResult.lastIndex) {
                         Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
                     } else {
                         Spacer(modifier = Modifier.height(24.dp))

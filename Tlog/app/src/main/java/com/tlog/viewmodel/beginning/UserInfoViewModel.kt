@@ -1,21 +1,22 @@
 package com.tlog.viewmodel.beginning
 
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 
 class UserInfoViewModel: BaseViewModel() {
 
-    private var _nickname = mutableStateOf("")
-    val nickname = _nickname
-    private var _gender = mutableStateOf("성별")
-    val gender = _gender
-    private var _hasPet = mutableStateOf(false)
-    val hasPet = _hasPet
-    private var _travelType = mutableStateOf("가족여행")
-    val travelType = _travelType
-    private var _hasCar = mutableStateOf(false)
-    val hasCar = _hasCar
+    private var _nickname = MutableStateFlow("")
+    val nickname = _nickname.asStateFlow()
+    private var _gender = MutableStateFlow("성별")
+    val gender = _gender.asStateFlow()
+    private var _hasPet = MutableStateFlow(false)
+    val hasPet = _hasPet.asStateFlow()
+    private var _travelType = MutableStateFlow("가족여행")
+    val travelType = _travelType.asStateFlow()
+    private var _hasCar = MutableStateFlow(false)
+    val hasCar = _hasCar.asStateFlow()
 
 
     fun updateNickname(newName: String) {

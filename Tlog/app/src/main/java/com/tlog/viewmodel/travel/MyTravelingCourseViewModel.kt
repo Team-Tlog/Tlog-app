@@ -1,10 +1,9 @@
 package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.viewModelScope
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.local.CourseIdManager
-import com.tlog.data.model.travel.AiTravel
-import com.tlog.data.model.travel.CourseDailySchedule
+import com.tlog.data.local.TokenProvider
+import com.tlog.data.model.response.travel.AiTravel
+import com.tlog.data.model.response.travel.CourseDailySchedule
 import com.tlog.data.repository.MyTravelingCourseRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -71,6 +70,4 @@ class MyTravelingCourseViewModel @Inject constructor(
     fun getDayCount(): Int {
         return _courses.value.size
     }
-
-
 }

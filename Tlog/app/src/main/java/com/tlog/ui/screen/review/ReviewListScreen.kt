@@ -17,6 +17,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,9 +31,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.travel.TravelInfoTopBar
-import com.tlog.ui.component.travel.review.ReviewHeader
-import com.tlog.ui.component.travel.review.ReviewList
-import com.tlog.ui.component.travel.review.ReviewStatistics
+import com.tlog.ui.component.review.ReviewHeader
+import com.tlog.ui.component.review.ReviewList
+import com.tlog.ui.component.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
@@ -44,6 +46,11 @@ fun ReviewListScreen(
     navController: NavController
 ) {
     val listState = rememberLazyListState()
+    val sortOption by viewModel.sortOption.collectAsState()
+    val reviews by viewModel.reviews.collectAsState()
+    val rating by viewModel.rating.collectAsState()
+    val ratingDistribution by viewModel.ratingDistribution.collectAsState()
+
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -81,7 +88,7 @@ fun ReviewListScreen(
         }
     }
 
-    LaunchedEffect(viewModel.sortOption.value) {
+    LaunchedEffect(sortOption) {
         viewModel.resetPaging()
         viewModel.getReviewList(id = travelId)
     }
@@ -112,7 +119,7 @@ fun ReviewListScreen(
                         .padding(horizontal = 31.dp)
                 ) {
                     ReviewHeader(
-                        reviewCnt = viewModel.reviewList.value.size,
+                        reviewCnt = reviews.size,
                         reviewWrite = { viewModel.navToReviewWrite(travelId, travelName) }
                     )
                 }
@@ -124,8 +131,8 @@ fun ReviewListScreen(
                         .padding(31.dp)
                 ) {
                     ReviewStatistics(
-                        avgStarRating = viewModel.rating.value,
-                        ratingDistribution = viewModel.ratingDistribution.value
+                        avgStarRating = rating,
+                        ratingDistribution = ratingDistribution
                     )
 
                     Spacer(modifier = Modifier.height(29.dp))
@@ -135,8 +142,8 @@ fun ReviewListScreen(
                             .fillMaxWidth()
                     ) {
                         DropDown(
-                            options = listOf("날짜순", "높은순", "낮은순") - viewModel.sortOption.value,
-                            value = viewModel.sortOption.value,
+                            options = listOf("날짜순", "높은순", "낮은순") - sortOption,
+                            value = sortOption,
                             valueChange = {
                                 viewModel.updateSelectOption(it)
                             },
@@ -150,7 +157,7 @@ fun ReviewListScreen(
                     Spacer(modifier = Modifier.height(29.dp))
 
                     ReviewList(
-                        reviewList = viewModel.reviewList.value
+                        reviewList = reviews
                     )
                 }
             }

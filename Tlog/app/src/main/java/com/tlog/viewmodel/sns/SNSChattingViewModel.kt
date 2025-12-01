@@ -13,7 +13,6 @@ import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -24,9 +23,12 @@ import ua.naiksoftware.stomp.ConnectionProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
-import com.tlog.data.api.ChatMessageHistory
+import com.tlog.data.model.response.sns.ChatMessageHistory
+import com.tlog.data.model.team.ChatMessageDto
+import com.tlog.data.model.team.MemberProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
@@ -44,7 +46,7 @@ class SNSChattingViewModel @Inject constructor(
     private val url = "ws://43.201.77.202:8080/ws-stomp/websocket"
 
     private val _messageList = MutableStateFlow<List<ChatMessageDto>>(emptyList())
-    val messageList: StateFlow<List<ChatMessageDto>> get() = _messageList
+    val messageList = _messageList.asStateFlow()
 
     var messageText by mutableStateOf("")
     var messages = mutableStateListOf<ChatMessageDto>()
@@ -53,20 +55,20 @@ class SNSChattingViewModel @Inject constructor(
 
     // 메시지 히스토리 페이지네이션 관련 (단순화)
     private val _displayedHistoryMessages = MutableStateFlow<List<ChatMessageDto>>(emptyList())
-    val displayedHistoryMessages: StateFlow<List<ChatMessageDto>> get() = _displayedHistoryMessages
+    val displayedHistoryMessages = _displayedHistoryMessages.asStateFlow()
 
     private val _isLoadingHistory = MutableStateFlow(false)
-    val isLoadingHistory: StateFlow<Boolean> get() = _isLoadingHistory
+    val isLoadingHistory = _isLoadingHistory.asStateFlow()
 
     private val _hasMoreHistory = MutableStateFlow(true)
-    val hasMoreHistory: StateFlow<Boolean> get() = _hasMoreHistory
+    val hasMoreHistory = _hasMoreHistory.asStateFlow()
 
     // 다음 커서 저장 (페이지네이션용)
     private var nextCursor: Long? = null
 
     // 멤버 프로필 정보 저장 (userId -> profileImageUrl)
     private val _memberProfiles = MutableStateFlow<Map<String, MemberProfile>>(emptyMap())
-    val memberProfiles: StateFlow<Map<String, MemberProfile>> get() = _memberProfiles
+    val memberProfiles = _memberProfiles.asStateFlow()
 
     fun setMemberProfiles(members: List<MemberProfile>) {
         _memberProfiles.value = members.associateBy { it.userId }
@@ -449,19 +451,3 @@ class SNSChattingViewModel @Inject constructor(
         }
     }
 }
-
-data class ChatMessageDto(
-    val messageId: Long,
-    val chatRoomId: Long,
-    val senderId: String,
-    val senderName: String,
-    val content: String,
-    val sendAt: String,
-    var unreadCount: Int = 0
-)
-
-data class MemberProfile(
-    val userId: String,
-    val name: String,
-    val profileImageUrl: String?
-)

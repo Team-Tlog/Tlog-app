@@ -1,7 +1,6 @@
 package com.tlog.ui.component.sns
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,10 +27,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.api.CourseItem
+import com.tlog.data.model.response.course.CourseItem
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont

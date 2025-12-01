@@ -1,7 +1,7 @@
 package com.tlog.api
 
-import com.tlog.data.api.BaseResponse
-import com.tlog.data.model.restaurant.Restaurant
+import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.model.response.restaurant.Restaurant
 import retrofit2.http.GET
 import retrofit2.http.Query
 

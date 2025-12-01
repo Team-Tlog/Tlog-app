@@ -1,17 +1,15 @@
 package com.tlog.viewmodel.share
 
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.api.retrofit.TokenProvider
-import com.tlog.data.model.share.Location
+import com.tlog.data.local.TokenProvider
 import com.tlog.data.model.travel.Scrap
 import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
@@ -20,14 +18,12 @@ class MapViewModel @Inject constructor(
 ): BaseViewModel() {
     var userId: String = ""
 
-    private var _cartList = mutableStateOf<List<Cart>?>(null)
-    val cartList: State<List<Cart>?> = _cartList
+    private val _carts = MutableStateFlow<List<Cart>?>(null)
+    val carts = _carts.asStateFlow()
 
-    private var _scrapList = mutableStateOf<List<Scrap>?>(null)
-    val scrapList: State<List<Scrap>?> = _scrapList
+    private val _scraps = MutableStateFlow<List<Scrap>?>(null)
+    val scraps = _scraps.asStateFlow()
 
-    private val _currentLocation = mutableStateOf<Location?>(null)
-    val currentLocation: State<Location?> = _currentLocation
 
     init {
         userId = tokenProvider.getUserId() ?: ""
@@ -39,7 +35,7 @@ class MapViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 val result = repository.getUserScrap(userId)
-                _scrapList.value = result
+                _scraps.value = result
             },
             onError = { Log.d("MapViewModel", it) }
         )
@@ -49,14 +45,9 @@ class MapViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 val result = repository.getUserCart(userId)
-                _cartList.value = result
+                _carts.value = result
             },
             onError = { Log.d("MapViewModel", it) }
         )
     }
-
-    fun updateCurrentLocation(latitude: Double, longitude: Double) {
-        _currentLocation.value = Location(latitude = latitude.toString(), longitude = longitude.toString())
-    }
-
 }

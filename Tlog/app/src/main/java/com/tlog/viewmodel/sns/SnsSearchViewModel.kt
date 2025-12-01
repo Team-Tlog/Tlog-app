@@ -1,9 +1,7 @@
 package com.tlog.viewmodel.sns
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.api.SnsPostPreview
+import com.tlog.data.model.response.sns.SnsPostPreview
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +11,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,15 +20,13 @@ import javax.inject.Inject
 class SnsSearchViewModel @Inject constructor(
     private val repository: SnsRepository
 ): BaseViewModel() {
-
-    private var _searchText = MutableStateFlow("")
+    private val _searchText = MutableStateFlow("")
     val searchText = _searchText
 
-    private var _searchResult = mutableStateOf<List<SnsPostPreview>>(emptyList())
-    val searchResult: State<List<SnsPostPreview>> = _searchResult
+    private val _searchResult = MutableStateFlow<List<SnsPostPreview>>(emptyList())
+    val searchResult = _searchResult.asStateFlow()
 
     private var lastPostId: String? = null
-
 
     init {
         viewModelScope.launch {
@@ -44,7 +41,6 @@ class SnsSearchViewModel @Inject constructor(
         }
     }
 
-
     suspend fun searchPost(searchText: String) {
         try {
             val response = repository.searchPost(query = searchText, size = 10, lastPostId = lastPostId)
@@ -57,7 +53,6 @@ class SnsSearchViewModel @Inject constructor(
             showToast(e.message ?: "검색 중 오류가 발생했습니다")
         }
     }
-
 
     fun updateSearchText(newSearchText: String) {
         _searchText.value = newSearchText

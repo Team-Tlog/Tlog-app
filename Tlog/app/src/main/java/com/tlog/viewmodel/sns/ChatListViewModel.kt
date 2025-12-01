@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsApi
-import com.tlog.data.api.ChatRoom
+import com.tlog.data.model.response.sns.ChatRoom
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,13 +19,13 @@ class ChatListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _chatRoomList = MutableStateFlow<List<ChatRoom>>(emptyList())
-    val chatRoomList: StateFlow<List<ChatRoom>> get() = _chatRoomList
+    val chatRoomList = _chatRoomList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading
+    val isLoading = _isLoading.asStateFlow()
 
     private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> get() = _errorMessage
+    val errorMessage = _errorMessage.asStateFlow()
 
     init {
         loadChatList()

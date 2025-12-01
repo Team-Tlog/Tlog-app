@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.data.api.SnsPost
+import com.tlog.data.model.response.sns.SnsPost
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -25,10 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.api.SearchTravel
+import com.tlog.data.model.response.travel.TravelSearch
 import com.tlog.data.model.travel.Scrap
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.data.model.travel.Cart
@@ -36,7 +35,6 @@ import com.tlog.data.model.travel.Travel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
-import com.tlog.viewmodel.share.ScrapAndCartViewModel
 
 
 @Composable
@@ -125,7 +123,8 @@ fun CheckedCartItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
             model = travel.imageUrl,
@@ -172,9 +171,9 @@ fun CheckedCartItem(
             Icon(
                 painter =
                     if (isChecked(travel.name))
-                        painterResource(R.drawable.ic_checkbox_checked)
+                        painterResource(R.drawable.ic_filled_checkbox_checked)
                     else
-                        painterResource(R.drawable.ic_checkbox_unchecked),
+                        painterResource(R.drawable.ic_filled_checkbox_unchecked),
                 contentDescription = if (isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
                 tint = Color.Unspecified
             )
@@ -184,14 +183,16 @@ fun CheckedCartItem(
 
 @Composable
 fun CartItem(
-    viewModel: ScrapAndCartViewModel = viewModel(),
+    getIsChecked: (String) -> Boolean,
+    onCheckedClick: (String) -> Unit,
     travel: Cart,
     onClick: (String) -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 20.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
             AsyncImage(
                 model = travel.imageUrl,
@@ -241,17 +242,19 @@ fun CartItem(
 
         Spacer(modifier = Modifier.width(25.dp))
 
+        val isChecked = getIsChecked(travel.name)
+
         IconButton(
-            onClick = { viewModel.updateCheckedTravelList(travel.name) },
+            onClick = { onCheckedClick(travel.name) },
             modifier = Modifier.fillMaxHeight()
         ) {
             Icon(
                 painter =
-                    if (viewModel.isChecked(travel.name))
-                        painterResource(R.drawable.ic_checkbox_checked)
+                    if (isChecked)
+                        painterResource(R.drawable.ic_selected_checkbox)
                     else
-                        painterResource(R.drawable.ic_checkbox_unchecked),
-                contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                        painterResource(R.drawable.ic_unselected_checkbox),
+                contentDescription = if (isChecked) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
                 tint = Color.Unspecified
             )
         }
@@ -260,8 +263,9 @@ fun CartItem(
 
 @Composable
 fun ScrapTravelItem(
-    viewModel: ScrapAndCartViewModel = viewModel(),
+    getIsChecked: (String) -> Boolean,
     travel: Scrap,
+    checkedClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {
     Row(
@@ -319,16 +323,17 @@ fun ScrapTravelItem(
         Spacer(modifier = Modifier.width(25.dp))
 
         IconButton(
-            onClick = { viewModel.updateCheckedTravelList(travel.name) },
+            onClick = { checkedClick(travel.name) },
             modifier = Modifier.fillMaxHeight()
         ) {
+            val isChecked = getIsChecked(travel.name)
             Icon(
                 painter =
-                    if (viewModel.isChecked(travel.name))
+                    if (isChecked)
                         painterResource(R.drawable.ic_selected_checkbox)
                     else
                         painterResource(R.drawable.ic_unselected_checkbox),
-                contentDescription = if (viewModel.isChecked(travel.name)) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
+                contentDescription = if (isChecked) "${travel.name} 체크됨" else "${travel.name} 체크안됨",
                 tint = Color.Unspecified,
             )
         }
@@ -337,7 +342,7 @@ fun ScrapTravelItem(
 
 @Composable
 fun SearchTravelItem(
-    travel: SearchTravel,
+    travel: TravelSearch,
     onClick: (String, String) -> Unit
 ) {
     Row(
