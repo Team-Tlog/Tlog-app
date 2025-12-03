@@ -3,6 +3,7 @@ package com.tlog.ui.component.share
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,13 +21,12 @@ import com.tlog.ui.theme.MainFont
 @Composable
 fun TopBar(
     text: String,
-    fontSize: TextUnit = 20.sp,
-    height: Dp = 42.dp
+    fontSize: TextUnit = 20.sp
 ) {
     Box(
         Modifier
             .fillMaxWidth()
-            .height(height),
+            .padding(vertical = 15.dp, horizontal = 14.dp),
         contentAlignment = Alignment.Center
     ) {
             Text(
