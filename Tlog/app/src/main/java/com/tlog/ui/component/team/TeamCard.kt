@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 import com.tlog.R
-import com.tlog.data.dto.team.Team
+import com.tlog.data.dto.team.TeamDto
 
 @Composable
 fun TeamCard(
-    team: Team,
+    team: TeamDto,
     onDeleteClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {

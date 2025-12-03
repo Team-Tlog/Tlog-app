@@ -28,10 +28,10 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.dto.response.travel.TravelSearch
-import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.ScrapDto
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.data.dto.travel.Cart
-import com.tlog.data.dto.travel.Travel
+import com.tlog.data.dto.travel.CartDto
+import com.tlog.data.dto.travel.TravelDto
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -39,7 +39,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TravelItem(
-    travel: Travel,
+    travel: TravelDto,
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
 ) {
@@ -116,7 +116,7 @@ fun TravelItem(
 
 @Composable
 fun CheckedCartItem(
-    travel: Cart,
+    travel: CartDto,
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
 ) {
@@ -185,7 +185,7 @@ fun CheckedCartItem(
 fun CartItem(
     getIsChecked: (String) -> Boolean,
     onCheckedClick: (String) -> Unit,
-    travel: Cart,
+    travel: CartDto,
     onClick: (String) -> Unit
 ) {
     Row(
@@ -264,7 +264,7 @@ fun CartItem(
 @Composable
 fun ScrapTravelItem(
     getIsChecked: (String) -> Boolean,
-    travel: Scrap,
+    travel: ScrapDto,
     checkedClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {

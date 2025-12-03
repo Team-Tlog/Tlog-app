@@ -49,7 +49,7 @@ import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.R
-import com.tlog.data.dto.share.LocationData
+import com.tlog.data.dto.share.LocationDataDto
 import com.tlog.ui.component.main.BannerSection
 import com.tlog.ui.component.main.IssueSection
 import com.tlog.ui.component.main.RecommendDestinationSection
@@ -208,7 +208,7 @@ fun MainScreen(
 
                                         "식당/카페" -> {
                                             val location =
-                                                viewModel.currentLocation.value ?: LocationData(
+                                                viewModel.currentLocation.value ?: LocationDataDto(
                                                     37.715133,
                                                     126.734086
                                                 ) // default = 서울시청

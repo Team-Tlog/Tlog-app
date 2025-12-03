@@ -6,7 +6,7 @@ import com.tlog.api.UserApi
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.auth.FeedbackRequest
 import com.tlog.data.dto.request.auth.ProfileImageRequest
-import com.tlog.data.dto.user.User
+import com.tlog.data.dto.user.UserDto
 import javax.inject.Inject
 
 class MyPageRepository @Inject constructor(
@@ -18,7 +18,7 @@ class MyPageRepository @Inject constructor(
         return loginRetrofitInstance.ssoLogout(cookieHeader)
     }
 
-    suspend fun getUserInfo(): BaseResponse<User> {
+    suspend fun getUserInfo(): BaseResponse<UserDto> {
         return userRetrofitInstance.getUserInfo()
     }
 

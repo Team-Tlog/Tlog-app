@@ -2,7 +2,7 @@ package com.tlog.data.dto.travel
 
 import com.tlog.data.dto.share.LocationDto
 
-data class Travel(
+data class TravelDto(
     val name: String,
     val address: String,
     val location: LocationDto,

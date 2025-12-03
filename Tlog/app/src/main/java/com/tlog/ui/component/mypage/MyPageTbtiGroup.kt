@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.model.share.Tbti
-import com.tlog.data.dto.user.User
+import com.tlog.data.dto.user.UserDto
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun MyPageTbtiGroup(
-    userInfo: User,
+    userInfo: UserDto,
     tbtiTestClick: () -> Unit
 ) {
     Column(

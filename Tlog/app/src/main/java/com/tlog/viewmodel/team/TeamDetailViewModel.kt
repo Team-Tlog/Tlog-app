@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.dto.team.DetailTeam
+import com.tlog.data.dto.team.TeamDetailDto
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,8 +14,8 @@ import javax.inject.Inject
 class TeamDetailViewModel @Inject constructor(
     private val repository: TeamRepository
 ): BaseViewModel() {
-    private val _teamData = MutableStateFlow<DetailTeam?>(null)
-    val teamData: StateFlow<DetailTeam?> = _teamData
+    private val _teamData = MutableStateFlow<TeamDetailDto?>(null)
+    val teamData: StateFlow<TeamDetailDto?> = _teamData
 
     private val _checkTravels = MutableStateFlow<List<String>>(emptyList())
     val checkTravels = _checkTravels.asStateFlow()

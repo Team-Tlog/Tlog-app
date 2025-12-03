@@ -3,7 +3,7 @@ package com.tlog.data.dto.travel
 import com.tlog.data.dto.share.TagCountDto
 
 
-data class MinimalTravel(
+data class MinimalTravelDto(
     val destinationId: String,
     val name: String,
     val imageUrl: String,

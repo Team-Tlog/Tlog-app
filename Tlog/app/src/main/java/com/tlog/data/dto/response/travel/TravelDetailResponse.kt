@@ -2,8 +2,8 @@ package com.tlog.data.dto.response.travel
 
 import com.tlog.data.dto.share.LocationDto
 import com.tlog.data.dto.share.TagCountDto
-import com.tlog.data.dto.travel.MinimalTravel
-import com.tlog.data.dto.travel.Review
+import com.tlog.data.dto.travel.MinimalTravelDto
+import com.tlog.data.dto.travel.ReviewDto
 
 data class TravelDetailResponse(
     val id: String,
@@ -21,6 +21,6 @@ data class TravelDetailResponse(
     val imageUrl: String,
     val topTags: List<TagCountDto>,
     val ratingDistribution: Map<String, Int>,
-    val top2Reviews: List<Review>,
-    val relatedDestinations: List<MinimalTravel>
+    val top2Reviews: List<ReviewDto>,
+    val relatedDestinations: List<MinimalTravelDto>
 )

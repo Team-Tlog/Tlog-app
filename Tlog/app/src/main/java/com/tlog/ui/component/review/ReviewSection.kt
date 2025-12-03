@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.dto.travel.Review
+import com.tlog.data.dto.travel.ReviewDto
 import com.tlog.ui.theme.MainFont
 
 
@@ -27,7 +27,7 @@ import com.tlog.ui.theme.MainFont
 fun ReviewSection(
     avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
-    reviewList: List<Review>,
+    reviewList: List<ReviewDto>,
     reviewCnt: Int = Int.MAX_VALUE,
     moreReview: () -> Unit,
     reviewWrite: () -> Unit

@@ -18,14 +18,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.dto.travel.MinimalTravel
+import com.tlog.data.dto.travel.MinimalTravelDto
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
 fun SimilarTravelSpots(
-    travel: MinimalTravel,
+    travel: MinimalTravelDto,
     clickable: (String) -> Unit
 ) {
     Box(

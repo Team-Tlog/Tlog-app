@@ -5,14 +5,14 @@ import com.tlog.api.UserApi
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.travel.AiRequest
 import com.tlog.data.dto.response.travel.AiTravel
-import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.travel.CartDto
 import jakarta.inject.Inject
 
 class AiCourseSelectCartRepository @Inject constructor(
     private val userApi: UserApi,
     private val aiApi: AiApi
 ) {
-    suspend fun getUserCart(userId: String): List<Cart> {
+    suspend fun getUserCart(userId: String): List<CartDto> {
         return userApi.getUserCart(userId).data
     }
 

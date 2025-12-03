@@ -2,7 +2,7 @@ package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.team.Team
+import com.tlog.data.dto.team.TeamDto
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +17,7 @@ class MyTeamListViewModel @Inject constructor(
 ) : BaseViewModel() {
     private var userId: String? = null
 
-    private val _teams = MutableStateFlow<List<Team>>(emptyList())
+    private val _teams = MutableStateFlow<List<TeamDto>>(emptyList())
     val teams = _teams.asStateFlow()
 
     init {

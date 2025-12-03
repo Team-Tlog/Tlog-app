@@ -6,20 +6,20 @@ import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.team.CreateTeamRequest
 import com.tlog.data.dto.request.team.JoinTeamRequest
 import com.tlog.data.dto.response.team.TeamCreateResponse
-import com.tlog.data.dto.team.DetailTeam
-import com.tlog.data.dto.team.Team
+import com.tlog.data.dto.team.TeamDetailDto
+import com.tlog.data.dto.team.TeamDto
 import jakarta.inject.Inject
 
 class TeamRepository @Inject constructor(
     private val retrofitInstance: TeamApi
 ) {
-    suspend fun getTeamList(userId: String): BaseResponse<List<Team>>{
+    suspend fun getTeamList(userId: String): BaseResponse<List<TeamDto>>{
         val result = retrofitInstance.getTeamList(userId)
         Log.d("MyTeamListRepository", "addReview: $result")
         return result
     }
 
-    suspend fun getTeamDetails(teamId: String): BaseResponse<DetailTeam> {
+    suspend fun getTeamDetails(teamId: String): BaseResponse<TeamDetailDto> {
         return retrofitInstance.getTeamDetails(teamId)
     }
 

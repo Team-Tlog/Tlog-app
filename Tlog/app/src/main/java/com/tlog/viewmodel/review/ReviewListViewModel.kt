@@ -6,7 +6,7 @@ import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.collections.plus
-import com.tlog.data.dto.travel.Review
+import com.tlog.data.dto.travel.ReviewDto
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +18,7 @@ class ReviewListViewModel @Inject constructor(
     private val scrapManager: ScrapManager
 ): BaseViewModel() {
 
-    private val _reviews = MutableStateFlow<List<Review>>(emptyList())
+    private val _reviews = MutableStateFlow<List<ReviewDto>>(emptyList())
     val reviews = _reviews.asStateFlow()
 
     private val _ratingDistribution = MutableStateFlow<Map<String, Int>>(emptyMap())

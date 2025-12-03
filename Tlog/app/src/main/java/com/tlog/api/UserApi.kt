@@ -3,8 +3,8 @@ package com.tlog.api
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.auth.FeedbackRequest
 import com.tlog.data.dto.request.auth.ProfileImageRequest
-import com.tlog.data.dto.travel.Cart
-import com.tlog.data.dto.user.User
+import com.tlog.data.dto.travel.CartDto
+import com.tlog.data.dto.user.UserDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.PUT
@@ -17,7 +17,7 @@ interface UserApi {
     @GET("api/shopcart/user/{userId}")
     suspend fun getUserCart(
         @Path("userId") userId: String
-    ): BaseResponse<List<Cart>>
+    ): BaseResponse<List<CartDto>>
 
     @PUT("api/shopcart/user/{userId}")
     @Headers("Content-Type: text/plain")
@@ -34,7 +34,7 @@ interface UserApi {
 
     // 기본 마이페이지 조회 (SNS 아님)
     @GET("api/users/my-page")
-    suspend fun getUserInfo(): BaseResponse<User>
+    suspend fun getUserInfo(): BaseResponse<UserDto>
 
     //마이페이지에서 프로필사진 업로드
     @POST("/api/users/profile-image")

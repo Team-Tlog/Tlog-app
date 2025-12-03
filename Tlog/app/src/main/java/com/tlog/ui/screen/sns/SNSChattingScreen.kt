@@ -44,7 +44,7 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import com.tlog.data.dto.team.ChatMessageDto
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.data.dto.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfileDto
 import com.tlog.ui.component.sns.ChatInputBox
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -81,7 +81,7 @@ private fun extractDate(sendAt: String): String {
 fun SNSChattingScreen(
     chatRoomId: Long,
     teamName: String,
-    members: List<MemberProfile>,
+    members: List<MemberProfileDto>,
     viewModel: SNSChattingViewModel = hiltViewModel(),
 ) {
     val messages by viewModel.messageList.collectAsState()

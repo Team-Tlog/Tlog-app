@@ -1,6 +1,6 @@
 package com.tlog.data.dto.user
 
-data class Reward(
+data class RewardDto(
     val rewardId: Long,
     val name: String,
     val description: String,

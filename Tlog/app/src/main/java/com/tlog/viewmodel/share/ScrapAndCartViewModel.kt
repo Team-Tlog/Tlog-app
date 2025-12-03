@@ -2,8 +2,8 @@ package com.tlog.viewmodel.share
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.travel.Scrap
-import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.travel.ScrapDto
+import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.repository.ScrapAndCartRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,10 +18,10 @@ class ScrapAndCartViewModel @Inject constructor(
 ): BaseViewModel() {
     private var userId: String = ""
 
-    private val _carts = MutableStateFlow<List<Cart>>(emptyList())
+    private val _carts = MutableStateFlow<List<CartDto>>(emptyList())
     val carts = _carts.asStateFlow()
 
-    private val _scraps = MutableStateFlow<List<Scrap>>(emptyList())
+    private val _scraps = MutableStateFlow<List<ScrapDto>>(emptyList())
     val scraps = _scraps.asStateFlow()
 
     private val _selectedTab = MutableStateFlow("스크랩")

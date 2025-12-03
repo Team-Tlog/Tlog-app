@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.dto.travel.MinimalTravel
+import com.tlog.data.dto.travel.MinimalTravelDto
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun SimilarTravelSection(
-    travelList: List<MinimalTravel>,
+    travelList: List<MinimalTravelDto>,
     clickable: (String) -> Unit
 ) {
     Column(

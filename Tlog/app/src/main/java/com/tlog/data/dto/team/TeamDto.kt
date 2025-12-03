@@ -1,6 +1,6 @@
 package com.tlog.data.dto.team
 
-data class Team(
+data class TeamDto(
     val teamId: String,
     val teamName: String,
     val teamLeaderId: String,

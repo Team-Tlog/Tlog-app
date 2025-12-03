@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.tlog.data.dto.response.travel.TravelSearch
-import com.tlog.data.dto.travel.Scrap
-import com.tlog.data.dto.travel.Cart
-import com.tlog.data.dto.travel.Travel
+import com.tlog.data.dto.travel.ScrapDto
+import com.tlog.data.dto.travel.CartDto
+import com.tlog.data.dto.travel.TravelDto
 
 
 @Composable
 fun TravelList(
-    travelList: List<Travel>,
+    travelList: List<TravelDto>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
@@ -46,7 +46,7 @@ fun TravelList(
 
 @Composable
 fun CheckCartList(
-    travelList: List<Cart>,
+    travelList: List<CartDto>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
@@ -75,7 +75,7 @@ fun CheckCartList(
 
 @Composable
 fun CartList(
-    travelList: List<Cart>,
+    travelList: List<CartDto>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
     getIsChecked: (String) -> Boolean,
@@ -106,7 +106,7 @@ fun CartList(
 
 @Composable
 fun ScrapTravelList(
-    scrapTravelList: List<Scrap>,
+    scrapTravelList: List<ScrapDto>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
     getIsChecked: (String) -> Boolean,

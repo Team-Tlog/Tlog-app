@@ -25,7 +25,7 @@ import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.dto.response.sns.ChatMessageHistory
 import com.tlog.data.dto.team.ChatMessageDto
-import com.tlog.data.dto.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfileDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.asStateFlow
@@ -67,10 +67,10 @@ class SNSChattingViewModel @Inject constructor(
     private var nextCursor: Long? = null
 
     // 멤버 프로필 정보 저장 (userId -> profileImageUrl)
-    private val _memberProfiles = MutableStateFlow<Map<String, MemberProfile>>(emptyMap())
+    private val _memberProfiles = MutableStateFlow<Map<String, MemberProfileDto>>(emptyMap())
     val memberProfiles = _memberProfiles.asStateFlow()
 
-    fun setMemberProfiles(members: List<MemberProfile>) {
+    fun setMemberProfiles(members: List<MemberProfileDto>) {
         _memberProfiles.value = members.associateBy { it.userId }
     }
 

@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.travel.Review
+import com.tlog.data.dto.travel.ReviewDto
 
 
 @Composable
 fun ReviewList(
-    reviewList: List<Review>,
+    reviewList: List<ReviewDto>,
     maxCnt: Int = Int.MAX_VALUE
 ) {
     Column(

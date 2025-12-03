@@ -1,6 +1,6 @@
 package com.tlog.data.dto.team
 
-data class Member(
+data class MemberDto(
     val userId: String,
     val profileImageUrl: String,
     val name: String,

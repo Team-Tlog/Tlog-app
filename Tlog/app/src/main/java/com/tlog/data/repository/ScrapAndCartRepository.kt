@@ -2,8 +2,8 @@ package com.tlog.data.repository
 
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
-import com.tlog.data.dto.travel.Scrap
-import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.travel.ScrapDto
+import com.tlog.data.dto.travel.CartDto
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -13,11 +13,11 @@ class ScrapAndCartRepository @Inject constructor(
     private val userApi: UserApi,
     private val travelApi: TravelApi
 ) {
-    suspend fun getUserCart(userId: String): List<Cart> {
+    suspend fun getUserCart(userId: String): List<CartDto> {
         return userApi.getUserCart(userId).data
     }
 
-    suspend fun getUserScrap(userId: String): List<Scrap> {
+    suspend fun getUserScrap(userId: String): List<ScrapDto> {
         return travelApi.getUserScraps(userId).data
     }
 

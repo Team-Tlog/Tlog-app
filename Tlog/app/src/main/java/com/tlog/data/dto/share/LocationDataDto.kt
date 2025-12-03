@@ -1,6 +1,6 @@
 package com.tlog.data.dto.share
 
-data class LocationData(
+data class LocationDataDto(
     val latitude: Double,
     val longitude: Double
 )

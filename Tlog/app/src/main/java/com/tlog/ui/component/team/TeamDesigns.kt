@@ -24,8 +24,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.dto.team.DetailTeam
-import com.tlog.data.dto.team.Member
+import com.tlog.data.dto.team.TeamDetailDto
+import com.tlog.data.dto.team.MemberDto
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
@@ -37,7 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun SmallDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetailDto,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -107,7 +107,7 @@ fun SmallDesign(
 
 @Composable
 fun DefaultDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetailDto,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -258,7 +258,7 @@ fun DefaultDesign(
 
 @Composable
 fun BigDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetailDto,
     onChatClick: () -> Unit
 ) {
     Column(
@@ -319,7 +319,7 @@ fun BigDesign(
 
 @Composable
 fun DetailMember(
-    memberList: List<Member>
+    memberList: List<MemberDto>
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)

@@ -1,15 +1,13 @@
-package com.tlog.data.dto.travel
+package com.tlog.data.dto.team
 
 import com.tlog.data.dto.share.LocationDto
 import com.tlog.data.dto.share.TagCountDto
 
-data class Cart(
+data class WishlistDto(
     val id: String,
     val name: String,
+    val location: LocationDto,
     val imageUrl: String,
     val description: String,
-    val tagCountList: List<TagCountDto>,
-    val location: LocationDto,
-    val city: String,
-    val district: String
+    val tagCountList: List<TagCountDto>
 )

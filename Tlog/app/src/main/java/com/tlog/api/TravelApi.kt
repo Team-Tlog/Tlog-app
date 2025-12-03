@@ -6,7 +6,7 @@ import com.tlog.data.dto.response.review.ReviewsResponse
 import com.tlog.data.dto.request.review.ReviewRequest
 import com.tlog.data.dto.response.travel.TravelDetailResponse
 import com.tlog.data.dto.response.travel.TravelRecommendPagedResponse
-import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.ScrapDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -60,5 +60,5 @@ interface TravelApi {
     @GET("/api/scrap/user/{userId}")
     suspend fun getUserScraps(
         @Path("userId") userId: String
-    ): BaseResponse<List<Scrap>>
+    ): BaseResponse<List<ScrapDto>>
 }

@@ -25,7 +25,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.dto.travel.Review
+import com.tlog.data.dto.travel.ReviewDto
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage
@@ -39,7 +39,7 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReviewItem(
-    review: Review
+    review: ReviewDto
 ) {
     val instant = Instant.parse(review.createdAt)
 

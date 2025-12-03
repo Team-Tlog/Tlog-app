@@ -10,7 +10,7 @@ import com.google.android.gms.location.Priority
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.dto.share.BannerDto
 import com.tlog.data.dto.share.LocalGuideDto
-import com.tlog.data.dto.share.LocationData
+import com.tlog.data.dto.share.LocationDataDto
 import com.tlog.data.dto.share.PostDto
 import com.tlog.data.dto.share.RecommendDestinationDto
 import com.tlog.data.repository.MainRepository
@@ -31,8 +31,8 @@ class MainViewModel @Inject constructor(
     private val _bannerList = MutableStateFlow<List<BannerDto>>(emptyList())
     val bannerList: StateFlow<List<BannerDto>> = _bannerList.asStateFlow()
 
-    private val _currentLocation = MutableStateFlow<LocationData?>(null)
-    val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
+    private val _currentLocation = MutableStateFlow<LocationDataDto?>(null)
+    val currentLocation: StateFlow<LocationDataDto?> = _currentLocation.asStateFlow()
 
     private val _localGuides = MutableStateFlow<List<LocalGuideDto>>(emptyList())
     val localGuides: StateFlow<List<LocalGuideDto>> = _localGuides.asStateFlow()
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
             null
         ).addOnSuccessListener { location ->
             location?.let {
-                val locationData = LocationData(it.latitude, it.longitude)
+                val locationData = LocationDataDto(it.latitude, it.longitude)
                 _currentLocation.value = locationData
                 Log.d("MainViewModel", "위치 획득 성공: ${it.latitude}, ${it.longitude}")
 
@@ -95,7 +95,7 @@ class MainViewModel @Inject constructor(
         )
     }
 
-    private fun sendLocationToServer(location: LocationData) {
+    private fun sendLocationToServer(location: LocationDataDto) {
         launchSafeCall(
             action = {
                 val response = mainRepository.getLocalGuide(

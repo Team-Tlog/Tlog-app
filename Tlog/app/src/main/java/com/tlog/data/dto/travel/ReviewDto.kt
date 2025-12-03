@@ -1,6 +1,6 @@
 package com.tlog.data.dto.travel
 
-data class Review(
+data class ReviewDto(
     val id: String,
     val userId: String,
     val username: String,

@@ -4,8 +4,8 @@ import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.team.CreateTeamRequest
 import com.tlog.data.dto.request.team.JoinTeamRequest
 import com.tlog.data.dto.response.team.TeamCreateResponse
-import com.tlog.data.dto.team.DetailTeam
-import com.tlog.data.dto.team.Team
+import com.tlog.data.dto.team.TeamDetailDto
+import com.tlog.data.dto.team.TeamDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -17,7 +17,7 @@ interface TeamApi {
     @GET("/api/team")
     suspend fun getTeamList(
         @Query("userId") userId: String,
-    ): BaseResponse<List<Team>>
+    ): BaseResponse<List<TeamDto>>
 
     @POST("/api/team")
     suspend fun createTeam(
@@ -32,7 +32,7 @@ interface TeamApi {
     @GET("/api/team/{teamId}/details")
     suspend fun getTeamDetails(
         @Path("teamId") teamId: String,
-    ): BaseResponse<DetailTeam>
+    ): BaseResponse<TeamDetailDto>
 
     @POST("/api/team/join")
     suspend fun joinTeam(
