@@ -3,7 +3,7 @@ package com.tlog.viewmodel.beginning
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.dto.request.auth.FcmTokenRequest
 import com.tlog.data.dto.request.auth.RegisterRequest
-import com.tlog.data.dto.request.auth.UserProfileBody
+import com.tlog.data.dto.request.auth.UserProfileDto
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.repository.ChooseMyTypeRepository
 import com.tlog.ui.navigation.Screen
@@ -46,7 +46,7 @@ class ChooseMyTypeViewModel @Inject constructor(
                 val request = RegisterRequest(
                     type = socialType.toString(),
                     accessToken = socialAccessToken,
-                    userProfile = UserProfileBody(tbtiValue = tbtiValue),
+                    userProfile = UserProfileDto(tbtiValue = tbtiValue),
                     preferTagIds = _selected.value
                 )
 

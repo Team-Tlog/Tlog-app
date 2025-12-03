@@ -13,7 +13,7 @@ import com.tlog.data.dto.response.sns.SnsPost
 import com.tlog.data.dto.response.sns.SnsPostPreview
 import com.tlog.data.dto.response.sns.SnsUser
 import com.tlog.data.dto.response.sns.SnsUserProfile
-import com.tlog.data.dto.request.sns.StatusMessageBody
+import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
 import com.tlog.data.dto.sns.CommentDto
 import retrofit2.http.Body
@@ -80,7 +80,7 @@ interface SnsApi {
     @POST("/api/follow")
     suspend fun followUser(
         @Body request: FollowRequest
-    ): BaseResponse<StatusMessageBody>
+    ): BaseResponse<StatusMessageResponse>
 
     // 유저 채팅방 리스트 조회
     @GET("/api/chat/room/{hostId}")

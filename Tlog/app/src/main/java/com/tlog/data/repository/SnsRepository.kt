@@ -11,7 +11,7 @@ import com.tlog.data.dto.response.sns.SnsPost
 import com.tlog.data.dto.response.sns.SnsPostPreview
 import com.tlog.data.dto.response.sns.SnsUser
 import com.tlog.data.dto.response.sns.SnsUserProfile
-import com.tlog.data.dto.request.sns.StatusMessageBody
+import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
 import com.tlog.data.dto.sns.CommentDto
 import javax.inject.Inject
@@ -68,7 +68,7 @@ class SnsRepository @Inject constructor(
         return retrofitInstance.getFollowingList(userId)
     }
 
-    suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessageBody> {
+    suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessageResponse> {
         return retrofitInstance.followUser(FollowRequest(from_userId = userId, to_userId = toUserId))
     }
 

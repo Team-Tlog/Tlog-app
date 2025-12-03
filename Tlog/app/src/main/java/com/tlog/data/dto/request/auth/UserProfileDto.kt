@@ -1,5 +1,5 @@
 package com.tlog.data.dto.request.auth
 
-data class UserProfileBody(
+data class UserProfileDto(
     val tbtiValue: String
 )
