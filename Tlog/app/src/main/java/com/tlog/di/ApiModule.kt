@@ -5,12 +5,14 @@ import com.tlog.api.BannerApi
 import com.tlog.api.LoginApi
 import com.tlog.api.MainApi
 import com.tlog.api.RestaurantApi
+import com.tlog.api.ScrapApi
 import com.tlog.api.SearchApi
 import com.tlog.api.SnsApi
 import com.tlog.api.TbtiApi
 import com.tlog.api.TeamApi
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
+import com.tlog.data.repository.ScrapRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -96,5 +98,19 @@ object ApiModule {
         retrofit: Retrofit
     ): TbtiApi {
         return retrofit.create(TbtiApi::class.java)
+    }
+
+    @Provides
+    fun provideScrapApi(
+        retrofit: Retrofit
+    ): ScrapApi {
+        return retrofit.create(ScrapApi::class.java)
+    }
+
+    @Provides
+    fun provideScrapRepository(
+        scrapApi: ScrapApi
+    ): ScrapRepository {
+        return ScrapRepository(scrapApi)
     }
 }

@@ -30,13 +30,14 @@ class ScrapManager @Inject constructor(
     private val repository: ScrapRepository,
     tokenProvider: TokenProvider,
     @ApplicationContext private val context: Context
-){
+) {
     private val SCRAP_KEY = stringSetPreferencesKey("scrap_list")
 
     private val _scrapList = mutableStateOf<List<String>>(emptyList())
     val scrapList: State<List<String>> = _scrapList
 
     private var userId: String? = null
+
     init {
         userId = tokenProvider.getUserId()
     }
@@ -113,24 +114,5 @@ class ScrapManager @Inject constructor(
         } catch (e: Exception) {
             Log.e("ScrapManager", "error")
         }
-    }
-
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object ScrapModule {
-    @Provides
-    fun provideScrapApi(
-        retrofit: Retrofit
-    ): ScrapApi {
-        return retrofit.create(ScrapApi::class.java)
-    }
-
-    @Provides
-    fun provideScrapRepository(
-        scrapApi: ScrapApi
-    ): ScrapRepository {
-        return ScrapRepository(scrapApi)
     }
 }
