@@ -1,4 +1,4 @@
-package com.tlog.data.model.share
+package com.tlog.domain.model.share
 
 import androidx.annotation.DrawableRes
 import com.tlog.R

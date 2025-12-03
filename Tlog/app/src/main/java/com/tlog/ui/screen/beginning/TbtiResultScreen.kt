@@ -32,7 +32,7 @@ import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.beginning.TbtiResultViewModel
 import androidx.navigation.NavController
-import com.tlog.data.model.share.Tbti
+import com.tlog.domain.model.share.Tbti
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 
 @Composable

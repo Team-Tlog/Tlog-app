@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.tlog.R
 import com.tlog.ui.component.travel.CategorySelector
-import com.tlog.ui.component.travel.DestinationCard
+import com.tlog.ui.component.travel.TravelCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.theme.Logo
 import com.tlog.viewmodel.travel.TravelListViewModel
@@ -176,22 +176,18 @@ fun TravelListScreen(
             }
         }
         destinations.let { destinations ->
-            destinations.forEach { destination ->
+            destinations.forEach { travel ->
                 item {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                     ) {
-                        DestinationCard(
-                            destination = destination,
-                            isFavorite = { scraps.contains(destination.id) },
-                            onFavoriteToggle = {
-                                viewModel.toggleScrap(destination.id)
-                            },
-                            onClick = {
-                                viewModel.navToTravelInfo(destination.id)
-                            }
+                        TravelCard(
+                            travel = travel,
+                            isFavorite = { scraps.contains(travel.travelId) },
+                            onFavoriteToggle = { viewModel.toggleScrap(travel.travelId) },
+                            onClick = { viewModel.navToTravelInfo(it) }
                         )
                     }
                 }

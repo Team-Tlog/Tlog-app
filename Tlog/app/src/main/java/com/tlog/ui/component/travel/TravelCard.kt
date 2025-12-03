@@ -22,20 +22,20 @@ import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
-import com.tlog.data.dto.response.travel.TravelDestination
+import com.tlog.domain.model.travel.Travel
 
 @Composable
-fun DestinationCard(
-    destination: TravelDestination,
+fun TravelCard(
+    travel: Travel,
     isFavorite: () -> Boolean,
-    onFavoriteToggle: (String) -> Unit,
-    onClick: (TravelDestination) -> Unit
+    onFavoriteToggle: () -> Unit,
+    onClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .clickable { onClick(destination) }
+            .clickable { onClick(travel.travelId) }
             .heightIn(max = 200.dp)
             .background(Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
@@ -45,8 +45,8 @@ fun DestinationCard(
                 .fillMaxSize()
         ) {
                 AsyncImage(
-                    model = destination.imageUrl,
-                    contentDescription = destination.name,
+                    model = travel.imageUrl,
+                    contentDescription = travel.travelName,
                     contentScale = ContentScale.Crop,
                     error = painterResource(id = DefaultImage),
                     modifier = Modifier
@@ -67,7 +67,7 @@ fun DestinationCard(
                         modifier = Modifier.weight(1f)
                     ) {
                         Text(
-                            text = destination.name,
+                            text = travel.travelName,
                             color = Color.White,
                             fontSize = 22.sp,
                             fontFamily = MainFont,
@@ -84,7 +84,7 @@ fun DestinationCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
-                                text = destination.city,
+                                text = travel.city,
                                 color = Color.White,
                                 fontFamily = MainFont,
                                 fontWeight = FontWeight.Normal,
@@ -98,10 +98,7 @@ fun DestinationCard(
                         contentDescription = "스크랩" + if (isFavorite()) "됨" else "버튼",
                         modifier = Modifier
                             .size(31.dp)
-                            .clickable {
-                                Log.d("스크랩", "hihi")
-                                onFavoriteToggle(destination.id)
-                            },
+                            .clickable { onFavoriteToggle() },
                         tint = if (isFavorite()) Color.Red else Color.Unspecified,
                     )
                 }
@@ -113,7 +110,7 @@ fun DestinationCard(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    LazyHashTagsGroup(hashTags = destination.tagCountList.map { it.tagName })
+                    LazyHashTagsGroup(hashTags = travel.hashTags)
 
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
@@ -125,7 +122,7 @@ fun DestinationCard(
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             fontFamily = MainFont,
-                            text = "${destination.averageRating}(${destination.reviewCount})",
+                            text = "${travel.rating}(${travel.reviewCount})",
                             color = Color.White,
                             fontWeight = FontWeight.Light,
                             fontSize = 12.sp

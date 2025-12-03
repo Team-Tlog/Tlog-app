@@ -1,10 +1,11 @@
 package com.tlog.viewmodel.travel
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.travel.TravelDestination
+import com.tlog.data.dto.response.travel.TravelDestinationDto
 import com.tlog.data.local.RegionCode
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.TravelListRepository
+import com.tlog.domain.model.travel.Travel
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ class TravelListViewModel @Inject constructor(
     private val _selectedCategory = MutableStateFlow("추천순")
     val selectedCategory = _selectedCategory.asStateFlow()
 
-    private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
+    private val _destinations = MutableStateFlow<List<Travel>>(emptyList())
     val destinations = _destinations.asStateFlow()
 
     private val _scraps = MutableStateFlow<List<String>>(emptyList())
@@ -113,8 +114,8 @@ class TravelListViewModel @Inject constructor(
                     city = actualCity,
                     sortType = sortType
                 )
-                isLastPage = response.data.last
-                _destinations.value = response.data.content
+                isLastPage = response.isLastPage
+                _destinations.value = response.items
             }
         )
     }
@@ -134,8 +135,8 @@ class TravelListViewModel @Inject constructor(
                     city = city,
                     sortType = sortType
                 )
-                isLastPage = response.data.last
-                _destinations.value = response.data.content
+                isLastPage = response.isLastPage
+                _destinations.value = response.items
             }
         )
     }
@@ -163,8 +164,8 @@ class TravelListViewModel @Inject constructor(
                     city = actualCity,
                     sortType = sortType
                 )
-                isLastPage = response.data.last
-                _destinations.value += response.data.content
+                isLastPage = response.isLastPage
+                _destinations.value += response.items
             }
         )
     }
