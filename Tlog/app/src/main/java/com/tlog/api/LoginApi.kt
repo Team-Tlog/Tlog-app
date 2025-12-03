@@ -1,10 +1,10 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.auth.FcmTokenRequest
-import com.tlog.data.model.response.auth.FirebaseTokenResponse
-import com.tlog.data.model.request.auth.LoginRequest
-import com.tlog.data.model.request.auth.RegisterRequest
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.auth.FcmTokenRequest
+import com.tlog.data.dto.response.auth.FirebaseTokenResponse
+import com.tlog.data.dto.request.auth.LoginRequest
+import com.tlog.data.dto.request.auth.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

@@ -9,10 +9,10 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.model.response.travel.TravelSearch
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.dto.response.travel.TravelSearch
+import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.travel.Travel
 
 
 @Composable

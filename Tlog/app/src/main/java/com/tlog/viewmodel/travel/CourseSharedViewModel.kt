@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.ViewModel
-import com.tlog.data.model.request.travel.AiRequest
-import com.tlog.data.model.response.travel.AiTravel
+import com.tlog.data.dto.request.travel.AiRequest
+import com.tlog.data.dto.response.travel.AiTravel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

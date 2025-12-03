@@ -2,7 +2,7 @@ package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.tlog.data.model.response.restaurant.Restaurant
+import com.tlog.data.dto.response.restaurant.Restaurant
 import com.tlog.data.repository.RestaurantRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

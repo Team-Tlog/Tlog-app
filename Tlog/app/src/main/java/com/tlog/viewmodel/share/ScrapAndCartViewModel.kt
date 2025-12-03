@@ -2,8 +2,8 @@ package com.tlog.viewmodel.share
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
+import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

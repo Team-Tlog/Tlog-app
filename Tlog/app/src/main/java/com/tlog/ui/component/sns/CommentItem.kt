@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.model.sns.Comment
+import com.tlog.data.dto.sns.CommentDto
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun CommentItem(comment: Comment) {
+fun CommentItem(comment: CommentDto) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

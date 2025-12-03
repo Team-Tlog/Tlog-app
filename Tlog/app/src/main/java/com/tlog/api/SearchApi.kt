@@ -1,10 +1,10 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.page.Pageable
-import com.tlog.data.model.response.travel.PopularDestination
-import com.tlog.data.model.response.travel.SearchTravelResponse
-import com.tlog.data.model.response.travel.TravelSearch
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.page.Pageable
+import com.tlog.data.dto.response.travel.PopularDestination
+import com.tlog.data.dto.response.travel.SearchTravelResponse
+import com.tlog.data.dto.response.travel.TravelSearch
 import retrofit2.http.GET
 import retrofit2.http.Query
 

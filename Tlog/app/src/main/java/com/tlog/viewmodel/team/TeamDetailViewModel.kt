@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.model.team.DetailTeam
+import com.tlog.data.dto.team.DetailTeam
 import com.tlog.data.repository.TeamRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

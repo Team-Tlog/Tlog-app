@@ -1,19 +1,19 @@
 package com.tlog.data.repository
 
 import com.tlog.api.SnsApi
-import com.tlog.data.model.response.base.BaseListResponse
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.sns.CommentRequest
-import com.tlog.data.model.request.sns.FollowRequest
-import com.tlog.data.model.request.sns.ReportRequest
-import com.tlog.data.model.request.sns.SnsDescription
-import com.tlog.data.model.response.sns.SnsPost
-import com.tlog.data.model.response.sns.SnsPostPreview
-import com.tlog.data.model.response.sns.SnsUser
-import com.tlog.data.model.response.sns.SnsUserProfile
-import com.tlog.data.model.request.sns.StatusMessage
-import com.tlog.data.model.request.sns.UpdateSnsIdRequest
-import com.tlog.data.model.sns.Comment
+import com.tlog.data.dto.response.base.BaseListResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.sns.CommentRequest
+import com.tlog.data.dto.request.sns.FollowRequest
+import com.tlog.data.dto.request.sns.ReportRequest
+import com.tlog.data.dto.request.sns.SnsDescriptionBody
+import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostPreview
+import com.tlog.data.dto.response.sns.SnsUser
+import com.tlog.data.dto.response.sns.SnsUserProfile
+import com.tlog.data.dto.request.sns.StatusMessageBody
+import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
+import com.tlog.data.dto.sns.CommentDto
 import javax.inject.Inject
 
 class SnsRepository @Inject constructor(
@@ -39,7 +39,7 @@ class SnsRepository @Inject constructor(
     suspend fun updateSnsDescription(
         description: String
     ): BaseResponse<Unit> {
-        return retrofitInstance.updateSnsDescription(SnsDescription(description))
+        return retrofitInstance.updateSnsDescription(SnsDescriptionBody(description))
     }
 
     suspend fun getPost(
@@ -60,7 +60,7 @@ class SnsRepository @Inject constructor(
         postId: String,
         author: String,
         content: String
-    ): BaseResponse<Comment>{
+    ): BaseResponse<CommentDto>{
         return retrofitInstance.addComment(postId, CommentRequest(author = author, content = content))
     }
 
@@ -68,7 +68,7 @@ class SnsRepository @Inject constructor(
         return retrofitInstance.getFollowingList(userId)
     }
 
-    suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessage> {
+    suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessageBody> {
         return retrofitInstance.followUser(FollowRequest(from_userId = userId, to_userId = toUserId))
     }
 

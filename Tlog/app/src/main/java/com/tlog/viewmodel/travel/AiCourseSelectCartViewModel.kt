@@ -1,9 +1,9 @@
 package com.tlog.viewmodel.travel
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.request.travel.AiRequest
-import com.tlog.data.model.response.travel.AiTravel
-import com.tlog.data.model.travel.Cart
+import com.tlog.data.dto.request.travel.AiRequest
+import com.tlog.data.dto.response.travel.AiTravel
+import com.tlog.data.dto.travel.Cart
 import com.tlog.data.repository.AiCourseSelectCartRepository
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel

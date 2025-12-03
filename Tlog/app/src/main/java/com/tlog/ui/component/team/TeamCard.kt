@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 import com.tlog.R
-import com.tlog.data.model.team.Team
+import com.tlog.data.dto.team.Team
 
 @Composable
 fun TeamCard(

@@ -1,12 +1,12 @@
 package com.tlog.api
 
-import com.tlog.data.model.request.travel.AddTravelRequest
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.review.ReviewsResponse
-import com.tlog.data.model.request.review.ReviewRequest
-import com.tlog.data.model.response.travel.TravelDetailResponse
-import com.tlog.data.model.response.travel.TravelRecommendPagedResponse
-import com.tlog.data.model.travel.Scrap
+import com.tlog.data.dto.request.travel.AddTravelRequest
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.review.ReviewsResponse
+import com.tlog.data.dto.request.review.ReviewRequest
+import com.tlog.data.dto.response.travel.TravelDetailResponse
+import com.tlog.data.dto.response.travel.TravelRecommendPagedResponse
+import com.tlog.data.dto.travel.Scrap
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

@@ -49,7 +49,7 @@ import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.tlog.R
-import com.tlog.data.model.share.LocationData
+import com.tlog.data.dto.share.LocationData
 import com.tlog.ui.component.main.BannerSection
 import com.tlog.ui.component.main.IssueSection
 import com.tlog.ui.component.main.RecommendDestinationSection

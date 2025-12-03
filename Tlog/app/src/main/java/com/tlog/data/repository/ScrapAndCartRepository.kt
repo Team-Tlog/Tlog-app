@@ -2,8 +2,8 @@ package com.tlog.data.repository
 
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
+import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.Cart
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody

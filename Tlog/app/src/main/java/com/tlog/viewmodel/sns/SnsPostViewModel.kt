@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.course.CourseItem
+import com.tlog.data.dto.response.course.CourseItem
 import com.tlog.data.repository.SnsPostRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel

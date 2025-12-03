@@ -1,11 +1,11 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.team.CreateTeamRequest
-import com.tlog.data.model.request.team.JoinTeamRequest
-import com.tlog.data.model.response.team.TeamCreateResponse
-import com.tlog.data.model.team.DetailTeam
-import com.tlog.data.model.team.Team
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.team.CreateTeamRequest
+import com.tlog.data.dto.request.team.JoinTeamRequest
+import com.tlog.data.dto.response.team.TeamCreateResponse
+import com.tlog.data.dto.team.DetailTeam
+import com.tlog.data.dto.team.Team
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

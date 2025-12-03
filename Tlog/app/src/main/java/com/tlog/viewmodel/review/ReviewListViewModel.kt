@@ -6,7 +6,7 @@ import com.tlog.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.collections.plus
-import com.tlog.data.model.travel.Review
+import com.tlog.data.dto.travel.Review
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

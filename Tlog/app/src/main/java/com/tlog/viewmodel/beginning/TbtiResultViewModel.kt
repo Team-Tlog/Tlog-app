@@ -2,7 +2,7 @@ package com.tlog.viewmodel.beginning
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.share.TbtiDescription
+import com.tlog.data.dto.tbti.TbtiDescriptionDto
 import com.tlog.data.repository.TbtiRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +16,8 @@ class TbtiResultViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository,
     tokenProvider: TokenProvider
 ): BaseViewModel() {
-    private val _tbtiDescription = MutableStateFlow<TbtiDescription?>(null)
-    val tbtiDescription: StateFlow<TbtiDescription?> = _tbtiDescription
+    private val _tbtiDescription = MutableStateFlow<TbtiDescriptionDto?>(null)
+    val tbtiDescription: StateFlow<TbtiDescriptionDto?> = _tbtiDescription
 
     private var userId = ""
 

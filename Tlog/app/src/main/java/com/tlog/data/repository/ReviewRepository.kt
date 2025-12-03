@@ -2,9 +2,9 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TravelApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.review.ReviewsResponse
-import com.tlog.data.model.request.review.ReviewRequest
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.review.ReviewsResponse
+import com.tlog.data.dto.request.review.ReviewRequest
 import jakarta.inject.Inject
 
 class ReviewRepository @Inject constructor(

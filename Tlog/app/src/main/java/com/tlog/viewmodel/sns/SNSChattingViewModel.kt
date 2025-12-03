@@ -23,9 +23,9 @@ import ua.naiksoftware.stomp.ConnectionProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.UserPreferences
-import com.tlog.data.model.response.sns.ChatMessageHistory
-import com.tlog.data.model.team.ChatMessageDto
-import com.tlog.data.model.team.MemberProfile
+import com.tlog.data.dto.response.sns.ChatMessageHistory
+import com.tlog.data.dto.team.ChatMessageDto
+import com.tlog.data.dto.team.MemberProfile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.asStateFlow

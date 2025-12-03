@@ -1,6 +1,5 @@
 package com.tlog.ui.component.team
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +24,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.R
-import com.tlog.data.model.team.DetailTeam
-import com.tlog.data.model.team.Member
+import com.tlog.data.dto.team.DetailTeam
+import com.tlog.data.dto.team.Member
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor

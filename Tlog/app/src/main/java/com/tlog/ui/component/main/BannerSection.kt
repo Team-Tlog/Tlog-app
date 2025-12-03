@@ -25,15 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
-import com.tlog.data.model.share.Banner
+import com.tlog.data.dto.share.BannerDto
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
 fun BannerSection(
-    bannerList: List<Banner>,
+    bannerList: List<BannerDto>,
     onBannerClick: (String) -> Unit
 ) {
     LazyRow(

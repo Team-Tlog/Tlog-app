@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.travel
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.travel.TravelDestination
+import com.tlog.data.dto.response.travel.TravelDestination
 import com.tlog.data.local.RegionCode
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.TravelListRepository

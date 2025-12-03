@@ -2,7 +2,7 @@ package com.tlog.viewmodel.travel
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.travel.TravelDetailResponse
+import com.tlog.data.dto.response.travel.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.SearchOneDestinationRepository
 import com.tlog.ui.navigation.Screen

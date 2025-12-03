@@ -4,8 +4,8 @@ import android.content.Context
 import android.net.Uri
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.request.travel.AddTravelRequest
-import com.tlog.data.model.share.Location
+import com.tlog.data.dto.request.travel.AddTravelRequest
+import com.tlog.data.dto.share.LocationDto
 import com.tlog.data.repository.AddTravelRepository
 import com.tlog.data.util.FirebaseImageUploader
 import com.tlog.ui.navigation.Screen
@@ -72,7 +72,7 @@ class AddTravelViewModel @Inject constructor(
                         creater = safeUserId,
                         name = travelName.value,
                         address = travelAddress.value,
-                        location = Location("0.0", "0.0"),
+                        location = LocationDto("0.0", "0.0"),
                         city = "임시", // 시, 도
                         district = "임시", // 시, 군, 구
                         hasParking = hasParking.value,

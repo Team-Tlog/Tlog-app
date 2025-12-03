@@ -1,9 +1,9 @@
 package com.tlog.data.repository
 
 import com.tlog.api.SearchApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.travel.PopularDestination
-import com.tlog.data.model.response.travel.TravelSearch
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.travel.PopularDestination
+import com.tlog.data.dto.response.travel.TravelSearch
 import javax.inject.Inject
 
 class SearchRepository @Inject constructor (

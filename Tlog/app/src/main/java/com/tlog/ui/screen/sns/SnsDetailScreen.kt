@@ -45,7 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.sns.Comment
+import com.tlog.data.dto.sns.CommentDto
 import com.tlog.ui.component.sns.PostAuthorInfo
 import com.tlog.ui.component.sns.PostContentAndInteractions
 import com.tlog.ui.component.sns.PostImage
@@ -172,7 +172,7 @@ fun SnsDetailScreen(
 
 @Composable
 fun CommentItem(
-    comment: Comment,
+    comment: CommentDto,
     userClick: (String) -> Unit = {}
 ) {
     Row(

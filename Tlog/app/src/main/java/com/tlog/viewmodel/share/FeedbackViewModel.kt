@@ -1,6 +1,6 @@
 package com.tlog.viewmodel.share
 
-import com.tlog.data.model.request.auth.FeedbackRequest
+import com.tlog.data.dto.request.auth.FeedbackRequest
 import com.tlog.data.repository.MyPageRepository
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

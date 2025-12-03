@@ -27,11 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.response.travel.TravelSearch
-import com.tlog.data.model.travel.Scrap
+import com.tlog.data.dto.response.travel.TravelSearch
+import com.tlog.data.dto.travel.Scrap
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.data.model.travel.Cart
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.travel.Travel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont

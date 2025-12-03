@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.share
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.model.response.travel.PopularDestination
+import com.tlog.data.dto.response.travel.PopularDestination
 import com.tlog.data.local.RecentSearchPreferences
 import com.tlog.data.repository.SearchRepository
 import com.tlog.ui.navigation.Screen
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.model.response.travel.TravelSearch
+import com.tlog.data.dto.response.travel.TravelSearch
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject

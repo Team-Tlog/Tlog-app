@@ -3,10 +3,10 @@ package com.tlog.data.repository
 import android.util.Log
 import com.tlog.api.LoginApi
 import com.tlog.api.UserApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.auth.FeedbackRequest
-import com.tlog.data.model.request.auth.ProfileImageRequest
-import com.tlog.data.model.user.User
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.auth.FeedbackRequest
+import com.tlog.data.dto.request.auth.ProfileImageRequest
+import com.tlog.data.dto.user.User
 import javax.inject.Inject
 
 class MyPageRepository @Inject constructor(

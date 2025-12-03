@@ -23,8 +23,8 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.tlog.R
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
+import com.tlog.data.dto.travel.Scrap
+import com.tlog.data.dto.travel.Cart
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.share.MapViewModel
 import java.lang.Exception

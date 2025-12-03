@@ -1,8 +1,8 @@
 package com.tlog.data.repository
 
 import com.tlog.api.AiApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.travel.CourseResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.travel.CourseResponse
 import javax.inject.Inject
 
 

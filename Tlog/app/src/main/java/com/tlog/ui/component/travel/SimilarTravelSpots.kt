@@ -18,8 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
-import com.tlog.data.model.travel.MinimalTravel
+import com.tlog.data.dto.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage
 

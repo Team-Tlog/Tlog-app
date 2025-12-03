@@ -2,12 +2,12 @@ package com.tlog.data.repository
 
 import android.util.Log
 import com.tlog.api.TeamApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.team.CreateTeamRequest
-import com.tlog.data.model.request.team.JoinTeamRequest
-import com.tlog.data.model.response.team.TeamCreateResponse
-import com.tlog.data.model.team.DetailTeam
-import com.tlog.data.model.team.Team
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.team.CreateTeamRequest
+import com.tlog.data.dto.request.team.JoinTeamRequest
+import com.tlog.data.dto.response.team.TeamCreateResponse
+import com.tlog.data.dto.team.DetailTeam
+import com.tlog.data.dto.team.Team
 import jakarta.inject.Inject
 
 class TeamRepository @Inject constructor(

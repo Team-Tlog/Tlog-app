@@ -1,10 +1,10 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.auth.FeedbackRequest
-import com.tlog.data.model.request.auth.ProfileImageRequest
-import com.tlog.data.model.travel.Cart
-import com.tlog.data.model.user.User
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.auth.FeedbackRequest
+import com.tlog.data.dto.request.auth.ProfileImageRequest
+import com.tlog.data.dto.travel.Cart
+import com.tlog.data.dto.user.User
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.PUT

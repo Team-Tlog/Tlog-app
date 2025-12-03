@@ -16,7 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfile
 import com.tlog.ui.screen.beginning.ChooseMyTypeDestinationScreen
 import com.tlog.ui.screen.beginning.LoginScreen
 import com.tlog.ui.screen.beginning.TbtiCodeInputScreen

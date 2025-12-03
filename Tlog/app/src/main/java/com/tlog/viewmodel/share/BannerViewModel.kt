@@ -1,8 +1,7 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.State
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.travel.TravelDestination
+import com.tlog.data.dto.response.travel.TravelDestination
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.BannerRepository
 import com.tlog.ui.navigation.Screen

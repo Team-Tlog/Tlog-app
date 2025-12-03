@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
-import com.tlog.data.model.travel.Review
+import com.tlog.data.dto.travel.Review
 
 
 @Composable

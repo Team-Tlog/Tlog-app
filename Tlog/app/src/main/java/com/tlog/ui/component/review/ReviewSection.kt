@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.model.travel.Review
+import com.tlog.data.dto.travel.Review
 import com.tlog.ui.theme.MainFont
 
 

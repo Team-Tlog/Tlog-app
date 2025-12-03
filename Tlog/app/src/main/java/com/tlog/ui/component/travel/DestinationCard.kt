@@ -22,7 +22,7 @@ import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
-import com.tlog.data.model.response.travel.TravelDestination
+import com.tlog.data.dto.response.travel.TravelDestination
 
 @Composable
 fun DestinationCard(

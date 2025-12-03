@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import com.tlog.data.model.tbti.TbtiQuestion
+import com.tlog.data.dto.tbti.TbtiQuestionDto
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ class TbtiTestViewModel @Inject constructor(
     private val tbtiRepository: TbtiRepository
 ) : BaseViewModel() {
 
-    private val _questions = mutableStateListOf<TbtiQuestion>()
+    private val _questions = mutableStateListOf<TbtiQuestionDto>()
 
     private val _currentQuestionIndex = MutableStateFlow(1)
     val currentQuestionIndex = _currentQuestionIndex.asStateFlow()
@@ -72,7 +72,7 @@ class TbtiTestViewModel @Inject constructor(
 
         launchSafeCall(
             action = {
-                val allQuestions = mutableListOf<TbtiQuestion>()
+                val allQuestions = mutableListOf<TbtiQuestionDto>()
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)

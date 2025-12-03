@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.model.user.User
+import com.tlog.data.dto.user.User
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage

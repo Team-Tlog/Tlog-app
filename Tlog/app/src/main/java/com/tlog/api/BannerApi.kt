@@ -1,7 +1,7 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.travel.BannerTravelResponse
-import com.tlog.data.model.response.base.BaseResponse
+import com.tlog.data.dto.response.travel.BannerTravelResponse
+import com.tlog.data.dto.response.base.BaseResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

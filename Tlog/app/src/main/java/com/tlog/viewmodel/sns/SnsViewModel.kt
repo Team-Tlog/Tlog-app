@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen

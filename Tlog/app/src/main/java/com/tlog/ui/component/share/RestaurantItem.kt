@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import com.tlog.data.model.response.restaurant.Restaurant
+import com.tlog.data.dto.response.restaurant.Restaurant
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont

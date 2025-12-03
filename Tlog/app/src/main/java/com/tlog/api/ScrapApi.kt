@@ -1,7 +1,7 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.travel.Scrap
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.travel.Scrap
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE

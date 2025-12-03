@@ -1,14 +1,14 @@
 package com.tlog.data.repository
 
 import com.tlog.api.MainApi
-import com.tlog.data.model.response.base.BaseListPage
-import com.tlog.data.model.response.base.BaseListResponse
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.share.Banner
-import com.tlog.data.model.share.BannerItem
-import com.tlog.data.model.share.LocalGuide
-import com.tlog.data.model.share.Post
-import com.tlog.data.model.share.RecommendDestination
+import com.tlog.data.dto.response.base.BaseListPage
+import com.tlog.data.dto.response.base.BaseListResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.share.BannerDto
+import com.tlog.data.dto.share.BannerDetailDto
+import com.tlog.data.dto.share.LocalGuideDto
+import com.tlog.data.dto.share.PostDto
+import com.tlog.data.dto.share.RecommendDestinationDto
 import javax.inject.Inject
 
 
@@ -18,19 +18,19 @@ class MainRepository @Inject constructor(
     suspend fun getLocalGuide(
         latitude: Double,
         longitude: Double
-    ): BaseResponse<BaseListPage<List<LocalGuide>>> {
+    ): BaseResponse<BaseListPage<List<LocalGuideDto>>> {
         return retrofitInstance.getLocalGuide(latitude, longitude)
     }
 
-    suspend fun getRecommendPost(): BaseResponse<List<Post>> {
+    suspend fun getRecommendPost(): BaseResponse<List<PostDto>> {
         return retrofitInstance.getRecommendPost()
     }
 
-    suspend fun getRecommendDestination(): BaseResponse<List<RecommendDestination>> {
+    suspend fun getRecommendDestination(): BaseResponse<List<RecommendDestinationDto>> {
         return retrofitInstance.getRecommendDestination()
     }
 
-    suspend fun getRecommendBanner(): BaseResponse<List<Banner>> {
+    suspend fun getRecommendBanner(): BaseResponse<List<BannerDto>> {
         return retrofitInstance.getRecommendBanner()
     }
 
@@ -38,7 +38,7 @@ class MainRepository @Inject constructor(
         bannerId: String,
         page: Int = 0,
         size: Int = 10
-    ): BaseListResponse<List<BannerItem>> {
+    ): BaseListResponse<List<BannerDetailDto>> {
         return retrofitInstance.getRecommendBannerDetail(bannerId, page, size)
     }
 }

@@ -1,21 +1,21 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseListResponse
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.sns.ChatMessageHistoryResponse
-import com.tlog.data.model.response.sns.ChatRoom
-import com.tlog.data.model.response.sns.CommentRequest
-import com.tlog.data.model.request.sns.FollowRequest
-import com.tlog.data.model.request.sns.PostWriteBody
-import com.tlog.data.model.request.sns.ReportRequest
-import com.tlog.data.model.request.sns.SnsDescription
-import com.tlog.data.model.response.sns.SnsPost
-import com.tlog.data.model.response.sns.SnsPostPreview
-import com.tlog.data.model.response.sns.SnsUser
-import com.tlog.data.model.response.sns.SnsUserProfile
-import com.tlog.data.model.request.sns.StatusMessage
-import com.tlog.data.model.request.sns.UpdateSnsIdRequest
-import com.tlog.data.model.sns.Comment
+import com.tlog.data.dto.response.base.BaseListResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.sns.ChatMessageHistoryResponse
+import com.tlog.data.dto.response.sns.ChatRoom
+import com.tlog.data.dto.response.sns.CommentRequest
+import com.tlog.data.dto.request.sns.FollowRequest
+import com.tlog.data.dto.request.sns.PostWriteBody
+import com.tlog.data.dto.request.sns.ReportRequest
+import com.tlog.data.dto.request.sns.SnsDescriptionBody
+import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostPreview
+import com.tlog.data.dto.response.sns.SnsUser
+import com.tlog.data.dto.response.sns.SnsUserProfile
+import com.tlog.data.dto.request.sns.StatusMessageBody
+import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
+import com.tlog.data.dto.sns.CommentDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -46,7 +46,7 @@ interface SnsApi {
     // SNS 프로필 한 줄 설명글 변경 (UI 없어서 실제로 사용하진 못함)
     @POST("/api/sns/profile/sns-description")
     suspend fun updateSnsDescription(
-        @Body request: SnsDescription
+        @Body request: SnsDescriptionBody
     ): BaseResponse<Unit>
 
     // 게시물 상세 정보 가져오기
@@ -68,7 +68,7 @@ interface SnsApi {
     suspend fun addComment(
         @Path("postId") postId: String,
         @Body request: CommentRequest
-    ): BaseResponse<Comment>
+    ): BaseResponse<CommentDto>
 
     // 팔로잉 목록
     @GET("/api/follow/following/{userId}")
@@ -80,7 +80,7 @@ interface SnsApi {
     @POST("/api/follow")
     suspend fun followUser(
         @Body request: FollowRequest
-    ): BaseResponse<StatusMessage>
+    ): BaseResponse<StatusMessageBody>
 
     // 유저 채팅방 리스트 조회
     @GET("/api/chat/room/{hostId}")
@@ -121,7 +121,7 @@ interface SnsApi {
     suspend fun createReply(
         @Body author: String,
         @Body content: String
-    ): BaseResponse<Comment>
+    ): BaseResponse<CommentDto>
 
 
 
@@ -131,7 +131,7 @@ interface SnsApi {
         @Path("replyId") replyId: String,
         @Query("lastReplyId") lastReplyId: String? = null,
         @Query("size") size: Int
-    ): BaseResponse<List<Comment>>
+    ): BaseResponse<List<CommentDto>>
 
     // 댓글 조회
     @GET("/api/post/{postId}/replys")
@@ -139,7 +139,7 @@ interface SnsApi {
         @Path("postId") postId: String,
         @Query("lastReplyId") lastReplyId: String? = null,
         @Query("size") size: Int
-    ): BaseResponse<List<Comment>>
+    ): BaseResponse<List<CommentDto>>
 
 
     // SNS 코스 리뷰 (게시물)

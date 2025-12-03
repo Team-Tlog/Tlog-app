@@ -27,7 +27,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
-import com.tlog.data.model.team.ChatMessageDto
+import com.tlog.data.dto.team.ChatMessageDto
 
 @Composable
 fun ChatBubble(

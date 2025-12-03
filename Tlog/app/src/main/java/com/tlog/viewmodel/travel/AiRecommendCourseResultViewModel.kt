@@ -3,9 +3,9 @@ package com.tlog.viewmodel.travel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.CourseIdManager
-import com.tlog.data.model.response.travel.AiTravel
-import com.tlog.data.model.request.travel.CourseSaveRequest
-import com.tlog.data.model.request.travel.DailySchedule
+import com.tlog.data.dto.response.travel.AiTravel
+import com.tlog.data.dto.request.travel.CourseSaveRequest
+import com.tlog.data.dto.request.travel.DailySchedule
 import com.tlog.data.repository.AiRecommendCourseResultRepository
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel

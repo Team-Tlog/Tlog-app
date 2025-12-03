@@ -42,9 +42,9 @@ import com.tlog.ui.theme.MainFont
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
-import com.tlog.data.model.team.ChatMessageDto
+import com.tlog.data.dto.team.ChatMessageDto
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.data.model.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfile
 import com.tlog.ui.component.sns.ChatInputBox
 import java.time.LocalDate
 import java.time.LocalDateTime

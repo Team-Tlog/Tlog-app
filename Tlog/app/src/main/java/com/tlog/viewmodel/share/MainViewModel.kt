@@ -8,11 +8,11 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.share.Banner
-import com.tlog.data.model.share.LocalGuide
-import com.tlog.data.model.share.LocationData
-import com.tlog.data.model.share.Post
-import com.tlog.data.model.share.RecommendDestination
+import com.tlog.data.dto.share.BannerDto
+import com.tlog.data.dto.share.LocalGuideDto
+import com.tlog.data.dto.share.LocationData
+import com.tlog.data.dto.share.PostDto
+import com.tlog.data.dto.share.RecommendDestinationDto
 import com.tlog.data.repository.MainRepository
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
@@ -28,20 +28,20 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ): BaseViewModel() {
     var userId: String? = null
-    private val _bannerList = MutableStateFlow<List<Banner>>(emptyList())
-    val bannerList: StateFlow<List<Banner>> = _bannerList.asStateFlow()
+    private val _bannerList = MutableStateFlow<List<BannerDto>>(emptyList())
+    val bannerList: StateFlow<List<BannerDto>> = _bannerList.asStateFlow()
 
     private val _currentLocation = MutableStateFlow<LocationData?>(null)
     val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
 
-    private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
-    val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
+    private val _localGuides = MutableStateFlow<List<LocalGuideDto>>(emptyList())
+    val localGuides: StateFlow<List<LocalGuideDto>> = _localGuides.asStateFlow()
 
-    private val _recommendPosts = MutableStateFlow<List<Post>>(emptyList())
-    val recommendPosts: StateFlow<List<Post>> = _recommendPosts.asStateFlow()
+    private val _recommendPosts = MutableStateFlow<List<PostDto>>(emptyList())
+    val recommendPosts: StateFlow<List<PostDto>> = _recommendPosts.asStateFlow()
 
-    private val _recommendDestinations = MutableStateFlow<List<RecommendDestination>>(emptyList())
-    val recommendDestinations: StateFlow<List<RecommendDestination>> = _recommendDestinations.asStateFlow()
+    private val _recommendDestinations = MutableStateFlow<List<RecommendDestinationDto>>(emptyList())
+    val recommendDestinations: StateFlow<List<RecommendDestinationDto>> = _recommendDestinations.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()

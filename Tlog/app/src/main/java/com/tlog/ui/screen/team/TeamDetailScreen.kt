@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import com.google.gson.Gson
-import com.tlog.data.model.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfile
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.tlog.data.model.share.Location
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.dto.share.LocationDto
+import com.tlog.data.dto.travel.Travel
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
@@ -178,7 +178,7 @@ fun TeamDetailScreen(
                                 Travel(
                                 name = "테스트1",
                                 address = "테스트",
-                                location = Location("0.0", "0.0"),
+                                location = LocationDto("0.0", "0.0"),
                                 city = "서울",
                                 district = "강남구",
                                 hasParking = true,
@@ -190,7 +190,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트2",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -202,7 +202,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트3",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -214,7 +214,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트4",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -226,7 +226,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트5",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -238,7 +238,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트6",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -250,7 +250,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트7",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -262,7 +262,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트8",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -274,7 +274,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트9",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -286,7 +286,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트10",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -298,7 +298,7 @@ fun TeamDetailScreen(
                                 Travel(
                                     name = "테스트11",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,

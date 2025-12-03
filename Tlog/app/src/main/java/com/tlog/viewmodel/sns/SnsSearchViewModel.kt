@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.model.response.sns.SnsPostPreview
+import com.tlog.data.dto.response.sns.SnsPostPreview
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,6 +1,5 @@
 package com.tlog.ui.navigation
 
-import com.tlog.data.model.share.LocationData
 import kotlinx.serialization.Serializable
 
 sealed interface Screen {
