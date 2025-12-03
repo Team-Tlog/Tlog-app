@@ -3,7 +3,7 @@ package com.tlog.api
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.course.CourseItem
 import com.tlog.data.dto.request.travel.AiRequest
-import com.tlog.data.dto.response.travel.AiTravel
+import com.tlog.data.dto.response.travel.AiTravelDto
 import com.tlog.data.dto.response.travel.CourseResponse
 import com.tlog.data.dto.request.travel.CourseSaveRequest
 import retrofit2.http.Body
@@ -18,7 +18,7 @@ interface AiApi {
         @Query("ownerId") ownerId: String,
         @Query("ownerType") ownerType: String,
         @Body aiRequest: AiRequest
-    ): BaseResponse<Map<String, List<AiTravel>>>
+    ): BaseResponse<Map<String, List<AiTravelDto>>>
 
     @POST("/api/course")
     suspend fun saveCourse(

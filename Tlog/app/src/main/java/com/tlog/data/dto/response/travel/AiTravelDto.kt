@@ -3,7 +3,7 @@ package com.tlog.data.dto.response.travel
 import com.tlog.data.dto.share.LocationDto
 import com.tlog.data.dto.share.TagCountDto
 
-data class AiTravel(
+data class AiTravelDto(
     val id: String,
     val name: String,
     val description: String,

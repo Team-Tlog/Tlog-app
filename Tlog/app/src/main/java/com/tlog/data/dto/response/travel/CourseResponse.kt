@@ -7,5 +7,5 @@ data class CourseResponse(
     val startDate: String,
     val endDate: String,
     val duration: Int,
-    val dailySchedules: List<CourseDailySchedule>
+    val dailySchedules: List<CourseDailyScheduleDto>
 )

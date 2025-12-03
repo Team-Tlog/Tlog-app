@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
-import com.tlog.data.dto.response.travel.AiTravel
+import com.tlog.domain.model.course.AiTravel
 import com.tlog.ui.component.tmp.AiTravelItem
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainColor
@@ -72,8 +72,8 @@ fun CityTravelList(
                     AiTravelItem(
                         travelName = item.name,
                         travelDescription = item.description,
-                        hashTags = item.tagCountList?.map { it.tagName } ?: emptyList(),
-                        travelImageUrl = item.imageUrl ?: "",
+                        hashTags = item.hashTags,
+                        travelImageUrl = item.imageUrl,
                         showDeleteIcon = showDeleteIcon,
                         onDeleteClick = { onDeleteClick(item.name) }
                     )

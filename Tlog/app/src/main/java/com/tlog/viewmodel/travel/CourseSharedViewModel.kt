@@ -2,7 +2,7 @@ package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.ViewModel
 import com.tlog.data.dto.request.travel.AiRequest
-import com.tlog.data.dto.response.travel.AiTravel
+import com.tlog.domain.model.course.AiCourse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +14,8 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
     private val _aiRequest = MutableStateFlow<AiRequest?>(null)
     val aiRequest: StateFlow<AiRequest?> = _aiRequest.asStateFlow()
 
-    private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
-    val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
+    private val _aiCourses = MutableStateFlow<List<AiCourse>>(emptyList())
+    val aiCourses: StateFlow<List<AiCourse>> = _aiCourses
 
     private val _selectedTravelNames = MutableStateFlow<List<String>>(emptyList())
     val selectedTravelNames = _selectedTravelNames.asStateFlow()
@@ -67,8 +67,8 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
         _visitedCountPerDay.value = visitedCountPerDay
     }
 
-    fun setAiTravelMap(map: Map<String, List<AiTravel>>) {
-        _aiTravelMap.value = map
+    fun setAiTravelMap(aiCourses: List<AiCourse>) {
+        _aiCourses.value = aiCourses
     }
 
     fun setAiRequest(request: AiRequest) {

@@ -3,10 +3,11 @@ package com.tlog.viewmodel.travel
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.CourseIdManager
-import com.tlog.data.dto.response.travel.AiTravel
 import com.tlog.data.dto.request.travel.CourseSaveRequest
-import com.tlog.data.dto.request.travel.DailySchedule
+import com.tlog.data.dto.request.travel.DailyScheduleDto
 import com.tlog.data.repository.AiRecommendCourseResultRepository
+import com.tlog.domain.model.course.AiCourse
+import com.tlog.domain.model.course.AiTravel
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,8 +32,8 @@ class AiRecommendCourseResultViewModel @Inject constructor(
     private val _selectedDay = MutableStateFlow(1)
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
-    private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
-    val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
+    private val _aiCourses = MutableStateFlow<List<AiCourse>>(emptyList())
+    val aiCourses: StateFlow<List<AiCourse>> = _aiCourses
 
     private val _dayOfCount = MutableStateFlow<List<Int>>(emptyList())
     val dayOfCount: StateFlow<List<Int>> = _dayOfCount.asStateFlow()
@@ -53,16 +54,16 @@ class AiRecommendCourseResultViewModel @Inject constructor(
         updateUiTravels()
     }
 
-    fun setAiTravelMap(
-        map: Map<String, List<AiTravel>>,
+    fun setAiCourses(
+        courses: List<AiCourse>,
         dayOfCount: List<Int>,
         startDate: String,
         endDate: String,
     ) {
-        _aiTravelMap.value = map
+        _aiCourses.value = courses
         _dayOfCount.value = dayOfCount
 
-        val flatList = map.values.flatten()
+        val flatList = courses.flatMap { it.aiTravels }
 
         val split = mutableListOf<List<AiTravel>>()
         var index = 0
@@ -114,7 +115,7 @@ class AiRecommendCourseResultViewModel @Inject constructor(
     fun saveCourse(isTeam: Boolean, teamId: String = "") {
         val targetDate = LocalDate.parse(startDate)
         val dailySchedules = List(getDayCount()) { i ->
-            DailySchedule(
+            DailyScheduleDto(
                 dayNumber = i,
                 date = targetDate.plusDays(i.toLong()).toString(),
                 destinationIds = _dailyTravels.value[i].map { it.id }

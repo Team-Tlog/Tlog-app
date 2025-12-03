@@ -34,8 +34,8 @@ fun AiRecommendCourseResultScreen(
 
 
     LaunchedEffect(Unit) {
-        viewModel.setAiTravelMap(
-            map = sharedViewModel.aiTravelMap.value,
+        viewModel.setAiCourses(
+            courses = sharedViewModel.aiCourses.value,
             dayOfCount = sharedViewModel.getDayOfCount(),
             startDate = sharedViewModel.getStartDate(),
             endDate = sharedViewModel.getEndDate()

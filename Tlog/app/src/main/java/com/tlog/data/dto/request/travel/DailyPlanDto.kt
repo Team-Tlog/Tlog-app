@@ -1,6 +1,6 @@
 package com.tlog.data.dto.request.travel
 
-data class DailyPlan(
+data class DailyPlanDto(
     val date: String,
     val placeCount: Int
 )
