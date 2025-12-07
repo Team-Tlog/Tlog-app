@@ -173,7 +173,8 @@ fun SelectedCourse(
                 model = selectedCourse.dates.first().destinationGroups.first().destinations.first().imageUrl,
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                contentScale = ContentScale.Crop
             )
         }
 
@@ -202,6 +203,7 @@ fun CoursePictures(
                 modifier = Modifier
                     .width(94.dp)
                     .height(105.dp)
+                    .clip(RoundedCornerShape(15.dp))
             ) {
                 AsyncImage(
                     model =pictureList[idx],
