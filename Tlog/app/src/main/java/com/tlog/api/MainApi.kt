@@ -1,15 +1,12 @@
 package com.tlog.api
 
 import com.tlog.data.dto.response.base.BaseListPage
-import com.tlog.data.dto.response.base.BaseListResponse
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.share.BannerDto
-import com.tlog.data.dto.share.BannerDetailDto
 import com.tlog.data.dto.share.LocalGuideDto
 import com.tlog.data.dto.share.PostDto
 import com.tlog.data.dto.share.RecommendDestinationDto
 import retrofit2.http.GET
-import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MainApi {

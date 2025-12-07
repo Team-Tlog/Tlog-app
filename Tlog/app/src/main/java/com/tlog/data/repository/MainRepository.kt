@@ -1,10 +1,8 @@
 package com.tlog.data.repository
 
 import com.tlog.api.MainApi
-import com.tlog.data.dto.response.base.BaseListResponse
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.share.BannerDto
-import com.tlog.data.dto.share.BannerDetailDto
 import com.tlog.data.dto.share.PostDto
 import com.tlog.data.dto.share.RecommendDestinationDto
 import com.tlog.domain.mapper.toDomain
