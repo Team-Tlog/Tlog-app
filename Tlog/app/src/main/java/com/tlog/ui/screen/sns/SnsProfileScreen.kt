@@ -239,7 +239,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)
@@ -258,7 +258,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)
@@ -278,7 +278,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)

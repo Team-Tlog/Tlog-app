@@ -56,7 +56,7 @@ fun TravelCard(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 31.dp, top = 31.dp, end = 31.dp, bottom = 23.dp)
+                    .padding(start = 31.dp, top = 25.dp, end = 31.dp, bottom = 17.dp)
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
