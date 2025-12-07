@@ -7,9 +7,9 @@ import com.tlog.data.dto.response.sns.CommentRequest
 import com.tlog.data.dto.request.sns.FollowRequest
 import com.tlog.data.dto.request.sns.ReportRequest
 import com.tlog.data.dto.request.sns.SnsDescriptionBody
-import com.tlog.data.dto.response.sns.SnsPost
-import com.tlog.data.dto.response.sns.SnsPostPreview
-import com.tlog.data.dto.response.sns.SnsUser
+import com.tlog.data.dto.response.sns.SnsPostDto
+import com.tlog.data.dto.response.sns.SnsPostPreviewDto
+import com.tlog.data.dto.response.sns.SnsUserDto
 import com.tlog.data.dto.response.sns.SnsUserProfile
 import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
@@ -26,7 +26,7 @@ class SnsRepository @Inject constructor(
     suspend fun getFollowingPostList(
         lastPostId: String? = null,
         size: Int,
-    ): BaseListResponse<List<SnsPost>> {
+    ): BaseListResponse<List<SnsPostDto>> {
         return retrofitInstance.getFollowingPostList(lastPostId, size)
     }
 
@@ -44,7 +44,7 @@ class SnsRepository @Inject constructor(
 
     suspend fun getPost(
         postId: String
-    ): BaseResponse<SnsPost> {
+    ): BaseResponse<SnsPostDto> {
         return retrofitInstance.getPost(postId)
     }
 
@@ -52,7 +52,7 @@ class SnsRepository @Inject constructor(
         query: String,
         lastPostId: String? = null,
         size: Int,
-    ): BaseListResponse<List<SnsPostPreview>> {
+    ): BaseListResponse<List<SnsPostPreviewDto>> {
         return retrofitInstance.searchPost(query = query, size = size, lastPostId = lastPostId)
     }
 
@@ -64,7 +64,7 @@ class SnsRepository @Inject constructor(
         return retrofitInstance.addComment(postId, CommentRequest(author = author, content = content))
     }
 
-    suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUser>> {
+    suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUserDto>> {
         return retrofitInstance.getFollowingList(userId)
     }
 

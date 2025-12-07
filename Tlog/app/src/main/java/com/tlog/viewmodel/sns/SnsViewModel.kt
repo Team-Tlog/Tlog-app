@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostDto
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
@@ -24,8 +24,8 @@ class SnsViewModel @Inject constructor(
     private var lastPostId: String? = null
     private var size = 10
 
-    private var _postList = MutableStateFlow(listOf<SnsPost>())
-    val postList: StateFlow<List<SnsPost>> = _postList
+    private var _postList = MutableStateFlow(listOf<SnsPostDto>())
+    val postList: StateFlow<List<SnsPostDto>> = _postList
 
     val followingList: StateFlow<Set<String>> = followManager.followingList
 

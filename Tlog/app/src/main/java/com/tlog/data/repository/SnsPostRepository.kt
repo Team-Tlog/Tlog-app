@@ -5,7 +5,7 @@ import com.tlog.api.SnsApi
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.course.CourseItem
 import com.tlog.data.dto.request.sns.PostWriteBody
-import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostDto
 import javax.inject.Inject
 
 class SnsPostRepository@Inject constructor (
@@ -16,7 +16,7 @@ class SnsPostRepository@Inject constructor (
         return aiApi.getUserCourses(userId)
     }
 
-    suspend fun postWrite(userId: String, courseId: String, content: String, imageUrls: List<String>): BaseResponse<SnsPost> {
+    suspend fun postWrite(userId: String, courseId: String, content: String, imageUrls: List<String>): BaseResponse<SnsPostDto> {
         return snsApi.createPost(PostWriteBody(userId, courseId, content, imageUrls))
     }
 }

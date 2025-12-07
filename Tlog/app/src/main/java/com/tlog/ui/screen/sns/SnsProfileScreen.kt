@@ -31,7 +31,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import com.tlog.data.dto.response.sns.SnsPostPreview
+import com.tlog.data.dto.response.sns.SnsPostPreviewDto
 import com.tlog.data.dto.response.sns.SnsUserProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -290,7 +290,7 @@ fun ActionButtons(
 
 @Composable
 fun PostsGrid(
-    postList: List<SnsPostPreview>,
+    postList: List<SnsPostPreviewDto>,
     onClick: (String) -> Unit
 ) {
     LazyVerticalGrid(

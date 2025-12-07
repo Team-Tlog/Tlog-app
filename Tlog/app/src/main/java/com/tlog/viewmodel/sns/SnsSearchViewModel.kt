@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.dto.response.sns.SnsPostPreview
+import com.tlog.data.dto.response.sns.SnsPostPreviewDto
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +23,7 @@ class SnsSearchViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText
 
-    private val _searchResult = MutableStateFlow<List<SnsPostPreview>>(emptyList())
+    private val _searchResult = MutableStateFlow<List<SnsPostPreviewDto>>(emptyList())
     val searchResult = _searchResult.asStateFlow()
 
     private var lastPostId: String? = null

@@ -2,7 +2,7 @@ package com.tlog.data.dto.response.sns
 
 import com.tlog.data.dto.sns.CommentDto
 
-data class SnsPost(
+data class SnsPostDto(
     val postId: String,
     val postLikeCount: Int,
     val postLinkCode: String,

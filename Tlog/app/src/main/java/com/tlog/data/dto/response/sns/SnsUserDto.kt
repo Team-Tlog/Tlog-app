@@ -1,6 +1,6 @@
 package com.tlog.data.dto.response.sns
 
-data class SnsUser(
+data class SnsUserDto(
     val uuid: String,
     val name: String,
     val snsName: String,

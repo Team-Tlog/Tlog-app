@@ -9,5 +9,5 @@ data class SnsUserProfile(
     val postCount: Int,
     val followerCount: Int,
     val followingCount: Int,
-    val posts: BaseListPage<List<SnsPostPreview>>
+    val posts: BaseListPage<List<SnsPostPreviewDto>>
 )

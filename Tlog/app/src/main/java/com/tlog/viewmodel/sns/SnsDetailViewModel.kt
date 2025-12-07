@@ -1,7 +1,7 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostDto
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
@@ -22,8 +22,8 @@ class SnsDetailViewModel @Inject constructor(
 
     var userId: String? = ""
 
-    private val _post = MutableStateFlow<SnsPost?>(null)
-    val post: StateFlow<SnsPost?> = _post
+    private val _post = MutableStateFlow<SnsPostDto?>(null)
+    val post: StateFlow<SnsPostDto?> = _post
 
     private val _comment = MutableStateFlow("")
     val comment = _comment.asStateFlow()

@@ -9,9 +9,9 @@ import com.tlog.data.dto.request.sns.FollowRequest
 import com.tlog.data.dto.request.sns.PostWriteBody
 import com.tlog.data.dto.request.sns.ReportRequest
 import com.tlog.data.dto.request.sns.SnsDescriptionBody
-import com.tlog.data.dto.response.sns.SnsPost
-import com.tlog.data.dto.response.sns.SnsPostPreview
-import com.tlog.data.dto.response.sns.SnsUser
+import com.tlog.data.dto.response.sns.SnsPostDto
+import com.tlog.data.dto.response.sns.SnsPostPreviewDto
+import com.tlog.data.dto.response.sns.SnsUserDto
 import com.tlog.data.dto.response.sns.SnsUserProfile
 import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
@@ -35,7 +35,7 @@ interface SnsApi {
     suspend fun getFollowingPostList(
         @Query("lastPostId") lastPostId: String? = null,
         @Query("size") size: Int
-    ): BaseListResponse<List<SnsPost>>
+    ): BaseListResponse<List<SnsPostDto>>
 
     // 유저 프로필 정보 (마이페이지 SNS)
     @GET("/api/sns/user/{userId}/profile")
@@ -53,7 +53,7 @@ interface SnsApi {
     @GET("/api/post/{postId}")
     suspend fun getPost(
         @Path("postId") postId: String
-    ): BaseResponse<SnsPost>
+    ): BaseResponse<SnsPostDto>
 
     // SNS 검색 기능
     @GET("/api/search/post/by-destination-and-content")
@@ -61,7 +61,7 @@ interface SnsApi {
         @Query("query") query: String,
         @Query("size") size: Int,
         @Query("lastPostId") lastPostId: String? = null,
-    ): BaseListResponse<List<SnsPostPreview>>
+    ): BaseListResponse<List<SnsPostPreviewDto>>
 
     // 게시물에 댓글 작성
     @POST("/api/post/{postId}/reply")
@@ -74,7 +74,7 @@ interface SnsApi {
     @GET("/api/follow/following/{userId}")
     suspend fun getFollowingList(
         @Path("userId") userId: String
-    ): BaseResponse<List<SnsUser>>
+    ): BaseResponse<List<SnsUserDto>>
 
     // 팔로우 걸기 and 취소
     @POST("/api/follow")
@@ -146,7 +146,7 @@ interface SnsApi {
     @POST("/api/post")
     suspend fun createPost(
         @Body postWriteBody: PostWriteBody,
-    ): BaseResponse<SnsPost>
+    ): BaseResponse<SnsPostDto>
 
     // 사용자의 코스 리뷰 미리보기 정보
     @GET("/api/user/{userId}/posts/preview")
@@ -155,7 +155,7 @@ interface SnsApi {
         @Body page: Int,
         @Body size: Int,
         @Body sort: List<String>
-    ): BaseListResponse<List<SnsPostPreview>>
+    ): BaseListResponse<List<SnsPostPreviewDto>>
 
 
 
@@ -167,6 +167,6 @@ interface SnsApi {
         @Body page: Int,
         @Body size: Int,
         @Body sort: List<String>
-    ): BaseListResponse<List<SnsUser>>
+    ): BaseListResponse<List<SnsUserDto>>
 }
 
