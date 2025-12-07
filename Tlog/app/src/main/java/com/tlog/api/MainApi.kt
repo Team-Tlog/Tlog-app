@@ -24,4 +24,7 @@ interface MainApi {
 
     @GET("/api/recommend/destinations")
     suspend fun getRecommendDestination(): BaseResponse<List<RecommendDestinationDto>>
+
+    @GET("/api/recommend/banners")
+    suspend fun getRecommendBanner(): BaseResponse<List<BannerDto>>
 }

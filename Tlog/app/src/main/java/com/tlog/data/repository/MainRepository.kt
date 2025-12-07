@@ -35,12 +35,4 @@ class MainRepository @Inject constructor(
     suspend fun getRecommendBanner(): BaseResponse<List<BannerDto>> {
         return retrofitInstance.getRecommendBanner()
     }
-
-    suspend fun getRecommendBannerDetail(
-        bannerId: String,
-        page: Int = 0,
-        size: Int = 10
-    ): BaseListResponse<List<BannerDetailDto>> {
-        return retrofitInstance.getRecommendBannerDetail(bannerId, page, size)
-    }
 }
