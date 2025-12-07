@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import com.tlog.data.dto.share.LocalGuideDto
+import com.tlog.domain.model.share.LocalGuide
 import com.tlog.ui.component.travel.BlueHashTagGroup
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
@@ -31,7 +31,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun IssueCard(
-    issue: LocalGuideDto,
+    issue: LocalGuide,
     context: Context
 ) {
     Box(
@@ -87,7 +87,7 @@ fun IssueCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            BlueHashTagGroup(issue.property)
+            BlueHashTagGroup(issue.hashTags)
         }
     }
 }

@@ -9,11 +9,11 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.dto.share.BannerDto
-import com.tlog.data.dto.share.LocalGuideDto
 import com.tlog.data.dto.share.LocationDataDto
 import com.tlog.data.dto.share.PostDto
 import com.tlog.data.dto.share.RecommendDestinationDto
 import com.tlog.data.repository.MainRepository
+import com.tlog.domain.model.share.LocalGuide
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,8 +34,8 @@ class MainViewModel @Inject constructor(
     private val _currentLocation = MutableStateFlow<LocationDataDto?>(null)
     val currentLocation: StateFlow<LocationDataDto?> = _currentLocation.asStateFlow()
 
-    private val _localGuides = MutableStateFlow<List<LocalGuideDto>>(emptyList())
-    val localGuides: StateFlow<List<LocalGuideDto>> = _localGuides.asStateFlow()
+    private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
+    val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
 
     private val _recommendPosts = MutableStateFlow<List<PostDto>>(emptyList())
     val recommendPosts: StateFlow<List<PostDto>> = _recommendPosts.asStateFlow()
@@ -102,7 +102,7 @@ class MainViewModel @Inject constructor(
                     latitude = location.latitude,
                     longitude = location.longitude
                 )
-                _localGuides.value = response.data.content
+                _localGuides.value = response
             }
         )
     }

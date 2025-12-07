@@ -14,11 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.tlog.data.dto.share.LocalGuideDto
 import com.tlog.ui.style.BodyTitle
 import androidx.compose.foundation.lazy.items
+import com.tlog.domain.model.share.LocalGuide
 
 
 @Composable
 fun IssueSection(
-    localGuides: List<LocalGuideDto>,
+    localGuides: List<LocalGuide>,
     context: Context
 ) {
     Column(
