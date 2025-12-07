@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.share.RecommendDestinationDto
+import com.tlog.domain.model.share.RecommendTravels
 import com.tlog.ui.style.BodyTitle
 
 @Composable
-fun RecommendDestinationSection(
-    recommendDestinations: List<RecommendDestinationDto>,
-    onDestinationClick: (String) -> Unit
+fun RecommendTravelsSection(
+    recommendTravels: List<RecommendTravels>,
+    onTravelClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -45,10 +45,10 @@ fun RecommendDestinationSection(
                 .clip(RoundedCornerShape(10.dp))
         ) {
             items(
-                items = recommendDestinations,
+                items = recommendTravels,
                 key = { travel -> travel.title }
             ) { item ->
-                DestinationCard(item, onDestinationClick)
+                RecommendTravelCard(item, onTravelClick)
             }
         }
     }

@@ -8,12 +8,12 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.share.BannerDto
 import com.tlog.data.dto.share.LocationDataDto
-import com.tlog.data.dto.share.PostDto
-import com.tlog.data.dto.share.RecommendDestinationDto
 import com.tlog.data.repository.MainRepository
+import com.tlog.domain.model.share.Banner
 import com.tlog.domain.model.share.LocalGuide
+import com.tlog.domain.model.share.RecommendPost
+import com.tlog.domain.model.share.RecommendTravels
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +28,8 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ): BaseViewModel() {
     var userId: String? = null
-    private val _bannerList = MutableStateFlow<List<BannerDto>>(emptyList())
-    val bannerList: StateFlow<List<BannerDto>> = _bannerList.asStateFlow()
+    private val _banners = MutableStateFlow<List<Banner>>(emptyList())
+    val banners: StateFlow<List<Banner>> = _banners.asStateFlow()
 
     private val _currentLocation = MutableStateFlow<LocationDataDto?>(null)
     val currentLocation: StateFlow<LocationDataDto?> = _currentLocation.asStateFlow()
@@ -37,11 +37,11 @@ class MainViewModel @Inject constructor(
     private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
     val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
 
-    private val _recommendPosts = MutableStateFlow<List<PostDto>>(emptyList())
-    val recommendPosts: StateFlow<List<PostDto>> = _recommendPosts.asStateFlow()
+    private val _recommendPosts = MutableStateFlow<List<RecommendPost>>(emptyList())
+    val recommendPosts: StateFlow<List<RecommendPost>> = _recommendPosts.asStateFlow()
 
-    private val _recommendDestinations = MutableStateFlow<List<RecommendDestinationDto>>(emptyList())
-    val recommendDestinations: StateFlow<List<RecommendDestinationDto>> = _recommendDestinations.asStateFlow()
+    private val _recommendTravels = MutableStateFlow<List<RecommendTravels>>(emptyList())
+    val recommendTravels: StateFlow<List<RecommendTravels>> = _recommendTravels.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
@@ -78,9 +78,10 @@ class MainViewModel @Inject constructor(
     fun getRecommendPosts() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendPost()
-
-                _recommendPosts.value = response.data
+               mainRepository.getRecommendPost()
+            },
+            onSuccess = { recommendPosts ->
+                _recommendPosts.value = recommendPosts
             }
         )
     }
@@ -88,9 +89,10 @@ class MainViewModel @Inject constructor(
     fun getRecommendDestinations() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendDestination()
-
-                _recommendDestinations.value = response.data
+                mainRepository.getRecommendDestination()
+            },
+            onSuccess = { recommendTravels ->
+                _recommendTravels.value = recommendTravels
             }
         )
     }
@@ -98,11 +100,13 @@ class MainViewModel @Inject constructor(
     private fun sendLocationToServer(location: LocationDataDto) {
         launchSafeCall(
             action = {
-                val response = mainRepository.getLocalGuide(
+                mainRepository.getLocalGuide(
                     latitude = location.latitude,
                     longitude = location.longitude
                 )
-                _localGuides.value = response
+            },
+            onSuccess = { localGuides ->
+                _localGuides.value = localGuides
             }
         )
     }
@@ -110,9 +114,10 @@ class MainViewModel @Inject constructor(
     fun getRecommendBanner() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendBanner()
-
-                _bannerList.value = response.data
+                mainRepository.getRecommendBanner()
+            },
+            onSuccess = { banners ->
+                _banners.value = banners
             }
         )
     }

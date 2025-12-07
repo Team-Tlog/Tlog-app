@@ -28,14 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.data.dto.share.RecommendDestinationDto
+import com.tlog.domain.model.share.RecommendTravels
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 
 @Composable
-fun DestinationCard(
-    destination: RecommendDestinationDto,
-    onDestinationClick: (String) -> Unit
+fun RecommendTravelCard(
+    recommendTravel: RecommendTravels,
+    onTravelClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -87,7 +87,7 @@ fun DestinationCard(
             ) {
                 Column {
                     Text(
-                        text = destination.title,
+                        text = recommendTravel.title,
                         style = Body1Bold,
                         color = Color.Black
                     )
@@ -95,7 +95,7 @@ fun DestinationCard(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = destination.description,
+                        text = recommendTravel.description,
                         style = TextStyle(
                             fontFamily = MainFont,
                             fontSize = 11.sp,
@@ -148,10 +148,10 @@ fun DestinationCard(
                     .padding(start = 23.dp, end = 15.dp, bottom = 20.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                destination.destinations.forEach { travel ->
+                recommendTravel.destinations.forEach { travel ->
                     DestinationItem(
                         travel = travel,
-                        onDestinationClick = { onDestinationClick(travel.id) }
+                        onTravelClick = { onTravelClick(travel.id) }
                     )
                 }
             }

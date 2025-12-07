@@ -52,7 +52,7 @@ import com.tlog.R
 import com.tlog.data.dto.share.LocationDataDto
 import com.tlog.ui.component.main.BannerSection
 import com.tlog.ui.component.main.IssueSection
-import com.tlog.ui.component.main.RecommendDestinationSection
+import com.tlog.ui.component.main.RecommendTravelsSection
 import com.tlog.ui.component.main.RecommendPostSection
 import com.tlog.ui.component.share.BottomBar
 import com.tlog.ui.component.share.MainTopBar
@@ -152,10 +152,10 @@ fun MainScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(top = 10.dp)
             ) {
-                val bannerList by viewModel.bannerList.collectAsState()
+                val banners by viewModel.banners.collectAsState()
 
                 BannerSection(
-                    bannerList = bannerList,
+                    banners = banners,
                     onBannerClick = { bannerId ->
                         viewModel.navToBannerDetail(bannerId)
                     }
@@ -445,11 +445,11 @@ fun MainScreen(
 
                 Spacer(modifier = Modifier.height(42.dp))
 
-                val recommendDestinations by viewModel.recommendDestinations.collectAsState()
+                val recommendDestinations by viewModel.recommendTravels.collectAsState()
 
-                RecommendDestinationSection(
-                    recommendDestinations = recommendDestinations,
-                    onDestinationClick = { viewModel.navToTravel(it) }
+                RecommendTravelsSection(
+                    recommendTravels = recommendDestinations,
+                    onTravelClick = { viewModel.navToTravel(it) }
                 )
 
                 // 인기 게시글

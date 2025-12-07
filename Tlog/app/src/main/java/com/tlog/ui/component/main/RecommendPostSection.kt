@@ -12,12 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.share.PostDto
+import com.tlog.domain.model.share.RecommendPost
 import com.tlog.ui.style.BodyTitle
 
 @Composable
 fun RecommendPostSection(
-    recommendPosts: List<PostDto>,
+    recommendPosts: List<RecommendPost>,
     onPostClick: (String) -> Unit
 ) {
     Column(

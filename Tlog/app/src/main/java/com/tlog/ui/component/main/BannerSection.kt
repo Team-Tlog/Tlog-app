@@ -25,17 +25,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.dto.share.BannerDto
+import com.tlog.domain.model.share.Banner
 import com.tlog.ui.component.share.HashTagsGroup
 import com.tlog.ui.theme.DefaultImage
 
 
 @Composable
 fun BannerSection(
-    bannerList: List<BannerDto>,
+    banners: List<Banner>,
     onBannerClick: (String) -> Unit
 ) {
-    LazyRow(
+    LazyRow( // 추후 pager
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 10.dp),
@@ -43,7 +43,7 @@ fun BannerSection(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         items(
-            items = bannerList,
+            items = banners,
             key = { banner -> banner.id }
         ) { banner ->
             Box(

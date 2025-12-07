@@ -5,7 +5,7 @@ import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.share.BannerDto
 import com.tlog.data.dto.share.LocalGuideDto
 import com.tlog.data.dto.share.PostDto
-import com.tlog.data.dto.share.RecommendDestinationDto
+import com.tlog.data.dto.share.RecommendDestinationsDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,7 +20,7 @@ interface MainApi {
     suspend fun getRecommendPost(): BaseResponse<List<PostDto>>
 
     @GET("/api/recommend/destinations")
-    suspend fun getRecommendDestination(): BaseResponse<List<RecommendDestinationDto>>
+    suspend fun getRecommendDestination(): BaseResponse<List<RecommendDestinationsDto>>
 
     @GET("/api/recommend/banners")
     suspend fun getRecommendBanner(): BaseResponse<List<BannerDto>>

@@ -12,12 +12,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.data.dto.response.sns.SnsPost
+import com.tlog.data.dto.response.sns.SnsPostDto
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PostItem(
-    post: SnsPost,
+    post: SnsPostDto,
     isFollowing: Boolean,
     clickUser: (String) -> Unit = {},
     courseClick: (String) -> Unit = {},
