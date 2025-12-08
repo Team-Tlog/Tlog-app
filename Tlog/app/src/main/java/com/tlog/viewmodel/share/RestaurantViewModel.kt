@@ -2,8 +2,9 @@ package com.tlog.viewmodel.share
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import com.tlog.data.dto.response.restaurant.Restaurant
+import com.tlog.data.dto.response.restaurant.RestaurantDto
 import com.tlog.data.repository.RestaurantRepository
+import com.tlog.domain.model.share.Restaurant
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,11 +37,11 @@ class RestaurantViewModel @Inject constructor(
             action = {
                 val restaurantResponse = repository.getEateryList(latitude, longitude)
 
-                _restaurants.value = restaurantResponse.data
+                _restaurants.value = restaurantResponse
 
                 val cafeResponse = repository.getCafeList(latitude, longitude)
 
-                _cafes.value = cafeResponse.data
+                _cafes.value = cafeResponse
 
                 _isLoading.value = true
             }
