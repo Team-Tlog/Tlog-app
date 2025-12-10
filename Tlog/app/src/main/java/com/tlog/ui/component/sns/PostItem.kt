@@ -13,11 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.tlog.data.dto.response.sns.SnsPostDto
+import com.tlog.domain.model.sns.SnsPost
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PostItem(
-    post: SnsPostDto,
+    post: SnsPost,
     isFollowing: Boolean,
     clickUser: (String) -> Unit = {},
     courseClick: (String) -> Unit = {},
@@ -76,7 +77,7 @@ fun PostItem(
 
         ViewCourseButton(
             onClick = {
-                courseClick(post.postId)
+                courseClick(post.id)
             },
             buttonText = "코스 확인하기"
         )
@@ -98,7 +99,7 @@ fun PostItem(
         )
 
         // 현재 표시된 댓글 목록
-        post.replies.forEachIndexed { index, comment ->
+        post.comments.forEachIndexed { index, comment ->
             CommentItem(comment = comment)
         }
     }

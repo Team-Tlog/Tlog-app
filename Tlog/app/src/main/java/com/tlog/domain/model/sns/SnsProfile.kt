@@ -1,13 +1,11 @@
-package com.tlog.data.dto.response.sns
+package com.tlog.domain.model.sns
 
-import com.tlog.data.dto.response.base.BaseListPage
-
-data class SnsUserProfile(
+data class SnsProfile(
     val username: String,
     val profileImageUrl: String?,
     val snsDescription: String?,
     val postCount: Int,
     val followerCount: Int,
     val followingCount: Int,
-    val posts: BaseListPage<List<SnsPostPreviewDto>>
+    val posts: List<SnsPostPreview>
 )

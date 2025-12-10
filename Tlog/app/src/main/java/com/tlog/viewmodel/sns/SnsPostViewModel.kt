@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.course.CourseItem
+import com.tlog.data.dto.response.course.CourseDto
 import com.tlog.data.repository.SnsPostRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ class SnsPostViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ) : BaseViewModel() {
     private var userId = ""
-    private var _recentTravelCourses = MutableStateFlow<List<CourseItem>>(emptyList())
+    private var _recentTravelCourses = MutableStateFlow<List<CourseDto>>(emptyList())
     val recentTravelCourses = _recentTravelCourses.asStateFlow()
 
     private var _selectImages = MutableStateFlow<List<Uri>>(emptyList())
@@ -81,6 +81,7 @@ class SnsPostViewModel @Inject constructor(
                     )
                 }
 
+                // return 사용하지 않음
                 snsPostRepository.postWrite(
                     userId = userId,
                     courseId = recentTravelCourses.value[selectedCourse.value].id,

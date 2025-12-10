@@ -13,12 +13,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.data.dto.sns.CommentDto
+import com.tlog.domain.model.sns.Comment
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
-fun CommentItem(comment: CommentDto) {
+fun CommentItem(comment: Comment) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -27,7 +28,7 @@ fun CommentItem(comment: CommentDto) {
     ) {
         // 사용자 닉네임
         Text(
-            text = comment.authorName,
+            text = comment.userName,
             fontFamily = MainFont,
             fontWeight = FontWeight.SemiBold,
             fontSize = 12.sp,
@@ -38,7 +39,7 @@ fun CommentItem(comment: CommentDto) {
 
         // 댓글 내용만 표시
         Text(
-            text = comment.content,
+            text = comment.comment,
             style = Body2Regular,
             fontSize = 14.sp
         )

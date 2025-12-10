@@ -3,7 +3,7 @@ package com.tlog.api
 import com.tlog.data.dto.response.base.BaseListResponse
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.sns.ChatMessageHistoryResponse
-import com.tlog.data.dto.response.sns.ChatRoom
+import com.tlog.data.dto.response.sns.ChatRoomDto
 import com.tlog.data.dto.response.sns.CommentRequest
 import com.tlog.data.dto.request.sns.FollowRequest
 import com.tlog.data.dto.request.sns.PostWriteBody
@@ -12,7 +12,7 @@ import com.tlog.data.dto.request.sns.SnsDescriptionBody
 import com.tlog.data.dto.response.sns.SnsPostDto
 import com.tlog.data.dto.response.sns.SnsPostPreviewDto
 import com.tlog.data.dto.response.sns.SnsUserDto
-import com.tlog.data.dto.response.sns.SnsUserProfile
+import com.tlog.data.dto.response.sns.SnsUserProfileDto
 import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
 import com.tlog.data.dto.sns.CommentDto
@@ -41,7 +41,7 @@ interface SnsApi {
     @GET("/api/sns/user/{userId}/profile")
     suspend fun getUserProfile(
         @Path("userId") userId: String
-    ): BaseResponse<SnsUserProfile>
+    ): BaseResponse<SnsUserProfileDto>
 
     // SNS 프로필 한 줄 설명글 변경 (UI 없어서 실제로 사용하진 못함)
     @POST("/api/sns/profile/sns-description")
@@ -86,7 +86,7 @@ interface SnsApi {
     @GET("/api/chat/room/{hostId}")
     suspend fun getChatList(
         @Path("hostId") hostId: String
-    ): BaseResponse<List<ChatRoom>>
+    ): BaseResponse<List<ChatRoomDto>>
 
     // 채팅방 메시지 히스토리 조회
     @GET("/api/chat/room/{roomId}/messages")
@@ -96,13 +96,11 @@ interface SnsApi {
         @Query("beforeMessageId") beforeMessageId: Long? = null
     ): BaseResponse<ChatMessageHistoryResponse>
 
-
     // 좋아요
     @POST("/api/post/{postId}/like")
     suspend fun postLikeToggle(
         @Path("postId") postId: String
     ): BaseResponse<Unit>
-
 
     // 신고하기
     @POST("/api/operation/report/post")
@@ -123,8 +121,6 @@ interface SnsApi {
         @Body content: String
     ): BaseResponse<CommentDto>
 
-
-
     // 댓글의 대댓글 조회
     @GET("/api/reply/{replyId}/replys")
     suspend fun getReplyList(
@@ -141,7 +137,6 @@ interface SnsApi {
         @Query("size") size: Int
     ): BaseResponse<List<CommentDto>>
 
-
     // SNS 코스 리뷰 (게시물)
     @POST("/api/post")
     suspend fun createPost(
@@ -156,10 +151,6 @@ interface SnsApi {
         @Body size: Int,
         @Body sort: List<String>
     ): BaseListResponse<List<SnsPostPreviewDto>>
-
-
-
-
 
     @GET("/api/follow/follower/{userId}")
     suspend fun getFollowerList(

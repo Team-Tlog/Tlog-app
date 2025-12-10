@@ -4,6 +4,6 @@ data class SnsUserDto(
     val uuid: String,
     val name: String,
     val snsName: String,
-    val profileImageUrl: String,
+    val profileImageUrl: String?,
     val tbtiValue: Int
 )

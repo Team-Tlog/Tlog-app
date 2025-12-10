@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsApi
-import com.tlog.data.dto.response.sns.ChatRoom
+import com.tlog.data.dto.response.sns.ChatRoomDto
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ class ChatListViewModel @Inject constructor(
     private val userPreferences: UserPreferences
 ) : ViewModel() {
 
-    private val _chatRoomList = MutableStateFlow<List<ChatRoom>>(emptyList())
+    private val _chatRoomList = MutableStateFlow<List<ChatRoomDto>>(emptyList())
     val chatRoomList = _chatRoomList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)

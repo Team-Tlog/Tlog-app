@@ -1,17 +1,15 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.sns.SnsPostDto
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
+import com.tlog.domain.model.sns.SnsPost
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
-
 
 @HiltViewModel
 class SnsDetailViewModel @Inject constructor(
@@ -19,11 +17,10 @@ class SnsDetailViewModel @Inject constructor(
     private val followManager: FollowManager,
     tokenProvider: TokenProvider
 ) : BaseViewModel() {
-
     var userId: String? = ""
 
-    private val _post = MutableStateFlow<SnsPostDto?>(null)
-    val post: StateFlow<SnsPostDto?> = _post
+    private val _post = MutableStateFlow<SnsPost?>(null)
+    val post = _post.asStateFlow()
 
     private val _comment = MutableStateFlow("")
     val comment = _comment.asStateFlow()
@@ -38,8 +35,10 @@ class SnsDetailViewModel @Inject constructor(
     fun getPostDetail(postId: String) {
         launchSafeCall(
             action = {
-                val result = repository.getPost(postId)
-                _post.value = result.data
+                repository.getPost(postId)
+            },
+            onSuccess = {
+                _post.value = it
             }
         )
     }
@@ -47,9 +46,9 @@ class SnsDetailViewModel @Inject constructor(
     fun addComment() {
         launchSafeCall(
             action = {
-                repository.createComment(postId = post.value!!.postId, author = userId!!, content = comment.value)
+                repository.createComment(postId = _post.value!!.id, author = userId!!, content = comment.value)
                 _comment.value = ""
-                getPostDetail(post.value!!.postId)
+                getPostDetail(_post.value!!.id)
             }
         )
     }
@@ -60,7 +59,7 @@ class SnsDetailViewModel @Inject constructor(
 
 
     // 팔로우 매니저
-    val followingList: StateFlow<Set<String>> = followManager.followingList
+    val followingList = followManager.followingList
 
     fun followUser(toUserId: String) {
         launchSafeCall(
@@ -92,6 +91,9 @@ class SnsDetailViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 repository.postReport(postId)
+            },
+            onSuccess = {
+                UiEvent.ShowToast("신고가 정상적으로 접수됐습니다.")
             }
         )
     }

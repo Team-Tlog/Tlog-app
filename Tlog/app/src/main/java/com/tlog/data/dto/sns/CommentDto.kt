@@ -6,5 +6,5 @@ data class CommentDto(
     val nestedReplyCount: Int,
     val authorId: String,
     val authorName: String,
-    val authorProfileImageUrl: String
+    val authorProfileImageUrl: String?
 )

@@ -108,7 +108,7 @@ fun SnsScreen(
                     ) {
                         items(
                             items = postList,
-                            key = { post -> post.postId }
+                            key = { post -> post.id }
                         ) { post ->
                             PostItem(
                                 post = post,

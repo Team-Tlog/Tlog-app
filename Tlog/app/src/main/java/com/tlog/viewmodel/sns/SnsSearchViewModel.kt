@@ -1,7 +1,6 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.dto.response.sns.SnsPostPreviewDto
 import com.tlog.data.repository.SnsRepository
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
+import com.tlog.domain.model.sns.SnsPostPreview
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class SnsSearchViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText
 
-    private val _searchResult = MutableStateFlow<List<SnsPostPreviewDto>>(emptyList())
+    private val _searchResult = MutableStateFlow<List<SnsPostPreview>>(emptyList())
     val searchResult = _searchResult.asStateFlow()
 
     private var lastPostId: String? = null
@@ -45,10 +45,8 @@ class SnsSearchViewModel @Inject constructor(
         try {
             val response = repository.searchPost(query = searchText, size = 10, lastPostId = lastPostId)
 
-            _searchResult.value = response.data.content
-            if (response.data.content.isNotEmpty()) // content가 비었을 때 예외 처리
-                lastPostId = response.data.content[response.data.content.size - 1].postId
-
+            _searchResult.value = response.first
+            lastPostId = response.second
         } catch (e: Exception) {
             showToast(e.message ?: "검색 중 오류가 발생했습니다")
         }

@@ -1,7 +1,7 @@
 package com.tlog.api
 
 import com.tlog.data.dto.response.base.BaseResponse
-import com.tlog.data.dto.response.course.CourseItem
+import com.tlog.data.dto.response.course.CourseDto
 import com.tlog.data.dto.request.travel.AiRequest
 import com.tlog.data.dto.response.travel.AiTravelDto
 import com.tlog.data.dto.response.travel.CourseResponse
@@ -36,7 +36,7 @@ interface AiApi {
     @GET("/api/course/user/{userId}")
     suspend fun getUserCourses(
         @Path("userId") userId: String
-    ): BaseResponse<List<CourseItem>>
+    ): BaseResponse<List<CourseDto>>
 }
 
 

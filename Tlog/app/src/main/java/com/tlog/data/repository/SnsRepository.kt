@@ -1,19 +1,19 @@
 package com.tlog.data.repository
 
 import com.tlog.api.SnsApi
-import com.tlog.data.dto.response.base.BaseListResponse
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.sns.CommentRequest
 import com.tlog.data.dto.request.sns.FollowRequest
 import com.tlog.data.dto.request.sns.ReportRequest
 import com.tlog.data.dto.request.sns.SnsDescriptionBody
-import com.tlog.data.dto.response.sns.SnsPostDto
-import com.tlog.data.dto.response.sns.SnsPostPreviewDto
-import com.tlog.data.dto.response.sns.SnsUserDto
-import com.tlog.data.dto.response.sns.SnsUserProfile
 import com.tlog.data.dto.response.sns.StatusMessageResponse
 import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
-import com.tlog.data.dto.sns.CommentDto
+import com.tlog.domain.mapper.toDomain
+import com.tlog.domain.model.sns.Comment
+import com.tlog.domain.model.sns.SnsPost
+import com.tlog.domain.model.sns.SnsPostPreview
+import com.tlog.domain.model.sns.SnsProfile
+import com.tlog.domain.model.sns.SnsUser
 import javax.inject.Inject
 
 class SnsRepository @Inject constructor(
@@ -25,58 +25,61 @@ class SnsRepository @Inject constructor(
 
     suspend fun getFollowingPostList(
         lastPostId: String? = null,
-        size: Int,
-    ): BaseListResponse<List<SnsPostDto>> {
-        return retrofitInstance.getFollowingPostList(lastPostId, size)
+        size: Int
+    ): List<SnsPost> {
+        return retrofitInstance.getFollowingPostList(lastPostId, size).data.content.map {
+            it.toDomain()
+        }
     }
 
     suspend fun getUserProfile(
         userId: String
-    ): BaseResponse<SnsUserProfile> {
-        return retrofitInstance.getUserProfile(userId)
+    ): SnsProfile {
+        return retrofitInstance.getUserProfile(userId).data.toDomain()
     }
 
-    suspend fun updateSnsDescription(
-        description: String
-    ): BaseResponse<Unit> {
+    suspend fun updateSnsDescription(description: String): BaseResponse<Unit> {
         return retrofitInstance.updateSnsDescription(SnsDescriptionBody(description))
     }
 
-    suspend fun getPost(
-        postId: String
-    ): BaseResponse<SnsPostDto> {
-        return retrofitInstance.getPost(postId)
+    suspend fun getPost(postId: String): SnsPost {
+        return retrofitInstance.getPost(postId).data.toDomain()
     }
 
     suspend fun searchPost(
         query: String,
         lastPostId: String? = null,
         size: Int,
-    ): BaseListResponse<List<SnsPostPreviewDto>> {
-        return retrofitInstance.searchPost(query = query, size = size, lastPostId = lastPostId)
+    ): Pair<List<SnsPostPreview>, String> {
+        val response = retrofitInstance.searchPost(query = query, size = size, lastPostId = lastPostId)
+
+        return response.data.content.map { it.toDomain() } to response.data.content.last().postId
     }
 
     suspend fun createComment(
         postId: String,
         author: String,
         content: String
-    ): BaseResponse<CommentDto>{
-        return retrofitInstance.addComment(postId, CommentRequest(author = author, content = content))
+    ): Comment {
+        return retrofitInstance.addComment(postId, CommentRequest(author = author, content = content)).data.toDomain()
     }
 
-    suspend fun getFollowingList(userId: String): BaseResponse<List<SnsUserDto>> {
-        return retrofitInstance.getFollowingList(userId)
+    suspend fun getFollowingList(userId: String): List<SnsUser> {
+        return retrofitInstance.getFollowingList(userId).data.map {
+            it.toDomain()
+        }
     }
 
+    // 일단 사용 안해서 매핑 제외
     suspend fun followUser(userId: String, toUserId: String): BaseResponse<StatusMessageResponse> {
         return retrofitInstance.followUser(FollowRequest(from_userId = userId, to_userId = toUserId))
     }
 
-    suspend fun postLikeToggle(postId: String): BaseResponse<Unit> {
-        return retrofitInstance.postLikeToggle(postId)
+    suspend fun postLikeToggle(postId: String) {
+        retrofitInstance.postLikeToggle(postId)
     }
 
-    suspend fun postReport(postId: String): BaseResponse<Unit> {
-        return retrofitInstance.postReport(ReportRequest(postId))
+    suspend fun postReport(postId: String) {
+        retrofitInstance.postReport(ReportRequest(postId))
     }
 }

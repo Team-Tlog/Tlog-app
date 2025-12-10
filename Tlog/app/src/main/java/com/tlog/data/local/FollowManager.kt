@@ -10,7 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -28,7 +28,7 @@ class FollowManager @Inject constructor(
     private var userId: String? = null
 
     private val _followingList = MutableStateFlow<Set<String>>(emptySet())
-    val followingList: StateFlow<Set<String>> get() = _followingList
+    val followingList = _followingList.asStateFlow()
 
 
     init {
@@ -46,7 +46,7 @@ class FollowManager @Inject constructor(
     suspend fun getFollowingList() {
        try {
            val result = repository.getFollowingList(userId!!)
-           _followingList.value = result.data.map { it.uuid }.toSet()
+           _followingList.value = result.map { it.uuid }.toSet()
            saveFollowList()
        } catch (e: Exception) {
            Log.d("FollowManager", e.message.toString())
@@ -64,12 +64,10 @@ class FollowManager @Inject constructor(
         return followingList.value.contains(userId)
     }
 
-    fun followUser(toUserId: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            repository.followUser(userId!!, toUserId)
-            getFollowingList()
-            saveFollowList()
-        }
+    suspend fun followUser(toUserId: String) {
+        repository.followUser(userId!!, toUserId)
+        getFollowingList()
+        saveFollowList()
     }
 
     suspend fun clearAllFollowData() {
