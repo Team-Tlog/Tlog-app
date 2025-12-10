@@ -9,11 +9,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.travel.TravelDto
+import com.tlog.data.dto.travel.CartDto
 
 @Composable
-fun TravelList(
-    travelList: List<TravelDto>,
+fun CheckCartList(
+    travelList: List<CartDto>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
@@ -25,7 +25,7 @@ fun TravelList(
             items = travelList,
             key = { _, travel -> travel.name }
         ) { index, item ->
-            TravelItem(
+            CheckedCartItem(
                 travel = item,
                 onClick = onClick,
                 isChecked = isChecked

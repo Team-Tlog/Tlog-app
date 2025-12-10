@@ -9,28 +9,30 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.travel.TravelDto
+import com.tlog.domain.model.travel.ViewTravel
 
 @Composable
-fun TravelList(
-    travelList: List<TravelDto>,
+fun ScrapTravelList(
+    scrapTravelList: List<ViewTravel>,
     listState: LazyListState = rememberLazyListState(),
     onClick: (String) -> Unit,
-    isChecked: (String) -> Boolean
+    getIsChecked: (String) -> Boolean,
+    onCheckedClick: (String) -> Unit
 ) {
     LazyColumn(
         state = listState
     ) {
         itemsIndexed(
-            items = travelList,
-            key = { _, travel -> travel.name }
+            items = scrapTravelList,
+            key = { _, scrap -> scrap.name }
         ) { index, item ->
-            TravelItem(
+            ScrapTravelItem(
                 travel = item,
                 onClick = onClick,
-                isChecked = isChecked
+                getIsChecked = getIsChecked,
+                checkedClick = onCheckedClick
             )
-            if (index == travelList.lastIndex) {
+            if (index == scrapTravelList.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {
                 Spacer(modifier = Modifier.height(24.dp))
