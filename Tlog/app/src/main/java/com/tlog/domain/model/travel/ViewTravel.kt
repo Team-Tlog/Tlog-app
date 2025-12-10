@@ -1,6 +1,6 @@
 package com.tlog.domain.model.travel
 
-data class CartTravel(
+data class ViewTravel(
     val id: String,
     val name: String,
     val description: String,

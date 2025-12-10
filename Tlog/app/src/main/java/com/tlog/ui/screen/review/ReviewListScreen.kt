@@ -50,6 +50,7 @@ fun ReviewListScreen(
     val reviews by viewModel.reviews.collectAsState()
     val rating by viewModel.rating.collectAsState()
     val ratingDistribution by viewModel.ratingDistribution.collectAsState()
+    val scraps by viewModel.scraps.collectAsState()
 
 
     val context = LocalContext.current
@@ -108,7 +109,7 @@ fun ReviewListScreen(
         ) {
             item {
                 TravelInfoTopBar(
-                    isScrap = viewModel.isScraped(travelId),
+                    isScrap = scraps.contains(travelId),
                     clickScrap = { viewModel.toggleScrap(travelId) }
                 )
 

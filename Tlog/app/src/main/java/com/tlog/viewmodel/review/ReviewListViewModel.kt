@@ -17,6 +17,7 @@ class ReviewListViewModel @Inject constructor(
     private val repository: ReviewRepository,
     private val scrapManager: ScrapManager
 ): BaseViewModel() {
+    val scraps = scrapManager.scrapList
 
     private val _reviews = MutableStateFlow<List<ReviewDto>>(emptyList())
     val reviews = _reviews.asStateFlow()
@@ -124,10 +125,6 @@ class ReviewListViewModel @Inject constructor(
             },
             onError = { showToast("[스크랩] $it") }
         )
-    }
-
-    fun isScraped(destinationId: String): Boolean {
-        return scrapManager.isScraped(destinationId)
     }
 
     fun navToReviewWrite(travelId: String, travelName: String) {

@@ -28,13 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.dto.response.travel.PopularDestination
+import com.tlog.data.dto.response.travel.PopularDestinationDto
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun PopularDestinations(
-    destinations: List<PopularDestination>,
+    destinations: List<PopularDestinationDto>,
     modifier: Modifier = Modifier,
     onDestinationClick: (String) -> Unit = {}
 ) {

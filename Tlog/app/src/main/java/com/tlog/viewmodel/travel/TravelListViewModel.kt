@@ -26,9 +26,8 @@ class TravelListViewModel @Inject constructor(
     private val _destinations = MutableStateFlow<List<Travel>>(emptyList())
     val destinations = _destinations.asStateFlow()
 
-    private val _scraps = MutableStateFlow<List<String>>(emptyList())
-    val scraps = _scraps.asStateFlow()
-
+//    private val _scraps = MutableStateFlow<List<String>>(emptyList())
+    val scraps =  scrapManager.scrapList
     private var userId: String? = null
     private var currentCity: String? = null
     private var currentSortType: String? = "RECOMMEND"
@@ -41,7 +40,7 @@ class TravelListViewModel @Inject constructor(
     init {
         userId = tokenProvider.getUserId()
 
-        _scraps.value = scrapManager.scrapList.value
+//        _scraps.value = scrapManager.scrapList.value
     }
 
     fun initUserIdAndScrapList() {
@@ -86,7 +85,7 @@ class TravelListViewModel @Inject constructor(
             action = {
                 scrapManager.toggleScrap(destinationId)
 
-                _scraps.value = scrapManager.scrapList.value
+//                _scraps.value = scrapManager.scrapList.value
             }
         )
     }

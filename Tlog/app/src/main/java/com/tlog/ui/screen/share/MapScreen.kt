@@ -23,7 +23,7 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.tlog.R
-import com.tlog.domain.model.travel.CartTravel
+import com.tlog.domain.model.travel.ViewTravel
 import com.tlog.domain.model.travel.ScrapTravel
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.share.MapViewModel
@@ -56,8 +56,8 @@ fun MapScreen(
 
 @Composable
 fun KakaoMapView(
-    cartList: List<CartTravel>,
-    scrapList: List<ScrapTravel>
+    cartList: List<ViewTravel>,
+    scrapList: List<ViewTravel>
 ) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),

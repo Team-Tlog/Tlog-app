@@ -10,6 +10,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -32,6 +33,8 @@ fun TravelDetailScreen(
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
     val context = LocalContext.current
+    val scraps by viewModel.scraps.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -66,7 +69,7 @@ fun TravelDetailScreen(
             Column {
                 TravelTopImageBox(
                     imageUrl = destination.imageUrl,
-                    isScrap = viewModel.isScraped(travelId),
+                    isScrap = scraps.contains(destination.id),
                     clickScrap = {
                         viewModel.toggleScrap(travelId)
                     }

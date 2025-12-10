@@ -13,6 +13,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -27,8 +29,8 @@ class ScrapManager @Inject constructor(
 ) {
     private val SCRAP_KEY = stringSetPreferencesKey("scrap_list")
 
-    private val _scrapList = mutableStateOf<List<String>>(emptyList())
-    val scrapList: State<List<String>> = _scrapList
+    private val _scrapList = MutableStateFlow<List<String>>(emptyList())
+    val scrapList = _scrapList.asStateFlow()
 
     private var userId: String? = null
 

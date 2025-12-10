@@ -3,7 +3,7 @@ package com.tlog.data.repository
 import com.tlog.api.ScrapAndCartApi
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.domain.mapper.toDomain
-import com.tlog.domain.model.travel.ScrapTravel
+import com.tlog.domain.model.travel.ViewTravel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -21,7 +21,7 @@ class ScrapRepository @Inject constructor(
         return retrofitInstance.deleteScrapDestination(userId, destinationId)
     }
 
-    suspend fun getUserScraps(userId: String): List<ScrapTravel> {
+    suspend fun getUserScraps(userId: String): List<ViewTravel> {
         return retrofitInstance.getUserScraps(userId).data.map {
             it.toDomain()
         }

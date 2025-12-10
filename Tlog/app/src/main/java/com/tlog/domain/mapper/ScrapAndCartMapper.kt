@@ -2,11 +2,11 @@ package com.tlog.domain.mapper
 
 import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.travel.ScrapDto
-import com.tlog.domain.model.travel.CartTravel
+import com.tlog.domain.model.travel.ViewTravel
 import com.tlog.domain.model.travel.ScrapTravel
 
-fun ScrapDto.toDomain(): ScrapTravel {
-    return ScrapTravel(
+fun ScrapDto.toDomain(): ViewTravel {
+    return ViewTravel(
         id = id,
         name = name,
         description = description,
@@ -17,8 +17,8 @@ fun ScrapDto.toDomain(): ScrapTravel {
     )
 }
 
-fun CartDto.toDomain(): CartTravel {
-    return CartTravel(
+fun CartDto.toDomain(): ViewTravel {
+    return ViewTravel(
         id = id,
         name = name,
         description = description,

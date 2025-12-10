@@ -2,8 +2,7 @@ package com.tlog.data.repository
 
 import com.tlog.api.ScrapAndCartApi
 import com.tlog.domain.mapper.toDomain
-import com.tlog.domain.model.travel.CartTravel
-import com.tlog.domain.model.travel.ScrapTravel
+import com.tlog.domain.model.travel.ViewTravel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -13,7 +12,7 @@ class ScrapAndCartRepository @Inject constructor(
     private val scrapAndCartApi: ScrapAndCartApi
 ) {
     // scrap
-    suspend fun getUserScrap(userId: String): List<ScrapTravel> {
+    suspend fun getUserScrap(userId: String): List<ViewTravel> {
         return scrapAndCartApi.getUserScraps(userId).data.map {
             it.toDomain()
         }
@@ -24,7 +23,7 @@ class ScrapAndCartRepository @Inject constructor(
     }
 
     // cart
-    suspend fun getUserCart(userId: String): List<CartTravel> {
+    suspend fun getUserCart(userId: String): List<ViewTravel> {
         return scrapAndCartApi.getUserCart(userId).data.map {
             it.toDomain()
         }

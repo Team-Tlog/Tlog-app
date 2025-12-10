@@ -89,7 +89,7 @@ fun BannerDetailScreen(
                 ) {
                     TravelCard(
                         travel = destination,
-                        isFavorite = { scraps.contains(destination.travelId) },
+                        isFavorite = scraps.contains(destination.travelId),
                         onFavoriteToggle = { viewModel.toggleScrap(destination.travelId) },
                         onClick = { viewModel.navToTravelInfo(destination.travelId) }
                     )

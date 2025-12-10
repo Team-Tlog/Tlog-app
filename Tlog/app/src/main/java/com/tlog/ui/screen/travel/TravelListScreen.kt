@@ -185,7 +185,7 @@ fun TravelListScreen(
                     ) {
                         TravelCard(
                             travel = travel,
-                            isFavorite = { scraps.contains(travel.travelId) },
+                            isFavorite = scraps.contains(travel.travelId),
                             onFavoriteToggle = { viewModel.toggleScrap(travel.travelId) },
                             onClick = { viewModel.navToTravelInfo(it) }
                         )

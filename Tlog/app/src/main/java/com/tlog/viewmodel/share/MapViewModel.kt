@@ -3,10 +3,8 @@ package com.tlog.viewmodel.share
 import android.util.Log
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.travel.ScrapDto
-import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.repository.ScrapAndCartRepository
-import com.tlog.domain.model.travel.CartTravel
+import com.tlog.domain.model.travel.ViewTravel
 import com.tlog.domain.model.travel.ScrapTravel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,10 +18,10 @@ class MapViewModel @Inject constructor(
 ): BaseViewModel() {
     var userId: String = ""
 
-    private val _carts = MutableStateFlow<List<CartTravel>?>(null)
+    private val _carts = MutableStateFlow<List<ViewTravel>?>(null)
     val carts = _carts.asStateFlow()
 
-    private val _scraps = MutableStateFlow<List<ScrapTravel>?>(null)
+    private val _scraps = MutableStateFlow<List<ViewTravel>?>(null)
     val scraps = _scraps.asStateFlow()
 
 

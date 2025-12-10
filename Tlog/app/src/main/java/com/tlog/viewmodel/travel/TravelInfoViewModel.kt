@@ -20,6 +20,8 @@ class TravelInfoViewModel @Inject constructor(
 
     private var userId: String? = null
 
+    val scraps = scrapManager.scrapList
+
     init {
         userId = tokenProvider.getUserId()
     }
@@ -50,10 +52,6 @@ class TravelInfoViewModel @Inject constructor(
                 scrapManager.toggleScrap(destinationId)
             }
         )
-    }
-
-    fun isScraped(destinationId: String): Boolean {
-        return scrapManager.isScraped(destinationId)
     }
 
     fun navToTravelInfo(travelId: String) {
