@@ -2,9 +2,9 @@ package com.tlog.api
 
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.page.Pageable
-import com.tlog.data.dto.response.travel.PopularDestination
+import com.tlog.data.dto.response.travel.PopularDestinationDto
 import com.tlog.data.dto.response.travel.SearchTravelResponse
-import com.tlog.data.dto.response.travel.TravelSearch
+import com.tlog.data.dto.response.travel.TravelSearchDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,7 +12,7 @@ interface SearchApi {
     @GET("/api/search/destination/by-name") // 여행지 이름으로 검색
     suspend fun searchTravelListByName(
         @Query("name") searchText: String
-    ): BaseResponse<List<TravelSearch>>
+    ): BaseResponse<List<TravelSearchDto>>
 
     @GET("/api/search/destination/by-city") // 여행지 도시 이름으로 검색
     suspend fun searchTravelListByCity(
@@ -35,7 +35,7 @@ interface SearchApi {
     ): BaseResponse<List<SearchTravelResponse>>
 
     @GET("/api/search/destination/popular-destination") // 인기 여행지 조회
-    suspend fun getPopularDestinations(): BaseResponse<List<PopularDestination>>
+    suspend fun getPopularDestinations(): BaseResponse<List<PopularDestinationDto>>
 
 }
 

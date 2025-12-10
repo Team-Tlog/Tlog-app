@@ -1,7 +1,6 @@
 package com.tlog.viewmodel.share
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.dto.response.travel.PopularDestination
 import com.tlog.data.local.RecentSearchPreferences
 import com.tlog.data.repository.SearchRepository
 import com.tlog.ui.navigation.Screen
@@ -12,7 +11,8 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import androidx.lifecycle.viewModelScope
-import com.tlog.data.dto.response.travel.TravelSearch
+import com.tlog.domain.model.travel.PopularTravel
+import com.tlog.domain.model.travel.ViewTravel
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,11 +23,11 @@ class SearchViewModel @Inject constructor(
     private val repository: SearchRepository,
     private val recentSearchPreferences: RecentSearchPreferences
 ): BaseViewModel() {
-    private val _searchResult = MutableStateFlow<List<TravelSearch>>(emptyList())
+    private val _searchResult = MutableStateFlow<List<ViewTravel>>(emptyList())
     val searchResult = _searchResult.asStateFlow()
 
     // 인기 여행지
-    private val _popularDestinations = MutableStateFlow<List<PopularDestination>>(emptyList())
+    private val _popularDestinations = MutableStateFlow<List<PopularTravel>>(emptyList())
     val popularDestinations = _popularDestinations.asStateFlow()
 
     // 최근 검색어 (최대 5개)
@@ -75,8 +75,7 @@ class SearchViewModel @Inject constructor(
     }
 
     suspend fun searchTravel(searchText: String) {
-        val response = repository.searchTravel(searchText)
-        _searchResult.value = response.data
+        _searchResult.value = repository.searchTravel(searchText)
     }
 
     fun updateSearchText(newSearchText: String) {
@@ -91,14 +90,14 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun loadPopularDestinations() {
-        viewModelScope.launch {
-            try {
-                val response = repository.getPopularDestinations()
-                _popularDestinations.value = response.data
-            } catch (e: Exception) {
-                showToast(e.message ?: "인기 여행지를 불러오는 중 오류가 발생했습니다")
+        launchSafeCall(
+            action = {
+                repository.getPopularDestinations()
+            },
+            onSuccess = {
+                _popularDestinations.value = it
             }
-        }
+        )
     }
 
     // 최근 검색어 추가 (최대 5개, 중복 제거, 최신순)

@@ -27,12 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.dto.response.travel.TravelSearchDto
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.travel.TravelDto
 import com.tlog.domain.model.travel.ViewTravel
-import com.tlog.domain.model.travel.ScrapTravel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -343,7 +341,7 @@ fun ScrapTravelItem(
 
 @Composable
 fun SearchTravelItem(
-    travel: TravelSearchDto,
+    travel: ViewTravel,
     onClick: (String, String) -> Unit
 ) {
     Row(
@@ -389,7 +387,7 @@ fun SearchTravelItem(
 
             Spacer(modifier = Modifier.height(11.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
+            LazyHashTagsGroup(travel.tags) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))

@@ -9,11 +9,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.tlog.data.dto.response.travel.TravelSearchDto
 import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.travel.TravelDto
 import com.tlog.domain.model.travel.ViewTravel
-import com.tlog.domain.model.travel.ScrapTravel
 
 
 @Composable
@@ -139,7 +137,7 @@ fun ScrapTravelList(
 
 @Composable
 fun SearchTravelList(
-    travelList: List<TravelSearchDto>,
+    travels: List<ViewTravel>,
     onClick: (String, String) -> Unit,
     listState: LazyListState = rememberLazyListState()
 ) {
@@ -147,11 +145,11 @@ fun SearchTravelList(
         state = listState
     ) {
         itemsIndexed(
-            items = travelList,
+            items = travels,
             key = { _, travel -> travel.name }
         ) { index, item ->
             SearchTravelItem(travel = item, onClick = onClick)
-            if (index == travelList.lastIndex) {
+            if (index == travels.lastIndex) {
                 Spacer(modifier = Modifier.height(75.dp)) // 마지막 아이템엔 더 큰 여백
             } else {
                 Spacer(modifier = Modifier.height(24.dp))
