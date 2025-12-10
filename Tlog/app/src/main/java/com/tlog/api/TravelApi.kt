@@ -50,15 +50,4 @@ interface TravelApi {
         @Query("size") size: Int,
         @Query("sort") sort: List<String>
     ): BaseResponse<ReviewsResponse>
-
-    @DELETE("/api/scrap/user/{userId}/destination/{destId}")
-    suspend fun deleteScrapDestination(
-        @Path("userId") userId: String,
-        @Path("destId") destinationId: String
-    ): BaseResponse<Unit>
-
-    @GET("/api/scrap/user/{userId}")
-    suspend fun getUserScraps(
-        @Path("userId") userId: String
-    ): BaseResponse<List<ScrapDto>>
 }

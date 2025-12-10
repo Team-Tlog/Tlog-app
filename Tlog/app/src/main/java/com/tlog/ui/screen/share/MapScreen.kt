@@ -23,8 +23,8 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.tlog.R
-import com.tlog.data.dto.travel.ScrapDto
-import com.tlog.data.dto.travel.CartDto
+import com.tlog.domain.model.travel.CartTravel
+import com.tlog.domain.model.travel.ScrapTravel
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.share.MapViewModel
 import java.lang.Exception
@@ -56,8 +56,8 @@ fun MapScreen(
 
 @Composable
 fun KakaoMapView(
-    cartList: List<CartDto>,
-    scrapList: List<ScrapDto>
+    cartList: List<CartTravel>,
+    scrapList: List<ScrapTravel>
 ) {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -79,8 +79,8 @@ fun KakaoMapView(
 
                             // 카트랑 스크랩 마커 찍는 부분
                             scrapList.forEach { scrap ->
-                                val latitude = scrap.location.latitude
-                                val longitude = scrap.location.longitude
+                                val latitude = scrap.latitude
+                                val longitude = scrap.longitude
                                 val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
 
                                 val style = LabelStyles.from(
@@ -95,8 +95,8 @@ fun KakaoMapView(
                             }
 
                             cartList.forEach { cart ->
-                                val latitude = cart.location.latitude
-                                val longitude = cart.location.longitude
+                                val latitude = cart.latitude
+                                val longitude = cart.longitude
                                 val latLng = LatLng.from(latitude.toDouble(), longitude.toDouble())
 
 

@@ -8,18 +8,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.tlog.api.ScrapApi
 import com.tlog.data.repository.ScrapRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -65,7 +59,7 @@ class ScrapManager @Inject constructor(
             Log.d("ScrapManager", "스크랩 추가됨: $destinationId")
         }
 
-        _scrapList.value = repository.getUserScraps(userId!!).data.map { it.id }
+        _scrapList.value = repository.getUserScraps(userId!!).map { it.id }
 
         saveScrapList(currentList)
     }
@@ -95,7 +89,7 @@ class ScrapManager @Inject constructor(
     suspend fun refreshScrapList(userId: String = this.userId!!) {
         try {
             val response = repository.getUserScraps(userId)
-            val destinationIds = response.data?.map { it.id } ?: emptyList()
+            val destinationIds = response.map { it.id }
             _scrapList.value = destinationIds
             Log.d("ScrapManager", "리프레시된 scrapList: $destinationIds")
             saveScrapList(destinationIds)

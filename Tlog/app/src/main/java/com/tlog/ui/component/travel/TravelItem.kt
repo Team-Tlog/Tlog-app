@@ -28,10 +28,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
 import com.tlog.data.dto.response.travel.TravelSearch
-import com.tlog.data.dto.travel.ScrapDto
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.travel.TravelDto
+import com.tlog.domain.model.travel.CartTravel
+import com.tlog.domain.model.travel.ScrapTravel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -185,7 +186,7 @@ fun CheckedCartItem(
 fun CartItem(
     getIsChecked: (String) -> Boolean,
     onCheckedClick: (String) -> Unit,
-    travel: CartDto,
+    travel: CartTravel,
     onClick: (String) -> Unit
 ) {
     Row(
@@ -237,7 +238,7 @@ fun CartItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tags)
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -264,7 +265,7 @@ fun CartItem(
 @Composable
 fun ScrapTravelItem(
     getIsChecked: (String) -> Boolean,
-    travel: ScrapDto,
+    travel: ScrapTravel,
     checkedClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {
@@ -317,7 +318,7 @@ fun ScrapTravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tags)
         }
 
         Spacer(modifier = Modifier.width(25.dp))

@@ -14,24 +14,6 @@ import retrofit2.http.DELETE
 import retrofit2.http.POST
 
 interface UserApi {
-    @GET("api/shopcart/user/{userId}")
-    suspend fun getUserCart(
-        @Path("userId") userId: String
-    ): BaseResponse<List<CartDto>>
-
-    @PUT("api/shopcart/user/{userId}")
-    @Headers("Content-Type: text/plain")
-    suspend fun addDestinationToCart(
-        @Path("userId") userId: String,
-        @Body destinationId: okhttp3.RequestBody
-    ): BaseResponse<Unit>
-
-    @DELETE("api/shopcart/user/{userId}/destination/{destId}")
-    suspend fun deleteTravelFromCart(
-        @Path("userId") userId: String,
-        @Path("destId") destinationId: String
-    ): BaseResponse<Unit>
-
     // 기본 마이페이지 조회 (SNS 아님)
     @GET("api/users/my-page")
     suspend fun getUserInfo(): BaseResponse<UserDto>
@@ -48,5 +30,3 @@ interface UserApi {
         @Body request: FeedbackRequest
     ): BaseResponse<Unit>
 }
-
-
