@@ -1,8 +1,8 @@
-package com.tlog.data.dto.tbti
+package com.tlog.domain.model.share
 
-data class TbtiDescriptionDto(
+data class TbtiDescription(
     val tbtiString: String,
-    val imageUrl: String?,
+    val imageUrl: String,
     val secondName: String,
     val description: String,
     val preferredTbti: String,

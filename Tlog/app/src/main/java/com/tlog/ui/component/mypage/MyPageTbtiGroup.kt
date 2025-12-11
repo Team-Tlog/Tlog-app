@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.domain.model.share.Tbti
-import com.tlog.data.dto.user.UserDto
+import com.tlog.domain.model.share.User
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun MyPageTbtiGroup(
-    userInfo: UserDto,
+    userInfo: User,
     tbtiTestClick: () -> Unit
 ) {
     Column(
@@ -64,7 +64,7 @@ fun MyPageTbtiGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = userInfo.username,
+                text = userInfo.name,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,

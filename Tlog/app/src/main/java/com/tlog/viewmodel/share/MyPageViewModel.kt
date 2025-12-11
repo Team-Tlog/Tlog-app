@@ -15,7 +15,7 @@ import com.tlog.data.dto.request.auth.ProfileImageRequest
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.dto.user.UserDto
+import com.tlog.domain.model.share.User
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,7 +33,7 @@ class MyPageViewModel @Inject constructor(
     private val _notification = MutableStateFlow(true)
     val notification =_notification.asStateFlow()
 
-    private val _userInfo = MutableStateFlow<UserDto?>(null)
+    private val _userInfo = MutableStateFlow<User?>(null)
     val userInfo = _userInfo.asStateFlow()
     private val _imageUri = MutableStateFlow("")
     val imageUri = _imageUri
@@ -48,7 +48,10 @@ class MyPageViewModel @Inject constructor(
     private fun getUserInfo() {
         launchSafeCall(
             action = {
-                _userInfo.value =  myPageRepository.getUserInfo().data
+                myPageRepository.getUserInfo()
+            },
+            onSuccess = {
+                _userInfo.value = it
                 _getUserInfo.value = true
             }
         )

@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.dto.user.UserDto
+import com.tlog.domain.model.share.User
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage
@@ -34,7 +34,7 @@ import com.tlog.ui.theme.DefaultImage
 
 @Composable
 fun UserInfoGroup(
-    userInfo: UserDto,
+    userInfo: User,
     onImageClick:()-> Unit
 ) {
     Box(
