@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
-import com.tlog.domain.model.share.Tbti
+import com.tlog.domain.model.tbti.Tbti
 import com.tlog.domain.model.share.User
 import com.tlog.ui.theme.MainFont
 

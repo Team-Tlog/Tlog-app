@@ -1,6 +1,7 @@
 package com.tlog.domain.model.share
 
 import com.tlog.domain.model.mypage.Reward
+import com.tlog.domain.model.tbti.TbtiDescription
 
 data class User(
     val name: String,
