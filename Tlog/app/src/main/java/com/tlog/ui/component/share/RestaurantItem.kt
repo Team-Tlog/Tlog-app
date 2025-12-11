@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import com.tlog.data.model.response.restaurant.Restaurant
+import com.tlog.data.dto.response.restaurant.RestaurantDto
+import com.tlog.domain.model.share.Restaurant
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
@@ -40,14 +41,14 @@ fun RestaurantItem(
             .fillMaxWidth()
             .padding(horizontal = 20.dp)
             .clickable {
-                val intent = Intent(Intent.ACTION_VIEW, restaurant.placeUrl.toUri())
+                val intent = Intent(Intent.ACTION_VIEW, restaurant.infoUrl.toUri())
                 context.startActivity(intent)
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
-            model = restaurant.images.firstOrNull()?.link ?: "",
-            contentDescription = "${restaurant.placeName} 사진",
+            model = restaurant.imageUrl,
+            contentDescription = "${restaurant.title} 사진",
             contentScale = ContentScale.Crop,
             error = painterResource(id = DefaultImage),
             modifier = Modifier
@@ -61,14 +62,14 @@ fun RestaurantItem(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = restaurant.placeName,
+                text = restaurant.title,
                 style = Body1Bold
             )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = restaurant.roadAddressName,
+                text = restaurant.address,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,

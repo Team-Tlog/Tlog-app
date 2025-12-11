@@ -31,8 +31,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import com.tlog.data.model.response.sns.SnsPostPreview
-import com.tlog.data.model.response.sns.SnsUserProfile
+import com.tlog.domain.model.sns.SnsPostPreview
+import com.tlog.domain.model.sns.SnsProfile
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
@@ -128,7 +128,7 @@ fun SnsProfileScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             PostsGrid(
-                postList = nowUserProfile.posts.content,
+                postList = nowUserProfile.posts,
                 onClick = { postId ->
                     viewModel.navToSnsPostDetail(postId)
                 }
@@ -139,7 +139,7 @@ fun SnsProfileScreen(
 
 @Composable
 fun ProfileSection(
-    userProfile: SnsUserProfile
+    userProfile: SnsProfile
 ) {
     Column(
         modifier = Modifier
@@ -173,7 +173,7 @@ fun ProfileSection(
                 modifier = Modifier.weight(1f),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                StatItem(userProfile.posts.content.size.toString(), "게시글")
+                StatItem(userProfile.posts.size.toString(), "게시글")
                 StatItem(userProfile.followerCount.toString(), "팔로워")
                 StatItem(userProfile.followingCount.toString(), "팔로잉")
             }
@@ -239,7 +239,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)
@@ -258,7 +258,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)
@@ -278,7 +278,7 @@ fun ActionButtons(
                     color = Color.White,
                     style = TextStyle(
                         fontFamily = MainFont,
-                        fontWeight = FontWeight.SemiBold,
+                        fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     ),
                     modifier = Modifier.padding(vertical = 10.dp)

@@ -163,7 +163,7 @@ fun ScrapAndCartScreen(
                             color = if (selectedTab == "스크랩") MainColor else Color.Gray,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .padding(horizontal = 10.dp, vertical = (11.5).dp)
+                                .padding(horizontal = 10.dp, vertical = (15.5).dp)
                                 .fillMaxWidth()
                         )
                     }

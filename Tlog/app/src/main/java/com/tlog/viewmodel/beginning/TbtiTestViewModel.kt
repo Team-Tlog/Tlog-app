@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import com.tlog.data.model.tbti.TbtiQuestion
+import com.tlog.domain.model.tbti.TbtiQuestion
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -76,7 +76,7 @@ class TbtiTestViewModel @Inject constructor(
 
                 for (category in listOf("RISK_TAKING", "LOCATION_PREFERENCE", "PLANNING_STYLE", "ACTIVITY_LEVEL")) {
                     val response = tbtiRepository.getTbtiQuestions(category)
-                    response.data.let { allQuestions.addAll(it) }
+                    response.let { allQuestions.addAll(it) }
                 }
                 _questions.clear()
                 _questions.addAll(allQuestions)
@@ -142,7 +142,7 @@ class TbtiTestViewModel @Inject constructor(
 
         _traitScores.value = traitScores
         _resultCode.value = resultCode
-        _resultIntCode.intValue = resultIntCode.toInt()
+        _resultIntCode.intValue = resultIntCode
 
         sValue = traitScores["RISK_TAKING"] ?: 0
         eValue = traitScores["LOCATION_PREFERENCE"] ?: 0

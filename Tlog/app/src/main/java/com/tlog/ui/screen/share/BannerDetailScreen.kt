@@ -24,7 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.tlog.ui.component.travel.DestinationCard
+import com.tlog.ui.component.travel.TravelCard
 import com.tlog.ui.style.BodyTitle
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import com.tlog.viewmodel.share.BannerViewModel
@@ -87,15 +87,11 @@ fun BannerDetailScreen(
                         .fillMaxWidth()
                         .padding(start = 24.dp, end = 24.dp, bottom = 16.dp),
                 ) {
-                    DestinationCard(
-                        destination = destination,
-                        isFavorite = { scraps.contains(destination.id) },
-                        onFavoriteToggle = {
-                            viewModel.toggleScrap(destination.id)
-                        },
-                        onClick = {
-                            viewModel.navToTravelInfo(destination.id)
-                        }
+                    TravelCard(
+                        travel = destination,
+                        isFavorite = scraps.contains(destination.travelId),
+                        onFavoriteToggle = { viewModel.toggleScrap(destination.travelId) },
+                        onClick = { viewModel.navToTravelInfo(destination.travelId) }
                     )
                 }
             }

@@ -1,21 +1,21 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseListResponse
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.sns.ChatMessageHistoryResponse
-import com.tlog.data.model.response.sns.ChatRoom
-import com.tlog.data.model.response.sns.CommentRequest
-import com.tlog.data.model.request.sns.FollowRequest
-import com.tlog.data.model.request.sns.PostWriteBody
-import com.tlog.data.model.request.sns.ReportRequest
-import com.tlog.data.model.request.sns.SnsDescription
-import com.tlog.data.model.response.sns.SnsPost
-import com.tlog.data.model.response.sns.SnsPostPreview
-import com.tlog.data.model.response.sns.SnsUser
-import com.tlog.data.model.response.sns.SnsUserProfile
-import com.tlog.data.model.request.sns.StatusMessage
-import com.tlog.data.model.request.sns.UpdateSnsIdRequest
-import com.tlog.data.model.sns.Comment
+import com.tlog.data.dto.response.base.BaseListResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.sns.ChatMessageHistoryResponse
+import com.tlog.data.dto.response.sns.ChatRoomDto
+import com.tlog.data.dto.response.sns.CommentRequest
+import com.tlog.data.dto.request.sns.FollowRequest
+import com.tlog.data.dto.request.sns.PostWriteBody
+import com.tlog.data.dto.request.sns.ReportRequest
+import com.tlog.data.dto.request.sns.SnsDescriptionBody
+import com.tlog.data.dto.response.sns.SnsPostDto
+import com.tlog.data.dto.response.sns.SnsPostPreviewDto
+import com.tlog.data.dto.response.sns.SnsUserDto
+import com.tlog.data.dto.response.sns.SnsUserProfileDto
+import com.tlog.data.dto.response.sns.StatusMessageResponse
+import com.tlog.data.dto.request.sns.UpdateSnsIdRequest
+import com.tlog.data.dto.sns.CommentDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -35,25 +35,25 @@ interface SnsApi {
     suspend fun getFollowingPostList(
         @Query("lastPostId") lastPostId: String? = null,
         @Query("size") size: Int
-    ): BaseListResponse<List<SnsPost>>
+    ): BaseListResponse<List<SnsPostDto>>
 
     // 유저 프로필 정보 (마이페이지 SNS)
     @GET("/api/sns/user/{userId}/profile")
     suspend fun getUserProfile(
         @Path("userId") userId: String
-    ): BaseResponse<SnsUserProfile>
+    ): BaseResponse<SnsUserProfileDto>
 
     // SNS 프로필 한 줄 설명글 변경 (UI 없어서 실제로 사용하진 못함)
     @POST("/api/sns/profile/sns-description")
     suspend fun updateSnsDescription(
-        @Body request: SnsDescription
+        @Body request: SnsDescriptionBody
     ): BaseResponse<Unit>
 
     // 게시물 상세 정보 가져오기
     @GET("/api/post/{postId}")
     suspend fun getPost(
         @Path("postId") postId: String
-    ): BaseResponse<SnsPost>
+    ): BaseResponse<SnsPostDto>
 
     // SNS 검색 기능
     @GET("/api/search/post/by-destination-and-content")
@@ -61,32 +61,32 @@ interface SnsApi {
         @Query("query") query: String,
         @Query("size") size: Int,
         @Query("lastPostId") lastPostId: String? = null,
-    ): BaseListResponse<List<SnsPostPreview>>
+    ): BaseListResponse<List<SnsPostPreviewDto>>
 
     // 게시물에 댓글 작성
     @POST("/api/post/{postId}/reply")
     suspend fun addComment(
         @Path("postId") postId: String,
         @Body request: CommentRequest
-    ): BaseResponse<Comment>
+    ): BaseResponse<CommentDto>
 
     // 팔로잉 목록
     @GET("/api/follow/following/{userId}")
     suspend fun getFollowingList(
         @Path("userId") userId: String
-    ): BaseResponse<List<SnsUser>>
+    ): BaseResponse<List<SnsUserDto>>
 
     // 팔로우 걸기 and 취소
     @POST("/api/follow")
     suspend fun followUser(
         @Body request: FollowRequest
-    ): BaseResponse<StatusMessage>
+    ): BaseResponse<StatusMessageResponse>
 
     // 유저 채팅방 리스트 조회
     @GET("/api/chat/room/{hostId}")
     suspend fun getChatList(
         @Path("hostId") hostId: String
-    ): BaseResponse<List<ChatRoom>>
+    ): BaseResponse<List<ChatRoomDto>>
 
     // 채팅방 메시지 히스토리 조회
     @GET("/api/chat/room/{roomId}/messages")
@@ -96,13 +96,11 @@ interface SnsApi {
         @Query("beforeMessageId") beforeMessageId: Long? = null
     ): BaseResponse<ChatMessageHistoryResponse>
 
-
     // 좋아요
     @POST("/api/post/{postId}/like")
     suspend fun postLikeToggle(
         @Path("postId") postId: String
     ): BaseResponse<Unit>
-
 
     // 신고하기
     @POST("/api/operation/report/post")
@@ -121,9 +119,7 @@ interface SnsApi {
     suspend fun createReply(
         @Body author: String,
         @Body content: String
-    ): BaseResponse<Comment>
-
-
+    ): BaseResponse<CommentDto>
 
     // 댓글의 대댓글 조회
     @GET("/api/reply/{replyId}/replys")
@@ -131,7 +127,7 @@ interface SnsApi {
         @Path("replyId") replyId: String,
         @Query("lastReplyId") lastReplyId: String? = null,
         @Query("size") size: Int
-    ): BaseResponse<List<Comment>>
+    ): BaseResponse<List<CommentDto>>
 
     // 댓글 조회
     @GET("/api/post/{postId}/replys")
@@ -139,14 +135,13 @@ interface SnsApi {
         @Path("postId") postId: String,
         @Query("lastReplyId") lastReplyId: String? = null,
         @Query("size") size: Int
-    ): BaseResponse<List<Comment>>
-
+    ): BaseResponse<List<CommentDto>>
 
     // SNS 코스 리뷰 (게시물)
     @POST("/api/post")
     suspend fun createPost(
         @Body postWriteBody: PostWriteBody,
-    ): BaseResponse<SnsPost>
+    ): BaseResponse<SnsPostDto>
 
     // 사용자의 코스 리뷰 미리보기 정보
     @GET("/api/user/{userId}/posts/preview")
@@ -155,11 +150,7 @@ interface SnsApi {
         @Body page: Int,
         @Body size: Int,
         @Body sort: List<String>
-    ): BaseListResponse<List<SnsPostPreview>>
-
-
-
-
+    ): BaseListResponse<List<SnsPostPreviewDto>>
 
     @GET("/api/follow/follower/{userId}")
     suspend fun getFollowerList(
@@ -167,6 +158,6 @@ interface SnsApi {
         @Body page: Int,
         @Body size: Int,
         @Body sort: List<String>
-    ): BaseListResponse<List<SnsUser>>
+    ): BaseListResponse<List<SnsUserDto>>
 }
 

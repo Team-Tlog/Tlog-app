@@ -42,7 +42,7 @@ fun LazyHashTagsGroup(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(1.dp) // 상하좌우 그림자 짤리기 방지
-                    .shadow(2.dp, RoundedCornerShape(50))
+                    .shadow(0.5.dp, RoundedCornerShape(50))
                     .background(Color.White)
             ) {
 

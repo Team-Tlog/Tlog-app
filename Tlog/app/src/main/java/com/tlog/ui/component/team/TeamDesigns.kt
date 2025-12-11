@@ -1,6 +1,5 @@
 package com.tlog.ui.component.team
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,9 +24,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.R
-import com.tlog.data.model.team.DetailTeam
-import com.tlog.data.model.team.Member
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
@@ -35,11 +31,13 @@ import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
+import com.tlog.domain.model.team.Member
+import com.tlog.domain.model.team.TeamDetail
 
 
 @Composable
 fun SmallDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetail,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -81,14 +79,14 @@ fun SmallDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     TeamMemberImageGroup(
-                        memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
+                        memberImageUrls = teamData.members.map { it.profileImageUrl },
                         addMemberClick = addMemberClick
 
                     )
                 }
 
                 Text(
-                    text = "${teamData.startDate} ~ ${teamData.endDate}",
+                    text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
@@ -109,7 +107,7 @@ fun SmallDesign(
 
 @Composable
 fun DefaultDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetail,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -152,14 +150,14 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TeamMemberImageGroup(
-                    memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
+                    memberImageUrls = teamData.members.map { it.profileImageUrl },
                     addMemberClick = addMemberClick
                 )
 
                 Spacer(modifier = Modifier.height((7.5).dp))
 
                 Text(
-                    text = "${teamData.startDate} ~ ${teamData.endDate}",
+                    text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
@@ -260,7 +258,7 @@ fun DefaultDesign(
 
 @Composable
 fun BigDesign(
-    teamData: DetailTeam,
+    teamData: TeamDetail,
     onChatClick: () -> Unit
 ) {
     Column(
@@ -306,7 +304,7 @@ fun BigDesign(
         }
 
         Text(
-            text = "${teamData.startDate} ~ ${teamData.endDate}",
+            text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
             style = TextStyle(
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,

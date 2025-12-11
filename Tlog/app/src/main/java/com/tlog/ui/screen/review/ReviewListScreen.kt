@@ -32,7 +32,7 @@ import androidx.navigation.NavController
 import com.tlog.ui.component.share.DropDown
 import com.tlog.ui.component.travel.TravelInfoTopBar
 import com.tlog.ui.component.review.ReviewHeader
-import com.tlog.ui.component.review.ReviewList
+import com.tlog.ui.component.review.ReviewGroup
 import com.tlog.ui.component.review.ReviewStatistics
 import com.tlog.viewmodel.review.ReviewListViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
@@ -50,6 +50,7 @@ fun ReviewListScreen(
     val reviews by viewModel.reviews.collectAsState()
     val rating by viewModel.rating.collectAsState()
     val ratingDistribution by viewModel.ratingDistribution.collectAsState()
+    val scraps by viewModel.scraps.collectAsState()
 
 
     val context = LocalContext.current
@@ -108,7 +109,7 @@ fun ReviewListScreen(
         ) {
             item {
                 TravelInfoTopBar(
-                    isScrap = viewModel.isScraped(travelId),
+                    isScrap = scraps.contains(travelId),
                     clickScrap = { viewModel.toggleScrap(travelId) }
                 )
 
@@ -156,7 +157,7 @@ fun ReviewListScreen(
 
                     Spacer(modifier = Modifier.height(29.dp))
 
-                    ReviewList(
+                    ReviewGroup(
                         reviewList = reviews
                     )
                 }

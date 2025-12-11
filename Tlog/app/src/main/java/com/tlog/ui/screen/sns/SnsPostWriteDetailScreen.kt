@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.tlog.data.model.response.course.CourseItem
+import com.tlog.data.dto.response.course.CourseDto
 import com.tlog.ui.component.share.TextButtonTopBar
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.theme.MainColor
@@ -154,7 +154,7 @@ fun SnsPostWriteDetailScreen(
 
 @Composable
 fun SelectedCourse(
-    selectedCourse: CourseItem
+    selectedCourse: CourseDto
 ) {
     Row(
         modifier = Modifier
@@ -173,7 +173,8 @@ fun SelectedCourse(
                 model = selectedCourse.dates.first().destinationGroups.first().destinations.first().imageUrl,
                 contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                contentScale = ContentScale.Crop
             )
         }
 
@@ -202,6 +203,7 @@ fun CoursePictures(
                 modifier = Modifier
                     .width(94.dp)
                     .height(105.dp)
+                    .clip(RoundedCornerShape(15.dp))
             ) {
                 AsyncImage(
                     model =pictureList[idx],

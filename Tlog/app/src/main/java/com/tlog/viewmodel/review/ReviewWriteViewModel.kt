@@ -3,7 +3,7 @@ package com.tlog.viewmodel.review
 import android.content.Context
 import android.net.Uri
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.model.request.review.ReviewRequest
+import com.tlog.data.dto.request.review.ReviewRequest
 import com.tlog.data.repository.ReviewRepository
 import com.tlog.data.util.FirebaseImageUploader
 import dagger.hilt.android.lifecycle.HiltViewModel

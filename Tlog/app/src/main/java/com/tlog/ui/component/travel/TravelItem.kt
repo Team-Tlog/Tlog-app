@@ -27,11 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.response.travel.TravelSearch
-import com.tlog.data.model.travel.Scrap
 import com.tlog.ui.theme.DefaultImage
-import com.tlog.data.model.travel.Cart
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.dto.travel.CartDto
+import com.tlog.data.dto.travel.TravelDto
+import com.tlog.domain.model.travel.ViewTravel
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Bold
 import com.tlog.ui.theme.MainFont
@@ -39,7 +38,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun TravelItem(
-    travel: Travel,
+    travel: TravelDto,
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
 ) {
@@ -82,7 +81,7 @@ fun TravelItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -116,7 +115,7 @@ fun TravelItem(
 
 @Composable
 fun CheckedCartItem(
-    travel: Cart,
+    travel: CartDto,
     onClick: (String) -> Unit,
     isChecked: (String) -> Boolean
 ) {
@@ -185,7 +184,7 @@ fun CheckedCartItem(
 fun CartItem(
     getIsChecked: (String) -> Boolean,
     onCheckedClick: (String) -> Unit,
-    travel: Cart,
+    travel: ViewTravel,
     onClick: (String) -> Unit
 ) {
     Row(
@@ -224,7 +223,7 @@ fun CartItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -237,7 +236,7 @@ fun CartItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tags)
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -264,7 +263,7 @@ fun CartItem(
 @Composable
 fun ScrapTravelItem(
     getIsChecked: (String) -> Boolean,
-    travel: Scrap,
+    travel: ViewTravel,
     checkedClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {
@@ -304,7 +303,7 @@ fun ScrapTravelItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -317,7 +316,7 @@ fun ScrapTravelItem(
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map { it.tagName })
+            LazyHashTagsGroup(travel.tags)
         }
 
         Spacer(modifier = Modifier.width(25.dp))
@@ -342,7 +341,7 @@ fun ScrapTravelItem(
 
 @Composable
 fun SearchTravelItem(
-    travel: TravelSearch,
+    travel: ViewTravel,
     onClick: (String, String) -> Unit
 ) {
     Row(
@@ -388,7 +387,7 @@ fun SearchTravelItem(
 
             Spacer(modifier = Modifier.height(11.dp))
 
-            LazyHashTagsGroup(travel.tagCountList.map{ it.tagName }) // 태그 예시임
+            LazyHashTagsGroup(travel.tags) // 태그 예시임
         }
 
         Spacer(modifier = Modifier.width(25.dp))

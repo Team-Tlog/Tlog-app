@@ -1,10 +1,9 @@
 package com.tlog.data.repository
 
 import com.tlog.api.TbtiApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.tbti.UpdateTbtiResponse
-import com.tlog.data.model.share.TbtiDescription
-import com.tlog.data.model.tbti.TbtiQuestion
+import com.tlog.domain.mapper.toDomain
+import com.tlog.domain.model.tbti.TbtiDescription
+import com.tlog.domain.model.tbti.TbtiQuestion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -12,19 +11,19 @@ import javax.inject.Inject
 class TbtiRepository @Inject constructor(
     private val retrofitInstance: TbtiApi
 ) {
-    suspend fun getTbtiQuestions(categories: String? = null): BaseResponse<List<TbtiQuestion>> {
+    suspend fun getTbtiQuestions(categories: String? = null): List<TbtiQuestion> {
         return withContext(Dispatchers.IO) {
-            retrofitInstance.getTbtiQuestions(categories.toString())
+            retrofitInstance.getTbtiQuestions(categories.toString()).data.map {
+                it.toDomain()
+            }
         }
     }
     
-    suspend fun getTbtiDescription(tbti: String): BaseResponse<TbtiDescription> {
-        return withContext(Dispatchers.IO) {
-            retrofitInstance.getTbtiDescription(tbti)
-        }
+    suspend fun getTbtiDescription(tbti: String): TbtiDescription {
+        return retrofitInstance.getTbtiDescription(tbti).data.toDomain()
     }
 
-    suspend fun updateTbti(tbtiValue: String): BaseResponse<UpdateTbtiResponse> {
-        return retrofitInstance.updateTbti(tbtiValue.toInt())
+    suspend fun updateTbti(tbtiValue: String) {
+        retrofitInstance.updateTbti(tbtiValue.toInt())
     }
 }

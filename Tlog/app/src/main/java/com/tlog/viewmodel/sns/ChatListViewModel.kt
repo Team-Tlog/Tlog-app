@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tlog.api.SnsApi
-import com.tlog.data.model.response.sns.ChatRoom
+import com.tlog.data.dto.response.sns.ChatRoomDto
 import com.tlog.data.local.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ class ChatListViewModel @Inject constructor(
     private val userPreferences: UserPreferences
 ) : ViewModel() {
 
-    private val _chatRoomList = MutableStateFlow<List<ChatRoom>>(emptyList())
+    private val _chatRoomList = MutableStateFlow<List<ChatRoomDto>>(emptyList())
     val chatRoomList = _chatRoomList.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
@@ -41,7 +41,7 @@ class ChatListViewModel @Inject constructor(
                 if (userId != null) {
                     val response = snsApi.getChatList(userId)
                     if (response.status == 200) {
-                        _chatRoomList.value = response.data ?: emptyList()
+                        _chatRoomList.value = response.data
                         Log.d("ChatListViewModel", "Chat rooms loaded: ${_chatRoomList.value.size}")
                     } else {
                         _errorMessage.value = response.message

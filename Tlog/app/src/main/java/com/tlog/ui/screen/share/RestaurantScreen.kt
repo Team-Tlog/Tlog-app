@@ -159,7 +159,7 @@ fun RestaurantScreen(
             } else {
                 itemsIndexed(
                     items = restaurants,
-                    key = { _, item -> item.placeName }
+                    key = { _, item -> item.title }
                 ) { index, item ->
 
                     RestaurantItem(

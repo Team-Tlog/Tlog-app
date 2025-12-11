@@ -30,53 +30,39 @@ fun MyTravelingCourseScreen(
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .windowInsetsPadding(WindowInsets.systemBars)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
+            Spacer(modifier = Modifier.height(103.dp))
+            Text(
+                text = "여행중인 코스",
+                style = BodyTitle,
                 modifier = Modifier
-                    .fillMaxSize(),
-                contentPadding = PaddingValues(vertical = 16.dp)
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(41.dp))
+
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
             ) {
-                item {
-                    Spacer(modifier = Modifier.height(103.dp))
-                    Text(
-                        text = "여행중인 코스",
-                        style = BodyTitle,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.CenterHorizontally)
-                    )
+                DayToggleBar(
+                    size = viewModel.getDayCount(),
+                    selectedDay = selectedDay,
+                    onDaySelected = { viewModel.updateSelectedDay(it) }
+                )
+            }
 
-                    Spacer(modifier = Modifier.height(41.dp))
+            Spacer(modifier = Modifier.height(41.dp))
 
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        DayToggleBar(
-                            size = viewModel.getDayCount(),
-                            selectedDay = selectedDay,
-                            onDaySelected = { viewModel.updateSelectedDay(it) }
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(41.dp))
-                }
-
-                if (cityGrouped.isEmpty()) {
-                    item {
-                        NotFound(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .align(Alignment.Center),
-                            text = "여행중인 코스가 없습니다."
-                        )
-                    }
-                } else {
-                    cityGrouped.toList().forEachIndexed { cityIndex, (city, list) ->
+            if (!cityGrouped.isEmpty()) {
+                LazyColumn(
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(bottom = 145.dp)
+                ) {
+                    cityGrouped.toList().forEach { (city, list) ->
                         item {
                             CityTravelList(
                                 city = city,
@@ -85,24 +71,30 @@ fun MyTravelingCourseScreen(
                             )
                         }
                     }
-
-                    item {
-                        Spacer(modifier = Modifier.height(145.dp))
-                    }
                 }
             }
+        }
 
+        if (cityGrouped.isEmpty()) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .align(Alignment.BottomCenter)
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                BottomBar(
-                    navController = navController,
-                    selectedIndex = 1
-                )
+                NotFound(text = "여행중인 코스가 없습니다.")
             }
+        }
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            BottomBar(
+                navController = navController,
+                selectedIndex = 1
+            )
         }
     }
 }

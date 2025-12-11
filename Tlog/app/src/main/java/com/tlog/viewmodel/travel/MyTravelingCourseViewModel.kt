@@ -2,9 +2,10 @@ package com.tlog.viewmodel.travel
 
 import androidx.lifecycle.viewModelScope
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.travel.AiTravel
-import com.tlog.data.model.response.travel.CourseDailySchedule
+import com.tlog.data.dto.response.travel.CourseDailyScheduleDto
 import com.tlog.data.repository.MyTravelingCourseRepository
+import com.tlog.domain.model.course.AiTravel
+import com.tlog.domain.model.course.DailyCourse
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,8 +25,8 @@ class MyTravelingCourseViewModel @Inject constructor(
     private val _selectedDay = MutableStateFlow(1)
     val selectedDay: StateFlow<Int> = _selectedDay.asStateFlow()
 
-    private val _courses = MutableStateFlow<List<CourseDailySchedule>>(emptyList())
-    val courses: StateFlow<List<CourseDailySchedule>> = _courses.asStateFlow()
+    private val _courses = MutableStateFlow<List<DailyCourse>>(emptyList())
+    val courses: StateFlow<List<DailyCourse>> = _courses.asStateFlow()
 
     private val _uiTravels = MutableStateFlow<List<AiTravel>>(emptyList())
     val uiTravels: StateFlow<List<AiTravel>> = _uiTravels.asStateFlow()
@@ -50,7 +51,7 @@ class MyTravelingCourseViewModel @Inject constructor(
                 repository.getCourse(userId)
             },
             onSuccess = {
-                _courses.value = it.data.dailySchedules
+                _courses.value = it
 
                 updateUiTravels()
             }
@@ -61,7 +62,7 @@ class MyTravelingCourseViewModel @Inject constructor(
         val dayIndex = _selectedDay.value - 1
 
         if (dayIndex in _courses.value.indices) {
-            _uiTravels.value = _courses.value[dayIndex].groupedDestinations.values.flatten()
+            _uiTravels.value = _courses.value[dayIndex].travels
         } else {
             _uiTravels.value = emptyList()
         }

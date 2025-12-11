@@ -8,10 +8,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.tlog.api.LoginApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.request.auth.FcmTokenRequest
-import com.tlog.data.model.response.auth.FirebaseTokenResponse
-import com.tlog.data.model.request.auth.LoginRequest
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.request.auth.FcmTokenRequest
+import com.tlog.data.dto.response.auth.FirebaseTokenResponse
+import com.tlog.data.dto.request.auth.LoginRequest
 import com.tlog.data.local.UserPreferences
 import com.tlog.data.util.KakaoLoginManager
 import com.tlog.data.util.NaverLoginManager

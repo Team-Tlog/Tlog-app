@@ -10,6 +10,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -20,18 +21,20 @@ import com.tlog.ui.component.review.ReviewSection
 import com.tlog.ui.component.travel.SimilarTravelSection
 import com.tlog.ui.component.travel.TravelInfoSummary
 import com.tlog.ui.component.travel.TravelTopImageBox
-import com.tlog.viewmodel.travel.TravelInfoViewModel
+import com.tlog.viewmodel.travel.TravelDetailViewModel
 import com.tlog.viewmodel.base.BaseViewModel.UiEvent
 import kotlin.math.floor
 
 @Composable
 fun TravelDetailScreen(
     travelId: String,
-    viewModel: TravelInfoViewModel = hiltViewModel(),
+    viewModel: TravelDetailViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val travel = viewModel.destinationDetail.collectAsState().value
     val context = LocalContext.current
+    val scraps by viewModel.scraps.collectAsState()
+
 
     LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
@@ -66,7 +69,7 @@ fun TravelDetailScreen(
             Column {
                 TravelTopImageBox(
                     imageUrl = destination.imageUrl,
-                    isScrap = viewModel.isScraped(travelId),
+                    isScrap = scraps.contains(destination.id),
                     clickScrap = {
                         viewModel.toggleScrap(travelId)
                     }
@@ -101,7 +104,7 @@ fun TravelDetailScreen(
                         ReviewSection(
                             avgStarRating = floor(destination.averageRating * 100) / 100, // 소수점 2자리까지 절삭
                             ratingDistribution = destination.ratingDistribution,
-                            reviewList = destination.top2Reviews,
+                            reviewList = destination.reviews,
                             reviewCnt = destination.reviewCount,
                             moreReview = {
                                 viewModel.navToReviewList(travelId, destination.name)
@@ -119,8 +122,8 @@ fun TravelDetailScreen(
                                 .padding(horizontal = 31.5.dp)
                         ) {
                             SimilarTravelSection(
-                                travelList = destination.relatedDestinations,
-                                clickable = { travelId ->
+                                travels = destination.relatedTravels,
+                                onTravelClick = { travelId ->
                                     viewModel.navToTravelInfo(travelId)
                                 }
                             )

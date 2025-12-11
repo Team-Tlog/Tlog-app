@@ -11,11 +11,11 @@ import java.util.UUID
 import javax.inject.Inject
 import android.net.Uri
 import androidx.core.net.toUri
-import com.tlog.data.model.request.auth.ProfileImageRequest
+import com.tlog.data.dto.request.auth.ProfileImageRequest
 import com.tlog.data.local.FollowManager
 import com.tlog.data.local.NotificationManager
 import com.tlog.data.local.ScrapManager
-import com.tlog.data.model.user.User
+import com.tlog.domain.model.share.User
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -48,7 +48,10 @@ class MyPageViewModel @Inject constructor(
     private fun getUserInfo() {
         launchSafeCall(
             action = {
-                _userInfo.value =  myPageRepository.getUserInfo().data
+                myPageRepository.getUserInfo()
+            },
+            onSuccess = {
+                _userInfo.value = it
                 _getUserInfo.value = true
             }
         )

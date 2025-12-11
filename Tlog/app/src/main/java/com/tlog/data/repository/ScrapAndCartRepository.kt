@@ -1,36 +1,39 @@
 package com.tlog.data.repository
 
-import com.tlog.api.TravelApi
-import com.tlog.api.UserApi
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
+import com.tlog.api.ScrapAndCartApi
+import com.tlog.domain.mapper.toDomain
+import com.tlog.domain.model.travel.ViewTravel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class ScrapAndCartRepository @Inject constructor(
-    private val userApi: UserApi,
-    private val travelApi: TravelApi
+    private val scrapAndCartApi: ScrapAndCartApi
 ) {
-    suspend fun getUserCart(userId: String): List<Cart> {
-        return userApi.getUserCart(userId).data
-    }
-
-    suspend fun getUserScrap(userId: String): List<Scrap> {
-        return travelApi.getUserScraps(userId).data
+    // scrap
+    suspend fun getUserScrap(userId: String): List<ViewTravel> {
+        return scrapAndCartApi.getUserScraps(userId).data.map {
+            it.toDomain()
+        }
     }
 
     suspend fun deleteScrapDestination(userId: String, destId: String) {
-        travelApi.deleteScrapDestination(userId, destId)
+        scrapAndCartApi.deleteScrapDestination(userId, destId)
     }
 
-    suspend fun addDestinationToCart(userId: String, destinationId: String) {
+    // cart
+    suspend fun getUserCart(userId: String): List<ViewTravel> {
+        return scrapAndCartApi.getUserCart(userId).data.map {
+            it.toDomain()
+        }
+    }
+    suspend fun addTravelToCart(userId: String, destinationId: String) {
         val plainBody: RequestBody = destinationId.toRequestBody("text/plain".toMediaTypeOrNull())
-        userApi.addDestinationToCart(userId, plainBody)
+        scrapAndCartApi.addTravelToCart(userId, plainBody)
     }
 
     suspend fun deleteTravelFromCart(userId: String, destId: String) {
-        userApi.deleteTravelFromCart(userId, destId)
+        scrapAndCartApi.deleteTravelFromCart(userId, destId)
     }
 }

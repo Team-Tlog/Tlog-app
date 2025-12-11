@@ -1,10 +1,9 @@
 package com.tlog.viewmodel.share
 
-import androidx.compose.runtime.State
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.travel.TravelDestination
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.BannerRepository
+import com.tlog.domain.model.travel.Travel
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,11 +20,10 @@ class BannerViewModel @Inject constructor(
     tokenProvider: TokenProvider
 ): BaseViewModel() {
     private var userId: String? = null
-    private val _scraps = MutableStateFlow<List<String>>(emptyList())
-    val scraps = _scraps.asStateFlow()
+    val scraps = scrapManager.scrapList
 
-    private val _destinations = MutableStateFlow<List<TravelDestination>>(emptyList())
-    val destinations: StateFlow<List<TravelDestination>> = _destinations.asStateFlow()
+    private val _destinations = MutableStateFlow<List<Travel>>(emptyList())
+    val destinations: StateFlow<List<Travel>> = _destinations.asStateFlow()
 
     private val _title = MutableStateFlow("")
     val title: StateFlow<String> = _title.asStateFlow()
@@ -39,8 +37,8 @@ class BannerViewModel @Inject constructor(
             action = {
                 val response = repository.getBannerDetail(bannerId)
 
-                _destinations.value = response.data.destinations.content
-                _title.value = response.data.title
+                _destinations.value = response.travels
+                _title.value = response.title
             }
         )
     }
@@ -49,8 +47,6 @@ class BannerViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 scrapManager.toggleScrap(destinationId)
-
-                _scraps.value = scrapManager.scrapList.value
             }
         )
     }

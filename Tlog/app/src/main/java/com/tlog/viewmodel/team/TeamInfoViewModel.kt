@@ -2,8 +2,8 @@ package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.request.team.CreateTeamRequest
-import com.tlog.data.model.request.team.TravelPlanBody
+import com.tlog.data.dto.request.team.CreateTeamRequest
+import com.tlog.data.dto.request.team.TravelPlanBody
 import com.tlog.data.local.RegionCode
 import com.tlog.data.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -8,12 +8,12 @@ import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.share.Banner
-import com.tlog.data.model.share.LocalGuide
-import com.tlog.data.model.share.LocationData
-import com.tlog.data.model.share.Post
-import com.tlog.data.model.share.RecommendDestination
+import com.tlog.data.dto.share.LocationDataDto
 import com.tlog.data.repository.MainRepository
+import com.tlog.domain.model.share.Banner
+import com.tlog.domain.model.share.LocalGuide
+import com.tlog.domain.model.share.RecommendPost
+import com.tlog.domain.model.share.RecommendTravels
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,20 +28,20 @@ class MainViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ): BaseViewModel() {
     var userId: String? = null
-    private val _bannerList = MutableStateFlow<List<Banner>>(emptyList())
-    val bannerList: StateFlow<List<Banner>> = _bannerList.asStateFlow()
+    private val _banners = MutableStateFlow<List<Banner>>(emptyList())
+    val banners: StateFlow<List<Banner>> = _banners.asStateFlow()
 
-    private val _currentLocation = MutableStateFlow<LocationData?>(null)
-    val currentLocation: StateFlow<LocationData?> = _currentLocation.asStateFlow()
+    private val _currentLocation = MutableStateFlow<LocationDataDto?>(null)
+    val currentLocation: StateFlow<LocationDataDto?> = _currentLocation.asStateFlow()
 
     private val _localGuides = MutableStateFlow<List<LocalGuide>>(emptyList())
     val localGuides: StateFlow<List<LocalGuide>> = _localGuides.asStateFlow()
 
-    private val _recommendPosts = MutableStateFlow<List<Post>>(emptyList())
-    val recommendPosts: StateFlow<List<Post>> = _recommendPosts.asStateFlow()
+    private val _recommendPosts = MutableStateFlow<List<RecommendPost>>(emptyList())
+    val recommendPosts: StateFlow<List<RecommendPost>> = _recommendPosts.asStateFlow()
 
-    private val _recommendDestinations = MutableStateFlow<List<RecommendDestination>>(emptyList())
-    val recommendDestinations: StateFlow<List<RecommendDestination>> = _recommendDestinations.asStateFlow()
+    private val _recommendTravels = MutableStateFlow<List<RecommendTravels>>(emptyList())
+    val recommendTravels: StateFlow<List<RecommendTravels>> = _recommendTravels.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
@@ -64,7 +64,7 @@ class MainViewModel @Inject constructor(
             null
         ).addOnSuccessListener { location ->
             location?.let {
-                val locationData = LocationData(it.latitude, it.longitude)
+                val locationData = LocationDataDto(it.latitude, it.longitude)
                 _currentLocation.value = locationData
                 Log.d("MainViewModel", "위치 획득 성공: ${it.latitude}, ${it.longitude}")
 
@@ -78,9 +78,10 @@ class MainViewModel @Inject constructor(
     fun getRecommendPosts() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendPost()
-
-                _recommendPosts.value = response.data
+               mainRepository.getRecommendPost()
+            },
+            onSuccess = { recommendPosts ->
+                _recommendPosts.value = recommendPosts
             }
         )
     }
@@ -88,21 +89,24 @@ class MainViewModel @Inject constructor(
     fun getRecommendDestinations() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendDestination()
-
-                _recommendDestinations.value = response.data
+                mainRepository.getRecommendDestination()
+            },
+            onSuccess = { recommendTravels ->
+                _recommendTravels.value = recommendTravels
             }
         )
     }
 
-    private fun sendLocationToServer(location: LocationData) {
+    private fun sendLocationToServer(location: LocationDataDto) {
         launchSafeCall(
             action = {
-                val response = mainRepository.getLocalGuide(
+                mainRepository.getLocalGuide(
                     latitude = location.latitude,
                     longitude = location.longitude
                 )
-                _localGuides.value = response.data.content
+            },
+            onSuccess = { localGuides ->
+                _localGuides.value = localGuides
             }
         )
     }
@@ -110,9 +114,10 @@ class MainViewModel @Inject constructor(
     fun getRecommendBanner() {
         launchSafeCall(
             action = {
-                val response = mainRepository.getRecommendBanner()
-
-                _bannerList.value = response.data
+                mainRepository.getRecommendBanner()
+            },
+            onSuccess = { banners ->
+                _banners.value = banners
             }
         )
     }

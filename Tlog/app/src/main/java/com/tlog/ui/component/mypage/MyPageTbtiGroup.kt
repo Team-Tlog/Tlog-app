@@ -24,12 +24,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.share.Tbti
-import com.tlog.data.model.user.User
+import com.tlog.domain.model.tbti.Tbti
+import com.tlog.domain.model.share.User
 import com.tlog.ui.theme.MainFont
-
 
 @Composable
 fun MyPageTbtiGroup(
@@ -66,7 +64,7 @@ fun MyPageTbtiGroup(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = userInfo.username,
+                text = userInfo.name,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,

@@ -2,8 +2,8 @@ package com.tlog.viewmodel.beginning
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.share.TbtiDescription
 import com.tlog.data.repository.TbtiRepository
+import com.tlog.domain.model.tbti.TbtiDescription
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -33,6 +33,8 @@ class TbtiResultViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 tbtiRepository.updateTbti(tbtiValue)
+            },
+            onSuccess = {
                 showToast("TBTI 변경 성공")
                 navigate(Screen.MyPage, true)
             }
@@ -42,8 +44,10 @@ class TbtiResultViewModel @Inject constructor(
     fun fetchTbtiDescription(resultCode: String) {
         launchSafeCall(
             action = {
-                val response = tbtiRepository.getTbtiDescription(resultCode)
-                _tbtiDescription.value = response.data
+                tbtiRepository.getTbtiDescription(resultCode)
+            },
+            onSuccess = {
+                _tbtiDescription.value = it
             }
         )
     }

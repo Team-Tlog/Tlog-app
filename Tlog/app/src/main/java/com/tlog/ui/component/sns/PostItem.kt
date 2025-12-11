@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.data.model.response.sns.SnsPost
+import com.tlog.domain.model.sns.SnsPost
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,7 +50,7 @@ fun PostItem(
             isFollowing = isFollowing, // 수정 방안 고안 해볼 것
             clickUser = { clickUser(post.authorId) },
             onFollowToggle = followClick,
-            userProfileImageUrl = post.authorProfileImageUrl ?: ""
+            userProfileImageUrl = post.authorProfileImageUrl
         )
 
         PostImage(
@@ -76,7 +76,7 @@ fun PostItem(
 
         ViewCourseButton(
             onClick = {
-                courseClick(post.postId)
+                courseClick(post.id)
             },
             buttonText = "코스 확인하기"
         )
@@ -98,7 +98,7 @@ fun PostItem(
         )
 
         // 현재 표시된 댓글 목록
-        post.replies.forEachIndexed { index, comment ->
+        post.comments.forEachIndexed { index, comment ->
             CommentItem(comment = comment)
         }
     }

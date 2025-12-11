@@ -1,14 +1,15 @@
 package com.tlog.viewmodel.sns
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.sns.SnsPost
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
+import com.tlog.domain.model.sns.SnsPost
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 
@@ -24,8 +25,8 @@ class SnsViewModel @Inject constructor(
     private var lastPostId: String? = null
     private var size = 10
 
-    private var _postList = MutableStateFlow(listOf<SnsPost>())
-    val postList: StateFlow<List<SnsPost>> = _postList
+    private var _postList = MutableStateFlow<List<SnsPost>>(emptyList())
+    val postList = _postList.asStateFlow()
 
     val followingList: StateFlow<Set<String>> = followManager.followingList
 
@@ -38,9 +39,9 @@ class SnsViewModel @Inject constructor(
         launchSafeCall(
             action = {
                 val result = repository.getFollowingPostList(lastPostId = lastPostId, size = size)
-                _postList.value = result.data.content
+                _postList.value = result
                 if (_postList.value.isNotEmpty())
-                    lastPostId = _postList.value[_postList.value.size - 1].postId
+                    lastPostId = _postList.value[_postList.value.size - 1].id
             }
         )
     }

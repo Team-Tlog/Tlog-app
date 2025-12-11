@@ -18,8 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.R
-import com.tlog.data.model.travel.MinimalTravel
+import com.tlog.domain.model.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
 import com.tlog.ui.theme.DefaultImage
 
@@ -27,12 +26,12 @@ import com.tlog.ui.theme.DefaultImage
 @Composable
 fun SimilarTravelSpots(
     travel: MinimalTravel,
-    clickable: (String) -> Unit
+    onTravelClick: (String) -> Unit
 ) {
     Box(
         modifier = Modifier
             .width(150.dp)
-            .clickable { clickable(travel.destinationId) }
+            .clickable { onTravelClick(travel.destinationId) }
     ) {
         Column {
             Box (
@@ -77,7 +76,7 @@ fun SimilarTravelSpots(
             Spacer(modifier = Modifier.height(8.dp))
 
             BlueHashTagGroup(
-                hashTags = travel.customTags?.map { it.tagName } ?: emptyList(),
+                hashTags = travel.tags,
                 maxCnt = 2
             )
         }

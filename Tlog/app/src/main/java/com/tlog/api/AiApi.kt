@@ -1,11 +1,11 @@
 package com.tlog.api
 
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.course.CourseItem
-import com.tlog.data.model.request.travel.AiRequest
-import com.tlog.data.model.response.travel.AiTravel
-import com.tlog.data.model.response.travel.CourseResponse
-import com.tlog.data.model.request.travel.CourseSaveRequest
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.course.CourseDto
+import com.tlog.data.dto.request.travel.AiRequest
+import com.tlog.data.dto.response.travel.AiTravelDto
+import com.tlog.data.dto.response.travel.CourseResponse
+import com.tlog.data.dto.request.travel.CourseSaveRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,7 +18,7 @@ interface AiApi {
         @Query("ownerId") ownerId: String,
         @Query("ownerType") ownerType: String,
         @Body aiRequest: AiRequest
-    ): BaseResponse<Map<String, List<AiTravel>>>
+    ): BaseResponse<Map<String, List<AiTravelDto>>>
 
     @POST("/api/course")
     suspend fun saveCourse(
@@ -36,7 +36,7 @@ interface AiApi {
     @GET("/api/course/user/{userId}")
     suspend fun getUserCourses(
         @Path("userId") userId: String
-    ): BaseResponse<List<CourseItem>>
+    ): BaseResponse<List<CourseDto>>
 }
 
 

@@ -1,19 +1,16 @@
 package com.tlog.data.repository
 
-import android.util.Log
-import com.tlog.api.TravelApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.review.ReviewsResponse
-import com.tlog.data.model.request.review.ReviewRequest
+import com.tlog.api.ReviewApi
+import com.tlog.data.dto.request.review.ReviewRequest
+import com.tlog.domain.mapper.toDomain
+import com.tlog.domain.model.travel.review.ReviewSummary
 import jakarta.inject.Inject
 
 class ReviewRepository @Inject constructor(
-    private val retrofitInstance: TravelApi
+    private val retrofitInstance: ReviewApi
 ) {
-    suspend fun addReview(review: ReviewRequest): BaseResponse<String?> {
-        val result = retrofitInstance.addReview(review)
-        Log.d("ReviewRepository", "addReview: $result")
-        return result
+    suspend fun addReview(review: ReviewRequest) {
+        retrofitInstance.addReview(review)
     }
 
     suspend fun getReviewList(
@@ -22,7 +19,9 @@ class ReviewRepository @Inject constructor(
         page: Int,
         size: Int,
         sort: List<String>
-    ): BaseResponse<ReviewsResponse> {
-        return retrofitInstance.getReviewList(travelId, sortType, page, size, sort)
+    ): Pair<ReviewSummary, Boolean> {
+        val response = retrofitInstance.getReviews(travelId, sortType, page, size, sort)
+
+        return response.data.toDomain() to response.data.reviews.last
     }
 }

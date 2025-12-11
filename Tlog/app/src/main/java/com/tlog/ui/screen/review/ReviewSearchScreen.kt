@@ -137,7 +137,7 @@ fun ReviewSearchScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 SearchTravelList(
-                    travelList = searchResult,
+                    travels = searchResult,
                     onClick = { travelId, travelName ->
                         viewModel.navToReviewWrite(travelId, travelName)
                     }

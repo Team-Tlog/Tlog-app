@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.model.sns.Comment
+import com.tlog.domain.model.sns.Comment
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont
 
@@ -27,7 +27,7 @@ fun CommentItem(comment: Comment) {
     ) {
         // 사용자 닉네임
         Text(
-            text = comment.authorName,
+            text = comment.userName,
             fontFamily = MainFont,
             fontWeight = FontWeight.SemiBold,
             fontSize = 12.sp,
@@ -38,7 +38,7 @@ fun CommentItem(comment: Comment) {
 
         // 댓글 내용만 표시
         Text(
-            text = comment.content,
+            text = comment.comment,
             style = Body2Regular,
             fontSize = 14.sp
         )

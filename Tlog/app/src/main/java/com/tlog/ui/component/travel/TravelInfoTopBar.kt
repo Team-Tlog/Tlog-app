@@ -59,11 +59,10 @@ fun TravelInfoTopBar(
                 Icon(
                     painter = painterResource(if (isScrap) R.drawable.ic_filled_heart else R.drawable.ic_heart),
                     contentDescription = "아이콘",
-                    tint = Color.Unspecified
+                    tint = if (isScrap) Color.Unspecified else Color.Black
                 )
             }
 
         }
-
     }
 }

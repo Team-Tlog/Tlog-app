@@ -1,10 +1,10 @@
 package com.tlog.viewmodel.travel
 
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.request.travel.AiRequest
-import com.tlog.data.model.response.travel.AiTravel
-import com.tlog.data.model.travel.Cart
+import com.tlog.data.dto.request.travel.AiRequest
+import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.repository.AiCourseSelectCartRepository
+import com.tlog.domain.model.course.AiCourse
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,11 +23,11 @@ class AiCourseSelectCartViewModel @Inject constructor(
 ) : BaseViewModel() {
     var userId: String? = null
 
-    private var _cartList = MutableStateFlow<List<Cart>>(emptyList())
+    private var _cartList = MutableStateFlow<List<CartDto>>(emptyList())
     val cartList = _cartList.asStateFlow()
 
-    private val _aiTravelMap = MutableStateFlow<Map<String, List<AiTravel>>>(emptyMap())
-    val aiTravelMap: StateFlow<Map<String, List<AiTravel>>> = _aiTravelMap
+    private val _aiTravelMap = MutableStateFlow<List<AiCourse>>(emptyList())
+    val aiTravelMap: StateFlow<List<AiCourse>> = _aiTravelMap
 
     private val _checkedTravelList = MutableStateFlow<List<String>>(emptyList())
     val checkedTravelList = _checkedTravelList.asStateFlow()
@@ -54,7 +54,7 @@ class AiCourseSelectCartViewModel @Inject constructor(
                     )
                 )
 
-                _aiTravelMap.value = response.data
+                _aiTravelMap.value = response
             }
         )
     }

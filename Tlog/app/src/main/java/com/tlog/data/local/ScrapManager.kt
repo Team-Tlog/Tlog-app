@@ -3,23 +3,17 @@ package com.tlog.data.local
 
 import android.util.Log
 import android.content.Context
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.tlog.api.ScrapApi
 import com.tlog.data.repository.ScrapRepository
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,13 +24,14 @@ class ScrapManager @Inject constructor(
     private val repository: ScrapRepository,
     tokenProvider: TokenProvider,
     @ApplicationContext private val context: Context
-){
+) {
     private val SCRAP_KEY = stringSetPreferencesKey("scrap_list")
 
-    private val _scrapList = mutableStateOf<List<String>>(emptyList())
-    val scrapList: State<List<String>> = _scrapList
+    private val _scrapList = MutableStateFlow<List<String>>(emptyList())
+    val scrapList = _scrapList.asStateFlow()
 
     private var userId: String? = null
+
     init {
         userId = tokenProvider.getUserId()
     }
@@ -64,7 +59,7 @@ class ScrapManager @Inject constructor(
             Log.d("ScrapManager", "스크랩 추가됨: $destinationId")
         }
 
-        _scrapList.value = repository.getUserScraps(userId!!).data.map { it.id }
+        _scrapList.value = repository.getUserScraps(userId!!).map { it.id }
 
         saveScrapList(currentList)
     }
@@ -94,7 +89,7 @@ class ScrapManager @Inject constructor(
     suspend fun refreshScrapList(userId: String = this.userId!!) {
         try {
             val response = repository.getUserScraps(userId)
-            val destinationIds = response.data?.map { it.id } ?: emptyList()
+            val destinationIds = response.map { it.id }
             _scrapList.value = destinationIds
             Log.d("ScrapManager", "리프레시된 scrapList: $destinationIds")
             saveScrapList(destinationIds)
@@ -113,24 +108,5 @@ class ScrapManager @Inject constructor(
         } catch (e: Exception) {
             Log.e("ScrapManager", "error")
         }
-    }
-
-}
-
-@Module
-@InstallIn(SingletonComponent::class)
-object ScrapModule {
-    @Provides
-    fun provideScrapApi(
-        retrofit: Retrofit
-    ): ScrapApi {
-        return retrofit.create(ScrapApi::class.java)
-    }
-
-    @Provides
-    fun provideScrapRepository(
-        scrapApi: ScrapApi
-    ): ScrapRepository {
-        return ScrapRepository(scrapApi)
     }
 }

@@ -28,13 +28,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.tlog.data.model.response.travel.PopularDestination
+import com.tlog.domain.model.travel.PopularTravel
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun PopularDestinations(
-    destinations: List<PopularDestination>,
+    destinations: List<PopularTravel>,
     modifier: Modifier = Modifier,
     onDestinationClick: (String) -> Unit = {}
 ) {
@@ -59,13 +59,13 @@ fun PopularDestinations(
         ) {
             items(
                 items = destinations,
-                key = { destination -> destination.destinationId }
+                key = { destination -> destination.id }
             ) { destination ->
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .padding(end = 14.dp)
-                        .clickable { onDestinationClick(destination.destinationId) }
+                        .clickable { onDestinationClick(destination.id) }
                 ) {
                     Row(
                         modifier = Modifier
@@ -75,7 +75,7 @@ fun PopularDestinations(
                         if (destination.imageUrl.isNotEmpty()) {
                             AsyncImage(
                                 model = destination.imageUrl,
-                                contentDescription = destination.region,
+                                contentDescription = destination.city,
                                 error = painterResource(id = DefaultImage),
                                 modifier = Modifier
                                     .size(96.dp)
@@ -87,7 +87,7 @@ fun PopularDestinations(
                         } else {
                             Image(
                                 painter = painterResource(id = DefaultImage),
-                                contentDescription = destination.region,
+                                contentDescription = destination.city,
                                 modifier = Modifier
                                     .size(96.dp)
                                     .clip(RoundedCornerShape(15.dp))
@@ -97,10 +97,12 @@ fun PopularDestinations(
                             )
                         }
                     }
+
                     Spacer(modifier = Modifier.height(4.dp))
+
                     Box(modifier = Modifier.align(Alignment.Start)) {
                         Text(
-                            text = destination.region,
+                            text = destination.city,
                             style = TextStyle(
                                 fontFamily = MainFont,
                                 fontWeight = FontWeight.SemiBold,

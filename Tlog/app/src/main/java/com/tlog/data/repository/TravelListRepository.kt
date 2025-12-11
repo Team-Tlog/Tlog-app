@@ -2,9 +2,11 @@ package com.tlog.data.repository
 
 import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
-import com.tlog.data.model.response.base.BaseResponse
-import com.tlog.data.model.response.travel.SearchTravelResponse
-import com.tlog.data.model.response.travel.TravelRecommendPagedResponse
+import com.tlog.data.dto.response.base.BaseResponse
+import com.tlog.data.dto.response.travel.SearchTravelResponse
+import com.tlog.domain.mapper.toDomain
+import com.tlog.domain.model.common.PagedResult
+import com.tlog.domain.model.travel.Travel
 import jakarta.inject.Inject
 
 class TravelListRepository @Inject constructor(
@@ -17,13 +19,18 @@ class TravelListRepository @Inject constructor(
         sort: List<String>,
         city: String,
         sortType: String? = null
-    ): BaseResponse<TravelRecommendPagedResponse>{
-        return travelRetrofitInstance.getDestinations(
+    ): PagedResult<Travel> {
+        val response = travelRetrofitInstance.getDestinations(
             page = page,
             size = size,
             sort = sort,
             city = city,
             sortType = sortType
+        )
+
+        return PagedResult(
+            items = response.data.content.toDomain(),
+            isLastPage = response.data.last
         )
     }
     

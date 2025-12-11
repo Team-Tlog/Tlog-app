@@ -5,7 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import com.google.gson.Gson
-import com.tlog.data.model.team.MemberProfile
+import com.tlog.data.dto.team.MemberProfileDto
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -19,8 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.tlog.data.model.share.Location
-import com.tlog.data.model.travel.Travel
+import com.tlog.data.dto.share.LocationDto
+import com.tlog.data.dto.travel.TravelDto
 import com.tlog.ui.component.team.SmallDesign
 import com.tlog.ui.component.team.BigDesign
 import com.tlog.ui.component.team.DefaultDesign
@@ -121,7 +121,7 @@ fun TeamDetailScreen(
                                     onChatClick = {
                                         val encodedTeamName = Uri.encode(teamData.teamName)
                                         val memberProfiles = teamData.members.map { member ->
-                                            MemberProfile(
+                                            MemberProfileDto(
                                                 userId = member.userId,
                                                 name = member.name,
                                                 profileImageUrl = member.profileImageUrl
@@ -140,7 +140,7 @@ fun TeamDetailScreen(
                                     onChatClick = {
                                         val encodedTeamName = Uri.encode(teamData.teamName)
                                         val memberProfiles = teamData.members.map { member ->
-                                            MemberProfile(
+                                            MemberProfileDto(
                                                 userId = member.userId,
                                                 name = member.name,
                                                 profileImageUrl = member.profileImageUrl
@@ -156,7 +156,7 @@ fun TeamDetailScreen(
                                     onChatClick = {
                                         val encodedTeamName = Uri.encode(teamData.teamName)
                                         val memberProfiles = teamData.members.map { member ->
-                                            MemberProfile(
+                                            MemberProfileDto(
                                                 userId = member.userId,
                                                 name = member.name,
                                                 profileImageUrl = member.profileImageUrl
@@ -175,10 +175,10 @@ fun TeamDetailScreen(
                     TravelList(
                         travelList = //teamData.wishlist,
                             listOf(
-                                Travel(
+                                TravelDto(
                                 name = "테스트1",
                                 address = "테스트",
-                                location = Location("0.0", "0.0"),
+                                location = LocationDto("0.0", "0.0"),
                                 city = "서울",
                                 district = "강남구",
                                 hasParking = true,
@@ -187,10 +187,10 @@ fun TeamDetailScreen(
                                 description = "설명 설명 설명 설명",
                                 customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트2",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -199,10 +199,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트3",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -211,10 +211,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트4",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -223,10 +223,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트5",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -235,10 +235,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트6",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -247,10 +247,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트7",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -259,10 +259,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트8",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -271,10 +271,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트9",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -283,10 +283,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트10",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -295,10 +295,10 @@ fun TeamDetailScreen(
                                     description = "설명 설명 설명 설명",
                                     customTags = listOf("테스트", "안녕")
                                 ),
-                                Travel(
+                                TravelDto(
                                     name = "테스트11",
                                     address = "테스트",
-                                    location = Location("0.0", "0.0"),
+                                    location = LocationDto("0.0", "0.0"),
                                     city = "서울",
                                     district = "강남구",
                                     hasParking = true,
@@ -333,13 +333,13 @@ fun TeamDetailScreen(
                     if (data != null) {
                         sharedViewModel.setTeamInfo(
                             teamId = teamId,
-                            city = data.travelPlanDto.city,
-                            district = data.travelPlanDto.regionList,
-                            startDate = data.travelPlanDto.startDate,
-                            endDate = data.travelPlanDto.endDate,
-                            hasPet = data.travelPlanDto.hasPet,
-                            hasTransport = data.travelPlanDto.hasTransport,
-                            visitedCountPerDay = data.travelPlanDto.visitCountPerDay
+                            city = data.travelPlan.city,
+                            district = data.travelPlan.regionList,
+                            startDate = data.travelPlan.startDate,
+                            endDate = data.travelPlan.endDate,
+                            hasPet = data.travelPlan.hasPet,
+                            hasCar = data.travelPlan.hasCar,
+                            visitedCountPerDay = data.travelPlan.visitCountPerDay
                         )
                     }
                     Log.d("hihihi", "2")

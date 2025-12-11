@@ -1,11 +1,8 @@
 package com.tlog.viewmodel.travel
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
-import com.tlog.data.local.TokenProvider
 import com.tlog.data.local.RegionCode
-import com.tlog.data.model.request.travel.AiRequest
-import com.tlog.data.model.request.travel.DailyPlan
+import com.tlog.data.dto.request.travel.AiRequest
+import com.tlog.data.dto.request.travel.DailyPlanDto
 import com.tlog.ui.navigation.Screen
 import com.tlog.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -99,7 +96,7 @@ class CourseInputViewModel @Inject constructor(): BaseViewModel() {
             val date = it.key
             val placeCount = it.value
 
-            DailyPlan(
+            DailyPlanDto(
                 date = date.toString(),
                 placeCount = placeCount
             )

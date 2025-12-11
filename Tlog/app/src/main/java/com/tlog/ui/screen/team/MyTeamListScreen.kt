@@ -32,9 +32,6 @@ fun MyTeamListScreen(
     val teams by viewModel.teams.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchTeamsFromServer()
-    }
-    LaunchedEffect(Unit) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> {
@@ -77,11 +74,11 @@ fun MyTeamListScreen(
         ) {
             items(
                 items = teams,
-                key = { team -> team.teamId }
+                key = { team -> team.id }
             ) { team ->
                 TeamCard(
                     team = team,
-                    onDeleteClick = { viewModel.deleteTeam(it, team.teamLeaderId) },
+                    onDeleteClick = { viewModel.deleteTeam(it, team.leaderId) },
                     onClick = { teamId ->
                         viewModel.navToTeamDetail(teamId)
                     }

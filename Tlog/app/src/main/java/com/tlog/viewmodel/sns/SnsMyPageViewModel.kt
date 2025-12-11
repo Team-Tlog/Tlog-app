@@ -2,9 +2,10 @@ package com.tlog.viewmodel.sns
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.response.sns.SnsUserProfile
+import com.tlog.data.dto.response.sns.SnsUserProfileDto
 import com.tlog.data.local.FollowManager
 import com.tlog.data.repository.SnsRepository
+import com.tlog.domain.model.sns.SnsProfile
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,7 @@ class SnsMyPageViewModel @Inject constructor(
         userId = tokenProvider.getUserId()
     }
 
-    private var _userProfileInfo = MutableStateFlow<SnsUserProfile?>(null)
+    private var _userProfileInfo = MutableStateFlow<SnsProfile?>(null)
     val userProfileInfo = _userProfileInfo.asStateFlow()
 
     // 팔로우 매니저
@@ -35,7 +36,10 @@ class SnsMyPageViewModel @Inject constructor(
     fun getUserProfile(userId: String) {
         launchSafeCall(
             action = {
-                _userProfileInfo.value = repository.getUserProfile(userId).data
+                repository.getUserProfile(userId)
+            },
+            onSuccess = {
+                _userProfileInfo.value = it
             }
         )
     }

@@ -2,9 +2,8 @@ package com.tlog.viewmodel.share
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
+import com.tlog.domain.model.travel.ViewTravel
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,10 +17,10 @@ class ScrapAndCartViewModel @Inject constructor(
 ): BaseViewModel() {
     private var userId: String = ""
 
-    private val _carts = MutableStateFlow<List<Cart>>(emptyList())
+    private val _carts = MutableStateFlow<List<ViewTravel>>(emptyList())
     val carts = _carts.asStateFlow()
 
-    private val _scraps = MutableStateFlow<List<Scrap>>(emptyList())
+    private val _scraps = MutableStateFlow<List<ViewTravel>>(emptyList())
     val scraps = _scraps.asStateFlow()
 
     private val _selectedTab = MutableStateFlow("스크랩")
@@ -40,7 +39,10 @@ class ScrapAndCartViewModel @Inject constructor(
     fun fetchCart() {
         launchSafeCall(
             action = {
-                _carts.value = repository.getUserCart(userId)
+                repository.getUserCart(userId)
+            },
+            onSuccess = {
+                _carts.value = it
             }
         )
     }
@@ -84,7 +86,7 @@ class ScrapAndCartViewModel @Inject constructor(
             action = {
                 checkedTravelList.value.forEach { destName ->
                     val destinationId = scraps.value.find { it.name == destName }?.id ?: return@forEach
-                    repository.addDestinationToCart(userId, destinationId)
+                    repository.addTravelToCart(userId, destinationId)
                 }
                 clearChecked()
                 fetchCart()

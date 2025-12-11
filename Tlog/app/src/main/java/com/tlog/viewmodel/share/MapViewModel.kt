@@ -3,9 +3,8 @@ package com.tlog.viewmodel.share
 import android.util.Log
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.model.travel.Scrap
-import com.tlog.data.model.travel.Cart
 import com.tlog.data.repository.ScrapAndCartRepository
+import com.tlog.domain.model.travel.ViewTravel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,10 +17,10 @@ class MapViewModel @Inject constructor(
 ): BaseViewModel() {
     var userId: String = ""
 
-    private val _carts = MutableStateFlow<List<Cart>?>(null)
+    private val _carts = MutableStateFlow<List<ViewTravel>?>(null)
     val carts = _carts.asStateFlow()
 
-    private val _scraps = MutableStateFlow<List<Scrap>?>(null)
+    private val _scraps = MutableStateFlow<List<ViewTravel>?>(null)
     val scraps = _scraps.asStateFlow()
 
 
@@ -34,8 +33,10 @@ class MapViewModel @Inject constructor(
     fun fetchScrapList(userId: String) {
         launchSafeCall(
             action = {
-                val result = repository.getUserScrap(userId)
-                _scraps.value = result
+                repository.getUserScrap(userId)
+            },
+            onSuccess = {
+                _scraps.value = it
             },
             onError = { Log.d("MapViewModel", it) }
         )
@@ -44,8 +45,10 @@ class MapViewModel @Inject constructor(
     fun fetchCartList(userId: String) {
         launchSafeCall(
             action = {
-                val result = repository.getUserCart(userId)
-                _carts.value = result
+                repository.getUserCart(userId)
+            },
+            onSuccess = {
+                _carts.value = it
             },
             onError = { Log.d("MapViewModel", it) }
         )

@@ -13,7 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.tlog.R
 
-
 @Composable
 fun MyPageTopBar(
     logoutClick: () -> Unit
@@ -32,16 +31,13 @@ fun MyPageTopBar(
 //            textAlign = TextAlign.Center,
 //            modifier = Modifier.align(Alignment.Center)
 //        )
-
         Icon(
             painter = painterResource(R.drawable.ic_logout),
             contentDescription = "로그아웃",
             tint = Color.Unspecified,
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .clickable {
-                    logoutClick()
-                }
+                .clickable { logoutClick() }
         )
     }
 }

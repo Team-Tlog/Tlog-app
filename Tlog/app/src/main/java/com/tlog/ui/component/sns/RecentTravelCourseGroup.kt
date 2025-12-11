@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.data.model.response.course.CourseItem
+import com.tlog.data.dto.response.course.CourseDto
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainColor
 import com.tlog.ui.theme.MainFont
@@ -37,7 +37,7 @@ import com.tlog.ui.theme.MainFont
 
 @Composable
 fun RecentTravelCourseGroup(
-    courses: List<CourseItem>,
+    courses: List<CourseDto>,
     selectedClick: (Int) -> Unit,
     selectedCourse: Int,
     modifier: Modifier = Modifier
@@ -65,7 +65,7 @@ fun RecentTravelCourseGroup(
 
 @Composable
 fun RecentTravelCourse(
-    courses: List<CourseItem>,
+    courses: List<CourseDto>,
     selectedCourse: Int,
     selectedClick: (Int) -> Unit
 ) {

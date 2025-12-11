@@ -5,6 +5,8 @@ import com.tlog.api.BannerApi
 import com.tlog.api.LoginApi
 import com.tlog.api.MainApi
 import com.tlog.api.RestaurantApi
+import com.tlog.api.ReviewApi
+import com.tlog.api.ScrapAndCartApi
 import com.tlog.api.SearchApi
 import com.tlog.api.SnsApi
 import com.tlog.api.TbtiApi
@@ -20,7 +22,6 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-
     @Provides
     fun provideMainApi(
         retrofit: Retrofit
@@ -96,5 +97,20 @@ object ApiModule {
         retrofit: Retrofit
     ): TbtiApi {
         return retrofit.create(TbtiApi::class.java)
+    }
+
+    @Provides
+    fun provideScrapApi(
+        retrofit: Retrofit
+    ): ScrapAndCartApi {
+        return retrofit.create(ScrapAndCartApi::class.java)
+    }
+
+
+    @Provides
+    fun provideReviewApi(
+        retrofit: Retrofit
+    ): ReviewApi {
+        return retrofit.create(ReviewApi::class.java)
     }
 }
