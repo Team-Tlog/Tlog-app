@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -69,7 +69,7 @@ fun ChatListScreen(
             )
         }
 
-        Divider(color = Color.LightGray, thickness = 1.dp)
+        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
 
         when {
             isLoading -> {
@@ -115,7 +115,7 @@ fun ChatListScreen(
                                 navController.navigate("chatting/${chatRoom.chatRoomId}")
                             }
                         )
-                        Divider(color = Color.LightGray, thickness = 0.5.dp)
+                        HorizontalDivider(color = Color.LightGray, thickness = 0.5.dp)
                     }
                 }
             }

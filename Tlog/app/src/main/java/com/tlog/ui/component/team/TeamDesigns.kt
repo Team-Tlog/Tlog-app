@@ -79,7 +79,7 @@ fun SmallDesign(
                     Spacer(modifier = Modifier.weight(1f))
 
                     TeamMemberImageGroup(
-                        memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
+                        memberImageUrls = teamData.members.map { it.profileImageUrl },
                         addMemberClick = addMemberClick
 
                     )
@@ -150,7 +150,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 TeamMemberImageGroup(
-                    memberImageUrls = teamData.members.map { it.profileImageUrl ?: "" },
+                    memberImageUrls = teamData.members.map { it.profileImageUrl },
                     addMemberClick = addMemberClick
                 )
 

@@ -1,8 +1,6 @@
 package com.tlog.data.repository
 
 import com.tlog.api.TbtiApi
-import com.tlog.data.dto.response.base.BaseResponse
-import com.tlog.data.dto.tbti.TbtiQuestionDto
 import com.tlog.domain.mapper.toDomain
 import com.tlog.domain.model.tbti.TbtiDescription
 import com.tlog.domain.model.tbti.TbtiQuestion

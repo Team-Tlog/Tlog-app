@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.dto.sns.CommentDto
 import com.tlog.domain.model.sns.Comment
 import com.tlog.ui.style.Body2Regular
 import com.tlog.ui.theme.MainFont

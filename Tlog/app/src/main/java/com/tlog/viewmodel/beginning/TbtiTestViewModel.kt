@@ -142,7 +142,7 @@ class TbtiTestViewModel @Inject constructor(
 
         _traitScores.value = traitScores
         _resultCode.value = resultCode
-        _resultIntCode.intValue = resultIntCode.toInt()
+        _resultIntCode.intValue = resultIntCode
 
         sValue = traitScores["RISK_TAKING"] ?: 0
         eValue = traitScores["LOCATION_PREFERENCE"] ?: 0

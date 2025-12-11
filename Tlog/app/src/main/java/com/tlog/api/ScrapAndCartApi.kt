@@ -39,7 +39,7 @@ interface ScrapAndCartApi {
     @Headers("Content-Type: text/plain")
     suspend fun addTravelToCart(
         @Path("userId") userId: String,
-        @Body destinationId: okhttp3.RequestBody
+        @Body destinationId: RequestBody
     ): BaseResponse<Unit>
 
     @DELETE("api/shopcart/user/{userId}/destination/{destId}")

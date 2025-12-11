@@ -41,7 +41,7 @@ class ChatListViewModel @Inject constructor(
                 if (userId != null) {
                     val response = snsApi.getChatList(userId)
                     if (response.status == 200) {
-                        _chatRoomList.value = response.data ?: emptyList()
+                        _chatRoomList.value = response.data
                         Log.d("ChatListViewModel", "Chat rooms loaded: ${_chatRoomList.value.size}")
                     } else {
                         _errorMessage.value = response.message

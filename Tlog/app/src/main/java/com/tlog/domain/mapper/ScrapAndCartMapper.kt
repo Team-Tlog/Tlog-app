@@ -3,7 +3,6 @@ package com.tlog.domain.mapper
 import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.travel.ScrapDto
 import com.tlog.domain.model.travel.ViewTravel
-import com.tlog.domain.model.travel.ScrapTravel
 
 fun ScrapDto.toDomain(): ViewTravel {
     return ViewTravel(

@@ -13,7 +13,6 @@ import com.tlog.api.TbtiApi
 import com.tlog.api.TeamApi
 import com.tlog.api.TravelApi
 import com.tlog.api.UserApi
-import com.tlog.data.repository.ScrapRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

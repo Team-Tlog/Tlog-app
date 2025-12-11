@@ -5,7 +5,6 @@ import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
 import com.tlog.data.repository.ScrapAndCartRepository
 import com.tlog.domain.model.travel.ViewTravel
-import com.tlog.domain.model.travel.ScrapTravel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

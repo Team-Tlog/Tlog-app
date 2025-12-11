@@ -81,7 +81,7 @@ fun TravelItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -223,7 +223,7 @@ fun CartItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,
@@ -303,7 +303,7 @@ fun ScrapTravelItem(
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
-                text = travel.description ?: "설명 없음",
+                text = travel.description,
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Light,
                 fontSize = 10.sp,

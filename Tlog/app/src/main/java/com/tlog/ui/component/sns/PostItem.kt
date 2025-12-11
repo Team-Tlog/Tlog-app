@@ -12,7 +12,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.tlog.data.dto.response.sns.SnsPostDto
 import com.tlog.domain.model.sns.SnsPost
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -51,7 +50,7 @@ fun PostItem(
             isFollowing = isFollowing, // 수정 방안 고안 해볼 것
             clickUser = { clickUser(post.authorId) },
             onFollowToggle = followClick,
-            userProfileImageUrl = post.authorProfileImageUrl ?: ""
+            userProfileImageUrl = post.authorProfileImageUrl
         )
 
         PostImage(

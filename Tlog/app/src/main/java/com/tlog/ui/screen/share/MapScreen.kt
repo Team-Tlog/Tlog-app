@@ -24,7 +24,6 @@ import com.kakao.vectormap.label.LabelStyles
 import com.kakao.vectormap.label.LabelTextBuilder
 import com.tlog.R
 import com.tlog.domain.model.travel.ViewTravel
-import com.tlog.domain.model.travel.ScrapTravel
 import com.tlog.ui.component.share.TopBar
 import com.tlog.viewmodel.share.MapViewModel
 import java.lang.Exception

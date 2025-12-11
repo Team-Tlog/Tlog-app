@@ -1,12 +1,9 @@
 package com.tlog.data.repository
 
-import android.util.Log
 import com.tlog.api.LoginApi
 import com.tlog.api.UserApi
-import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.auth.FeedbackRequest
 import com.tlog.data.dto.request.auth.ProfileImageRequest
-import com.tlog.data.dto.user.UserDto
 import com.tlog.domain.mapper.toDomain
 import com.tlog.domain.model.share.User
 import javax.inject.Inject

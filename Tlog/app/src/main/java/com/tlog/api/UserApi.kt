@@ -3,14 +3,9 @@ package com.tlog.api
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.request.auth.FeedbackRequest
 import com.tlog.data.dto.request.auth.ProfileImageRequest
-import com.tlog.data.dto.travel.CartDto
 import com.tlog.data.dto.user.UserDto
 import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.PUT
 import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.DELETE
 import retrofit2.http.POST
 
 interface UserApi {
