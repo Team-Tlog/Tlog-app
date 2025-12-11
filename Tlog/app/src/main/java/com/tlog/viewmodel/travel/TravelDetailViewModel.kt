@@ -2,9 +2,9 @@ package com.tlog.viewmodel.travel
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.response.travel.TravelDetailResponse
 import com.tlog.data.local.ScrapManager
 import com.tlog.data.repository.SearchOneDestinationRepository
+import com.tlog.domain.model.travel.TravelDetail
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
-class TravelInfoViewModel @Inject constructor(
+class TravelDetailViewModel @Inject constructor(
     private val repository: SearchOneDestinationRepository,
     private val scrapManager: ScrapManager,
     tokenProvider: TokenProvider
@@ -27,8 +27,8 @@ class TravelInfoViewModel @Inject constructor(
     }
 
 
-    private val _destinationDetail = MutableStateFlow<TravelDetailResponse?>(null)
-    val destinationDetail: StateFlow<TravelDetailResponse?> = _destinationDetail
+    private val _destinationDetail = MutableStateFlow<TravelDetail?>(null)
+    val destinationDetail = _destinationDetail
 
     private val _sortOption = MutableStateFlow("추천순")
     val sortOption: StateFlow<String> = _sortOption
@@ -40,8 +40,10 @@ class TravelInfoViewModel @Inject constructor(
     fun getTravelInfo(id: String) {
         launchSafeCall(
             action = {
-                val response = repository.getDestinationById(id)
-                _destinationDetail.value = response.data
+               repository.getDestinationById(id)
+            },
+            onSuccess = {
+                _destinationDetail.value = it
             }
         )
     }

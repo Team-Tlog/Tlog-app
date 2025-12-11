@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.dto.travel.ReviewDto
+import com.tlog.domain.model.travel.review.Review
 import com.tlog.ui.theme.MainFont
 
 
@@ -27,7 +28,7 @@ import com.tlog.ui.theme.MainFont
 fun ReviewSection(
     avgStarRating: Double,
     ratingDistribution: Map<String, Int>,
-    reviewList: List<ReviewDto>,
+    reviewList: List<Review>,
     reviewCnt: Int = Int.MAX_VALUE,
     moreReview: () -> Unit,
     reviewWrite: () -> Unit
@@ -93,7 +94,7 @@ fun ReviewSection(
                 .fillMaxWidth()
                 .padding(horizontal = (31.5).dp)
         ) {
-            ReviewList(
+            ReviewGroup(
                 reviewList = reviewList,
                 maxCnt = reviewCnt
             )

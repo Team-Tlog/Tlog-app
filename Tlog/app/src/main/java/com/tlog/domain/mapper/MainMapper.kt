@@ -9,7 +9,7 @@ import com.tlog.domain.model.share.Banner
 import com.tlog.domain.model.share.LocalGuide
 import com.tlog.domain.model.share.RecommendPost
 import com.tlog.domain.model.share.RecommendTravels
-import com.tlog.domain.model.travel.MinimalTravel
+import com.tlog.domain.model.travel.TravelPreview
 
 fun LocalGuideDto.toDomain(): LocalGuide {
     return LocalGuide(
@@ -31,8 +31,8 @@ fun PostDto.toDomain(): RecommendPost {
     )
 }
 
-fun DestinationDto.toDomain(): MinimalTravel {
-    return MinimalTravel(
+fun DestinationDto.toDomain(): TravelPreview {
+    return TravelPreview(
         id = id,
         name = name,
         imageUrl = imageUrl

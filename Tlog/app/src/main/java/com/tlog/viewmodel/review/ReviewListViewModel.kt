@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlin.collections.plus
 import com.tlog.data.dto.travel.ReviewDto
+import com.tlog.domain.model.travel.review.Review
 import com.tlog.ui.navigation.Screen
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +20,7 @@ class ReviewListViewModel @Inject constructor(
 ): BaseViewModel() {
     val scraps = scrapManager.scrapList
 
-    private val _reviews = MutableStateFlow<List<ReviewDto>>(emptyList())
+    private val _reviews = MutableStateFlow<List<Review>>(emptyList())
     val reviews = _reviews.asStateFlow()
 
     private val _ratingDistribution = MutableStateFlow<Map<String, Int>>(emptyMap())
@@ -57,16 +58,18 @@ class ReviewListViewModel @Inject constructor(
     ) {
         launchSafeCall(
             action = {
-                val response = repository.getReviewList(
+                repository.getReviewList(
                     travelId = id,
                     sortType = sortType,
                     page = page,
                     size = pageSize,
                     sort = sort
                 )
-                _ratingDistribution.value = response.data.ratingDistribution
-                _reviews.value = response.data.reviews.content
-                getRating(reviewCount = response.data.ratingDistribution)
+            },
+            onSuccess = {
+                _ratingDistribution.value = it.first.ratingDistribution
+                _reviews.value = it.first.reviews
+                getRating(reviewCount = it.first.ratingDistribution)
             },
             onError = { showToast("[리뷰] $it") }
         )
@@ -111,8 +114,8 @@ class ReviewListViewModel @Inject constructor(
                     sort = sort
                 )
 
-                isLastPage = response.data.reviews.last
-                _reviews.value += response.data.reviews.content
+                isLastPage = response.second
+                _reviews.value += response.first.reviews
             },
             onError = { showToast("[리뷰] $it") }
         )

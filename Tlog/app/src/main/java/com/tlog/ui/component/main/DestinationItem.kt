@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.tlog.R
-import com.tlog.domain.model.travel.MinimalTravel
+import com.tlog.domain.model.travel.TravelPreview
 import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 
 @Composable
 fun DestinationItem(
-    travel: MinimalTravel,
+    travel: TravelPreview,
     onTravelClick: () -> Unit
 ) {
     Row(

@@ -4,7 +4,7 @@ import com.tlog.data.dto.response.page.Pageable
 import com.tlog.data.dto.response.page.Sort
 import com.tlog.data.dto.travel.ReviewDto
 
-data class Reviews(
+data class ReviewsDto(
     val content: List<ReviewDto>,
     val pageable: Pageable,
     val size: Int,

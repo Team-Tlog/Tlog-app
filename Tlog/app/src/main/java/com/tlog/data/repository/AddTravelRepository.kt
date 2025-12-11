@@ -2,14 +2,12 @@ package com.tlog.data.repository
 
 import com.tlog.api.TravelApi
 import com.tlog.data.dto.request.travel.AddTravelRequest
-import com.tlog.data.dto.response.base.BaseResponse
 import jakarta.inject.Inject
 
 class AddTravelRepository @Inject constructor(
     private val retrofitInstance: TravelApi
 ){
-    suspend fun addTravel(travel: AddTravelRequest): BaseResponse<String?> {
-        return retrofitInstance.addTravel(travel)
-
+    suspend fun addTravel(travel: AddTravelRequest) {
+        retrofitInstance.addTravel(travel)
     }
 }

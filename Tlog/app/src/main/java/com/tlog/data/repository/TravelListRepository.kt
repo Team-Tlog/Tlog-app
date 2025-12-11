@@ -4,7 +4,6 @@ import com.tlog.api.SearchApi
 import com.tlog.api.TravelApi
 import com.tlog.data.dto.response.base.BaseResponse
 import com.tlog.data.dto.response.travel.SearchTravelResponse
-import com.tlog.data.dto.response.travel.TravelRecommendPagedResponse
 import com.tlog.domain.mapper.toDomain
 import com.tlog.domain.model.common.PagedResult
 import com.tlog.domain.model.travel.Travel

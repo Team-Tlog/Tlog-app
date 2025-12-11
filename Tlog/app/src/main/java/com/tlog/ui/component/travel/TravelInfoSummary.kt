@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.R
 import com.tlog.data.dto.response.travel.TravelDetailResponse
+import com.tlog.domain.model.travel.TravelDetail
 import com.tlog.ui.component.share.LazyHashTagsGroup
 import com.tlog.ui.style.Body1Regular
 import com.tlog.ui.style.Body2Regular
@@ -30,7 +31,7 @@ import kotlin.math.floor
 
 @Composable
 fun TravelInfoSummary(
-    travelInfo: TravelDetailResponse
+    travelInfo: TravelDetail
 ) {
     Column {
         Text(
@@ -95,7 +96,7 @@ fun TravelInfoSummary(
         Spacer(modifier = Modifier.height(6.dp))
 
         LazyHashTagsGroup(
-            hashTags = travelInfo.topTags.map { it.tagName },
+            hashTags = travelInfo.tags,
             space = 4.dp
         )
 

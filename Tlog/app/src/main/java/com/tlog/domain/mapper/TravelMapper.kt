@@ -2,11 +2,15 @@ package com.tlog.domain.mapper
 
 import com.tlog.data.dto.response.travel.PopularDestinationDto
 import com.tlog.data.dto.response.travel.TravelDestinationDto
+import com.tlog.data.dto.response.travel.TravelDetailResponse
 import com.tlog.data.dto.response.travel.TravelSearchDto
 import com.tlog.data.dto.team.TravelPlanDto
 import com.tlog.data.dto.team.WishlistDto
+import com.tlog.data.dto.travel.MinimalTravelDto
+import com.tlog.domain.model.travel.MinimalTravel
 import com.tlog.domain.model.travel.PopularTravel
 import com.tlog.domain.model.travel.Travel
+import com.tlog.domain.model.travel.TravelDetail
 import com.tlog.domain.model.travel.TravelPlan
 import com.tlog.domain.model.travel.ViewTravel
 
@@ -65,5 +69,34 @@ fun WishlistDto.toDomain(): ViewTravel {
         description = description,
         latitude = location.latitude,
         longitude = location.longitude
+    )
+}
+
+fun MinimalTravelDto.toDomain(): MinimalTravel {
+    return MinimalTravel(
+        destinationId = destinationId,
+        name = name,
+        imageUrl = imageUrl,
+        description = description,
+        tags = customTags?.map { it.tagName } ?: emptyList()
+    )
+}
+
+fun TravelDetailResponse.toDomain(): TravelDetail {
+    return TravelDetail(
+        id = id,
+        name = name,
+        address = address,
+        city = city,
+        description = description,
+        district = district,
+        ratingSum = ratingSum,
+        reviewCount = reviewCount,
+        averageRating = averageRating,
+        imageUrl = imageUrl,
+        tags = topTags.map { it.tagName },
+        ratingDistribution = ratingDistribution,
+        reviews = top2Reviews.map { it.toDomain() },
+        relatedTravels = relatedDestinations.map { it.toDomain() }
     )
 }

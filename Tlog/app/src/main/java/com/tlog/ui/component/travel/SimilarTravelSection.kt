@@ -13,14 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.dto.travel.MinimalTravelDto
+import com.tlog.domain.model.travel.MinimalTravel
 import com.tlog.ui.theme.MainFont
 
 
 @Composable
 fun SimilarTravelSection(
-    travelList: List<MinimalTravelDto>,
-    clickable: (String) -> Unit
+    travels: List<MinimalTravel>,
+    onTravelClick: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -42,10 +42,10 @@ fun SimilarTravelSection(
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 items(
-                    items = travelList,
+                    items = travels,
                     key = { travel -> travel.name }
                 ) { travel ->
-                    SimilarTravelSpots(travel = travel, clickable = clickable)
+                    SimilarTravelSpots(travel = travel, onTravelClick = onTravelClick)
                 }
             }
         }

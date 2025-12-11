@@ -1,7 +1,11 @@
 package com.tlog.domain.model.travel
 
+import com.tlog.data.dto.share.TagCountDto
+
 data class MinimalTravel(
-    val id: String,
+    val destinationId: String,
     val name: String,
-    val imageUrl: String
+    val imageUrl: String,
+    val description: String,
+    val tags: List<String>
 )

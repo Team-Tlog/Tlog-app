@@ -5,6 +5,7 @@ import com.tlog.api.BannerApi
 import com.tlog.api.LoginApi
 import com.tlog.api.MainApi
 import com.tlog.api.RestaurantApi
+import com.tlog.api.ReviewApi
 import com.tlog.api.ScrapAndCartApi
 import com.tlog.api.SearchApi
 import com.tlog.api.SnsApi
@@ -22,7 +23,6 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
-
     @Provides
     fun provideMainApi(
         retrofit: Retrofit
@@ -107,10 +107,11 @@ object ApiModule {
         return retrofit.create(ScrapAndCartApi::class.java)
     }
 
+
     @Provides
-    fun provideScrapRepository(
-        scrapApi: ScrapAndCartApi
-    ): ScrapRepository {
-        return ScrapRepository(scrapApi)
+    fun provideReviewApi(
+        retrofit: Retrofit
+    ): ReviewApi {
+        return retrofit.create(ReviewApi::class.java)
     }
 }
