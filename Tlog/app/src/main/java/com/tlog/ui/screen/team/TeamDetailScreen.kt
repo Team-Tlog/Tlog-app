@@ -333,13 +333,13 @@ fun TeamDetailScreen(
                     if (data != null) {
                         sharedViewModel.setTeamInfo(
                             teamId = teamId,
-                            city = data.travelPlanDto.city,
-                            district = data.travelPlanDto.regionList,
-                            startDate = data.travelPlanDto.startDate,
-                            endDate = data.travelPlanDto.endDate,
-                            hasPet = data.travelPlanDto.hasPet,
-                            hasTransport = data.travelPlanDto.hasTransport,
-                            visitedCountPerDay = data.travelPlanDto.visitCountPerDay
+                            city = data.travelPlan.city,
+                            district = data.travelPlan.regionList,
+                            startDate = data.travelPlan.startDate,
+                            endDate = data.travelPlan.endDate,
+                            hasPet = data.travelPlan.hasPet,
+                            hasCar = data.travelPlan.hasCar,
+                            visitedCountPerDay = data.travelPlan.visitCountPerDay
                         )
                     }
                     Log.d("hihihi", "2")

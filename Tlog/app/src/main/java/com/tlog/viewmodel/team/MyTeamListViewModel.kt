@@ -2,8 +2,8 @@ package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
 import com.tlog.data.local.TokenProvider
-import com.tlog.data.dto.team.TeamDto
 import com.tlog.data.repository.TeamRepository
+import com.tlog.domain.model.team.Team
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,20 +17,22 @@ class MyTeamListViewModel @Inject constructor(
 ) : BaseViewModel() {
     private var userId: String? = null
 
-    private val _teams = MutableStateFlow<List<TeamDto>>(emptyList())
+    private val _teams = MutableStateFlow<List<Team>>(emptyList())
     val teams = _teams.asStateFlow()
 
     init {
         userId = tokenProvider.getUserId()
+
+        fetchTeamsFromServer()
     }
 
-    fun fetchTeamsFromServer() {
+    private fun fetchTeamsFromServer() {
         launchSafeCall(
             action = {
-                val safeUserId = userId ?: return@launchSafeCall
-                val result = teamRepository.getTeamList(safeUserId)
-
-                _teams.value = result.data
+                teamRepository.getTeamList(userId!!)
+            },
+            onSuccess = {
+                _teams.value = it
             }
         )
     }
@@ -41,18 +43,17 @@ class MyTeamListViewModel @Inject constructor(
                 if (teamLeaderId == userId) {
                     teamRepository.deleteTeam(teamId)
 
-                    _teams.value = _teams.value.filterNot { it.teamId == teamId }
+                    _teams.value = _teams.value.filterNot { it.id == teamId }
                     showToast("팀 삭제 성공")
                 } else {
                     teamRepository.leaveTeam(teamId, userId!!)
 
-                    _teams.value = _teams.value.filterNot { it.teamId == teamId }
+                    _teams.value = _teams.value.filterNot { it.id == teamId }
                     showToast("팀 떠나기 성공")
                 }
             }
         )
     }
-
 
     fun navToCreateTeam() {
         navigate(Screen.CreateTeam)
@@ -66,5 +67,3 @@ class MyTeamListViewModel @Inject constructor(
         navigate(Screen.JoinTeam)
     }
 }
-
-

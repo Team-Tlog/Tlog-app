@@ -40,8 +40,8 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
     private val _hasPet = MutableStateFlow<Boolean>(false)
     val hasPet: StateFlow<Boolean> = _hasPet.asStateFlow()
 
-    private val _hasTransport = MutableStateFlow<Boolean>(false)
-    val hasTransport: StateFlow<Boolean> = _hasTransport.asStateFlow()
+    private val _hasCar = MutableStateFlow<Boolean>(false)
+    val hasCar: StateFlow<Boolean> = _hasCar.asStateFlow()
 
     private val _visitedCountPerDay = MutableStateFlow<Map<String, Int>>(emptyMap())
     val visitedCountPerDay: StateFlow<Map<String, Int>> = _visitedCountPerDay.asStateFlow()
@@ -54,7 +54,7 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
         startDate: String,
         endDate: String,
         hasPet: Boolean,
-        hasTransport: Boolean,
+        hasCar: Boolean,
         visitedCountPerDay: Map<String, Int>
     ) {
         _teamId.value = teamId
@@ -63,7 +63,7 @@ class CourseSharedViewModel @Inject constructor() : ViewModel() {
         _startDate.value = startDate
         _endDate.value = endDate
         _hasPet.value = hasPet
-        _hasTransport.value = hasTransport
+        _hasCar.value = hasCar
         _visitedCountPerDay.value = visitedCountPerDay
     }
 

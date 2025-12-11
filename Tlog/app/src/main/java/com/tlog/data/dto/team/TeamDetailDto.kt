@@ -11,11 +11,4 @@ data class TeamDetailDto(
     val members: List<MemberDto>,
     val wishlist: List<WishlistDto>,
     val travelPlanDto: TravelPlanDto
-) {
-    // 편의 속성: travelPlanDto에서 날짜 정보 가져오기
-    val startDate: String
-        get() = travelPlanDto.startDate
-
-    val endDate: String
-        get() = travelPlanDto.endDate
-}
+)

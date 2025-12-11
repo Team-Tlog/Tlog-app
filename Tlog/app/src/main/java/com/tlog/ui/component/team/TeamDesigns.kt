@@ -24,8 +24,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tlog.data.dto.team.TeamDetailDto
-import com.tlog.data.dto.team.MemberDto
 import com.tlog.ui.style.BodyTitle
 import com.tlog.ui.style.SubTitle
 import com.tlog.ui.theme.MainColor
@@ -33,11 +31,13 @@ import com.tlog.ui.theme.DefaultImage
 import com.tlog.ui.theme.MainFont
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
+import com.tlog.domain.model.team.Member
+import com.tlog.domain.model.team.TeamDetail
 
 
 @Composable
 fun SmallDesign(
-    teamData: TeamDetailDto,
+    teamData: TeamDetail,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -86,7 +86,7 @@ fun SmallDesign(
                 }
 
                 Text(
-                    text = "${teamData.startDate} ~ ${teamData.endDate}",
+                    text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
@@ -107,7 +107,7 @@ fun SmallDesign(
 
 @Composable
 fun DefaultDesign(
-    teamData: TeamDetailDto,
+    teamData: TeamDetail,
     showPopup: Boolean,
     addMemberClick: () -> Unit,
     onDismiss: () -> Unit,
@@ -157,7 +157,7 @@ fun DefaultDesign(
                 Spacer(modifier = Modifier.height((7.5).dp))
 
                 Text(
-                    text = "${teamData.startDate} ~ ${teamData.endDate}",
+                    text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
                     style = TextStyle(
                         fontFamily = MainFont,
                         fontWeight = FontWeight.Normal,
@@ -258,7 +258,7 @@ fun DefaultDesign(
 
 @Composable
 fun BigDesign(
-    teamData: TeamDetailDto,
+    teamData: TeamDetail,
     onChatClick: () -> Unit
 ) {
     Column(
@@ -304,7 +304,7 @@ fun BigDesign(
         }
 
         Text(
-            text = "${teamData.startDate} ~ ${teamData.endDate}",
+            text = "${teamData.travelPlan.startDate} ~ ${teamData.travelPlan.endDate}",
             style = TextStyle(
                 fontFamily = MainFont,
                 fontWeight = FontWeight.Normal,
@@ -319,7 +319,7 @@ fun BigDesign(
 
 @Composable
 fun DetailMember(
-    memberList: List<MemberDto>
+    memberList: List<Member>
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)

@@ -81,7 +81,7 @@ fun CourseInputScreen(
                 startDate = sharedViewModel.startDate.value,
                 endDate = sharedViewModel.endDate.value,
                 hasPet = sharedViewModel.hasPet.value,
-                hasTransport = sharedViewModel.hasTransport.value,
+                hasTransport = sharedViewModel.hasCar.value,
                 visitedCountPerDay = sharedViewModel.visitedCountPerDay.value
             )
         }

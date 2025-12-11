@@ -1,8 +1,8 @@
 package com.tlog.viewmodel.team
 
 import com.tlog.viewmodel.base.BaseViewModel
-import com.tlog.data.dto.team.TeamDetailDto
 import com.tlog.data.repository.TeamRepository
+import com.tlog.domain.model.team.TeamDetail
 import com.tlog.ui.navigation.Screen
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +14,8 @@ import javax.inject.Inject
 class TeamDetailViewModel @Inject constructor(
     private val repository: TeamRepository
 ): BaseViewModel() {
-    private val _teamData = MutableStateFlow<TeamDetailDto?>(null)
-    val teamData: StateFlow<TeamDetailDto?> = _teamData
+    private val _teamData = MutableStateFlow<TeamDetail?>(null)
+    val teamData: StateFlow<TeamDetail?> = _teamData
 
     private val _checkTravels = MutableStateFlow<List<String>>(emptyList())
     val checkTravels = _checkTravels.asStateFlow()
@@ -34,8 +34,10 @@ class TeamDetailViewModel @Inject constructor(
     fun getTeamDetail(teamId: String) {
         launchSafeCall(
             action = {
-                val result = repository.getTeamDetails(teamId)
-                _teamData.value = result.data
+                repository.getTeamDetails(teamId)
+            },
+            onSuccess = {
+                _teamData.value = it
             }
         )
     }

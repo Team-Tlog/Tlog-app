@@ -5,5 +5,6 @@ data class TeamDto(
     val teamName: String,
     val teamLeaderId: String,
     val teamLeaderName: String,
-    val memberIdList: List<String>
+    val memberSimpleDtoList: List<MemberSimpleDto>,
+    val travelPlanDto: TravelPlanDto
 )

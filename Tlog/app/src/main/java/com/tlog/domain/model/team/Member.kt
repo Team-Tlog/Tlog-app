@@ -1,8 +1,8 @@
-package com.tlog.data.dto.team
+package com.tlog.domain.model.team
 
-data class MemberDto(
+data class Member(
     val userId: String,
-    val profileImageUrl: String?,
+    val profileImageUrl: String,
     val name: String,
     val tbtiString: String,
     val isLeader: Boolean

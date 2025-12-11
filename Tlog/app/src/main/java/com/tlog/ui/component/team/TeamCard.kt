@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tlog.ui.theme.MainFont
 import com.tlog.R
-import com.tlog.data.dto.team.TeamDto
+import com.tlog.domain.model.team.Team
 
 @Composable
 fun TeamCard(
-    team: TeamDto,
+    team: Team,
     onDeleteClick: (String) -> Unit,
     onClick: (String) -> Unit
 ) {
@@ -31,7 +31,7 @@ fun TeamCard(
         shadowElevation = 1.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick(team.teamId) }
+            .clickable { onClick(team.id) }
     ) {
         Row(
             modifier = Modifier
@@ -61,7 +61,7 @@ fun TeamCard(
                         fontFamily = MainFont,
                         color = Color.Gray
                     )
-                    IconButton(onClick = { onDeleteClick(team.teamId) }) {
+                    IconButton(onClick = { onDeleteClick(team.id) }) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_delete),
                             contentDescription = "Delete team",
@@ -71,7 +71,7 @@ fun TeamCard(
                 }
                 Spacer(modifier = Modifier.height(9.dp))
                 Text(
-                    text = team.teamLeaderName,
+                    text = team.leaderName,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = MainFont,
