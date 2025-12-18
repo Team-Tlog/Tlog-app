@@ -46,6 +46,9 @@ sealed interface Screen {
     @Serializable
     data object SnsPostWriteDetail: Screen
 
+    @Serializable
+    data object SnsProfileModify: Screen
+
     // Review
     @Serializable
     data class ReviewWrite(val travelId: String, val travelName: String): Screen
