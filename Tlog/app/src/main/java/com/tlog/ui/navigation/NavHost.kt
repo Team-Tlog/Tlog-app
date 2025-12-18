@@ -132,7 +132,7 @@ fun NavHost(
         }
         composable<Screen.SnsPostWrite> { SnsPostWriteScreen(viewModel = snsPostWriteViewModel, navController = navController) }
         composable<Screen.SnsPostWriteDetail> { SnsPostWriteDetailScreen(viewModel = snsPostWriteViewModel, navController = navController) }
-        composable<Screen.SnsProfileModify> { SnsProfileModifyScreen() }
+        composable<Screen.SnsProfileModify> { SnsProfileModifyScreen(navController = navController) }
 
         // Review
         composable<Screen.ReviewWrite> { backStackEntry ->
