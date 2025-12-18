@@ -38,7 +38,8 @@ fun BottomLineInputField(
             .fillMaxWidth()
     ) {
         Row (
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             BasicTextField(
                 value = value,

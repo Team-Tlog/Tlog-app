@@ -43,6 +43,7 @@ import com.tlog.ui.screen.sns.SnsDetailScreen
 import com.tlog.ui.screen.sns.SnsProfileScreen
 import com.tlog.ui.screen.sns.SnsPostWriteDetailScreen
 import com.tlog.ui.screen.sns.SnsPostWriteScreen
+import com.tlog.ui.screen.sns.SnsProfileModifyScreen
 import com.tlog.ui.screen.sns.SnsSearchScreen
 import com.tlog.ui.screen.team.MyTeamListScreen
 import com.tlog.ui.screen.team.TeamDetailScreen
@@ -131,6 +132,7 @@ fun NavHost(
         }
         composable<Screen.SnsPostWrite> { SnsPostWriteScreen(viewModel = snsPostWriteViewModel, navController = navController) }
         composable<Screen.SnsPostWriteDetail> { SnsPostWriteDetailScreen(viewModel = snsPostWriteViewModel, navController = navController) }
+        composable<Screen.SnsProfileModify> { SnsProfileModifyScreen(navController = navController) }
 
         // Review
         composable<Screen.ReviewWrite> { backStackEntry ->
